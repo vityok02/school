@@ -12,10 +12,9 @@
         public void Print()
         {
             Console.WriteLine($"Name {Name}");
-            Console.WriteLine($"Number of rooms on first floor {Rooms.Count}");
-            for (int i = 0; i < Floors.Count; i++)
+            foreach (Floor floor in Floors)
             {
-                
+                floor.Print();
             }
         }
     }
@@ -49,6 +48,14 @@
         public void AddRoom(Room room)
         {
             _rooms.Add(room);
+        }
+        public void Print()
+        {
+            Console.WriteLine($"Floor: {Number} Rooms count: {Rooms.Count()}");
+            foreach (Room room in Rooms)
+            {
+                Console.WriteLine($"Room: {room.Number}, {room.Type}");
+            }
         }
     }
     [Flags]
