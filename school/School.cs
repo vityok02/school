@@ -3,10 +3,20 @@
     class School
     {
         public Address Address { get; set; }
-        public ICollection<Room> Rooms { get; set; }
+        public IEnumerable<Room> Rooms 
+        { 
+            get
+            {
+                List<Room> allRooms = new List<Room>();
+                foreach (Floor floor in Floors)
+                {
+                    allRooms.AddRange(floor.Rooms);
+                }
+                return allRooms;
+            }
+        }
         public DateOnly OpeningDate { get; set; }
         public string Name { get; set; }
-        public ICollection<Floor> Floors { get; set; }
         public Employee Director { get; set; }
         public ICollection<Employee> Employees { get; set; }
         public void Print()
@@ -16,6 +26,18 @@
             {
                 floor.Print();
             }
+
+            Console.WriteLine($"Total rooms count: {Rooms.Count()}");
+        }
+        private readonly List<Floor> _floors;
+        public IEnumerable<Floor> Floors => _floors;
+        public School()
+        {
+            _floors = new List<Floor>();
+        }
+        public void AddFloor(Floor floor)
+        {
+            _floors.Add(floor);
         }
     }
     class Address
@@ -48,13 +70,14 @@
         public void AddRoom(Room room)
         {
             _rooms.Add(room);
+            room.Floor = this;
         }
         public void Print()
         {
             Console.WriteLine($"Floor: {Number} Rooms count: {Rooms.Count()}");
             foreach (Room room in Rooms)
             {
-                Console.WriteLine($"Room: {room.Number}, {room.Type}");
+                Console.WriteLine($"Room: {room.Number}, {room.Type}, Floor: {room.Floor.Number}");
             }
         }
     }
