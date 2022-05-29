@@ -9,8 +9,13 @@ Address malynivka = new()
 
 Employee director = new()
 {
-    FirstName = "Володимир",
-    LastName = "Сиченко"
+    FirstName = "Volodymyr",
+    LastName = "Sychenko"
+};
+Employee victor = new()
+{
+    FirstName = "Victor",
+    LastName = "Lypkan"
 };
 
 School.School malynivskaSchool = new()
@@ -19,9 +24,7 @@ School.School malynivskaSchool = new()
     Name = "Малинівська школа #1",
     OpeningDate = new DateOnly(2002, 1, 1),
     Director = director,
-    Employees = new List<Employee>()
 };
-
 Floor firstFloor = new()
 {
     Number = 1,
@@ -85,6 +88,9 @@ Room hallRoom = new()
     Type = RoomType.Hall
 };
 
+malynivskaSchool.AddEmployee(director);
+
+malynivskaSchool.AddEmployee(victor);
 
 firstFloor.AddRoom(mathRoom);
 
