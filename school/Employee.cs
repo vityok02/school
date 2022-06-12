@@ -1,12 +1,11 @@
-﻿namespace School
+﻿namespace School;
+
+class Employee 
 {
-    class Employee
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public void Print()
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public void Print()
-        {
-            Console.WriteLine($"{LastName} {FirstName}");
-        }
+        Console.WriteLine($"{LastName} {FirstName}");
     }
 }
