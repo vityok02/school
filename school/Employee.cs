@@ -1,11 +1,11 @@
 ﻿namespace School;
 
-class Employee 
+abstract class Employee : Person
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public abstract string Job { get; }
+
     public void Print()
     {
-        Console.WriteLine($"{LastName} {FirstName}");
+        Console.WriteLine($"{LastName} {FirstName} {Age} {Job}");
     }
 }

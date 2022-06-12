@@ -45,7 +45,7 @@ Floor thirdFloor = new()
 malynivskaSchool.AddFloor(thirdFloor);
 Floor fourthFloor = new()
 {
-    Number = 4, 
+    Number = 4,
 };
 malynivskaSchool.AddFloor(fourthFloor);
 
@@ -107,3 +107,9 @@ secondFloor.AddRoom(physicsRoom);
 secondFloor.AddRoom(hallRoom);
 
 malynivskaSchool.Print();
+Director director = new()
+{
+    FirstName = "Ivan",
+    LastName = "Ivanov",
+};
+director.Print();

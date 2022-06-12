@@ -17,7 +17,7 @@ class School
     }
     public DateOnly OpeningDate { get; set; }
     public string Name { get; set; }
-    public Employee Director { get; set; }
+    public Employee Director { get; }
     public void Print()
     {
         Console.WriteLine($"==========Rooms==========");
@@ -47,5 +47,13 @@ class School
     public void AddEmployee(Employee employee)
     {
         _employees.Add(employee);
+
+        if(Director != null)
+        {
+        } 
+        else
+        {
+        }
     }
+
 }
