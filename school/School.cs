@@ -17,14 +17,31 @@ class School
     }
     public DateOnly OpeningDate { get; set; }
     public string Name { get; set; }
-    public Employee Director { get; }
+    public Employee? Director
+    {
+        get
+        {
+            foreach (Employee employee in Employees)
+            {
+                Director? director = employee as Director;
+                if (director is not null)
+                {
+                    return director;
+                }
+            }
+            return null;
+        }
+    }
     public void Print()
     {
+        Console.WriteLine();
         Console.WriteLine($"==========Rooms==========");
         foreach (Floor floor in Floors)
         {
             floor.Print();
         }
+
+        Console.WriteLine();
         Console.WriteLine("==========Employees==========");
         foreach (Employee employee in Employees)
         {
@@ -46,14 +63,22 @@ class School
     public IEnumerable<Employee> Employees => _employees;
     public void AddEmployee(Employee employee)
     {
-        _employees.Add(employee);
+        /*
+         * Метод должен добавлять учителя и директора. При етом проверять если директор уже сущевствует то вівести сообщение об ошибке.
+         * 1. Проверить директора
+         * 2. Проверить сущевствование директора
+         * 3. Если директор нет, то добавить
+         * 4. Если уже есть, то вівести ошибку
+         */
 
-        if(Director != null)
+        Console.WriteLine("Employee to add: ");
+        employee.Print();
+
+        if (employee is Director && Director is not null)
         {
-        } 
-        else
-        {
+            Console.WriteLine("Error");
+            return;
         }
+        _employees.Add(employee);
     }
-
 }
