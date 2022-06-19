@@ -63,14 +63,6 @@ class School
     public IEnumerable<Employee> Employees => _employees;
     public void AddEmployee(Employee employee)
     {
-        /*
-         * Метод должен добавлять учителя и директора. При етом проверять если директор уже сущевствует то вівести сообщение об ошибке.
-         * 1. Проверить директора
-         * 2. Проверить сущевствование директора
-         * 3. Если директор нет, то добавить
-         * 4. Если уже есть, то вівести ошибку
-         */
-
         Console.WriteLine("Employee to add: ");
         employee.Print();
 
