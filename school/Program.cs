@@ -6,7 +6,6 @@ Address malynivka = new()
     Street = "Вул. Шкільна 1",
     PostalCode = 22360
 };
-Student student = new("Ivan", "Ivanov", 17);
 
 School.School malynivskaSchool = new()
 {
@@ -93,12 +92,23 @@ secondFloor.AddRoom(physicsRoom);
 secondFloor.AddRoom(hallRoom);
 
 Director director = new("Ivan", "Ivanov", 29);
-malynivskaSchool.AddEmployee(director);
-
-Teacher teacher1 = new("Petro", "Petrenko", 99);
-malynivskaSchool.AddEmployee(teacher1);
 
 Director fakeDirector = new("Fake", "Director", 190);
+
+Teacher teacher1 = new("Petro", "Petrenko", 99);
+
+Teacher teacher2 = new("Vladymir", "Zelensky", 24);
+
+Teacher teacher3 = new("Vladymir", "Zelensky", 45);
+
+malynivskaSchool.AddEmployee(director);
+
 malynivskaSchool.AddEmployee(fakeDirector);
+
+malynivskaSchool.AddEmployee(teacher1);
+
+malynivskaSchool.AddEmployee(teacher2);
+
+malynivskaSchool.AddEmployee(teacher3);
 
 malynivskaSchool.Print();

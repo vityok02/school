@@ -17,6 +17,21 @@ class School
     }
     public DateOnly OpeningDate { get; set; }
     public string Name { get; set; }
+    public Employee? Teacher
+    {
+        get
+        {
+            foreach (Employee employee in Employees)
+            {
+                Teacher? teacher = employee as Teacher;
+                if (Director is not null)
+                {
+                    return teacher;
+                }
+            }
+            return null;
+        }
+    }
     public Employee? Director
     {
         get
@@ -35,12 +50,14 @@ class School
     public void Print()
     {
         Console.WriteLine();
+        Console.WriteLine();
         Console.WriteLine($"==========Rooms==========");
         foreach (Floor floor in Floors)
         {
             floor.Print();
         }
 
+        Console.WriteLine();
         Console.WriteLine();
         Console.WriteLine("==========Employees==========");
         foreach (Employee employee in Employees)
@@ -68,9 +85,20 @@ class School
 
         if (employee is Director && Director is not null)
         {
-            Console.WriteLine("Error");
+            Console.WriteLine($"*Director {employee.FirstName} {employee.LastName} cannot be added so director {Director.FirstName} {Director.LastName} already exists.");
             return;
         }
+
         _employees.Add(employee);
+
+        if (employee is Teacher)
+        {
+            Teacher teacher = employee as Teacher;
+            if (teacher.FirstName is not null)
+            {
+                Console.WriteLine($"There is already a teacher: {teacher.FirstName} {teacher.LastName}");
+            }
+        }
+        Console.WriteLine("---------------------");
     }
 }
