@@ -11,6 +11,22 @@ class Floor
     }
     public void AddRoom(Room room)
     {
+        if (room.Number < 0)
+        {
+            Console.WriteLine("room number must be greater than 0");
+            return;
+        }
+
+        for (int i = 0; i < _rooms.Count; i++)
+        {
+            Room r = _rooms[i];
+            if (r.Number == room.Number)
+            {
+                Console.WriteLine("This room number already exists");
+                return;
+            }
+        }
+
         _rooms.Add(room);
         room.Floor = this;
     }

@@ -11,5 +11,6 @@ abstract class Person
         FirstName = firstName;
         LastName = lastName;
         Age = age;
+
     }
 }

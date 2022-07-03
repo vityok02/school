@@ -6,7 +6,6 @@ Address malynivka = new()
     Street = "Вул. Шкільна 1",
     PostalCode = 22360
 };
-Student student = new("Ivan", "Ivanov", 17);
 
 School.School malynivskaSchool = new()
 {
@@ -77,28 +76,35 @@ Room hallRoom = new()
     Number = 200,
     Type = RoomType.Hall
 };
+Room workshop = new()
+{
+    Number = 200,
+    Type = RoomType.Workshop
+};
 
-firstFloor.AddRoom(mathRoom);
+try
+{
+    firstFloor.AddRoom(mathRoom);
+    firstFloor.AddRoom(informRoom);
+    secondFloor.AddRoom(bioRoom);
+    secondFloor.AddRoom(literatureRoom);
+    thirdFloor.AddRoom(gymRoom);
+    secondFloor.AddRoom(physicsRoom);
+    secondFloor.AddRoom(hallRoom);
+    firstFloor.AddRoom(workshop);
 
-firstFloor.AddRoom(informRoom);
-
-secondFloor.AddRoom(bioRoom);
-
-secondFloor.AddRoom(literatureRoom);
-
-thirdFloor.AddRoom(gymRoom);
-
-secondFloor.AddRoom(physicsRoom);
-
-secondFloor.AddRoom(hallRoom);
-
-Director director = new("Ivan", "Ivanov", 29);
-malynivskaSchool.AddEmployee(director);
-
-Teacher teacher1 = new("Petro", "Petrenko", 99);
-malynivskaSchool.AddEmployee(teacher1);
-
-Director fakeDirector = new("Fake", "Director", 190);
-malynivskaSchool.AddEmployee(fakeDirector);
-
-malynivskaSchool.Print();
+    malynivskaSchool.AddDirector("Ivan", "Ivanov", 29);
+    malynivskaSchool.AddDirector("Fake", "Director", 190);
+    malynivskaSchool.AddTeacher("Petro", "Petrenko", 99);
+    malynivskaSchool.AddTeacher("Vladymir", "Zelensky", 24);
+    malynivskaSchool.AddTeacher("Vladymir", "Zelensky", 24);
+    malynivskaSchool.AddTeacher("Vladymir", "Zelensky", 45);
+    malynivskaSchool.AddTeacher("Teacher", "Young", 5);
+    malynivskaSchool.AddTeacher("Teacher", "Old", 99);
+    malynivskaSchool.AddTeacher("", "", 0);
+    malynivskaSchool.Print();
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+}
