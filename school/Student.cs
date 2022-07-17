@@ -2,14 +2,15 @@
 
 public class Student : Person
 {
-    public int Class;
-    public Student(string firstName, string lastName, int age)
+    public string Group { get; }
+    public Student(string firstName, string lastName, int age, string group)
         : base(firstName, lastName, age)
     {
+        Group = group;
     }
     public void Print()
     {
-        Console.WriteLine($"{LastName} {FirstName} {Age}");
+        Console.WriteLine($"{LastName} {FirstName} {Age} group: {Group}");
     }
 }
 

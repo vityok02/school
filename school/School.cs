@@ -60,6 +60,18 @@ public class School
             }
         }
 
+        if(floor.Number < 0)
+        {
+            Console.WriteLine("*Floor`s number should be more than 0*");
+            return;
+        }
+
+        if(floor.Number > 10)
+        {
+            Console.WriteLine("*Floor`s number shouldn`t be more than 10*");
+            return;
+        }
+
         _floors.Add(floor);
     }
 
@@ -72,11 +84,40 @@ public class School
                 stud.LastName == student.LastName && 
                 stud.Age == student.Age)
             {
-                Console.WriteLine("*This employee already exists*");
+                Console.WriteLine("*This student already exists*");
                 Console.WriteLine("---------------------------------------------");
                 return;
             }
         }
+
+        if (string.IsNullOrEmpty(student.FirstName))
+        {
+            Console.WriteLine("First name is not provided");
+            Console.WriteLine("---------------------------------------------");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(student.LastName))
+        {
+            Console.WriteLine("Last name is not provided");
+            Console.WriteLine("---------------------------------------------");
+            return;
+        }
+
+        if (student.Age > 18)
+        {
+            Console.WriteLine("Employee shouldn`t be less then 18");
+            Console.WriteLine("---------------------------------------------");
+            return;
+        }
+
+        if (student.Age < 5)
+        {
+            Console.WriteLine("Employee should be less then 65");
+            Console.WriteLine("---------------------------------------------");
+            return;
+        }
+
         _students.Add(student);
     }
 
