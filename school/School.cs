@@ -36,6 +36,12 @@ public class School
     private readonly List<Floor> _floors = new();
     public IEnumerable<Floor> Floors => _floors;
 
+    private readonly List<Employee> _employees = new();
+    public IEnumerable<Employee> Employees => _employees;
+
+    private readonly List<Student> _students = new();
+    public IEnumerable<Student> Students => _students;
+
     public School(string name, Address address, DateOnly openingDate)
     {
         Name = name;
@@ -56,8 +62,23 @@ public class School
 
         _floors.Add(floor);
     }
-    private readonly List<Employee> _employees = new();
-    public IEnumerable<Employee> Employees => _employees;
+
+    public void AddStudent(Student student)
+    {
+        for (int i = 0; i < _students.Count; i++)
+        {
+            Student stud = _students[i];
+            if (stud.FirstName == student.FirstName && 
+                stud.LastName == student.LastName && 
+                stud.Age == student.Age)
+            {
+                Console.WriteLine("*This employee already exists*");
+                Console.WriteLine("---------------------------------------------");
+                return;
+            }
+        }
+        _students.Add(student);
+    }
 
     public void AddDirector(string firstName, string lastName, int age)
     {
@@ -136,10 +157,11 @@ public class School
         _employees.Add(employee);
         Console.WriteLine("---------------------------------------------");
     }
+
     public void Print()
     {
         Console.WriteLine();
-        Console.WriteLine($"==========Rooms==========");
+        Console.WriteLine($"==========Rooms=============");
         foreach (Floor floor in _floors)
         {
             floor.Print();
@@ -150,6 +172,13 @@ public class School
         foreach (Employee employee in _employees)
         {
             employee.Print();
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("==========Students============");
+        foreach (Student student in _students)
+        {
+            student.Print();
         }
     }
 }

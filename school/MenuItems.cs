@@ -6,6 +6,7 @@ public enum MenuItems
     AddFloor,
     AddRoom,
     AddEmployee,
+    AddStudent,
     ShowInfo,
     Quit 
 }

@@ -39,6 +39,7 @@ void ShowMenu(School school)
         {MenuItems.AddFloor, "Add floor" },
         {MenuItems.AddRoom, "Add room" },
         {MenuItems.AddEmployee, "Add employee" },
+        {MenuItems.AddStudent, "Add student" },
         {MenuItems.ShowInfo, "Show all information" },
         {MenuItems.Quit, "Quit" }
     };
@@ -141,6 +142,9 @@ void HandleChoice(MenuItems? choice)
         case MenuItems.AddEmployee:
             AddEmployee();
             break;
+        case MenuItems.AddStudent:
+            AddStudent();
+            break;
         case MenuItems.ShowInfo:
             ShowInfo();
             break;
@@ -242,6 +246,19 @@ void AddEmployee()
             Console.WriteLine("Wrong employee type");
         }
     }
+
+    Context.School?.Print();
+    Console.WriteLine();
+}
+
+void AddStudent()
+{
+    var firstName = GetValueFromConsole("Enter student first name: ");
+    var lastName = GetValueFromConsole("Enter student last name: ");
+    var age = GetIntValueFromConsole("Enter student age: ");
+
+    Student student = new(firstName, lastName, age);
+    Context.School?.AddStudent(student);
 
     Context.School?.Print();
     Console.WriteLine();
