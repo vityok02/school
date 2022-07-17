@@ -1,13 +1,13 @@
-﻿namespace School;
+﻿namespace SchoolNamespace;
 
-class Floor
+public class Floor
 {
     public int Number { get; set; }
-    private List<Room> _rooms;
+    private readonly List<Room> _rooms = new();
     public IEnumerable<Room> Rooms => _rooms;
-    public Floor()
+    public Floor(int number)
     {
-        _rooms = new List<Room>();
+        Number = number;
     }
     public void AddRoom(Room room)
     {

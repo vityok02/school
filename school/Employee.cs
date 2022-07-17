@@ -1,6 +1,6 @@
-﻿namespace School;
+﻿namespace SchoolNamespace;
 
-abstract class Employee : Person
+public abstract class Employee : Person
 {
     protected Employee(string firstName, string lastName, int age)
         : base(firstName, lastName, age)

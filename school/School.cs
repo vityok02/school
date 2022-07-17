@@ -1,6 +1,6 @@
-﻿namespace School;
+﻿namespace SchoolNamespace;
 
-class School
+public class School
 {
     public Address Address { get; set; }
     public IEnumerable<Room> Rooms 
@@ -32,34 +32,31 @@ class School
             return null;
         }
     }
-    public void Print()
-    {
-        Console.WriteLine();
-        Console.WriteLine($"==========Rooms==========");
-        foreach (Floor floor in _floors)
-        {
-            floor.Print();
-        }
 
-        Console.WriteLine();
-        Console.WriteLine("==========Employees==========");
-        foreach (Employee employee in _employees)
-        {
-            employee.Print();
-        }
-    }
-    private readonly List<Floor> _floors;
+    private readonly List<Floor> _floors = new();
     public IEnumerable<Floor> Floors => _floors;
-    public School()
+
+    public School(string name, Address address, DateOnly openingDate)
     {
-        _floors = new List<Floor>();
-        _employees = new List<Employee>();
+        Name = name;
+        Address = address;
+        OpeningDate = openingDate;
     }
+
     public void AddFloor(Floor floor)
     {
+        for (int i = 0; i < _floors.Count; i++)
+        {
+            if (_floors[i].Number == floor.Number)
+            {
+                Console.WriteLine($"Floor {floor.Number} already exists");
+                return;
+            }
+        }
+
         _floors.Add(floor);
     }
-    private readonly List<Employee> _employees;
+    private readonly List<Employee> _employees = new();
     public IEnumerable<Employee> Employees => _employees;
 
     public void AddDirector(string firstName, string lastName, int age)
@@ -138,5 +135,21 @@ class School
         }
         _employees.Add(employee);
         Console.WriteLine("---------------------------------------------");
+    }
+    public void Print()
+    {
+        Console.WriteLine();
+        Console.WriteLine($"==========Rooms==========");
+        foreach (Floor floor in _floors)
+        {
+            floor.Print();
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("==========Employees==========");
+        foreach (Employee employee in _employees)
+        {
+            employee.Print();
+        }
     }
 }

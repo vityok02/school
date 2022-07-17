@@ -1,6 +1,6 @@
-﻿namespace School;
+﻿namespace SchoolNamespace;
 
-class Director : Employee
+public class Director : Employee
 {
     public Director(string firstName, string lastName, int age)
         : base(firstName, lastName, age)

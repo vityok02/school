@@ -1,6 +1,6 @@
-﻿namespace School;
+﻿namespace SchoolNamespace;
 
-class Teacher : Employee
+public class Teacher : Employee
 {
     public override string Job => "Teacher";
     private readonly List<string> _subjects;

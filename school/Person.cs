@@ -1,6 +1,6 @@
-﻿namespace School;
+﻿namespace SchoolNamespace;
 
-abstract class Person
+public abstract class Person
 {    
     public string FirstName { get; }
     public string LastName { get; }
