@@ -1,5 +1,6 @@
 ﻿using SchoolNamespace;
 using static SchoolNamespaceMgmnt.ConsoleHelper;
+using System.Text.Json;
 
 while (true)
 {
@@ -24,18 +25,33 @@ while (true)
 
 void CreateSchool()
 {
-    var name = GetValueFromConsole("Enter school name: ");
-    var address = GetAddress();
-    var openingDate = GetDateFromConsole("Enter school opening date: ");
+    if (Context.School is null)
+    {
+        var name = GetValueFromConsole("Enter school name: ");
+        var address = GetAddress();
+        var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
 
-    School school = new(name, address, openingDate);
+        School school = new(name, address, openingDate);
 
-    Context.School = school;
+        string json = JsonSerializer.Serialize(school);
+        string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string fileName = $"{school.Name}.json";
+        string fullFolder = Path.Combine(folder, fileName);
 
-    Console.WriteLine($"School {school.Name} successfully added");
-    school.Print();
-    Console.WriteLine();
+        File.WriteAllText(fullFolder, json);
 
+        School? jsonD = JsonSerializer.Deserialize<School>(json);
+        string context = File.ReadAllText(fullFolder);
+        Console.WriteLine(context);
+
+        Context.School = school;
+
+        Console.WriteLine($"School {school.Name} successfully added");
+        school.Print();
+        Console.WriteLine();
+    }
+    else
+        return;
 }
 
 Address GetAddress()
@@ -48,7 +64,7 @@ Address GetAddress()
     return new(country, city, street, postalCode);
 }
 
-void HandleChoice(MenuItems? choice)
+async void HandleChoice(MenuItems? choice)
 {
     switch (choice)
     {

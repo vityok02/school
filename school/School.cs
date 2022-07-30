@@ -2,21 +2,9 @@
 
 public class School
 {
-    public Address Address { get; set; }
-    public IEnumerable<Room> Rooms 
-    { 
-        get
-        {
-            List<Room> allRooms = new List<Room>();
-            foreach (Floor floor in Floors)
-            {
-                allRooms.AddRange(floor.Rooms);
-            }
-            return allRooms;
-        }
-    }
-    public DateOnly OpeningDate { get; set; }
     public string Name { get; set; }
+    public Address Address { get; set; }
+    public string OpeningDate { get; set; }
     public Employee? Director
     {
         get
@@ -32,17 +20,27 @@ public class School
             return null;
         }
     }
-
-    private readonly List<Floor> _floors = new();
-    public IEnumerable<Floor> Floors => _floors;
-
     private readonly List<Employee> _employees = new();
     public IEnumerable<Employee> Employees => _employees;
 
     private readonly List<Student> _students = new();
     public IEnumerable<Student> Students => _students;
+    private readonly List<Floor> _floors = new();
+    public IEnumerable<Floor> Floors => _floors;
+    public IEnumerable<Room> Rooms 
+    { 
+        get
+        {
+            List<Room> allRooms = new List<Room>();
+            foreach (Floor floor in Floors)
+            {
+                allRooms.AddRange(floor.Rooms);
+            }
+            return allRooms;
+        }
+    }
 
-    public School(string name, Address address, DateOnly openingDate)
+    public School(string name, Address address, string openingDate)
     {
         Name = name;
         Address = address;

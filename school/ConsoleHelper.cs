@@ -53,6 +53,7 @@ public static class ConsoleHelper
     public static DateOnly GetDateFromConsole(string message)
     {
         DateOnly openingDate;
+
         while (true)
         {
             var strValue = GetValueFromConsole(message);
@@ -61,7 +62,7 @@ public static class ConsoleHelper
             {
                 break;
             }
-            Console.WriteLine($"{strValue} is not correct date format. Try 'YYYY-MM-DD'");
+            Console.WriteLine($"{strValue} is not correct date format. Try 'MM-DD-YYYY'");
         }
         return openingDate;
     }
