@@ -28,43 +28,39 @@ while (true)
 
 void OpenFile()
 {
-    string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-    string fileName = "school.json";
-    string fullFolder = Path.Combine(folder, fileName);
-    string context = File.ReadAllText(fullFolder);
+    string filePath = GetFilePath();
 
-    Console.WriteLine(context);
+    if (File.Exists(filePath))
+    {
+        string context = File.ReadAllText(filePath);
+        Console.WriteLine(context);
+        //School? jsonDString = JsonSerializer.Deserialize<School>(context)!;
+        Context.School = JsonSerializer.Deserialize<School>(context)!;
+        return;
+    }
+    //if(Context.School is null)
+    //{
+    //    School school = Context.School;
+    //    CreateSchool();
+    //}
     Console.WriteLine("-------------------------------");
 }
 
 void CreateSchool()
 {
-    if (Context.School is null)
-    {
-        var name = GetValueFromConsole("Enter school name: ");
-        var address = GetAddress();
-        var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
+    var name = GetValueFromConsole("Enter school name: ");
+    var address = GetAddress();
+    var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
 
-        School school = new(name, address, openingDate);
+    School school = new(name, address, openingDate);
 
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        string jsonString = JsonSerializer.Serialize(school, options);
-        string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string fileName = "school.json";
-        string fullFolder = Path.Combine(folder, fileName);
+    SaveSchool(school);
 
-        File.WriteAllText(fullFolder, jsonString);
+    Context.School = school;
 
-        Console.WriteLine(jsonString);
-
-        Context.School = school;
-
-        Console.WriteLine($"School {school.Name} successfully added");
-        school.Print();
-        Console.WriteLine();
-    }
-    else
-        return;
+    Console.WriteLine($"School {school.Name} successfully added");
+    school.Print();
+    Console.WriteLine();
 }
 
 Address GetAddress()
@@ -115,20 +111,22 @@ void AddFloor()
 {
     var floorNumber = GetIntValueFromConsole("Enter floor`s number");
     Floor floor = new(floorNumber);
-
     Context.School?.AddFloor(floor);
+
+    SaveSchool(Context.School);
+
     Context.School?.Print();
     Console.WriteLine();
 }
 
 void AddRoom()
 {
-    while(true)
+    while (true)
     {
         var floorNumber = GetIntValueFromConsole("Enter floor number");
         var floor = Context.School?.Floors.FirstOrDefault(f => f.Number == floorNumber);
 
-        if(floor is null)
+        if (floor is null)
         {
             Console.WriteLine($"Floor {floorNumber} does not exists. Either add new floor or enter correct floor number");
             continue;
@@ -151,13 +149,23 @@ void AddEmployee()
     var lastName = GetValueFromConsole("Enter employee last name: ");
     var age = GetIntValueFromConsole("Enter employee age: ");
 
+
+
     while (true)
     {
         var type = GetValueFromConsole("If director enter (d), if teacher enter (t): ").ToUpperInvariant();
 
         if (type == "T")
         {
+            //Employee employee = new Employee(firstName, lastName, age)
             Context.School?.AddTeacher(firstName, lastName, age);
+            //var options = new JsonSerializerOptions { WriteIndented = true };
+            //string jsonString = JsonSerializer.Serialize(employee, options);
+            //string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //string fileName = "school.json";
+            //string fullFolder = Path.Combine(folder, fileName);
+
+            //File.WriteAllText(fullFolder, jsonString);
             break;
         }
         else if (type == "D")
@@ -187,4 +195,25 @@ void AddStudent()
 
     Context.School?.Print();
     Console.WriteLine();
+}
+
+string GetFilePath()
+{
+    string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+    string fileName = "school.json";
+    string filePath = Path.Combine(folder, fileName);
+    return filePath;
+}
+
+
+void SaveSchool(School school)
+{
+    string jsonString = JsonSerializer.Serialize(school, new JsonSerializerOptions
+    {
+        WriteIndented = true
+    });
+
+    string filePath = GetFilePath();
+
+    File.WriteAllText(filePath, jsonString);
 }
