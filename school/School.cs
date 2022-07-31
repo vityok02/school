@@ -1,4 +1,6 @@
-﻿namespace SchoolNamespace;
+﻿using System.Text.Json.Serialization;
+
+namespace SchoolNamespace;
 
 public class School
 {
@@ -214,7 +216,7 @@ public class School
         }
 
         Console.WriteLine();
-        Console.WriteLine("==========Students============");
+        Console.WriteLine("==========Students===========");
         foreach (Student student in _students)
         {
             student.Print();

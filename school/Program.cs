@@ -1,9 +1,12 @@
 ﻿using SchoolNamespace;
 using static SchoolNamespaceMgmnt.ConsoleHelper;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 while (true)
 {
+    OpenFile();
+
     ShowMenu(Context.School);
 
     var choice = GetMenuChoice();
@@ -23,6 +26,17 @@ while (true)
     HandleChoice(choice);
 }
 
+void OpenFile()
+{
+    string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+    string fileName = "school.json";
+    string fullFolder = Path.Combine(folder, fileName);
+    string context = File.ReadAllText(fullFolder);
+
+    Console.WriteLine(context);
+    Console.WriteLine("-------------------------------");
+}
+
 void CreateSchool()
 {
     if (Context.School is null)
@@ -33,16 +47,15 @@ void CreateSchool()
 
         School school = new(name, address, openingDate);
 
-        string json = JsonSerializer.Serialize(school);
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string jsonString = JsonSerializer.Serialize(school, options);
         string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string fileName = $"{school.Name}.json";
+        string fileName = "school.json";
         string fullFolder = Path.Combine(folder, fileName);
 
-        File.WriteAllText(fullFolder, json);
+        File.WriteAllText(fullFolder, jsonString);
 
-        School? jsonD = JsonSerializer.Deserialize<School>(json);
-        string context = File.ReadAllText(fullFolder);
-        Console.WriteLine(context);
+        Console.WriteLine(jsonString);
 
         Context.School = school;
 
@@ -64,7 +77,7 @@ Address GetAddress()
     return new(country, city, street, postalCode);
 }
 
-async void HandleChoice(MenuItems? choice)
+void HandleChoice(MenuItems? choice)
 {
     switch (choice)
     {
