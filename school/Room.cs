@@ -1,5 +1,7 @@
 ﻿namespace SchoolNamespace;
 
+using System.Text.Json.Serialization;
+
 public class Room
 {
     public Room(int number, RoomType type, Floor floor)
@@ -15,6 +17,6 @@ public class Room
 
     public void Print()
     {
-        Console.WriteLine($"Room: {Number}, {Type}, Floor: {Floor.Number}");
+        Console.WriteLine($"Room: {Number}, {Type}, Floor {Floor.Number}");
     }
 }

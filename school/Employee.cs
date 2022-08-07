@@ -1,4 +1,5 @@
 ﻿namespace SchoolNamespace;
+using System.Text.Json.Serialization;
 
 public abstract class Employee : Person
 {
@@ -6,7 +7,6 @@ public abstract class Employee : Person
         : base(firstName, lastName, age)
     {
     }
-
     public abstract string Job { get; }
 
     public void Print()

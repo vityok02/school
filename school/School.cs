@@ -1,4 +1,6 @@
 ﻿using System.Text.Json.Serialization;
+using static SchoolNamespace.Floor;
+
 
 namespace SchoolNamespace;
 
@@ -28,9 +30,10 @@ public class School
     private readonly List<Student> _students = new();
     public IEnumerable<Student> Students => _students;
     private readonly List<Floor> _floors = new();
+
     public IEnumerable<Floor> Floors => _floors;
-    public IEnumerable<Room> Rooms 
-    { 
+    public IEnumerable<Room> Rooms
+    {
         get
         {
             List<Room> allRooms = new List<Room>();
@@ -47,6 +50,22 @@ public class School
         Name = name;
         Address = address;
         OpeningDate = openingDate;
+    }
+
+    [JsonConstructor]
+    public School(string name,
+        Address address,
+        string openingDate,
+        IEnumerable<Floor> floors,
+        IEnumerable<Employee> employees,
+        IEnumerable<Student> students)
+    {
+        Name = name;
+        Address = address;
+        OpeningDate = openingDate;
+        _floors = floors.ToList();
+        _employees = employees.ToList();
+        _students = students.ToList();
     }
 
     public void AddFloor(Floor floor)

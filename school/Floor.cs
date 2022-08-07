@@ -1,4 +1,5 @@
 ﻿namespace SchoolNamespace;
+using System.Text.Json.Serialization;
 
 public class Floor
 {
@@ -9,6 +10,7 @@ public class Floor
     {
         Number = number;
     }
+
     public void AddRoom(Room room)
     {
         if (room.Number < 0)
@@ -30,6 +32,14 @@ public class Floor
         _rooms.Add(room);
         room.Floor = this;
     }
+
+    [JsonConstructor]
+    public Floor(int number, IEnumerable<Room> rooms)
+    {
+        Number = number;
+        _rooms = rooms.ToList();
+    }
+
     public void Print()
     {
         Console.WriteLine($"Floor: {Number} Rooms count: {Rooms.Count()}");
