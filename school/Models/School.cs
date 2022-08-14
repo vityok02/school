@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-
+using school;
 namespace school.Models;
 
 public class School

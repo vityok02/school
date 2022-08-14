@@ -5,12 +5,11 @@ using System.Text.Json.Serialization;
 using static school.ConsoleHelper;
 
 Console.ForegroundColor = ConsoleColor.White;
-
 OpenJson();
 
 while (true)
 {
-    ShowMenu(Context.School!);
+    ShowMenu(Context.CurrentSchool!);
 
     var choice = GetMenuChoice();
 
@@ -37,9 +36,9 @@ void CreateSchool()
 
     School school = new(name, address, openingDate);
 
-    SaveSchool(school);
+    SaveSchool();
 
-    Context.School = school;
+    Context.CurrentSchool = school;
 
     Console.WriteLine($"School {school.Name} successfully added");
     school.Print();
@@ -87,18 +86,18 @@ void HandleChoice(MenuItems? choice)
 
 void ShowInfo()
 {
-    Context.School?.Print();
+    Context.CurrentSchool?.Print();
 }
 
 void AddFloor()
 {
     var floorNumber = GetIntValueFromConsole("Enter floor`s number: ");
     Floor floor = new(floorNumber);
-    Context.School?.AddFloor(floor);
+    Context.CurrentSchool?.AddFloor(floor);
 
-    SaveSchool(Context.School!);
+    SaveSchool();
 
-    Context.School?.Print();
+    Context.CurrentSchool?.Print();
     Console.WriteLine();
 }
 
@@ -107,7 +106,7 @@ void AddRoom()
     while (true)
     {
         var floorNumber = GetIntValueFromConsole("Enter floor number: ");
-        var floor = Context.School?.Floors.FirstOrDefault(f => f.Number == floorNumber);
+        var floor = Context.CurrentSchool?.Floors.FirstOrDefault(f => f.Number == floorNumber);
 
         if (floor is null)
         {
@@ -120,11 +119,11 @@ void AddRoom()
 
         floor.AddRoom(new(roomNumber, roomType, floor));
 
-        SaveSchool(Context.School!);
+        SaveSchool();
         break;
     }
 
-    Context.School?.Print();
+    Context.CurrentSchool?.Print();
     Console.WriteLine();
 }
 
@@ -140,15 +139,15 @@ void AddEmployee()
 
         if (type == "T")
         {
-            Context.School?.AddTeacher(firstName, lastName, age);
-            SaveSchool(Context.School!);
+            Context.CurrentSchool?.AddTeacher(firstName, lastName, age);
+            SaveSchool();
             break;
         }
         else if (type == "D")
         {
-            Context.School?.AddDirector(firstName, lastName, age);
+            Context.CurrentSchool?.AddDirector(firstName, lastName, age);
 
-            SaveSchool(Context.School!);
+            SaveSchool();
             break;
         }
         else
@@ -157,7 +156,7 @@ void AddEmployee()
         }
     }
 
-    Context.School?.Print();
+    Context.CurrentSchool?.Print();
     Console.WriteLine();
 }
 
@@ -169,11 +168,11 @@ void AddStudent()
     var group = GetValueFromConsole("Enter student group: ");
 
     Student student = new(firstName, lastName, age, group);
-    Context.School?.AddStudent(student);
+    Context.CurrentSchool?.AddStudent(student);
 
-    SaveSchool(Context.School!);
+    SaveSchool();
 
-    Context.School?.Print();
+    Context.CurrentSchool?.Print();
     Console.WriteLine();
 }
 
@@ -188,9 +187,9 @@ string GetFilePath()
     return Path.Combine(folder, Context.FileName);
 }
 
-void SaveSchool(School school)
+void SaveSchool()
 {
-    string jsonString = JsonSerializer.Serialize(school, new JsonSerializerOptions
+    string jsonString = JsonSerializer.Serialize(Context.Schools, new JsonSerializerOptions
     {
         WriteIndented = true,
         ReferenceHandler = ReferenceHandler.IgnoreCycles
@@ -206,8 +205,8 @@ void OpenJson()
     var filePath = GetFilePath();
     if (File.Exists(filePath))
     {
-        string context = File.ReadAllText(filePath);
-        Context.School = JsonSerializer.Deserialize<School>(context)!;
+        string schools = File.ReadAllText(filePath);
+        Context.Schools = JsonSerializer.Deserialize<IEnumerable<School>>(schools);
 
         Console.Clear();
         Console.WriteLine($"File {Context.FileName} has been opened");
