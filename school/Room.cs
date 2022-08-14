@@ -13,6 +13,7 @@ public class Room
 
     public int Number { get; set; }
     public RoomType Type { get; set; }
+    [JsonIgnore]
     public Floor Floor { get; set; }
 
     public void Print()

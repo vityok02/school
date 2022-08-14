@@ -3,15 +3,13 @@ using static SchoolNamespaceMgmnt.ConsoleHelper;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-//Console.ForegroundColor = ConsoleColor.Green;
+Console.ForegroundColor = ConsoleColor.White;
 
-OpenFile();
+OpenJson();
 
 while (true)
 {
-    ReadFile();
-
-    ShowMenu(Context.School);
+    ShowMenu(Context.School!);
 
     var choice = GetMenuChoice();
 
@@ -44,18 +42,17 @@ void OpenFile()
     Console.WriteLine("-------------------------------");
 }
 
-void ReadFile()
-{
-    string filePath = GetFilePath();
+//void ReadFile()
+//{
 
-    if (File.Exists(filePath))
-    {
-        string context = File.ReadAllText(filePath);
-        Console.WriteLine(context);
-        return;
-    }
-    Console.WriteLine("-------------------------------");
-}
+//    if (File.Exists(filePath))
+//    {
+//        string context = File.ReadAllText(filePath);
+//        Console.WriteLine(context);
+//        return;
+//    }
+//    Console.WriteLine("-------------------------------");
+//}
 
 void CreateSchool()
 {
@@ -124,7 +121,7 @@ void AddFloor()
     Floor floor = new(floorNumber);
     Context.School?.AddFloor(floor);
 
-    SaveSchool(Context.School);
+    SaveSchool(Context.School!);
 
     Context.School?.Print();
     Console.WriteLine();
@@ -148,7 +145,7 @@ void AddRoom()
 
         floor.AddRoom(new(roomNumber, roomType, floor));
 
-        SaveSchool(Context.School);
+        SaveSchool(Context.School!);
         break;
     }
 
@@ -169,14 +166,14 @@ void AddEmployee()
         if (type == "T")
         {
             Context.School?.AddTeacher(firstName, lastName, age);
-            SaveSchool(Context.School);
+            SaveSchool(Context.School!);
             break;
         }
         else if (type == "D")
         {
             Context.School?.AddDirector(firstName, lastName, age);
 
-            SaveSchool(Context.School);
+            SaveSchool(Context.School!);
             break;
         }
         else
@@ -199,7 +196,7 @@ void AddStudent()
     Student student = new(firstName, lastName, age, group);
     Context.School?.AddStudent(student);
 
-    SaveSchool(Context.School);
+    SaveSchool(Context.School!);
 
     Context.School?.Print();
     Console.WriteLine();
@@ -221,7 +218,23 @@ void SaveSchool(School school)
         ReferenceHandler = ReferenceHandler.IgnoreCycles
     });
 
-    string filePath = GetFilePath();
+    var filePath = GetFilePath();
 
     File.WriteAllText(filePath, jsonString);
+}
+
+void OpenJson()
+{
+    string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+    var fileName = $"{GetValueFromConsole("Enter the name of file")}.json";
+    string filePath = Path.Combine(folder, fileName);
+    if (File.Exists(filePath))
+    {
+        string context = File.ReadAllText(filePath);
+        Context.School = JsonSerializer.Deserialize<School>(context)!;
+    }
+    else
+    {
+        File.WriteAllText(filePath, fileName);
+    }
 }
