@@ -1,5 +1,6 @@
-﻿namespace SchoolNamespace;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+
+namespace school.Models;
 
 public class Floor
 {

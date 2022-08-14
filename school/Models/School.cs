@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SchoolNamespace;
+namespace school.Models;
 
 public class School
 {
@@ -78,13 +78,13 @@ public class School
             }
         }
 
-        if(floor.Number < 0)
+        if (floor.Number < 0)
         {
             Console.WriteLine("*Floor`s number should be more than 0*");
             return;
         }
 
-        if(floor.Number > 10)
+        if (floor.Number > 10)
         {
             Console.WriteLine("*Floor`s number shouldn`t be more than 10*");
             return;
@@ -98,8 +98,8 @@ public class School
         for (int i = 0; i < _students.Count; i++)
         {
             Student stud = _students[i];
-            if (stud.FirstName == student.FirstName && 
-                stud.LastName == student.LastName && 
+            if (stud.FirstName == student.FirstName &&
+                stud.LastName == student.LastName &&
                 stud.Age == student.Age)
             {
                 Console.WriteLine("*This student already exists*");

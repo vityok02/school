@@ -1,5 +1,6 @@
-﻿namespace SchoolNamespaceMgmnt;
-using SchoolNamespace;
+﻿using school.Models;
+
+namespace school;
 
 public static class ConsoleHelper
 {
@@ -39,7 +40,7 @@ public static class ConsoleHelper
         string? consoleValue;
         while (true)
         {
-            Console.WriteLine(message);
+            Console.Write(message);
             consoleValue = Console.ReadLine();
 
             if (!string.IsNullOrWhiteSpace(consoleValue))
@@ -91,7 +92,7 @@ public static class ConsoleHelper
             ShowRoomTypes();
             var strValue = GetValueFromConsole(message);
 
-            if (Enum.TryParse<RoomType>(strValue, out roomType))
+            if (Enum.TryParse(strValue, out roomType))
             {
                 return roomType;
             }

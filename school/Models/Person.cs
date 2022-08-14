@@ -1,7 +1,7 @@
-﻿namespace SchoolNamespace;
+﻿namespace school.Models;
 
 public abstract class Person
-{    
+{
     public string FirstName { get; }
     public string LastName { get; }
     public int Age { get; }

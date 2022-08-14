@@ -1,4 +1,4 @@
-﻿namespace SchoolNamespace;
+﻿namespace school;
 
 public enum MenuItems
 {
@@ -8,5 +8,5 @@ public enum MenuItems
     AddEmployee,
     AddStudent,
     ShowInfo,
-    Quit 
+    Quit
 }

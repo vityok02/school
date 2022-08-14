@@ -1,5 +1,4 @@
-﻿namespace SchoolNamespace;
-using System.Text.Json.Serialization;
+﻿namespace school.Models;
 
 public abstract class Employee : Person
 {

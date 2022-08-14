@@ -1,7 +1,8 @@
-﻿using SchoolNamespace;
-using static SchoolNamespaceMgmnt.ConsoleHelper;
+﻿using school;
+using school.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using static school.ConsoleHelper;
 
 Console.ForegroundColor = ConsoleColor.White;
 
@@ -27,32 +28,6 @@ while (true)
 
     HandleChoice(choice);
 }
-
-void OpenFile()
-{
-    string filePath = GetFilePath();
-
-    if (File.Exists(filePath))
-    {
-        string context = File.ReadAllText(filePath);
-        Context.School = JsonSerializer.Deserialize<School>(context)!;
-        return;
-    }
-    else CreateSchool();
-    Console.WriteLine("-------------------------------");
-}
-
-//void ReadFile()
-//{
-
-//    if (File.Exists(filePath))
-//    {
-//        string context = File.ReadAllText(filePath);
-//        Console.WriteLine(context);
-//        return;
-//    }
-//    Console.WriteLine("-------------------------------");
-//}
 
 void CreateSchool()
 {
@@ -117,7 +92,7 @@ void ShowInfo()
 
 void AddFloor()
 {
-    var floorNumber = GetIntValueFromConsole("Enter floor`s number");
+    var floorNumber = GetIntValueFromConsole("Enter floor`s number: ");
     Floor floor = new(floorNumber);
     Context.School?.AddFloor(floor);
 
@@ -131,7 +106,7 @@ void AddRoom()
 {
     while (true)
     {
-        var floorNumber = GetIntValueFromConsole("Enter floor number");
+        var floorNumber = GetIntValueFromConsole("Enter floor number: ");
         var floor = Context.School?.Floors.FirstOrDefault(f => f.Number == floorNumber);
 
         if (floor is null)
@@ -205,9 +180,12 @@ void AddStudent()
 string GetFilePath()
 {
     string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-    string fileName = "school.json";
-    string filePath = Path.Combine(folder, fileName);
-    return filePath;
+    if (Context.FileName is null)
+    {
+        var fileName = $"{GetValueFromConsole("Enter the name of file: ")}.json";
+        Context.FileName = fileName;
+    }
+    return Path.Combine(folder, Context.FileName);
 }
 
 void SaveSchool(School school)
@@ -225,16 +203,23 @@ void SaveSchool(School school)
 
 void OpenJson()
 {
-    string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-    var fileName = $"{GetValueFromConsole("Enter the name of file")}.json";
-    string filePath = Path.Combine(folder, fileName);
+    var filePath = GetFilePath();
     if (File.Exists(filePath))
     {
         string context = File.ReadAllText(filePath);
         Context.School = JsonSerializer.Deserialize<School>(context)!;
+
+        Console.Clear();
+        Console.WriteLine($"File {Context.FileName} has been opened");
+        Console.WriteLine();
     }
     else
     {
-        File.WriteAllText(filePath, fileName);
+        Console.Clear();
+        File.WriteAllText(filePath, Context.FileName);
+        Console.WriteLine($"File {Context.FileName} has been created");
+        Console.WriteLine();
+
+        CreateSchool();
     }
 }
