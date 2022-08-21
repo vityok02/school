@@ -1,15 +1,23 @@
 ﻿using school;
 using school.Models;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using school.Data;
 using static school.ConsoleHelper;
+using static school.TextColors;
 
-Console.ForegroundColor = ConsoleColor.White;
-OpenJson();
+ChangeToWhite();
+
+Console.WriteLine("Welcome to School Management System!");
+Console.WriteLine();
+
+Context Ctx = new();
+
+var filePath = GetFilePath();
+
+SchoolRepository schoolRepository = new(Ctx, filePath);
 
 while (true)
 {
-    ShowMenu(Context.CurrentSchool!);
+    ShowMenu(Ctx);
 
     var choice = GetMenuChoice();
 
@@ -28,21 +36,43 @@ while (true)
     HandleChoice(choice);
 }
 
-void CreateSchool()
+void AddSchool()
 {
     var name = GetValueFromConsole("Enter school name: ");
     var address = GetAddress();
     var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
 
     School school = new(name, address, openingDate);
+    schoolRepository.AddSchool(school);
 
-    SaveSchool();
-
-    Context.CurrentSchool = school;
-
+    ChangeToGreen();
     Console.WriteLine($"School {school.Name} successfully added");
+    ChangeToWhite();
+
     school.Print();
     Console.WriteLine();
+}
+
+void SelectSchool()
+{
+    Console.WriteLine("--------------------");
+    var schools = schoolRepository.GetSchools().ToArray();
+    while (true)
+    {
+        for(int i = 1; i < schools.Length; i++)
+        {
+            Console.WriteLine($"{i}: {schools[i].Name}");
+        }
+        Console.WriteLine("--------------------");
+        var schoolIndex = GetIntValueFromConsole("Choose school: ");
+        
+        if (schoolIndex < schools.Length)
+        {
+            schoolRepository.SetCurrentSchool(schools[schoolIndex]);
+            break;
+        }
+        Console.WriteLine("Please choose correct number from the list above.");
+    }
 }
 
 Address GetAddress()
@@ -60,7 +90,10 @@ void HandleChoice(MenuItems? choice)
     switch (choice)
     {
         case MenuItems.CreateSchool:
-            CreateSchool();
+            AddSchool();
+            break;
+        case MenuItems.SelectSchool:
+            SelectSchool();
             break;
         case MenuItems.AddFloor:
             AddFloor();
@@ -86,18 +119,16 @@ void HandleChoice(MenuItems? choice)
 
 void ShowInfo()
 {
-    Context.CurrentSchool?.Print();
+    Ctx.CurrentSchool?.Print();
 }
 
 void AddFloor()
 {
     var floorNumber = GetIntValueFromConsole("Enter floor`s number: ");
     Floor floor = new(floorNumber);
-    Context.CurrentSchool?.AddFloor(floor);
+    schoolRepository.AddFloorToCurrentSchool(floor);
 
-    SaveSchool();
-
-    Context.CurrentSchool?.Print();
+    Ctx.CurrentSchool?.Print();
     Console.WriteLine();
 }
 
@@ -106,7 +137,7 @@ void AddRoom()
     while (true)
     {
         var floorNumber = GetIntValueFromConsole("Enter floor number: ");
-        var floor = Context.CurrentSchool?.Floors.FirstOrDefault(f => f.Number == floorNumber);
+        var floor = schoolRepository.GetFloor(floorNumber);
 
         if (floor is null)
         {
@@ -117,13 +148,11 @@ void AddRoom()
         var roomNumber = GetIntValueFromConsole("Enter room number: ");
         var roomType = GetRoomTypeFromConsole("Enter room type");
 
-        floor.AddRoom(new(roomNumber, roomType, floor));
-
-        SaveSchool();
+        schoolRepository.AddRoomToCurrentSchool(new(roomNumber, roomType, floor), floor);
         break;
     }
 
-    Context.CurrentSchool?.Print();
+    Ctx.CurrentSchool?.Print();
     Console.WriteLine();
 }
 
@@ -139,15 +168,12 @@ void AddEmployee()
 
         if (type == "T")
         {
-            Context.CurrentSchool?.AddTeacher(firstName, lastName, age);
-            SaveSchool();
+            schoolRepository.AddEmployeeToCurrentSchool(new Teacher(firstName, lastName, age));
             break;
         }
         else if (type == "D")
         {
-            Context.CurrentSchool?.AddDirector(firstName, lastName, age);
-
-            SaveSchool();
+            schoolRepository.AddEmployeeToCurrentSchool(new Director(firstName, lastName, age));
             break;
         }
         else
@@ -156,7 +182,7 @@ void AddEmployee()
         }
     }
 
-    Context.CurrentSchool?.Print();
+    Ctx.CurrentSchool?.Print();
     Console.WriteLine();
 }
 
@@ -168,57 +194,15 @@ void AddStudent()
     var group = GetValueFromConsole("Enter student group: ");
 
     Student student = new(firstName, lastName, age, group);
-    Context.CurrentSchool?.AddStudent(student);
+    schoolRepository.AddStudentToCurrentSchool(student);
 
-    SaveSchool();
-
-    Context.CurrentSchool?.Print();
+    Ctx.CurrentSchool?.Print();
     Console.WriteLine();
 }
 
 string GetFilePath()
 {
     string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-    if (Context.FileName is null)
-    {
-        var fileName = $"{GetValueFromConsole("Enter the name of file: ")}.json";
-        Context.FileName = fileName;
-    }
-    return Path.Combine(folder, Context.FileName);
-}
-
-void SaveSchool()
-{
-    string jsonString = JsonSerializer.Serialize(Context.Schools, new JsonSerializerOptions
-    {
-        WriteIndented = true,
-        ReferenceHandler = ReferenceHandler.IgnoreCycles
-    });
-
-    var filePath = GetFilePath();
-
-    File.WriteAllText(filePath, jsonString);
-}
-
-void OpenJson()
-{
-    var filePath = GetFilePath();
-    if (File.Exists(filePath))
-    {
-        string schools = File.ReadAllText(filePath);
-        Context.Schools = JsonSerializer.Deserialize<IEnumerable<School>>(schools);
-
-        Console.Clear();
-        Console.WriteLine($"File {Context.FileName} has been opened");
-        Console.WriteLine();
-    }
-    else
-    {
-        Console.Clear();
-        File.WriteAllText(filePath, Context.FileName);
-        Console.WriteLine($"File {Context.FileName} has been created");
-        Console.WriteLine();
-
-        CreateSchool();
-    }
+    var fileName = GetValueFromConsole("Enter storage file name: ");
+    return Path.Combine(folder, fileName);
 }

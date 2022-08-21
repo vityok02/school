@@ -1,16 +1,18 @@
-﻿using school.Models;
+﻿using school.Data;
+using school.Models;
 
 namespace school;
 
 public static class ConsoleHelper
 {
-    public static void ShowMenu(School school)
+    public static void ShowMenu(Context ctx)
     {
         Console.WriteLine("Make your choice");
 
         Dictionary<MenuItems, string> menuItems = new()
         {
             { MenuItems.CreateSchool, "Create school" },
+            { MenuItems.SelectSchool, "Select school" },
             { MenuItems.AddFloor, "Add floor" },
             { MenuItems.AddRoom, "Add room" },
             { MenuItems.AddEmployee, "Add employee" },
@@ -21,10 +23,7 @@ public static class ConsoleHelper
 
         foreach (var item in menuItems)
         {
-            if (item.Key != MenuItems.CreateSchool || school is null)
-            {
-                Console.WriteLine($"{(int)item.Key}: {item.Value}");
-            }
+            Console.WriteLine($"{(int)item.Key}: {item.Value}");
         }
     }
 

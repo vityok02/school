@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using school;
+
 namespace school.Models;
 
 public class School
@@ -173,7 +173,7 @@ public class School
         }
     }
 
-    private void AddEmployee(Employee employee)
+    public void AddEmployee(Employee employee)
     {
         if (string.IsNullOrEmpty(employee.FirstName))
         {
