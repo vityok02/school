@@ -7,7 +7,11 @@ public class ConsoleLogger : ILogger
 {
     public void LogInfo(string? message = null)
     {
-        Console.WriteLine(message);
+        ChangeToWhite(message);
+    }
+    public void LogSuccess(string message)
+    {
+        ChangeToGreen(message);
     }
     public void LogError(string message)
     {

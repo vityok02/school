@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace school.Models;
 
@@ -13,6 +13,13 @@ public class Floor
         Number = number;
     }
     private ILogger _logger;
+
+    [JsonConstructor]
+    public Floor(int number, IEnumerable<Room> rooms)
+    {
+        Number = number;
+        _rooms = rooms.ToList();
+    }
 
     public void AddRoom(Room room)
     {
@@ -34,13 +41,6 @@ public class Floor
 
         _rooms.Add(room);
         room.Floor = this;
-    }
-
-    [JsonConstructor]
-    public Floor(int number, IEnumerable<Room> rooms)
-    {
-        Number = number;
-        _rooms = rooms.ToList();
     }
 
     public override string ToString()

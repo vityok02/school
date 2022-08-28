@@ -7,7 +7,6 @@ public class Context
 {
     [JsonIgnore]
     public School? CurrentSchool { get; set; }
-
     private List<School> _schools = new();
     public IEnumerable<School> Schools => _schools;
 
@@ -21,7 +20,7 @@ public class Context
         _schools = schools.ToList();
     }
 
-    public Context() //
+    public Context()
     {
         _schools = new();
     }

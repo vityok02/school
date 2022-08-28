@@ -1,6 +1,6 @@
 ﻿using school;
-using school.Models;
 using school.Data;
+using school.Models;
 using static school.ConsoleHelper;
 using static school.TextColors;
 
@@ -36,61 +36,6 @@ while (true)
     HandleChoice(choice);
 }
 
-void AddSchool()
-{
-    var name = GetValueFromConsole("Enter school name: ");
-    var address = GetAddress();
-    var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
-
-    School school = new(name, address, openingDate, logger) ;
-    schoolRepository.AddSchool(school);
-
-    logger.LogInfo($"School {school.Name} successfully added");
-
-    logger.LogInfo(school.ToString());
-    logger.LogInfo();
-}
-
-void SelectSchool()
-{
-    logger.LogInfo("--------------------");
-    var schools = schoolRepository.GetSchools().ToArray();
-
-    if(schools.Length == 0)
-    {
-        logger.LogInfo("List of schools is empty");
-        logger.LogInfo();
-        return;
-    }
-
-    while (true)
-    {
-        for(int i = 0; i < schools.Length; i++)
-        {
-            logger.LogInfo($"{i}: {schools[i].Name}");
-        }
-        logger.LogInfo("--------------------");
-        var schoolIndex = GetIntValueFromConsole("Choose school: ");
-        
-        if (schoolIndex < schools.Length)
-        {
-            schoolRepository.SetCurrentSchool(schools[schoolIndex]);
-            break;
-        }
-        logger.LogInfo("Please choose correct number from the list above.");
-    }
-}
-
-Address GetAddress()
-{
-    var country = GetValueFromConsole("Enter school country: ");
-    var city = GetValueFromConsole("Enter school city or town: ");
-    var street = GetValueFromConsole("Enter school street: ");
-    var postalCode = GetIntValueFromConsole("Enter school postal code: ");
-
-    return new(country, city, street, postalCode);
-}
-
 void HandleChoice(MenuItems? choice)
 {
     switch (choice)
@@ -117,10 +62,65 @@ void HandleChoice(MenuItems? choice)
             ShowInfo();
             break;
         default:
-            logger.LogInfo("Unknown choice");
+            logger.LogError("Unknown choice");
             break;
-
     }
+}
+
+void AddSchool()
+{
+    var name = GetValueFromConsole("Enter school name: ");
+    var address = GetAddress();
+    var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
+
+    School school = new(name, address, openingDate, logger) ;
+    schoolRepository.AddSchool(school);
+
+    logger.LogSuccess($"School {school.Name} successfully added");
+
+    logger.LogInfo(school.ToString());
+    logger.LogInfo();
+}
+
+void SelectSchool()
+{
+    logger.LogInfo("--------------------");
+    var schools = schoolRepository.GetSchools().ToArray();
+
+    if(schools.Length == 0)
+    {
+        logger.LogInfo("List of schools is empty");
+        logger.LogInfo("--------------------");
+        logger.LogInfo();
+        return;
+    }
+
+    while (true)
+    {
+        for(int i = 0; i < schools.Length; i++)
+        {
+            logger.LogInfo($"{i}: {schools[i].Name}");
+        }
+        logger.LogInfo("--------------------");
+        var schoolIndex = GetIntValueFromConsole("Choose school: ");
+        
+        if (schoolIndex < schools.Length)
+        {
+            schoolRepository.SetCurrentSchool(schools[schoolIndex]);
+            break;
+        }
+        logger.LogError("Please choose correct number from the list above.");
+    }
+}
+
+Address GetAddress()
+{
+    var country = GetValueFromConsole("Enter school country: ");
+    var city = GetValueFromConsole("Enter school city or town: ");
+    var street = GetValueFromConsole("Enter school street: ");
+    var postalCode = GetIntValueFromConsole("Enter school postal code: ");
+
+    return new(country, city, street, postalCode);
 }
 
 void ShowInfo()
@@ -134,6 +134,7 @@ void AddFloor()
     Floor floor = new(floorNumber);
 
     schoolRepository.AddFloorToCurrentSchool(floor);
+    logger.LogSuccess($"{floor.Number} floor successfully added");
 
     logger.LogInfo(Ctx.CurrentSchool?.ToString());
     logger.LogInfo();
@@ -141,10 +142,13 @@ void AddFloor()
 
 void AddRoom()
 {
+    int floorNumber;//
+    Floor floor;//
+
     while (true)
     {
-        var floorNumber = GetIntValueFromConsole("Enter floor number: ");
-        var floor = schoolRepository.GetFloor(floorNumber);
+        floorNumber = GetIntValueFromConsole("Enter floor number: ");
+        floor = schoolRepository.GetFloor(floorNumber)!;
 
         if (floor is null)
         {
@@ -156,6 +160,7 @@ void AddRoom()
         var roomType = GetRoomTypeFromConsole("Enter room type");
 
         schoolRepository.AddRoomToCurrentSchool(new(roomNumber, roomType, floor), floor);
+        logger.LogSuccess($"Room with number {roomNumber} successfully added");
         break;
     }
 
@@ -186,7 +191,6 @@ void AddEmployee()
         else
         {
             logger.LogError("Wrong employee type");
-            ChangeToWhite();
         }
     }
 
@@ -203,6 +207,7 @@ void AddStudent()
 
     Student student = new(firstName, lastName, age, group);
     schoolRepository.AddStudentToCurrentSchool(student);
+    logger.LogSuccess($"Student {lastName} {firstName} successfully added");
 
     logger.LogInfo(Ctx.CurrentSchool?.ToString());
     logger.LogInfo();

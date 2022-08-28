@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using System.Text.Json.Serialization; 
+using Newtonsoft.Json;
 
 namespace school.Models;
 
@@ -150,7 +150,7 @@ public class School
 
     public void AddEmployee(Employee employee)
     {
-        _logger.LogInfo($"Employee {employee.Job} {employee.FirstName} {employee.LastName} with age {employee.Age}");
+        _logger.LogSuccess($"Employee {employee.Job} {employee.FirstName} {employee.LastName} successfully added");
 
         if (employee is Director && Director is not null)
         {
@@ -206,7 +206,7 @@ public class School
         StringBuilder sb = new();
 
         sb.AppendLine();
-        sb.AppendLine($"==========Rooms=============");
+        sb.AppendLine($"==========Rooms=============+");
 
         foreach (Floor floor in _floors)
         {

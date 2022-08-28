@@ -1,14 +1,14 @@
-﻿using System;
-using school.Data;
+﻿using school.Data;
 using school.Models;
 
 namespace school;
 
 public static class ConsoleHelper
 {
+    static ILogger logger = new ConsoleLogger();
     public static void ShowMenu(Context ctx)
     {
-        Console.WriteLine("Make your choice");
+        logger.LogInfo("Make your choice");
 
         Dictionary<MenuItems, string> menuItems = new()
         {
@@ -24,7 +24,7 @@ public static class ConsoleHelper
 
         foreach (var item in menuItems)
         {
-            Console.WriteLine($"{(int)item.Key}: {item.Value}");
+            logger.LogInfo($"{(int)item.Key}: {item.Value}");
         }
     }
 
@@ -40,7 +40,7 @@ public static class ConsoleHelper
         string? consoleValue;
         while (true)
         {
-            Console.Write(message);
+            logger.LogInfo(message);
             consoleValue = Console.ReadLine();
 
             if (!string.IsNullOrWhiteSpace(consoleValue))
@@ -63,7 +63,7 @@ public static class ConsoleHelper
             {
                 break;
             }
-            Console.WriteLine($"{strValue} is not correct date format. Try 'MM-DD-YYYY'");
+            logger.LogInfo($"{strValue} is not correct date format. Try 'MM-DD-YYYY'");
         }
         return openingDate;
     }
@@ -78,7 +78,7 @@ public static class ConsoleHelper
             {
                 break;
             }
-            Console.WriteLine($"{strValue} is not correct number");
+            logger.LogInfo($"{strValue} is not correct number");
         }
         return intValue;
     }
@@ -96,19 +96,17 @@ public static class ConsoleHelper
             {
                 return roomType;
             }
-            Console.WriteLine($"Incorrect room type: {strValue}");
+            logger.LogInfo($"Incorrect room type: {strValue}");
         }
 
         void ShowRoomTypes()
         {
             foreach (var type in RoomTypeExt.RoomTypes)
             {
-                Console.WriteLine($"{type.Key} - {type.Value}");
+                logger.LogInfo($"{type.Key} - {type.Value}");
             }
 
-            Console.WriteLine("Please choose the room type. If there could be more than one type you combine them by adding numbers. For example: 'Regular' and 'Biology' will be 1 + 4 = 5");
+            logger.LogInfo("Please choose the room type. If there could be more than one type you combine them by adding numbers. For example: 'Regular' and 'Biology' will be 1 + 4 = 5");
         }
     }
-
-
 }
