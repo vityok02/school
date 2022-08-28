@@ -16,8 +16,8 @@ public class Room
     [JsonIgnore]
     public Floor Floor { get; set; }
 
-    public void Print()
+    public override string ToString()
     {
-        Console.WriteLine($"Room: {Number}, {Type}");
+        return $"Room: {Number}, {Type}";
     }
 }

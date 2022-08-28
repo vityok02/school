@@ -7,5 +7,5 @@ public class Director : Employee
     {
     }
 
-    public override string Job => "Director";
+    public override string Job => nameof(Director);
 }

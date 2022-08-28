@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization; 
+﻿using System.Text;
+using System.Text.Json.Serialization; 
 
 namespace school.Models;
 
@@ -14,8 +15,7 @@ public class School
         {
             foreach (Employee employee in _employees)
             {
-                Director? director = employee as Director;
-                if (director is not null)
+                if (employee is Director director)
                 {
                     return director;
                 }
@@ -46,11 +46,18 @@ public class School
         }
     }
 
-    public School(string name, Address address, string openingDate)
+    private ILogger _logger;
+    public void SetLogger(ILogger logger)
+    {
+        _logger = logger;
+    }
+
+    public School(string name, Address address, string openingDate, ILogger logger)
     {
         Name = name;
         Address = address;
         OpeningDate = openingDate;
+        SetLogger(logger);
     }
 
     [JsonConstructor]
@@ -75,20 +82,20 @@ public class School
         {
             if (_floors[i].Number == floor.Number)
             {
-                Console.WriteLine($"Floor {floor.Number} already exists");
+                _logger.LogError($"Floor {floor.Number} already exists");
                 return;
             }
         }
 
         if (floor.Number < 0)
         {
-            Console.WriteLine("*Floor`s number should be more than 0*");
+            _logger.LogError("*Floor`s number should be more than 0*");
             return;
         }
 
         if (floor.Number > 10)
         {
-            Console.WriteLine("*Floor`s number shouldn`t be more than 10*");
+            _logger.LogError("*Floor`s number shouldn`t be more than 10*");
             return;
         }
 
@@ -104,104 +111,79 @@ public class School
                 stud.LastName == student.LastName &&
                 stud.Age == student.Age)
             {
-                Console.WriteLine("*This student already exists*");
-                Console.WriteLine("---------------------------------------------");
+                _logger.LogError("*This student already exists*");
+                _logger.LogInfo("---------------------------------------------");
                 return;
             }
         }
 
         if (string.IsNullOrEmpty(student.FirstName))
         {
-            Console.WriteLine("First name is not provided");
-            Console.WriteLine("---------------------------------------------");
+            _logger.LogError("First name is not provided");
+            _logger.LogInfo("---------------------------------------------");
             return;
         }
 
         if (string.IsNullOrEmpty(student.LastName))
         {
-            Console.WriteLine("Last name is not provided");
-            Console.WriteLine("---------------------------------------------");
+            _logger.LogError("Last name is not provided");
+            _logger.LogInfo("---------------------------------------------");
             return;
         }
 
         if (student.Age > 18)
         {
-            Console.WriteLine("Employee shouldn`t be less then 18");
-            Console.WriteLine("---------------------------------------------");
+            _logger.LogError("Employee shouldn`t be less then 18");
+            _logger.LogInfo("---------------------------------------------");
             return;
         }
 
         if (student.Age < 5)
         {
-            Console.WriteLine("Employee should be less then 65");
-            Console.WriteLine("---------------------------------------------");
+            _logger.LogError("Employee should be less then 65");
+            _logger.LogInfo("---------------------------------------------");
             return;
         }
 
         _students.Add(student);
     }
 
-    public void AddDirector(string firstName, string lastName, int age)
-    {
-        Console.WriteLine($"Adding director {firstName} {lastName} with age {age}");
-        try
-        {
-            var director = new Director(firstName, lastName, age);
-            if (director is Director && Director is not null)
-            {
-                Console.WriteLine("*The director already exists*");
-                Console.WriteLine("---------------------------------------------");
-                return;
-            }
-
-            AddEmployee(director);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-    }
-
-    public void AddTeacher(string firstName, string lastName, int age)
-    {
-        Console.WriteLine($"Adding teacher {firstName} {lastName} with age {age}");
-        try
-        {
-            AddEmployee(new Teacher(firstName, lastName, age));
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-    }
-
     public void AddEmployee(Employee employee)
     {
+        _logger.LogInfo($"Employee {employee.Job} {employee.FirstName} {employee.LastName} with age {employee.Age}");
+
+        if (employee is Director && Director is not null)
+        {
+            _logger.LogError("The director already exists*");
+            _logger.LogInfo("---------------------------------------------");
+            return;
+        }
+
         if (string.IsNullOrEmpty(employee.FirstName))
         {
-            Console.WriteLine("First name is not provided");
-            Console.WriteLine("---------------------------------------------");
+            _logger.LogError("First name is not provided");
+            _logger.LogInfo("---------------------------------------------");
             return;
         }
 
         if (string.IsNullOrEmpty(employee.LastName))
         {
-            Console.WriteLine("Last name is not provided");
-            Console.WriteLine("---------------------------------------------");
+            _logger.LogError("Last name is not provided");
+            _logger.LogInfo("---------------------------------------------");
             return;
         }
 
         if (employee.Age < 18)
         {
-            Console.WriteLine("Employee shouldn`t be less then 18");
-            Console.WriteLine("---------------------------------------------");
+            _logger.LogError("Employee shouldn`t be less then 18");
+            _logger.LogInfo("---------------------------------------------");
             return;
         }
 
         if (employee.Age > 65)
         {
-            Console.WriteLine("Employee should be less then 65");
-            Console.WriteLine("---------------------------------------------");
+            _logger.LogError("Employee should be less then 65");
+            _logger.LogInfo("---------------------------------------------");
             return;
         }
 
@@ -210,36 +192,41 @@ public class School
             Employee emp = _employees[i];
             if (emp.FirstName == employee.FirstName && emp.LastName == employee.LastName && emp.Age == employee.Age)
             {
-                Console.WriteLine("*This employee already exists*");
-                Console.WriteLine("---------------------------------------------");
+                _logger.LogError("*This employee already exists*");
+                _logger.LogInfo("---------------------------------------------");
                 return;
             }
         }
         _employees.Add(employee);
-        Console.WriteLine("---------------------------------------------");
+        _logger.LogInfo("---------------------------------------------");
     }
 
-    public void Print()
+    public override string ToString()
     {
-        Console.WriteLine();
-        Console.WriteLine($"==========Rooms=============");
+        StringBuilder sb = new();
+
+        sb.AppendLine();
+        sb.AppendLine($"==========Rooms=============");
+
         foreach (Floor floor in _floors)
         {
-            floor.Print();
+            sb.AppendLine(floor.ToString());
         }
 
-        Console.WriteLine();
-        Console.WriteLine("==========Employees==========");
+        sb.AppendLine();
+        sb.AppendLine("==========Employees==========");
         foreach (Employee employee in _employees)
         {
-            employee.Print();
+            sb.AppendLine(employee.ToString());
         }
 
-        Console.WriteLine();
-        Console.WriteLine("==========Students===========");
+        sb.AppendLine();
+        sb.AppendLine("==========Students===========");
         foreach (Student student in _students)
         {
-            student.Print();
+            sb.AppendLine(student.ToString());
         }
+
+        return sb.ToString();
     }
 }

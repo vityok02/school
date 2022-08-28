@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace school.Models;
 
@@ -11,12 +12,13 @@ public class Floor
     {
         Number = number;
     }
+    private ILogger _logger;
 
     public void AddRoom(Room room)
     {
         if (room.Number < 0)
         {
-            Console.WriteLine("room number must be greater than 0");
+            _logger.LogError("room number must be greater than 0");
             return;
         }
 
@@ -25,7 +27,7 @@ public class Floor
             Room r = _rooms[i];
             if (r.Number == room.Number)
             {
-                Console.WriteLine("This room number already exists");
+                _logger.LogError("This room number already exists");
                 return;
             }
         }
@@ -41,12 +43,16 @@ public class Floor
         _rooms = rooms.ToList();
     }
 
-    public void Print()
+    public override string ToString()
     {
-        Console.WriteLine($"Floor: {Number} Rooms count: {Rooms.Count()}");
-        foreach (Room room in Rooms)
+        StringBuilder sb = new();
+        sb.AppendLine($"Floor: {Number} Rooms count: {Rooms.Count()}");
+
+        foreach (var room in Rooms)
         {
-            room.Print();
+            sb.AppendLine(room.ToString());
         }
+
+        return sb.ToString();
     }
 }

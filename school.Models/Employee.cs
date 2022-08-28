@@ -5,7 +5,7 @@ namespace school.Models;
 
 [JsonConverter(typeof(JsonSubtypes), "Job")]
 [JsonSubtypes.KnownSubType(typeof(Teacher), nameof(Teacher))]
-[JsonSubtypes.KnownSubType(typeof(Director), nameof(Director))]//
+[JsonSubtypes.KnownSubType(typeof(Director), nameof(Director))]
 public abstract class Employee : Person
 {
     protected Employee(string firstName, string lastName, int age)
@@ -14,8 +14,8 @@ public abstract class Employee : Person
     }
     public abstract string Job { get; }
 
-    public void Print()
+    public override string ToString()
     {
-        Console.WriteLine($"{LastName} {FirstName} {Age} {Job}");
+        return $"{LastName} {FirstName} {Age} {Job}";
     }
 }

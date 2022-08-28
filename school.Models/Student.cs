@@ -2,15 +2,17 @@
 
 public class Student : Person
 {
+    private ILogger _logger;
+
     public string Group { get; }
     public Student(string firstName, string lastName, int age, string group)
         : base(firstName, lastName, age)
     {
         Group = group;
     }
-    public void Print()
+    public override string ToString()
     {
-        Console.WriteLine($"{LastName} {FirstName} {Age} group: {Group}");
+        return $"{LastName} {FirstName} {Age} group: {Group}";
     }
 }
 

@@ -4,16 +4,16 @@ using school.Data;
 using static school.ConsoleHelper;
 using static school.TextColors;
 
-ChangeToWhite();
-
-Console.WriteLine("Welcome to School Management System!");
-Console.WriteLine();
-
-Context Ctx = new(); //
+Context Ctx = new();
 
 var filePath = GetFilePath();
 
-SchoolRepository schoolRepository = new(Ctx, filePath); //
+ILogger logger = new ConsoleLogger();
+
+SchoolRepository schoolRepository = new(Ctx, filePath, logger);
+
+logger.LogInfo("Welcome to School Management System!");
+logger.LogInfo();
 
 while (true)
 {
@@ -23,13 +23,13 @@ while (true)
 
     if (!choice.HasValue)
     {
-        Console.WriteLine("Wrong choice");
+        logger.LogError("Wrong choice");
         continue;
     }
 
     if (choice == MenuItems.Quit)
     {
-        Console.WriteLine("Good Bye!");
+        logger.LogInfo("Good Bye!");
         return;
     }
 
@@ -42,26 +42,24 @@ void AddSchool()
     var address = GetAddress();
     var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
 
-    School school = new(name, address, openingDate);
+    School school = new(name, address, openingDate, logger) ;
     schoolRepository.AddSchool(school);
 
-    ChangeToGreen();
-    Console.WriteLine($"School {school.Name} successfully added");
-    ChangeToWhite();
+    logger.LogInfo($"School {school.Name} successfully added");
 
-    school.Print();
-    Console.WriteLine();
+    logger.LogInfo(school.ToString());
+    logger.LogInfo();
 }
 
 void SelectSchool()
 {
-    Console.WriteLine("--------------------");
+    logger.LogInfo("--------------------");
     var schools = schoolRepository.GetSchools().ToArray();
 
     if(schools.Length == 0)
     {
-        Console.WriteLine("List of schools is empty");
-        Console.WriteLine();
+        logger.LogInfo("List of schools is empty");
+        logger.LogInfo();
         return;
     }
 
@@ -69,17 +67,17 @@ void SelectSchool()
     {
         for(int i = 0; i < schools.Length; i++)
         {
-            Console.WriteLine($"{i}: {schools[i].Name}");
+            logger.LogInfo($"{i}: {schools[i].Name}");
         }
-        Console.WriteLine("--------------------");
+        logger.LogInfo("--------------------");
         var schoolIndex = GetIntValueFromConsole("Choose school: ");
         
-        if (schoolIndex < schools.Length)//
+        if (schoolIndex < schools.Length)
         {
             schoolRepository.SetCurrentSchool(schools[schoolIndex]);
             break;
         }
-        Console.WriteLine("Please choose correct number from the list above.");
+        logger.LogInfo("Please choose correct number from the list above.");
     }
 }
 
@@ -119,7 +117,7 @@ void HandleChoice(MenuItems? choice)
             ShowInfo();
             break;
         default:
-            Console.WriteLine("Unknown choice");
+            logger.LogInfo("Unknown choice");
             break;
 
     }
@@ -127,7 +125,7 @@ void HandleChoice(MenuItems? choice)
 
 void ShowInfo()
 {
-    Ctx.CurrentSchool?.Print();
+    logger.LogInfo(Ctx.CurrentSchool?.ToString());
 }
 
 void AddFloor()
@@ -137,8 +135,8 @@ void AddFloor()
 
     schoolRepository.AddFloorToCurrentSchool(floor);
 
-    Ctx.CurrentSchool?.Print();
-    Console.WriteLine();
+    logger.LogInfo(Ctx.CurrentSchool?.ToString());
+    logger.LogInfo();
 }
 
 void AddRoom()
@@ -150,9 +148,7 @@ void AddRoom()
 
         if (floor is null)
         {
-            ChangeToRed();
-            Console.WriteLine($"Floor {floorNumber} does not exists. Either add new floor or enter correct floor number");
-            ChangeToWhite();
+            logger.LogError($"Floor {floorNumber} does not exists. Either add new floor or enter correct floor number");
             continue;
         }
 
@@ -163,8 +159,8 @@ void AddRoom()
         break;
     }
 
-    Ctx.CurrentSchool?.Print();
-    Console.WriteLine();
+    logger.LogInfo(Ctx.CurrentSchool?.ToString());
+    logger.LogInfo();
 }
 
 void AddEmployee()
@@ -189,13 +185,12 @@ void AddEmployee()
         }
         else
         {
-            ChangeToRed();
-            Console.WriteLine("Wrong employee type");
+            logger.LogError("Wrong employee type");
             ChangeToWhite();
         }
     }
 
-    Ctx.CurrentSchool?.Print();
+    logger.LogInfo(Ctx.CurrentSchool?.ToString());
     Console.WriteLine();
 }
 
@@ -209,13 +204,13 @@ void AddStudent()
     Student student = new(firstName, lastName, age, group);
     schoolRepository.AddStudentToCurrentSchool(student);
 
-    Ctx.CurrentSchool?.Print();
-    Console.WriteLine();
+    logger.LogInfo(Ctx.CurrentSchool?.ToString());
+    logger.LogInfo();
 }
 
 string GetFilePath()
 {
     string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-    var fileName = GetValueFromConsole("Enter storage file name: ");
+    var fileName = $"{GetValueFromConsole("Enter storage file name: ")}.json";
     return Path.Combine(folder, fileName);
 }

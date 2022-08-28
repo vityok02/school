@@ -1,6 +1,5 @@
 ﻿using school.Models;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace school.Data;
 
@@ -8,21 +7,22 @@ public class SchoolRepository
 {
     private readonly Context _ctx;
     private readonly string _fileName;
+    private readonly ILogger _logger;
 
-    public SchoolRepository(Context ctx, string fileName)
+    public SchoolRepository(Context ctx, string fileName, ILogger logger)
     {
         _ctx = ctx;
         _fileName = fileName;
-
+        _logger = logger;
         LoadData();
     }
 
-    public void SaveContext()
+    private void SaveContext()
     {
-        var json = JsonSerializer.Serialize(_ctx, new JsonSerializerOptions
+        var json = JsonConvert.SerializeObject(_ctx, new JsonSerializerSettings
         {
-            WriteIndented = true,
-            ReferenceHandler = ReferenceHandler.IgnoreCycles
+            Formatting = Formatting.Indented,
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         });
         File.WriteAllText(_fileName, json);
     }
@@ -40,13 +40,18 @@ public class SchoolRepository
             return;
         }
 
-        var ctx = JsonSerializer.Deserialize<Context>(content);
-        if(ctx is null)
+        var ctx = JsonConvert.DeserializeObject<Context>(content);
+        if (ctx is null)
         {
             return;
         }
 
         _ctx.SetSchools(ctx.Schools);
+
+        foreach (var school in ctx.Schools)
+        {
+            school.SetLogger(_logger);
+        }
     }
 
     public IEnumerable<School> GetSchools()
