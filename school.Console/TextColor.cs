@@ -13,12 +13,6 @@ public static class TextColors
 
     public static void ChangeToRed()
     {
-        Console.ForegroundColor = ConsoleColor.Green;
-    }
-
-    public static void ChangeColor(string color)
-    {
-        if(color == "red")
         Console.ForegroundColor = ConsoleColor.Red;
     }
 }

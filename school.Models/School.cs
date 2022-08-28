@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization; 
 
 namespace school.Models;
 
@@ -24,14 +24,14 @@ public class School
         }
     }
     private readonly List<Employee> _employees = new();
-    [JsonIgnore]
     public IEnumerable<Employee> Employees => _employees;
 
     private readonly List<Student> _students = new();
     public IEnumerable<Student> Students => _students;
-    private readonly List<Floor> _floors = new();
 
+    private readonly List<Floor> _floors = new();
     public IEnumerable<Floor> Floors => _floors;
+
     [JsonIgnore]
     public IEnumerable<Room> Rooms
     {
@@ -58,12 +58,14 @@ public class School
         Address address,
         string openingDate,
         IEnumerable<Floor> floors,
+        IEnumerable<Employee> employees,
         IEnumerable<Student> students)
     {
         Name = name;
         Address = address;
         OpeningDate = openingDate;
         _floors = floors.ToList();
+        _employees = employees.ToList();
         _students = students.ToList();
     }
 

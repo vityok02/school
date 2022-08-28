@@ -9,11 +9,11 @@ ChangeToWhite();
 Console.WriteLine("Welcome to School Management System!");
 Console.WriteLine();
 
-Context Ctx = new();
+Context Ctx = new(); //
 
 var filePath = GetFilePath();
 
-SchoolRepository schoolRepository = new(Ctx, filePath);
+SchoolRepository schoolRepository = new(Ctx, filePath); //
 
 while (true)
 {
@@ -57,16 +57,24 @@ void SelectSchool()
 {
     Console.WriteLine("--------------------");
     var schools = schoolRepository.GetSchools().ToArray();
+
+    if(schools.Length == 0)
+    {
+        Console.WriteLine("List of schools is empty");
+        Console.WriteLine();
+        return;
+    }
+
     while (true)
     {
-        for(int i = 1; i < schools.Length; i++)
+        for(int i = 0; i < schools.Length; i++)
         {
             Console.WriteLine($"{i}: {schools[i].Name}");
         }
         Console.WriteLine("--------------------");
         var schoolIndex = GetIntValueFromConsole("Choose school: ");
         
-        if (schoolIndex < schools.Length)
+        if (schoolIndex < schools.Length)//
         {
             schoolRepository.SetCurrentSchool(schools[schoolIndex]);
             break;
@@ -126,6 +134,7 @@ void AddFloor()
 {
     var floorNumber = GetIntValueFromConsole("Enter floor`s number: ");
     Floor floor = new(floorNumber);
+
     schoolRepository.AddFloorToCurrentSchool(floor);
 
     Ctx.CurrentSchool?.Print();
@@ -141,7 +150,9 @@ void AddRoom()
 
         if (floor is null)
         {
+            ChangeToRed();
             Console.WriteLine($"Floor {floorNumber} does not exists. Either add new floor or enter correct floor number");
+            ChangeToWhite();
             continue;
         }
 
@@ -178,7 +189,9 @@ void AddEmployee()
         }
         else
         {
+            ChangeToRed();
             Console.WriteLine("Wrong employee type");
+            ChangeToWhite();
         }
     }
 
