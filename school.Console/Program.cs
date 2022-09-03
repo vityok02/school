@@ -142,13 +142,10 @@ void AddFloor()
 
 void AddRoom()
 {
-    int floorNumber;//
-    Floor floor;//
-
     while (true)
     {
-        floorNumber = GetIntValueFromConsole("Enter floor number: ");
-        floor = schoolRepository.GetFloor(floorNumber)!;
+        var floorNumber = GetIntValueFromConsole("Enter floor number: ");
+        var floor = schoolRepository.GetFloor(floorNumber)!;
 
         if (floor is null)
         {
