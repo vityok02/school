@@ -100,6 +100,7 @@ public class School
         }
 
         _floors.Add(floor);
+        _logger.LogSuccess($"{floor.Number} floor successfully added");
     }
 
     public void AddStudent(Student student)

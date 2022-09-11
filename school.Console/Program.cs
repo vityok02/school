@@ -4,6 +4,8 @@ using school.Models;
 using static school.ConsoleHelper;
 using static school.TextColors;
 
+var DataBaseFolder = @"(localdb)\MSSQLLocalDB";
+
 Context Ctx = new();
 
 var filePath = GetFilePath();
@@ -69,7 +71,15 @@ void HandleChoice(MenuItems? choice)
 
 void AddSchool()
 {
-    var name = GetValueFromConsole("Enter school name: ");
+    var name = GetValueFromConsole("Enter school name: "); ;
+    while (true)
+    {
+        if (name is not null)
+        {
+            logger.LogError("This school already exists");
+            return;
+        }
+    }
     var address = GetAddress();
     var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
 
@@ -134,7 +144,6 @@ void AddFloor()
     Floor floor = new(floorNumber);
 
     schoolRepository.AddFloorToCurrentSchool(floor);
-    logger.LogSuccess($"{floor.Number} floor successfully added");
 
     logger.LogInfo(Ctx.CurrentSchool?.ToString());
     logger.LogInfo();

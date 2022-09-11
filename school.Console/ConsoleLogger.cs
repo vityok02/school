@@ -7,7 +7,7 @@ public class ConsoleLogger : ILogger
 {
     public void LogInfo(string? message = null)
     {
-        ChangeToWhite(message);
+        ChangeToWhite(message!);
     }
     public void LogSuccess(string message)
     {
