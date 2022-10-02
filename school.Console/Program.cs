@@ -4,8 +4,6 @@ using school.Models;
 using static school.ConsoleHelper;
 using static school.TextColors;
 
-var DataBaseFolder = @"(localdb)\MSSQLLocalDB";
-
 Context Ctx = new();
 
 var filePath = GetFilePath();
@@ -71,15 +69,7 @@ void HandleChoice(MenuItems? choice)
 
 void AddSchool()
 {
-    var name = GetValueFromConsole("Enter school name: "); ;
-    while (true)
-    {
-        if (name is not null)
-        {
-            logger.LogError("This school already exists");
-            return;
-        }
-    }
+    var name = GetValueFromConsole("Enter school name: ");
     var address = GetAddress();
     var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
 
