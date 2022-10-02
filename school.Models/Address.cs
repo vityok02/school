@@ -1,6 +1,6 @@
 ﻿namespace school.Models;
 
-public class Address
+public class Address : BaseEntity
 {
     public string Country { get; set; }
     public string City { get; set; }

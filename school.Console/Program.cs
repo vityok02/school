@@ -9,11 +9,12 @@ AppDbContext dbContext = new(dataSource);
 
 Context Ctx = new();
 
-var filePath = GetFilePath();
-
 ILogger logger = new ConsoleLogger();
 
-SchoolRepository schoolRepository = new(Ctx, filePath, logger);
+Repository<School> schoolRepository = new(dbContext);
+
+
+//SchoolRepository schoolRepository = new(Ctx, filePath, logger);
 
 logger.LogInfo("Welcome to School Management System!");
 logger.LogInfo();
@@ -77,7 +78,7 @@ void AddSchool()
     var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
 
     School school = new(name, address, openingDate, logger) ;
-    schoolRepository.AddSchool(school);
+    schoolRepository.Add(school);
 
     logger.LogSuccess($"School {school.Name} successfully added");
 
@@ -133,10 +134,11 @@ void ShowInfo()
 
 void AddFloor()
 {
+    Repository<Floor> floorRepository = new(dbContext);
     var floorNumber = GetIntValueFromConsole("Enter floor`s number: ");
     Floor floor = new(floorNumber);
 
-    schoolRepository.AddFloorToCurrentSchool(floor);
+    floorRepository.Add(floor);
 
     logger.LogInfo(Ctx.CurrentSchool?.ToString());
     logger.LogInfo();
@@ -158,7 +160,9 @@ void AddRoom()
         var roomNumber = GetIntValueFromConsole("Enter room number: ");
         var roomType = GetRoomTypeFromConsole("Enter room type");
 
-        schoolRepository.AddRoomToCurrentSchool(new(roomNumber, roomType, floor), floor);
+        Repository<Room> roomRepository = new(dbContext);
+
+        roomRepository.Add(new(1, roomNumber, roomType, floor));
         logger.LogSuccess($"Room with number {roomNumber} successfully added");
         break;
     }
@@ -177,24 +181,24 @@ void AddEmployee()
     {
         var type = GetValueFromConsole("If director enter (d), if teacher enter (t): ").ToUpperInvariant();
 
-        if (type == "T")
-        {
-            schoolRepository.AddEmployeeToCurrentSchool(new Teacher(firstName, lastName, age));
-            break;
-        }
-        else if (type == "D")
-        {
-            schoolRepository.AddEmployeeToCurrentSchool(new Director(firstName, lastName, age));
-            break;
-        }
-        else
-        {
-            logger.LogError("Wrong employee type");
-        }
+        //if (type == "T")
+        //{
+        //    schoolRepository.AddEmployeeToCurrentSchool(new Teacher(firstName, lastName, age));
+        //    break;
+        //}
+        //else if (type == "D")
+        //{
+        //    schoolRepository.AddEmployeeToCurrentSchool(new Director(firstName, lastName, age));
+        //    break;
+        //}
+        //else
+        //{
+        //    logger.LogError("Wrong employee type");
+        //}
     }
 
     logger.LogInfo(Ctx.CurrentSchool?.ToString());
-    Console.WriteLine();
+    logger.LogInfo();
 }
 
 void AddStudent()
@@ -204,17 +208,12 @@ void AddStudent()
     var age = GetIntValueFromConsole("Enter student age: ");
     var group = GetValueFromConsole("Enter student group: ");
 
+    Repository<Student> studentRepository = new(dbContext);
+
     Student student = new(firstName, lastName, age, group);
-    schoolRepository.AddStudentToCurrentSchool(student);
+    studentRepository.Add(student);
     logger.LogSuccess($"Student {lastName} {firstName} successfully added");
 
     logger.LogInfo(Ctx.CurrentSchool?.ToString());
     logger.LogInfo();
-}
-
-string GetFilePath()
-{
-    string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-    var fileName = $"{GetValueFromConsole("Enter storage file name: ")}.json";
-    return Path.Combine(folder, fileName);
 }

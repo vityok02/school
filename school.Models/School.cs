@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace school.Models;
 
-public class School
+public class School : BaseEntity
 {
     public string Name { get; set; }
     public Address Address { get; set; }

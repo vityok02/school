@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace school.Models;
 
-public class Floor
+public class Floor : BaseEntity
 {
     public int Number { get; set; }
     private readonly List<Room> _rooms = new();
