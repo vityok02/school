@@ -2,7 +2,10 @@
 using school.Data;
 using school.Models;
 using static school.ConsoleHelper;
-using static school.TextColors;
+
+string dataSource = "Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=SchoolDb";
+
+AppDbContext dbContext = new(dataSource);
 
 Context Ctx = new();
 
