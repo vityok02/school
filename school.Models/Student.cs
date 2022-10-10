@@ -5,6 +5,10 @@ public class Student : Person
     private ILogger _logger;
 
     public string Group { get; }
+    public Student() 
+    {
+
+    }
     public Student(string firstName, string lastName, int age, string group)
         : base(firstName, lastName, age)
     {

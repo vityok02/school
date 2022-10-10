@@ -4,6 +4,11 @@ namespace school.Models;
 
 public class Room : BaseEntity
 {
+    public Room()
+    {
+
+    }
+
     public Room(int id, int number, RoomType type, Floor floor)
     {
         Id = id;
@@ -14,7 +19,7 @@ public class Room : BaseEntity
 
     public int Number { get; set; }
     public RoomType Type { get; set; }
-    [JsonIgnore]
+    //[JsonIgnore]
     public Floor Floor { get; set; }
 
     public override string ToString()

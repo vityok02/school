@@ -7,6 +7,10 @@ public class Address : BaseEntity
     public string Street { get; set; }
     public int PostalCode { get; set; }
 
+    public Address()
+    {
+        
+    }
     public Address(string country, string city, string street, int postalCode)
     {
         Country = country;

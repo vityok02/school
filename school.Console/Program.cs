@@ -77,7 +77,7 @@ void AddSchool()
     var address = GetAddress();
     var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
 
-    School school = new(name, address, openingDate, logger) ;
+    School school = new(name, address, DateTime.Parse(openingDate), logger) ;
     schoolRepository.Add(school);
 
     logger.LogSuccess($"School {school.Name} successfully added");
@@ -137,6 +137,7 @@ void AddFloor()
     Repository<Floor> floorRepository = new(dbContext);
     var floorNumber = GetIntValueFromConsole("Enter floor`s number: ");
     Floor floor = new(floorNumber);
+    floor.School = dbContext.CurrentSchool; //
 
     floorRepository.Add(floor);
 

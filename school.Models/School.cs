@@ -7,7 +7,7 @@ public class School : BaseEntity
 {
     public string Name { get; set; }
     public Address Address { get; set; }
-    public string OpeningDate { get; set; }
+    public DateTime OpeningDate { get; set; }
     [JsonIgnore]
     public Employee? Director
     {
@@ -29,8 +29,10 @@ public class School : BaseEntity
     private readonly List<Student> _students = new();
     public IEnumerable<Student> Students => _students;
 
-    private readonly List<Floor> _floors = new();
-    public IEnumerable<Floor> Floors => _floors;
+    //private readonly List<Floor> _floors = new();
+    //public IEnumerable<Floor> Floors => _floors;
+
+    public ICollection<Floor> Floors { get; set; }
 
     [JsonIgnore]
     public IEnumerable<Room> Rooms
@@ -52,7 +54,12 @@ public class School : BaseEntity
         _logger = logger;
     }
 
-    public School(string name, Address address, string openingDate, ILogger logger)
+    public School()
+    {
+        Floors = new HashSet<Floor>();
+    }
+
+    public School(string name, Address address, DateTime openingDate, ILogger logger)
     {
         Name = name;
         Address = address;
@@ -60,27 +67,11 @@ public class School : BaseEntity
         SetLogger(logger);
     }
 
-    [JsonConstructor]
-    public School(string name,
-        Address address,
-        string openingDate,
-        IEnumerable<Floor> floors,
-        IEnumerable<Employee> employees,
-        IEnumerable<Student> students)
-    {
-        Name = name;
-        Address = address;
-        OpeningDate = openingDate;
-        _floors = floors.ToList();
-        _employees = employees.ToList();
-        _students = students.ToList();
-    }
-
     public void AddFloor(Floor floor)
     {
-        for (int i = 0; i < _floors.Count; i++)
+        foreach(Floor f in Floors)
         {
-            if (_floors[i].Number == floor.Number)
+            if (f.Number == floor.Number)
             {
                 _logger.LogError($"Floor {floor.Number} already exists");
                 return;
@@ -99,7 +90,7 @@ public class School : BaseEntity
             return;
         }
 
-        _floors.Add(floor);
+        Floors.Add(floor);
         _logger.LogSuccess($"{floor.Number} floor successfully added");
     }
 
@@ -209,7 +200,7 @@ public class School : BaseEntity
         sb.AppendLine();
         sb.AppendLine($"==========Rooms=============+");
 
-        foreach (Floor floor in _floors)
+        foreach (Floor floor in Floors)
         {
             sb.AppendLine(floor.ToString());
         }

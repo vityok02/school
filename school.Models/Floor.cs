@@ -8,6 +8,11 @@ public class Floor : BaseEntity
     public int Number { get; set; }
     private readonly List<Room> _rooms = new();
     public IEnumerable<Room> Rooms => _rooms;
+    public School School { get; set; }
+    public Floor()
+    {
+
+    }
     public Floor(int number)
     {
         Number = number;
