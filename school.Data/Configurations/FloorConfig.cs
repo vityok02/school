@@ -2,23 +2,22 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using school.Models;
 
-namespace school.Data
+namespace school.Data;
+public class FloorConfig : IEntityTypeConfiguration<Floor>
 {
-    public class FloorConfig : IEntityTypeConfiguration<Floor>
+    public void Configure(EntityTypeBuilder<Floor> builder)
     {
-        public void Configure(EntityTypeBuilder<Floor> builder)
-        {
-            builder.ToTable("Floors");
-            builder.HasKey(t => t.Id);
+        builder.ToTable("Floors");
+        builder.HasKey(t => t.Id);
 
-            builder.Property(t => t.Id)
-                .ValueGeneratedOnAdd();
+        builder.HasIndex(t => new { t.Number, t.SchoolId })
+            .IsUnique();
 
-            builder.HasOne(t => t.School)
-                .WithMany(t => t.Floors);
+        builder.Property(t => t.Id)
+            .ValueGeneratedOnAdd();
 
-            builder.HasMany(t => t.Rooms)
-                .WithOne(t => t.Floor);
-        }
+        builder.HasOne(t => t.School)
+            .WithMany(t => t.Floors)
+            .HasForeignKey(t => t.SchoolId);
     }
 }

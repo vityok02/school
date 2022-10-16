@@ -9,9 +9,8 @@ public class Room : BaseEntity
 
     }
 
-    public Room(int id, int number, RoomType type, Floor floor)
+    public Room(int number, RoomType type, Floor floor)
     {
-        Id = id;
         Number = number;
         Type = type;
         Floor = floor;

@@ -9,6 +9,7 @@ public class Floor : BaseEntity
     private readonly List<Room> _rooms = new();
     public IEnumerable<Room> Rooms => _rooms;
     public School School { get; set; }
+    public int SchoolId { get; set; }
     public Floor()
     {
 

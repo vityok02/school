@@ -12,11 +12,7 @@ public class Repository<TEntity> where TEntity : BaseEntity
         _dbContext = dbContext;
         GetAll();
     }
-    public void AddSchool(School school)
-    {
-        _dbContext.Set<School>().Add(school);
-        SetCurrentSchool(school);
-    }
+
     public void Add(TEntity entity)
     {
         _dbContext.Set<TEntity>().Add(entity);
@@ -38,25 +34,20 @@ public class Repository<TEntity> where TEntity : BaseEntity
     {
         return _dbContext.Set<TEntity>().Where(predicate).ToArray();
     }
-    public School? GetCurrentSchool(School school)
+
+
+    public void SaveChanges()
     {
-        return _dbContext.CurrentSchool;
-    }
-    public void SetCurrentSchool(School? school)
-    {
-        _dbContext.CurrentSchool = school;
-    }
-    public IEnumerable<School> GetSchools()
-    {
-        return _dbContext.Schools;
-    }
-    public School? GetSchool(string name)
-    {
-        return _dbContext.Schools.Where(s => s.Name == name).SingleOrDefault();
+        _dbContext.SaveChanges();
     }
 
-    public Floor? GetFloor(int floorNumber)
-    {
-        return _dbContext.CurrentSchool?.Floors.Where(f => f.Number == floorNumber).FirstOrDefault();
-    }
+    //public void LoadData(TEntity entity)
+    //{
+    //    _dbContext.Set<TEntity>
+    //}
+
+    //public Floor? GetFloor(int floorNumber)
+    //{
+    //    return _dbContext.CurrentSchool?.Floors.Where(f => f.Number == floorNumber).FirstOrDefault();
+    //}
 }

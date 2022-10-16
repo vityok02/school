@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using school.Models;
 
+namespace school.Data;
 public class SchoolConfig : IEntityTypeConfiguration<School>
 {
     public void Configure(EntityTypeBuilder<School> builder)

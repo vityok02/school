@@ -6,7 +6,7 @@ namespace school;
 public static class ConsoleHelper
 {
     static ILogger logger = new ConsoleLogger();
-    public static void ShowMenu(Context ctx)
+    public static void ShowMenu(AppDbContext dbContext)
     {
         logger.LogInfo("Make your choice");
 

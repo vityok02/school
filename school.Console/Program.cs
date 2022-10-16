@@ -1,4 +1,6 @@
-﻿using school;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using school;
 using school.Data;
 using school.Models;
 using static school.ConsoleHelper;
@@ -21,7 +23,7 @@ logger.LogInfo();
 
 while (true)
 {
-    ShowMenu(Ctx);
+    ShowMenu(dbContext);
 
     var choice = GetMenuChoice();
 
@@ -77,8 +79,9 @@ void AddSchool()
     var address = GetAddress();
     var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
 
-    School school = new(name, address, DateTime.Parse(openingDate), logger) ;
+    School school = new(name, address, DateTime.Parse(openingDate), logger);
     schoolRepository.Add(school);
+    dbContext.CurrentSchool = school;
 
     logger.LogSuccess($"School {school.Name} successfully added");
 
@@ -89,9 +92,12 @@ void AddSchool()
 void SelectSchool()
 {
     logger.LogInfo("--------------------");
-    var schools = schoolRepository.GetSchools().ToArray();
 
-    if(schools.Length == 0)
+    var schoolRepository = new Repository<School>(dbContext);
+
+    var schools = schoolRepository.GetAll();
+
+    if (schools.Count() == 0)
     {
         logger.LogInfo("List of schools is empty");
         logger.LogInfo("--------------------");
@@ -101,16 +107,17 @@ void SelectSchool()
 
     while (true)
     {
-        for(int i = 0; i < schools.Length; i++)
+        foreach (School school in schools)
         {
-            logger.LogInfo($"{i}: {schools[i].Name}");
+            logger.LogInfo($"{school.Id}: {school.Name}");
         }
         logger.LogInfo("--------------------");
-        var schoolIndex = GetIntValueFromConsole("Choose school: ");
-        
-        if (schoolIndex < schools.Length)
+        var schoolId = GetIntValueFromConsole("Choose school: ");
+
+        if (schoolId < schools.Count())
         {
-            schoolRepository.SetCurrentSchool(schools[schoolIndex]);
+            //schoolRepository.SetCurrentSchool(schoolId);
+            dbContext.CurrentSchool = schools.Where(s => s.Id == schoolId).SingleOrDefault();
             break;
         }
         logger.LogError("Please choose correct number from the list above.");
@@ -134,12 +141,32 @@ void ShowInfo()
 
 void AddFloor()
 {
-    Repository<Floor> floorRepository = new(dbContext);
+    //Repository<Floor> floorRepository = new(dbContext);
+    //Repository<School> repository = new(dbContext);
+    //var currentSchool = repository.GetAll(s => s.Id == dbContext.CurrentSchool.Id).SingleOrDefault();
+
+    var currentSchool = dbContext.Schools
+        .Where(s => s.Id == dbContext.CurrentSchool.Id)
+        .Include(s => s.Floors)
+        .SingleOrDefault();
+
     var floorNumber = GetIntValueFromConsole("Enter floor`s number: ");
     Floor floor = new(floorNumber);
-    floor.School = dbContext.CurrentSchool; //
 
-    floorRepository.Add(floor);
+    foreach (Floor f in currentSchool.Floors)
+    {
+        if (f.Number == floor.Number)
+        {
+            logger.LogError($"Floor {floor.Number} already exists");
+            return;
+        }
+    }
+
+    currentSchool.Floors.Add(floor);
+
+    //floor.School = dbContext.CurrentSchool; //
+
+    dbContext.SaveChanges();
 
     logger.LogInfo(Ctx.CurrentSchool?.ToString());
     logger.LogInfo();
@@ -150,7 +177,12 @@ void AddRoom()
     while (true)
     {
         var floorNumber = GetIntValueFromConsole("Enter floor number: ");
-        var floor = schoolRepository.GetFloor(floorNumber)!;
+        //var floor = schoolRepository.GetFloor(floorNumber)!;
+        //var floor = dbContext.CurrentSchool?.Floors.Where(f => f.Number == floorNumber).FirstOrDefault();
+
+        Repository<Floor> floorRepository = new(dbContext);
+        var floor = floorRepository.GetAll(f => f.SchoolId == dbContext.CurrentSchool.Id && f.Number == floorNumber)
+            .SingleOrDefault();
 
         if (floor is null)
         {
@@ -163,7 +195,7 @@ void AddRoom()
 
         Repository<Room> roomRepository = new(dbContext);
 
-        roomRepository.Add(new(1, roomNumber, roomType, floor));
+        roomRepository.Add(new(roomNumber, roomType, floor));
         logger.LogSuccess($"Room with number {roomNumber} successfully added");
         break;
     }
@@ -209,10 +241,15 @@ void AddStudent()
     var age = GetIntValueFromConsole("Enter student age: ");
     var group = GetValueFromConsole("Enter student group: ");
 
-    Repository<Student> studentRepository = new(dbContext);
+    var currentSchool = dbContext.Schools
+            .Where(s => s.Id == dbContext.CurrentSchool.Id)
+            .SingleOrDefault();
 
     Student student = new(firstName, lastName, age, group);
-    studentRepository.Add(student);
+    currentSchool.Students.Add(student);
+
+    dbContext.SaveChanges();
+
     logger.LogSuccess($"Student {lastName} {firstName} successfully added");
 
     logger.LogInfo(Ctx.CurrentSchool?.ToString());

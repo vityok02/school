@@ -26,15 +26,13 @@ public class School : BaseEntity
     private readonly List<Employee> _employees = new();
     public IEnumerable<Employee> Employees => _employees;
 
-    private readonly List<Student> _students = new();
-    public IEnumerable<Student> Students => _students;
+    public ICollection<Student> Students { get; set; } = new HashSet<Student>();
 
     //private readonly List<Floor> _floors = new();
     //public IEnumerable<Floor> Floors => _floors;
 
-    public ICollection<Floor> Floors { get; set; }
+    public ICollection<Floor> Floors { get; set; } = new HashSet<Floor>();
 
-    [JsonIgnore]
     public IEnumerable<Room> Rooms
     {
         get
@@ -56,7 +54,6 @@ public class School : BaseEntity
 
     public School()
     {
-        Floors = new HashSet<Floor>();
     }
 
     public School(string name, Address address, DateTime openingDate, ILogger logger)
@@ -96,9 +93,9 @@ public class School : BaseEntity
 
     public void AddStudent(Student student)
     {
-        for (int i = 0; i < _students.Count; i++)
+        foreach (Student s in Students)
         {
-            Student stud = _students[i];
+            Student stud = s;
             if (stud.FirstName == student.FirstName &&
                 stud.LastName == student.LastName &&
                 stud.Age == student.Age)
@@ -137,7 +134,7 @@ public class School : BaseEntity
             return;
         }
 
-        _students.Add(student);
+        Students.Add(student);
     }
 
     public void AddEmployee(Employee employee)
@@ -214,7 +211,7 @@ public class School : BaseEntity
 
         sb.AppendLine();
         sb.AppendLine("==========Students===========");
-        foreach (Student student in _students)
+        foreach (Student student in Students)
         {
             sb.AppendLine(student.ToString());
         }

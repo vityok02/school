@@ -14,6 +14,7 @@ public class Student : Person
     {
         Group = group;
     }
+    public School School { get; set; }
     public override string ToString()
     {
         return $"{LastName} {FirstName} {Age} group: {Group}";
