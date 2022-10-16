@@ -213,17 +213,20 @@ void AddEmployee()
     while (true)
     {
         var type = GetValueFromConsole("If director enter (d), if teacher enter (t): ").ToUpperInvariant();
-
-        //if (type == "T")
-        //{
-        //    schoolRepository.AddEmployeeToCurrentSchool(new Teacher(firstName, lastName, age));
-        //    break;
-        //}
-        //else if (type == "D")
-        //{
-        //    schoolRepository.AddEmployeeToCurrentSchool(new Director(firstName, lastName, age));
-        //    break;
-        //}
+        var currentSchool = dbContext.Schools
+            .Where(s => s.Id == dbContext.CurrentSchool.Id)
+            .SingleOrDefault();
+        if (type == "T")
+        {
+            currentSchool.Employees.Add(new Teacher(firstName, lastName, age));
+            break;
+        }
+        if (type == "D")
+        {
+            currentSchool.Director.Add(new Director(firstName, lastName, age));
+            dbContext.SaveChanges();
+            break;
+        }
         //else
         //{
         //    logger.LogError("Wrong employee type");

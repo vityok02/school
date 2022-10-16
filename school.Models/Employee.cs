@@ -1,5 +1,6 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
+using System.Reflection.PortableExecutable;
 
 namespace school.Models;
 
@@ -12,6 +13,11 @@ public abstract class Employee : Person
         : base(firstName, lastName, age)
     {
     }
+    protected Employee()
+    {
+
+    }
+    public School School { get; set; }
     public abstract string Job { get; }
 
     public override string ToString()

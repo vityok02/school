@@ -13,7 +13,7 @@ public class School : BaseEntity
     {
         get
         {
-            foreach (Employee employee in _employees)
+            foreach (Employee employee in Employees)
             {
                 if (employee is Director director)
                 {
@@ -23,8 +23,7 @@ public class School : BaseEntity
             return null;
         }
     }
-    private readonly List<Employee> _employees = new();
-    public IEnumerable<Employee> Employees => _employees;
+    public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
 
     public ICollection<Student> Students { get; set; } = new HashSet<Student>();
 
@@ -176,9 +175,8 @@ public class School : BaseEntity
             return;
         }
 
-        for (int i = 0; i < _employees.Count; i++)
+        foreach (Employee emp in Employees)
         {
-            Employee emp = _employees[i];
             if (emp.FirstName == employee.FirstName && emp.LastName == employee.LastName && emp.Age == employee.Age)
             {
                 _logger.LogError("*This employee already exists*");
@@ -186,7 +184,7 @@ public class School : BaseEntity
                 return;
             }
         }
-        _employees.Add(employee);
+        Employees.Add(employee);
         _logger.LogInfo("---------------------------------------------");
     }
 
@@ -204,7 +202,7 @@ public class School : BaseEntity
 
         sb.AppendLine();
         sb.AppendLine("==========Employees==========");
-        foreach (Employee employee in _employees)
+        foreach (Employee employee in Employees)
         {
             sb.AppendLine(employee.ToString());
         }

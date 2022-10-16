@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using school.Data.Configurations;
 using school.Models;
 namespace school.Data;
 
@@ -9,7 +10,8 @@ public class AppDbContext : DbContext
     public DbSet<School> Schools { get; set; }
     public DbSet<Floor> Floors { get; set; }
     public DbSet<Room> Rooms { get; set; }
-    public DbSet<Teacher> Teachers { get; set; }
+    //public DbSet<Teacher> Teachers { get; set; }
+    public DbSet<Employee> Employees { get; set; }
     public DbSet<Director> Directors { get; set; }
     public DbSet<Student> Students { get; set; }
 
@@ -31,5 +33,6 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new RoomConfig());
         modelBuilder.ApplyConfiguration(new StudentConfig());
         modelBuilder.ApplyConfiguration(new EmployeeConfig());
+        modelBuilder.ApplyConfiguration(new DirectorConfig());
     }
 }
