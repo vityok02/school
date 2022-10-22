@@ -219,11 +219,12 @@ void AddEmployee()
         if (type == "T")
         {
             currentSchool.Employees.Add(new Teacher(firstName, lastName, age));
+            dbContext.SaveChanges();
             break;
         }
         if (type == "D")
         {
-            currentSchool.Director.Add(new Director(firstName, lastName, age));
+            currentSchool.Employees.Add(new Director(firstName, lastName, age));
             dbContext.SaveChanges();
             break;
         }

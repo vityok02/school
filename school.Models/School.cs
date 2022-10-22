@@ -8,7 +8,6 @@ public class School : BaseEntity
     public string Name { get; set; }
     public Address Address { get; set; }
     public DateTime OpeningDate { get; set; }
-    [JsonIgnore]
     public Employee? Director
     {
         get
@@ -23,6 +22,7 @@ public class School : BaseEntity
             return null;
         }
     }
+    //public ICollection<Director> Directors { get; set; } = new HashSet<Director>();
     public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
 
     public ICollection<Student> Students { get; set; } = new HashSet<Student>();

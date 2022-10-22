@@ -23,8 +23,8 @@ public class SchoolConfig : IEntityTypeConfiguration<School>
         builder.HasOne(t => t.Address)
             .WithMany();
 
-        builder.Ignore(t => t.Director);
-        builder.Ignore(t => t.Employees);
+        //builder.Ignore(t => t.Directors);
+        //builder.Ignore(t => t.Employees);
 
         //builder.HasOne(t => t.Director)
         //    .WithOne();
