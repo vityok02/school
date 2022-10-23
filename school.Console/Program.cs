@@ -15,9 +15,6 @@ ILogger logger = new ConsoleLogger();
 
 Repository<School> schoolRepository = new(dbContext);
 
-
-//SchoolRepository schoolRepository = new(Ctx, filePath, logger);
-
 logger.LogInfo("Welcome to School Management System!");
 logger.LogInfo();
 
@@ -153,7 +150,7 @@ void AddFloor()
     var floorNumber = GetIntValueFromConsole("Enter floor`s number: ");
     Floor floor = new(floorNumber);
 
-    foreach (Floor f in currentSchool.Floors)
+    foreach (Floor f in currentSchool!.Floors)
     {
         if (f.Number == floor.Number)
         {
@@ -206,6 +203,10 @@ void AddRoom()
 
 void AddEmployee()
 {
+    var currentSchool = dbContext.Schools
+    .Where(s => s.Id == dbContext.CurrentSchool.Id)
+    .SingleOrDefault();
+
     var firstName = GetValueFromConsole("Enter employee first name: ");
     var lastName = GetValueFromConsole("Enter employee last name: ");
     var age = GetIntValueFromConsole("Enter employee age: ");
@@ -213,18 +214,16 @@ void AddEmployee()
     while (true)
     {
         var type = GetValueFromConsole("If director enter (d), if teacher enter (t): ").ToUpperInvariant();
-        var currentSchool = dbContext.Schools
-            .Where(s => s.Id == dbContext.CurrentSchool.Id)
-            .SingleOrDefault();
         if (type == "T")
         {
-            currentSchool.Employees.Add(new Teacher(firstName, lastName, age));
+            currentSchool!.Employees.Add(new Teacher(firstName, lastName, age));
+
             dbContext.SaveChanges();
             break;
         }
         if (type == "D")
         {
-            currentSchool.Employees.Add(new Director(firstName, lastName, age));
+            currentSchool!.Employees.Add(new Director(firstName, lastName, age));
             dbContext.SaveChanges();
             break;
         }
@@ -250,7 +249,7 @@ void AddStudent()
             .SingleOrDefault();
 
     Student student = new(firstName, lastName, age, group);
-    currentSchool.Students.Add(student);
+    currentSchool!.Students.Add(student);
 
     dbContext.SaveChanges();
 

@@ -2,8 +2,6 @@
 
 public class Student : Person
 {
-    private ILogger _logger;
-
     public string Group { get; }
     public Student() 
     {
