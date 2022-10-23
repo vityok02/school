@@ -17,7 +17,6 @@ public static class ConsoleHelper
             { MenuItems.AddRoom, "Add room" },
             { MenuItems.AddEmployee, "Add employee" },
             { MenuItems.AddStudent, "Add student" },
-            { MenuItems.ShowInfo, "Show all information" },
             { MenuItems.Quit, "Quit" }
         };
 
