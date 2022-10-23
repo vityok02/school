@@ -40,14 +40,4 @@ public class Repository<TEntity> where TEntity : BaseEntity
     {
         _dbContext.SaveChanges();
     }
-
-    //public void LoadData(TEntity entity)
-    //{
-    //    _dbContext.Set<TEntity>
-    //}
-
-    //public Floor? GetFloor(int floorNumber)
-    //{
-    //    return _dbContext.CurrentSchool?.Floors.Where(f => f.Number == floorNumber).FirstOrDefault();
-    //}
 }

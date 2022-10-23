@@ -8,6 +8,8 @@ public class School : BaseEntity
     public string Name { get; set; }
     public Address Address { get; set; }
     public DateTime OpeningDate { get; set; }
+    //public Director Director { get; set; }
+
     public Employee? Director
     {
         get
@@ -22,45 +24,35 @@ public class School : BaseEntity
             return null;
         }
     }
-    //public ICollection<Director> Directors { get; set; } = new HashSet<Director>();
+
     public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
 
     public ICollection<Student> Students { get; set; } = new HashSet<Student>();
-
-    //private readonly List<Floor> _floors = new();
-    //public IEnumerable<Floor> Floors => _floors;
 
     public ICollection<Floor> Floors { get; set; } = new HashSet<Floor>();
 
     public IEnumerable<Room> Rooms
     {
-        get
-        {
-            List<Room> allRooms = new List<Room>();
-            foreach (Floor floor in Floors)
-            {
-                allRooms.AddRange(floor.Rooms);
-            }
-            return allRooms;
+        get                                             //???
+        {                                               //???
+            List<Room> allRooms = new List<Room>();     //???
+            foreach (Floor floor in Floors)             //???
+            {                                           //???
+                allRooms.AddRange(floor.Rooms);         //???
+            }                                           //???
+            return allRooms;                            //???
         }
-    }
-
-    private ILogger _logger;
-    public void SetLogger(ILogger logger)
-    {
-        _logger = logger;
     }
 
     public School()
     {
     }
 
-    public School(string name, Address address, DateTime openingDate, ILogger logger)
+    public School(string name, Address address, DateTime openingDate)
     {
         Name = name;
         Address = address;
         OpeningDate = openingDate;
-        SetLogger(logger);
     }
 
     public (bool Valid, string? Error) AddFloor(Floor floor)
@@ -108,7 +100,7 @@ public class School : BaseEntity
         }
 
         Students.Add(student);
-        return(true, "Student successfully added");
+        return(true, null);
     }
 
     public (bool Valid, string? Error) AddEmployee(Employee employee)
@@ -128,17 +120,24 @@ public class School : BaseEntity
             return (false, "Employee shouldn`t be under 18 or over 65");
         }
 
-        foreach (Employee emp in Employees)
+        if (Employees.Any(emp => emp.FirstName == employee.FirstName &&
+            emp.LastName == employee.LastName &&
+            emp.Age == employee.Age))
         {
-            if (emp.FirstName == employee.FirstName && 
-                emp.LastName == employee.LastName && 
-                emp.Age == employee.Age)
-            {
-                return (false, "This employee already exists");
-            }
+            return (false, "This employee already exists");
         }
+
+        //foreach (Employee emp in Employees)
+        //{
+        //    if (emp.FirstName == employee.FirstName && 
+        //        emp.LastName == employee.LastName && 
+        //        emp.Age == employee.Age)
+        //    {
+        //        return (false, "This employee already exists");
+        //    }
+        //}
         Employees.Add(employee);
-        return(true, $"Employee {employee.Job} {employee.FirstName} {employee.LastName} successfully added");
+        return(true, null);
     }
 
     public override string ToString()

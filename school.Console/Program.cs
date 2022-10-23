@@ -66,22 +66,6 @@ void HandleChoice(MenuItems? choice)
     }
 }
 
-void AddSchool()
-{
-    var name = GetValueFromConsole("Enter school name: ");
-    var address = GetAddress();
-    var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
-
-    School school = new(name, address, DateTime.Parse(openingDate), logger);
-    schoolRepository.Add(school);
-    dbContext.CurrentSchool = school;
-
-    logger.LogSuccess($"School {school.Name} successfully added");
-
-    logger.LogInfo(school.ToString());
-    logger.LogInfo();
-}
-
 void SelectSchool()
 {
     logger.LogInfo("--------------------");
@@ -89,14 +73,6 @@ void SelectSchool()
     var schoolRepository = new Repository<School>(dbContext);
 
     var schools = schoolRepository.GetAll();
-
-    if (schools.Count() == 0)
-    {
-        logger.LogInfo("List of schools is empty");
-        logger.LogInfo("--------------------");
-        logger.LogInfo();
-        return;
-    }
 
     while (true)
     {
@@ -109,7 +85,7 @@ void SelectSchool()
         logger.LogInfo("--------------------");
         var schoolId = GetIntValueFromConsole("Choose school: ");
 
-        if (schoolId < schools.Count())
+        if (schoolId <= schools.Count())
         {
             dbContext.CurrentSchool = schools.Where(s => s.Id == schoolId).SingleOrDefault()!;
             break;
@@ -131,6 +107,22 @@ Address GetAddress()
     var postalCode = GetIntValueFromConsole("Enter school postal code: ");
 
     return new(country, city, street, postalCode);
+}
+
+void AddSchool()
+{
+    var name = GetValueFromConsole("Enter school name: ");
+    var address = GetAddress();
+    var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
+
+    School school = new(name, address, DateTime.Parse(openingDate));
+    schoolRepository.Add(school);
+    dbContext.CurrentSchool = school;
+
+    logger.LogSuccess($"School {school.Name} successfully added");
+
+    logger.LogInfo(school.ToString());
+    logger.LogInfo();
 }
 
 void AddFloor()
@@ -180,8 +172,13 @@ void AddRoom()
         Repository<Room> roomRepository = new(dbContext);
 
         var (valid, error) = floor.AddRoom(new Room(roomNumber, roomType, floor));
+        if(!valid)
+        {
+            logger.LogError(error!);
+            return;
+        }
 
-        logger.LogSuccess($"Room with number {roomNumber} successfully added");
+        logger.LogSuccess($"Room {roomNumber} successfully added");
         break;
     }
 
@@ -192,8 +189,9 @@ void AddRoom()
 void AddEmployee()
 {
     var currentSchool = dbContext.Schools
-    .Where(s => s.Id == dbContext.CurrentSchool.Id)
-    .SingleOrDefault();
+        .Include(t => t.Employees)
+        .Where(s => s.Id == dbContext.CurrentSchool.Id)
+        .SingleOrDefault();
 
     var firstName = GetValueFromConsole("Enter employee first name: ");
     var lastName = GetValueFromConsole("Enter employee last name: ");
@@ -214,7 +212,7 @@ void AddEmployee()
             dbContext.SaveChanges();
             break;
         }
-        if (type == "D")
+        else if (type == "D")
         {
             var (valid, error) = currentSchool!.AddEmployee(new Director(firstName, lastName, age));
             if(!valid)
@@ -229,6 +227,7 @@ void AddEmployee()
         {
             logger.LogError("Wrong employee type");
         }
+        logger.LogSuccess($"Employee {firstName} {lastName} successfully added");
     }
 
     logger.LogInfo(Ctx.CurrentSchool?.ToString());
@@ -243,8 +242,8 @@ void AddStudent()
     var group = GetValueFromConsole("Enter student group: ");
 
     var currentSchool = dbContext.Schools
-            .Where(s => s.Id == dbContext.CurrentSchool.Id)
-            .SingleOrDefault();
+        .Where(s => s.Id == dbContext.CurrentSchool.Id)
+        .SingleOrDefault();
 
     var (valid, error) = currentSchool!.AddStudent(new Student(firstName, lastName, age, group));
     if(!valid)
@@ -252,5 +251,8 @@ void AddStudent()
         logger.LogError(error!);
         return;
     }
+    logger.LogSuccess($"Student {firstName} {lastName} successfully added to group {group}");
     dbContext.SaveChanges();
+
+    
 }

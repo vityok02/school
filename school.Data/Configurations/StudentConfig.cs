@@ -22,9 +22,14 @@ namespace school.Data
                 .IsRequired()
                 .HasMaxLength(50);
 
+            builder.Property(t => t.Age)
+                .IsRequired();
+
+            builder.Property(t => t.Group)
+                .IsRequired();
+
             builder.HasOne(t => t.School)
                 .WithMany(t => t.Students);
-
         }
     }
 }

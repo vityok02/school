@@ -48,10 +48,6 @@ public class SchoolRepository
 
         _ctx.SetSchools(ctx.Schools);
 
-        foreach (var school in ctx.Schools)
-        {
-            school.SetLogger(_logger);
-        }
     }
 
     public IEnumerable<School> GetSchools()

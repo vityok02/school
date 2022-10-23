@@ -17,6 +17,7 @@ public abstract class Employee : Person
     {
 
     }
+    public int SchoolId { get; set; }
     public School School { get; set; }
     public abstract string Job { get; }
 

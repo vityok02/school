@@ -10,10 +10,6 @@ public class TeacherConfig : IEntityTypeConfiguration<Teacher>
     public void Configure(EntityTypeBuilder<Teacher> builder)
     {
         builder.ToTable("Teachers");
-        builder.Property(t => t.FirstName)
-            .IsRequired();
-        builder.Property(t => t.LastName)
-            .IsRequired();
         //builder.HasKey(t => t.Id);
 
         //builder.Property(t => t.Id)

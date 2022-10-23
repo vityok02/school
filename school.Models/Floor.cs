@@ -6,8 +6,7 @@ namespace school.Models;
 public class Floor : BaseEntity
 {
     public int Number { get; set; }
-    private readonly List<Room> _rooms = new();
-    public IEnumerable<Room> Rooms => _rooms;
+    public ICollection<Room> Rooms { get; set; } = new HashSet<Room>();
     public School School { get; set; }
     public int SchoolId { get; set; }
     public Floor()
@@ -18,14 +17,6 @@ public class Floor : BaseEntity
     {
         Number = number;
     }
-    private ILogger _logger;
-
-    [JsonConstructor]
-    public Floor(int number, IEnumerable<Room> rooms)
-    {
-        Number = number;
-        _rooms = rooms.ToList();
-    }
 
     public (bool Valid, string? Error) AddRoom(Room room)
     {
@@ -34,17 +25,12 @@ public class Floor : BaseEntity
             return (false, "room number must be greater than 0");
         }
 
-        for (int i = 0; i < _rooms.Count; i++)
+        if (Rooms.Any(r => r.Number == room.Number))
         {
-            Room r = _rooms[i];
-            if (r.Number == room.Number)
-            {
-                return (false, "This room number already exists");
-            }
+            return (false, "This room number already exists");
         }
 
-        _rooms.Add(room);
-        room.Floor = this;
+        Rooms.Add(room);
         return (true, null);
     }
 
