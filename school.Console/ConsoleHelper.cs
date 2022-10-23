@@ -12,7 +12,6 @@ public static class ConsoleHelper
 
         Dictionary<MenuItems, string> menuItems = new()
         {
-            { MenuItems.CreateSchool, "Create school" },
             { MenuItems.SelectSchool, "Select school" },
             { MenuItems.AddFloor, "Add floor" },
             { MenuItems.AddRoom, "Add room" },

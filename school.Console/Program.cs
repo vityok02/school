@@ -18,6 +18,8 @@ Repository<School> schoolRepository = new(dbContext);
 logger.LogInfo("Welcome to School Management System!");
 logger.LogInfo();
 
+SelectSchool();
+
 while (true)
 {
     ShowMenu(dbContext);
@@ -43,9 +45,6 @@ void HandleChoice(MenuItems? choice)
 {
     switch (choice)
     {
-        case MenuItems.CreateSchool:
-            AddSchool();
-            break;
         case MenuItems.SelectSchool:
             SelectSchool();
             break;
@@ -60,9 +59,6 @@ void HandleChoice(MenuItems? choice)
             break;
         case MenuItems.AddStudent:
             AddStudent();
-            break;
-        case MenuItems.ShowInfo:
-            ShowInfo();
             break;
         default:
             logger.LogError("Unknown choice");
@@ -108,14 +104,20 @@ void SelectSchool()
         {
             logger.LogInfo($"{school.Id}: {school.Name}");
         }
+        var lastIndex = schools.Count() + 1;
+        logger.LogInfo($"{lastIndex}: Add School");
         logger.LogInfo("--------------------");
         var schoolId = GetIntValueFromConsole("Choose school: ");
 
         if (schoolId < schools.Count())
         {
-            //schoolRepository.SetCurrentSchool(schoolId);
-            dbContext.CurrentSchool = schools.Where(s => s.Id == schoolId).SingleOrDefault();
+            dbContext.CurrentSchool = schools.Where(s => s.Id == schoolId).SingleOrDefault()!;
             break;
+        }
+        if (schoolId == lastIndex)
+        {
+            AddSchool();
+            return;
         }
         logger.LogError("Please choose correct number from the list above.");
     }
@@ -131,17 +133,8 @@ Address GetAddress()
     return new(country, city, street, postalCode);
 }
 
-void ShowInfo()
-{
-    logger.LogInfo(Ctx.CurrentSchool?.ToString());
-}
-
 void AddFloor()
 {
-    //Repository<Floor> floorRepository = new(dbContext);
-    //Repository<School> repository = new(dbContext);
-    //var currentSchool = repository.GetAll(s => s.Id == dbContext.CurrentSchool.Id).SingleOrDefault();
-
     var currentSchool = dbContext.Schools
         .Where(s => s.Id == dbContext.CurrentSchool.Id)
         .Include(s => s.Floors)
@@ -150,20 +143,16 @@ void AddFloor()
     var floorNumber = GetIntValueFromConsole("Enter floor`s number: ");
     Floor floor = new(floorNumber);
 
-    foreach (Floor f in currentSchool!.Floors)
+    var (valid, error) = currentSchool!.AddFloor(floor);
+    if (!valid)
     {
-        if (f.Number == floor.Number)
-        {
-            logger.LogError($"Floor {floor.Number} already exists");
-            return;
-        }
+        logger.LogError(error!);
+        return;
     }
 
-    currentSchool.Floors.Add(floor);
-
-    //floor.School = dbContext.CurrentSchool; //
-
     dbContext.SaveChanges();
+
+    logger.LogSuccess($"{floor.Number} floor successfully added");
 
     logger.LogInfo(Ctx.CurrentSchool?.ToString());
     logger.LogInfo();
@@ -174,8 +163,6 @@ void AddRoom()
     while (true)
     {
         var floorNumber = GetIntValueFromConsole("Enter floor number: ");
-        //var floor = schoolRepository.GetFloor(floorNumber)!;
-        //var floor = dbContext.CurrentSchool?.Floors.Where(f => f.Number == floorNumber).FirstOrDefault();
 
         Repository<Floor> floorRepository = new(dbContext);
         var floor = floorRepository.GetAll(f => f.SchoolId == dbContext.CurrentSchool.Id && f.Number == floorNumber)
@@ -192,7 +179,8 @@ void AddRoom()
 
         Repository<Room> roomRepository = new(dbContext);
 
-        roomRepository.Add(new(roomNumber, roomType, floor));
+        var (valid, error) = floor.AddRoom(new Room(roomNumber, roomType, floor));
+
         logger.LogSuccess($"Room with number {roomNumber} successfully added");
         break;
     }
@@ -216,21 +204,31 @@ void AddEmployee()
         var type = GetValueFromConsole("If director enter (d), if teacher enter (t): ").ToUpperInvariant();
         if (type == "T")
         {
-            currentSchool!.Employees.Add(new Teacher(firstName, lastName, age));
+            var (valid, error) = currentSchool!.AddEmployee(new Teacher(firstName, lastName, age));
+            if (!valid)
+            {
+                logger.LogError(error!);
+                return;
+            }
 
             dbContext.SaveChanges();
             break;
         }
         if (type == "D")
         {
-            currentSchool!.Employees.Add(new Director(firstName, lastName, age));
+            var (valid, error) = currentSchool!.AddEmployee(new Director(firstName, lastName, age));
+            if(!valid)
+            {
+                logger.LogError(error!);
+                return;
+            }
             dbContext.SaveChanges();
             break;
         }
-        //else
-        //{
-        //    logger.LogError("Wrong employee type");
-        //}
+        else
+        {
+            logger.LogError("Wrong employee type");
+        }
     }
 
     logger.LogInfo(Ctx.CurrentSchool?.ToString());
@@ -248,13 +246,11 @@ void AddStudent()
             .Where(s => s.Id == dbContext.CurrentSchool.Id)
             .SingleOrDefault();
 
-    Student student = new(firstName, lastName, age, group);
-    currentSchool!.Students.Add(student);
-
+    var (valid, error) = currentSchool!.AddStudent(new Student(firstName, lastName, age, group));
+    if(!valid)
+    {
+        logger.LogError(error!);
+        return;
+    }
     dbContext.SaveChanges();
-
-    logger.LogSuccess($"Student {lastName} {firstName} successfully added");
-
-    logger.LogInfo(Ctx.CurrentSchool?.ToString());
-    logger.LogInfo();
 }

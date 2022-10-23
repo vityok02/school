@@ -63,34 +63,28 @@ public class School : BaseEntity
         SetLogger(logger);
     }
 
-    public void AddFloor(Floor floor)
+    public (bool Valid, string? Error) AddFloor(Floor floor)
     {
-        foreach(Floor f in Floors)
+        if (Floors.Any(f => f.Number == floor.Number))
         {
-            if (f.Number == floor.Number)
-            {
-                _logger.LogError($"Floor {floor.Number} already exists");
-                return;
-            }
+            return (false, $"Floor {floor.Number} already exists");
         }
 
         if (floor.Number < 0)
         {
-            _logger.LogError("*Floor`s number should be more than 0*");
-            return;
+            return (false, "*Floor`s number should be more than 0*");
         }
 
         if (floor.Number > 10)
         {
-            _logger.LogError("*Floor`s number shouldn`t be more than 10*");
-            return;
+            return (false, "*Floor`s number shouldn`t be more than 10*");
         }
 
         Floors.Add(floor);
-        _logger.LogSuccess($"{floor.Number} floor successfully added");
+        return (true, null);
     }
 
-    public void AddStudent(Student student)
+    public (bool Valid, string? Error) AddStudent(Student student)
     {
         foreach (Student s in Students)
         {
@@ -99,93 +93,52 @@ public class School : BaseEntity
                 stud.LastName == student.LastName &&
                 stud.Age == student.Age)
             {
-                _logger.LogError("*This student already exists*");
-                _logger.LogInfo("---------------------------------------------");
-                return;
+                return (false, "*This student already exists*");
             }
         }
 
-        if (string.IsNullOrEmpty(student.FirstName))
+        if (string.IsNullOrEmpty(student.FirstName) || string.IsNullOrEmpty(student.LastName))
         {
-            _logger.LogError("First name is not provided");
-            _logger.LogInfo("---------------------------------------------");
-            return;
+            return (false, "First name or last name are not provided");
         }
 
-        if (string.IsNullOrEmpty(student.LastName))
+        if (student.Age < 5 || student.Age > 18)
         {
-            _logger.LogError("Last name is not provided");
-            _logger.LogInfo("---------------------------------------------");
-            return;
-        }
-
-        if (student.Age > 18)
-        {
-            _logger.LogError("Employee shouldn`t be less then 18");
-            _logger.LogInfo("---------------------------------------------");
-            return;
-        }
-
-        if (student.Age < 5)
-        {
-            _logger.LogError("Employee should be less then 65");
-            _logger.LogInfo("---------------------------------------------");
-            return;
+            return (false, "Student shouldn`t be under 5 or over 18");
         }
 
         Students.Add(student);
+        return(true, "Student successfully added");
     }
 
-    public void AddEmployee(Employee employee)
+    public (bool Valid, string? Error) AddEmployee(Employee employee)
     {
-        _logger.LogSuccess($"Employee {employee.Job} {employee.FirstName} {employee.LastName} successfully added");
-
         if (employee is Director && Director is not null)
         {
-            _logger.LogError("The director already exists*");
-            _logger.LogInfo("---------------------------------------------");
-            return;
+            return (false, "The director already exists*");
         }
 
-        if (string.IsNullOrEmpty(employee.FirstName))
+        if (string.IsNullOrEmpty(employee.FirstName) || string.IsNullOrEmpty(employee.LastName))
         {
-            _logger.LogError("First name is not provided");
-            _logger.LogInfo("---------------------------------------------");
-            return;
+            return (false, "First name or last name are not provided");
         }
 
-        if (string.IsNullOrEmpty(employee.LastName))
+        if (employee.Age < 18 || employee.Age > 65)
         {
-            _logger.LogError("Last name is not provided");
-            _logger.LogInfo("---------------------------------------------");
-            return;
-        }
-
-        if (employee.Age < 18)
-        {
-            _logger.LogError("Employee shouldn`t be less then 18");
-            _logger.LogInfo("---------------------------------------------");
-            return;
-        }
-
-        if (employee.Age > 65)
-        {
-            _logger.LogError("Employee should be less then 65");
-            _logger.LogInfo("---------------------------------------------");
-            return;
+            return (false, "Employee shouldn`t be under 18 or over 65");
         }
 
         foreach (Employee emp in Employees)
         {
-            if (emp.FirstName == employee.FirstName && emp.LastName == employee.LastName && emp.Age == employee.Age)
+            if (emp.FirstName == employee.FirstName && 
+                emp.LastName == employee.LastName && 
+                emp.Age == employee.Age)
             {
-                _logger.LogError("*This employee already exists*");
-                _logger.LogInfo("---------------------------------------------");
-                return;
+                return (false, "This employee already exists");
             }
         }
         Employees.Add(employee);
-        _logger.LogInfo("---------------------------------------------");
+        return(true, $"Employee {employee.Job} {employee.FirstName} {employee.LastName} successfully added");
     }
 
     public override string ToString()

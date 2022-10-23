@@ -27,12 +27,11 @@ public class Floor : BaseEntity
         _rooms = rooms.ToList();
     }
 
-    public void AddRoom(Room room)
+    public (bool Valid, string? Error) AddRoom(Room room)
     {
         if (room.Number < 0)
         {
-            _logger.LogError("room number must be greater than 0");
-            return;
+            return (false, "room number must be greater than 0");
         }
 
         for (int i = 0; i < _rooms.Count; i++)
@@ -40,13 +39,13 @@ public class Floor : BaseEntity
             Room r = _rooms[i];
             if (r.Number == room.Number)
             {
-                _logger.LogError("This room number already exists");
-                return;
+                return (false, "This room number already exists");
             }
         }
 
         _rooms.Add(room);
         room.Floor = this;
+        return (true, null);
     }
 
     public override string ToString()
