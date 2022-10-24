@@ -88,17 +88,53 @@ void ShowInfo() //!!!!!!!!!!!!!!!!!!!!
         case Items.All:
             logger.LogInfo(currentSchool!.ToString());
             break;
+        case Items.School:
+            ShowSchool();
+            break;
         case Items.Floors:
-            logger.LogInfo(currentSchool!.Floors.ToString());
+            ShowFloors();
+            break;
+        case Items.Employees:
+            ShowEmployees();
+            break;
+        case Items.Students:
+            ShowStudents();
+            break;
+        default:
+            logger.LogError("Unknown choice");
             break;
     }
-    void ShowFloorsInfo()
+    void ShowSchool()
+    {
+        logger.LogInfo($"Name: {currentSchool!.Name}");
+        logger.LogInfo($"Country: {currentSchool.Address.Country}");
+        logger.LogInfo($"City(town): {currentSchool.Address.City}");
+        logger.LogInfo($"Street: {currentSchool.Address.Street}");
+        logger.LogInfo($"Postal code: {currentSchool.Address.PostalCode}");
+        logger.LogInfo($"Opening date: {currentSchool.OpeningDate}");
+    }
+    void ShowFloors()
     {
         foreach(var floor in currentSchool.Floors)
         {
             logger.LogInfo(floor.ToString());
         }
     }
+    void ShowEmployees()
+    {
+        foreach (var emp in currentSchool.Employees)
+        {
+            logger.LogInfo(emp.ToString());
+        }
+    }
+    void ShowStudents()
+    {
+        foreach (var student in currentSchool.Students)
+        {
+            logger.LogInfo(student.ToString());
+        }
+    }
+        
 }
 
 void SelectSchool()

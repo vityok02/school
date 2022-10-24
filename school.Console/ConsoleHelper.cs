@@ -34,6 +34,7 @@ public static class ConsoleHelper
         Dictionary<Items, string> items = new()
         {
             { Items.All, "All information"},
+            { Items.School, "School" },
             { Items.Floors, "Floors"},
             { Items.Rooms, "Rooms"}, //!!!!!!!!!
             { Items.Employees, "Employees" },

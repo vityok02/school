@@ -13,9 +13,10 @@ public enum MenuItems
 
 public enum Items
 {
-    All,
+    All = 1,
+    School,
     Floors,
     Rooms,
     Employees,
-    Students,
+    Students
 }
