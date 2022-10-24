@@ -17,6 +17,7 @@ public static class ConsoleHelper
             { MenuItems.AddRoom, "Add room" },
             { MenuItems.AddEmployee, "Add employee" },
             { MenuItems.AddStudent, "Add student" },
+            { MenuItems.ShowInfo, "Show info" },
             { MenuItems.Quit, "Quit" }
         };
 
@@ -24,6 +25,32 @@ public static class ConsoleHelper
         {
             logger.LogInfo($"{(int)item.Key}: {item.Value}");
         }
+    }
+
+    public static void ShowItems()
+    {
+        logger.LogInfo("Make your choice");
+
+        Dictionary<Items, string> items = new()
+        {
+            { Items.All, "All information"},
+            { Items.Floors, "Floors"},
+            { Items.Rooms, "Rooms"}, //!!!!!!!!!
+            { Items.Employees, "Employees" },
+            { Items.Students, "Students" }
+        };
+
+        foreach( var item in items)
+        {
+            logger.LogInfo($"{(int)item.Key}: {item.Value}");
+        }
+    }
+
+    public static Items? GetItemChoice()
+    {
+        return Enum.TryParse<Items>(Console.ReadLine(), out var choice)
+    ? choice
+    : (Items?)null;
     }
 
     public static MenuItems? GetMenuChoice()

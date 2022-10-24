@@ -35,7 +35,6 @@ public class Repository<TEntity> where TEntity : BaseEntity
         return _dbContext.Set<TEntity>().Where(predicate).ToArray();
     }
 
-
     public void SaveChanges()
     {
         _dbContext.SaveChanges();

@@ -60,9 +60,44 @@ void HandleChoice(MenuItems? choice)
         case MenuItems.AddStudent:
             AddStudent();
             break;
+        case MenuItems.ShowInfo:
+            ShowInfo();
+            break;
         default:
             logger.LogError("Unknown choice");
             break;
+    }
+}
+
+void ShowInfo() //!!!!!!!!!!!!!!!!!!!!
+{
+    var currentSchool = dbContext.Schools
+        .Include(s => s.Floors)
+        .Include(s => s.Rooms)
+        .Include(s => s.Employees)
+        .Include(s => s.Students)
+        .Where(s => s.Id == dbContext.CurrentSchool.Id)
+        .SingleOrDefault();
+
+    ShowItems();
+    //logger.LogInfo(currentSchool!.ToString());
+
+    var choice = GetItemChoice();
+    switch(choice)
+    {
+        case Items.All:
+            logger.LogInfo(currentSchool!.ToString());
+            break;
+        case Items.Floors:
+            logger.LogInfo(currentSchool!.Floors.ToString());
+            break;
+    }
+    void ShowFloorsInfo()
+    {
+        foreach(var floor in currentSchool.Floors)
+        {
+            logger.LogInfo(floor.ToString());
+        }
     }
 }
 
@@ -156,8 +191,16 @@ void AddRoom()
     {
         var floorNumber = GetIntValueFromConsole("Enter floor number: ");
 
+        var currentFloor = dbContext.Floors                                                      //??
+            .Where(f => f.SchoolId == dbContext.CurrentSchool.Id && f.Number == floorNumber)     //??
+            .Include(f => f.Rooms)                                                               //??
+            .SingleOrDefault();                                                                  //??
+
+
         Repository<Floor> floorRepository = new(dbContext);
-        var floor = floorRepository.GetAll(f => f.SchoolId == dbContext.CurrentSchool.Id && f.Number == floorNumber)
+
+        var floor = floorRepository
+            .GetAll(f => f.SchoolId == dbContext.CurrentSchool.Id && f.Number == floorNumber)
             .SingleOrDefault();
 
         if (floor is null)
@@ -171,7 +214,7 @@ void AddRoom()
 
         Repository<Room> roomRepository = new(dbContext);
 
-        var (valid, error) = floor.AddRoom(new Room(roomNumber, roomType, floor));
+        var (valid, error) = currentFloor.AddRoom(new Room(roomNumber, roomType, floor));
         if(!valid)
         {
             logger.LogError(error!);
@@ -242,6 +285,7 @@ void AddStudent()
     var group = GetValueFromConsole("Enter student group: ");
 
     var currentSchool = dbContext.Schools
+        .Include(t => t.Students)
         .Where(s => s.Id == dbContext.CurrentSchool.Id)
         .SingleOrDefault();
 
@@ -253,6 +297,4 @@ void AddStudent()
     }
     logger.LogSuccess($"Student {firstName} {lastName} successfully added to group {group}");
     dbContext.SaveChanges();
-
-    
 }

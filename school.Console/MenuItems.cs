@@ -7,5 +7,15 @@ public enum MenuItems
     AddRoom,
     AddEmployee,
     AddStudent,
+    ShowInfo,
     Quit
+}
+
+public enum Items
+{
+    All,
+    Floors,
+    Rooms,
+    Employees,
+    Students,
 }

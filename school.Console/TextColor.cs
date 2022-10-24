@@ -7,6 +7,12 @@ public static class TextColors
         Console.WriteLine(message);
         Console.ForegroundColor = ConsoleColor.White;
     }
+    public static void ChangeToWhite(int message)
+    {
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine(message);
+        Console.ForegroundColor = ConsoleColor.White;
+    }
 
     public static void ChangeToGreen(string message)
     {
