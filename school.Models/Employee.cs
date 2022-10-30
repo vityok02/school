@@ -9,6 +9,10 @@ namespace school.Models;
 [JsonSubtypes.KnownSubType(typeof(Director), nameof(Director))]
 public abstract class Employee : Person
 {
+    public int SchoolId { get; set; }
+    public School School { get; set; }
+    public abstract string Job { get; }
+
     protected Employee(string firstName, string lastName, int age)
         : base(firstName, lastName, age)
     {
@@ -17,9 +21,6 @@ public abstract class Employee : Person
     {
 
     }
-    public int SchoolId { get; set; }
-    public School School { get; set; }
-    public abstract string Job { get; }
 
     public override string ToString()
     {

@@ -3,6 +3,8 @@
 public class Student : Person
 {
     public string Group { get; }
+    public School School { get; set; }
+
     public Student() 
     {
 
@@ -12,7 +14,6 @@ public class Student : Person
     {
         Group = group;
     }
-    public School School { get; set; }
     public override string ToString()
     {
         return $"{LastName} {FirstName} {Age} group: {Group}";

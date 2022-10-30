@@ -23,25 +23,8 @@ public class SchoolConfig : IEntityTypeConfiguration<School>
         builder.HasOne(t => t.Address)
             .WithMany();
 
-        //builder.Ignore(t => t.Employees);
-
         builder.HasMany(t => t.Employees)
             .WithOne(t => t.School)
             .HasForeignKey(t => t.SchoolId);
-
-        //builder.Ignore(t => t.Directors);
-        //builder.Ignore(t => t.Employees);
-
-        //builder.HasOne(t => t.Director)
-        //    .WithOne();
-
-        //builder.HasMany(t => t.Floors)
-        //    .WithOne(t => t.School);
-
-        //builder.HasMany(t => t.Students)
-        //    .WithOne();
-
-        //builder.HasMany(t => t.Employees)
-        //    .WithOne();
     }
 }

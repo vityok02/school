@@ -8,7 +8,7 @@ public static class ConsoleHelper
     static ILogger logger = new ConsoleLogger();
     public static void ShowMenu(AppDbContext dbContext)
     {
-        logger.LogInfo("Make your choice");
+        Console.WriteLine("Make your choice");
 
         Dictionary<MenuItems, string> menuItems = new()
         {
@@ -23,35 +23,34 @@ public static class ConsoleHelper
 
         foreach (var item in menuItems)
         {
-            logger.LogInfo($"{(int)item.Key}: {item.Value}");
+            Console.WriteLine($"{(int)item.Key}: {item.Value}");
         }
     }
 
     public static void ShowItems()
     {
-        logger.LogInfo("Make your choice");
+        Console.WriteLine("Make your choice");
 
-        Dictionary<Items, string> items = new()
+        Dictionary<InfoItems, string> items = new()
         {
-            { Items.All, "All information"},
-            { Items.School, "School" },
-            { Items.Floors, "Floors"},
-            { Items.Rooms, "Rooms"}, //!!!!!!!!!
-            { Items.Employees, "Employees" },
-            { Items.Students, "Students" }
+            { InfoItems.All, "All information"},
+            { InfoItems.School, "School" },
+            { InfoItems.Floors, "Floors"},
+            { InfoItems.Employees, "Employees" },
+            { InfoItems.Students, "Students" }
         };
 
         foreach( var item in items)
         {
-            logger.LogInfo($"{(int)item.Key}: {item.Value}");
+            Console.WriteLine($"{(int)item.Key}: {item.Value}");
         }
     }
 
-    public static Items? GetItemChoice()
+    public static InfoItems? GetItemChoice()
     {
-        return Enum.TryParse<Items>(Console.ReadLine(), out var choice)
+        return Enum.TryParse<InfoItems>(Console.ReadLine(), out var choice)
     ? choice
-    : (Items?)null;
+    : (InfoItems?)null;
     }
 
     public static MenuItems? GetMenuChoice()

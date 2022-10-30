@@ -11,12 +11,11 @@ public enum MenuItems
     Quit
 }
 
-public enum Items
+public enum InfoItems
 {
-    All = 1,
+    All,
     School,
     Floors,
-    Rooms,
     Employees,
     Students
 }

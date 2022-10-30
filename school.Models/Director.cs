@@ -12,7 +12,5 @@ public class Director : Employee
 
     }
 
-    //public Employee Employee { get; set; }
-
     public override string Job => nameof(Director);
 }

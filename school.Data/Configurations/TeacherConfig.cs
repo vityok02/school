@@ -10,12 +10,5 @@ public class TeacherConfig : IEntityTypeConfiguration<Teacher>
     public void Configure(EntityTypeBuilder<Teacher> builder)
     {
         builder.ToTable("Teachers");
-        //builder.HasKey(t => t.Id);
-
-        //builder.Property(t => t.Id)
-        //    .ValueGeneratedOnAdd();
-
-        //builder.HasOne(t => t.Employee)
-        //    .WithOne();
     }
 }

@@ -21,10 +21,12 @@ public class Repository<TEntity> where TEntity : BaseEntity
     public void Update(TEntity entity)
     {
         _dbContext.Update(entity);
+        _dbContext.SaveChanges();
     }
     public void Delete(TEntity entity)
     {
         _dbContext.Remove(entity);
+        _dbContext.SaveChanges();
     }
     public IEnumerable<TEntity> GetAll()
     {

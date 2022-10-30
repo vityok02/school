@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Newtonsoft.Json;
 
 namespace school.Models;
 
@@ -8,22 +7,8 @@ public class School : BaseEntity
     public string Name { get; set; }
     public Address Address { get; set; }
     public DateTime OpeningDate { get; set; }
-    //public Director Director { get; set; }
 
-    public Employee? Director
-    {
-        get
-        {
-            foreach (Employee employee in Employees)
-            {
-                if (employee is Director director)
-                {
-                    return director;
-                }
-            }
-            return null;
-        }
-    }
+    public Employee? Director => Employees.SingleOrDefault(e => e is Director);
 
     public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
 
@@ -31,18 +16,7 @@ public class School : BaseEntity
 
     public ICollection<Floor> Floors { get; set; } = new HashSet<Floor>();
 
-    public IEnumerable<Room> Rooms
-    {
-        get                                             //???
-        {                                               //???
-            List<Room> allRooms = new List<Room>();     //???
-            foreach (Floor floor in Floors)             //???
-            {                                           //???
-                allRooms.AddRange(floor.Rooms);         //???
-            }                                           //???
-            return allRooms;                            //???
-        }
-    }
+    public IEnumerable<Room> Rooms => Floors.SelectMany(f => f.Rooms).ToList();
 
     public School()
     {
@@ -127,15 +101,6 @@ public class School : BaseEntity
             return (false, "This employee already exists");
         }
 
-        //foreach (Employee emp in Employees)
-        //{
-        //    if (emp.FirstName == employee.FirstName && 
-        //        emp.LastName == employee.LastName && 
-        //        emp.Age == employee.Age)
-        //    {
-        //        return (false, "This employee already exists");
-        //    }
-        //}
         Employees.Add(employee);
         return(true, null);
     }
@@ -145,7 +110,7 @@ public class School : BaseEntity
         StringBuilder sb = new();
 
         sb.AppendLine();
-        sb.AppendLine($"==========Rooms=============+");
+        sb.AppendLine($"==========Rooms==============");
 
         foreach (Floor floor in Floors)
         {
