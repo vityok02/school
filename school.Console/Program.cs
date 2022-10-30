@@ -8,8 +8,6 @@ string dataSource = "Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=School
 
 AppDbContext dbContext = new(dataSource);
 
-Context Ctx = new();
-
 ILogger logger = new ConsoleLogger();
 
 Repository<School> schoolRepository = new(dbContext);
@@ -241,7 +239,6 @@ void AddFloor()
 
     logger.LogSuccess($"{floor.Number} floor successfully added");
 
-    logger.LogInfo(Ctx.CurrentSchool?.ToString());
     logger.LogInfo();
 }
 
@@ -277,7 +274,6 @@ void AddRoom()
         break;
     }
 
-    logger.LogInfo(Ctx.CurrentSchool?.ToString());
     logger.LogInfo();
 }
 
@@ -325,7 +321,6 @@ void AddEmployee()
         break;
     }
 
-    logger.LogInfo(Ctx.CurrentSchool?.ToString());
     logger.LogInfo();
 }
 
