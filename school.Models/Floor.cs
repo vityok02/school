@@ -3,44 +3,36 @@ using Newtonsoft.Json;
 
 namespace school.Models;
 
-public class Floor
+public class Floor : BaseEntity
 {
     public int Number { get; set; }
-    private readonly List<Room> _rooms = new();
-    public IEnumerable<Room> Rooms => _rooms;
+    public ICollection<Room> Rooms { get; set; } = new HashSet<Room>();
+    public School School { get; set; }
+    public int SchoolId { get; set; }
+
+    public Floor()
+    {
+
+    }
     public Floor(int number)
     {
         Number = number;
     }
-    private ILogger _logger;
 
-    [JsonConstructor]
-    public Floor(int number, IEnumerable<Room> rooms)
-    {
-        Number = number;
-        _rooms = rooms.ToList();
-    }
-
-    public void AddRoom(Room room)
+    public (bool Valid, string? Error) AddRoom(Room room)
     {
         if (room.Number < 0)
         {
-            _logger.LogError("room number must be greater than 0");
-            return;
+            return (false, "room number must be greater than 0");
         }
 
-        for (int i = 0; i < _rooms.Count; i++)
+        if (Rooms.Any(r => r.Number == room.Number))
         {
-            Room r = _rooms[i];
-            if (r.Number == room.Number)
-            {
-                _logger.LogError("This room number already exists");
-                return;
-            }
+            return (false, "This room number already exists");
         }
 
-        _rooms.Add(room);
-        room.Floor = this;
+        Rooms.Add(room);
+        return (true, null);
     }
 
     public override string ToString()

@@ -2,7 +2,6 @@
 
 public enum MenuItems
 {
-    CreateSchool,
     SelectSchool,
     AddFloor,
     AddRoom,
@@ -10,4 +9,13 @@ public enum MenuItems
     AddStudent,
     ShowInfo,
     Quit
+}
+
+public enum InfoItems
+{
+    All,
+    School,
+    Floors,
+    Employees,
+    Students
 }

@@ -6,26 +6,51 @@ namespace school;
 public static class ConsoleHelper
 {
     static ILogger logger = new ConsoleLogger();
-    public static void ShowMenu(Context ctx)
+    public static void ShowMenu(AppDbContext dbContext)
     {
-        logger.LogInfo("Make your choice");
+        Console.WriteLine("Make your choice");
 
         Dictionary<MenuItems, string> menuItems = new()
         {
-            { MenuItems.CreateSchool, "Create school" },
             { MenuItems.SelectSchool, "Select school" },
             { MenuItems.AddFloor, "Add floor" },
             { MenuItems.AddRoom, "Add room" },
             { MenuItems.AddEmployee, "Add employee" },
             { MenuItems.AddStudent, "Add student" },
-            { MenuItems.ShowInfo, "Show all information" },
+            { MenuItems.ShowInfo, "Show info" },
             { MenuItems.Quit, "Quit" }
         };
 
         foreach (var item in menuItems)
         {
-            logger.LogInfo($"{(int)item.Key}: {item.Value}");
+            Console.WriteLine($"{(int)item.Key}: {item.Value}");
         }
+    }
+
+    public static void ShowItems()
+    {
+        Console.WriteLine("Make your choice");
+
+        Dictionary<InfoItems, string> items = new()
+        {
+            { InfoItems.All, "All information"},
+            { InfoItems.School, "School" },
+            { InfoItems.Floors, "Floors"},
+            { InfoItems.Employees, "Employees" },
+            { InfoItems.Students, "Students" }
+        };
+
+        foreach( var item in items)
+        {
+            Console.WriteLine($"{(int)item.Key}: {item.Value}");
+        }
+    }
+
+    public static InfoItems? GetItemChoice()
+    {
+        return Enum.TryParse<InfoItems>(Console.ReadLine(), out var choice)
+    ? choice
+    : (InfoItems?)null;
     }
 
     public static MenuItems? GetMenuChoice()

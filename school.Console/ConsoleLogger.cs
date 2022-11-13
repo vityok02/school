@@ -9,6 +9,10 @@ public class ConsoleLogger : ILogger
     {
         ChangeToWhite(message!);
     }
+    public void LogInfo(int message)
+    {
+        ChangeToWhite(message);
+    }
     public void LogSuccess(string message)
     {
         ChangeToGreen(message);

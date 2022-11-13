@@ -1,5 +1,6 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
+using System.Reflection.PortableExecutable;
 
 namespace school.Models;
 
@@ -8,11 +9,18 @@ namespace school.Models;
 [JsonSubtypes.KnownSubType(typeof(Director), nameof(Director))]
 public abstract class Employee : Person
 {
+    public int SchoolId { get; set; }
+    public School School { get; set; }
+    public abstract string Job { get; }
+
     protected Employee(string firstName, string lastName, int age)
         : base(firstName, lastName, age)
     {
     }
-    public abstract string Job { get; }
+    protected Employee()
+    {
+
+    }
 
     public override string ToString()
     {
