@@ -2,15 +2,16 @@
 using school;
 using school.Data;
 using school.Models;
+using school.Models.Interfaces;
 using static school.ConsoleHelper;
 
 string dataSource = "Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=SchoolDb";
 
-AppDbContext dbContext = new(dataSource);
+AppDbContext dbContext = new(new DbContextOptions<AppDbContext>());
 
 ILogger logger = new ConsoleLogger();
 
-Repository<School> schoolRepository = new(dbContext);
+var schoolRepository = new Repository<School>(dbContext);
 
 logger.LogInfo("Welcome to School Management System!");
 logger.LogInfo();
