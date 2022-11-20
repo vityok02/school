@@ -1,16 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using school.Models;
+using school.Models.Interfaces;
 using System.Linq.Expressions;
 
 namespace school.Data;
-public class Repository<TEntity> where TEntity : BaseEntity
+
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
     private readonly AppDbContext _dbContext;
 
     public Repository(AppDbContext dbContext)
     {
         _dbContext = dbContext;
-        GetAll();
     }
 
     public void Add(TEntity entity)

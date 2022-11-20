@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using school.Data.Configurations;
 using school.Models;
+
 namespace school.Data;
 
 public class AppDbContext : DbContext
@@ -15,17 +16,12 @@ public class AppDbContext : DbContext
     public DbSet<Director> Directors { get; set; }
     public DbSet<Student> Students { get; set; }
 
-    private readonly string _connectionString;
-    public AppDbContext(string connectionString)
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
     {
-        _connectionString = connectionString;
         Database.EnsureCreated();
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer(_connectionString);
-    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new SchoolConfig());

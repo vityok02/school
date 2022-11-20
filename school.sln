@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "school.Console", "school.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "school.Data", "school.Data\school.Data.csproj", "{ED29A7CA-1968-4290-B322-6BFDC3D2DF6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "school.Web", "school.Web\school.Web.csproj", "{F2F5F8A1-B8EB-4371-A80A-DB73A795D4C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "school.Web", "school.Web\school.Web.csproj", "{F2F5F8A1-B8EB-4371-A80A-DB73A795D4C8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{540405B6-9E8B-4187-BA69-967054EADCBB} = {540405B6-9E8B-4187-BA69-967054EADCBB}
+		{ED29A7CA-1968-4290-B322-6BFDC3D2DF6F} = {ED29A7CA-1968-4290-B322-6BFDC3D2DF6F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
