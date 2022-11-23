@@ -1,4 +1,4 @@
-﻿namespace school.Models;
+﻿namespace SchoolManagement.Models;
 
 [Flags]
 public enum RoomType

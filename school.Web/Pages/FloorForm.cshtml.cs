@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using school.Data;
-using school.Models;
-using school.Models.Interfaces;
+using SchoolManagement.Data;
+using SchoolManagement.Models;
+using SchoolManagement.Models.Interfaces;
 
-namespace school.Web.Pages
+namespace SchoolManagement.Web.Pages
 {
     public class FloorFormModel : PageModel
     {

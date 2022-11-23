@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace school.Models.Interfaces;
+namespace SchoolManagement.Models.Interfaces;
 
 public interface IRepository<TEntity> where TEntity : BaseEntity
 {

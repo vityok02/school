@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using school.Models;
-using school.Models.Interfaces;
+using SchoolManagement.Models;
+using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
-namespace school.Data;
+namespace SchoolManagement.Data;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {

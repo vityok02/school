@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using school.Models;
+using SchoolManagement.Models;
 
-namespace school.Data
+namespace SchoolManagement.Data
 {
     public class RoomConfig : IEntityTypeConfiguration<Room>
     {

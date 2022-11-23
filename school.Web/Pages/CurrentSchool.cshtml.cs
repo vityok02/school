@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using school.Models;
-using school.Models.Interfaces;
+using SchoolManagement.Models;
+using SchoolManagement.Models.Interfaces;
 
-namespace school.Web.Pages
+namespace SchoolManagement.Web.Pages
 {
     public class CurrentSchoolModel : PageModel
     {

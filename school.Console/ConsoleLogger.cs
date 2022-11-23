@@ -1,7 +1,7 @@
-﻿using school.Models;
-using static school.TextColors;
+﻿using SchoolManagement.Models;
+using static SchoolManagement.TextColors;
 
-namespace school;
+namespace SchoolManagement;
 
 public class ConsoleLogger : ILogger
 {
