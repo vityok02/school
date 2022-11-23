@@ -1,0 +1,46 @@
+﻿@page "/employeeform/{id}"
+@model SchoolManagement.Web.Pages.EmployeeFormModel
+@{
+}
+
+<form method="post">
+    <table>
+        <tr>
+            <td>
+                First name
+            </td>
+            <td>
+                <input type="text" maxlength="30" required name="firstName"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Last Name
+            </td>
+            <td>
+                <input type="text" maxlength="30" required name="lastName"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Age
+            </td>
+            <td>
+                <input type="number" required name="age"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Type
+            </td>
+            <td>
+                <input type="text" />
+            </td>
+        </tr>
+    </table>
+    <div class="error" align="center">@Model.Message</div>
+    <div align="center">
+        <input type="submit" value="submit" />
+        <input type="reset" value="submit" />
+    </div>
+</form>

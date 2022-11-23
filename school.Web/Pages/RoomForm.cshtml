@@ -4,13 +4,35 @@
 }
 
 <form method="post">
-    Floor Number
-    <input type="number" name="floorNumber" /><br />
-    Room Number
-    <input type="number" name="roomNumber"/><br />
-    Room Type
-    <input type="number" name="roomType"/>
-    <br />
-    <input type="submit" value="Submit"/>
-    <input type="reset" value="Reset" />
+    <table align="center">
+        <tr>
+            <td>
+                Floor number
+            </td>
+            <td>
+                <input type="number" name="floorNumber" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Room number
+            </td>
+            <td>
+                <input type="number" name="roomNumber" /><br />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Room type
+            </td>
+            <td>
+                <input type="number" name="roomType" />
+            </td>
+        </tr>
+    </table>
+    <div class="error" align="center">@Model.Message</div>
+    <div align="center">
+        <input type="submit" value="Submit" />
+        <input type="reset" value="Reset" />
+    </div>
 </form>

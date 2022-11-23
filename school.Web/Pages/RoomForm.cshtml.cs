@@ -41,8 +41,8 @@ namespace SchoolManagement.Web.Pages
                 Message = error!;
                 return Page();
             }
-            else
-                return Redirect($"/school/{id}");
+            _dbContext.SaveChanges();
+            return Redirect($"/school/{id}");
         }
     }
 }

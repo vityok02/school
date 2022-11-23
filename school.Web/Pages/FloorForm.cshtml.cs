@@ -12,7 +12,6 @@ namespace SchoolManagement.Web.Pages
         AppDbContext _dbContext;
         private readonly IRepository<School> _schoolRepository;
         public IEnumerable<School> Schools { get; private set; }
-        public int Id { get; set; }
         public string Message { get; set; } = "";
         public FloorFormModel(IRepository<School> schoolRepository, AppDbContext db)
         {
@@ -37,8 +36,9 @@ namespace SchoolManagement.Web.Pages
                 Message = error!;
                 return Page();
             }
-            else
-                return Redirect($"/school/{id}");
+            
+            _dbContext.SaveChanges();
+            return Redirect($"/school/{id}");
         }
     }
 }
