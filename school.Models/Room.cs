@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace school.Models;
+namespace SchoolManagement.Models;
 
 public class Room : BaseEntity
 {

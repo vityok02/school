@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using school;
-using school.Data;
-using school.Models;
-using school.Models.Interfaces;
-using static school.ConsoleHelper;
+using SchoolManagement;
+using SchoolManagement.Data;
+using SchoolManagement.Models;
+using SchoolManagement.Models.Interfaces;
+using static SchoolManagement.ConsoleHelper;
 
 string dataSource = "Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=SchoolDb";
 

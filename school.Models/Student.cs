@@ -1,4 +1,4 @@
-﻿namespace school.Models;
+﻿namespace SchoolManagement.Models;
 
 public class Student : Person
 {

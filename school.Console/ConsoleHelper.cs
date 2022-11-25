@@ -1,7 +1,7 @@
-﻿using school.Data;
-using school.Models;
+﻿using SchoolManagement.Data;
+using SchoolManagement.Models;
 
-namespace school;
+namespace SchoolManagement;
 
 public static class ConsoleHelper
 {
