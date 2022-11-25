@@ -1,4 +1,4 @@
-﻿namespace SchoolManagement;
+﻿namespace school;
 public static class TextColors
 {
     public static void ChangeToWhite(string message)

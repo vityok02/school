@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Reflection.PortableExecutable;
 
-namespace SchoolManagement.Models;
+namespace school.Models;
 
 [JsonConverter(typeof(JsonSubtypes), "Job")]
 [JsonSubtypes.KnownSubType(typeof(Teacher), nameof(Teacher))]

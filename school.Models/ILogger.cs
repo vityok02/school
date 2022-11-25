@@ -1,4 +1,4 @@
-﻿namespace SchoolManagement.Models;
+﻿namespace school.Models;
 
 public interface ILogger
 {

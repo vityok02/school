@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SchoolManagement.Models;
+using school.Models;
 
-namespace SchoolManagement.Data.Configurations;
+namespace school.Data.Configurations;
 
 public class DirectorConfig : IEntityTypeConfiguration<Director>
 {

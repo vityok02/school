@@ -1,4 +1,4 @@
-﻿namespace SchoolManagement.Models;
+﻿namespace school.Models;
 
 public abstract class Person : BaseEntity
 {
