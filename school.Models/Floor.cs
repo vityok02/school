@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Newtonsoft.Json;
 
-namespace SchoolManagement.Models;
+namespace school.Models;
 
 public class Floor : BaseEntity
 {

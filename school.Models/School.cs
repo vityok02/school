@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace SchoolManagement.Models;
+namespace school.Models;
 
 public class School : BaseEntity
 {

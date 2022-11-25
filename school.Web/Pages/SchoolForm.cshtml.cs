@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SchoolManagement.Models;
-using SchoolManagement.Models.Interfaces;
+using school.Models;
+using school.Models.Interfaces;
 
-namespace SchoolManagement.Web.Pages
+namespace school.Web.Pages
 {
     public class SchoolFormModel : PageModel
     {

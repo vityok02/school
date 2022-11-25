@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SchoolManagement.Models;
+using school.Models;
 
-namespace SchoolManagement.Data;
+namespace school.Data;
 public class SchoolConfig : IEntityTypeConfiguration<School>
 {
     public void Configure(EntityTypeBuilder<School> builder)

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SchoolManagement.Data.Configurations;
-using SchoolManagement.Models;
+using school.Data.Configurations;
+using school.Models;
 
-namespace SchoolManagement.Data;
+namespace school.Data;
 
 public class AppDbContext : DbContext
 {
