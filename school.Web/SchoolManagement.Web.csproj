@@ -7,24 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\EmployeeForm.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\school.Data\SchoolManagement.Data.csproj" />
     <ProjectReference Include="..\school.Models\SchoolManagement.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\EmployeeForm.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\EmployeeForm.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Pages\EmployeeForm.cshtml" />
   </ItemGroup>
 
 </Project>

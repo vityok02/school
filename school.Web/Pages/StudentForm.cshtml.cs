@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SchoolManagement.Web.Pages
 {
-    public class EmployeeFormModel : PageModel
+    public class StudentFormModel : PageModel
     {
         AppDbContext _dbContext;
         public readonly IRepository<School> _schoolRepository;
         public IEnumerable<School> Schools { get; private set; }
         public string Message { get; set; } = "";
-        public EmployeeFormModel(IRepository<School> schoolRepository, AppDbContext db)
+        public StudentFormModel(IRepository<School> schoolRepository, AppDbContext db)
         {
             _schoolRepository = schoolRepository;
             _dbContext = db;
@@ -22,30 +22,14 @@ namespace SchoolManagement.Web.Pages
         {
             Schools = _schoolRepository.GetAll();
         }
-        public IActionResult OnPost(int id, string firstName, string lastName, int age, string type)
+        public IActionResult OnPost(int id, string firstName, string lastName, int age, string group)
         {
             var currentSchool = _dbContext.Schools
                 .Where(s => s.Id == id)
-                .Include(s => s.Employees)
+                .Include(s => s.Students)
                 .SingleOrDefault();
 
-            Employee? employee = null;
-
-            if (type == "T")
-            {
-                employee = new Teacher(firstName, lastName, age);
-            }
-            else if (type == "D")
-            {
-                employee = new Director(firstName, lastName, age);
-            }
-            else
-            {
-                Message = "Wrong employee type";
-                return Page();
-            }
-
-            var (valid, error) = currentSchool!.AddEmployee(employee);
+            var (valid, error) = currentSchool!.AddStudent(new Student(firstName, lastName, age, group));
             if (!valid)
             {
                 Message = error!;
