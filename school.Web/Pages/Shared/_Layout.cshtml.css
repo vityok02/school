@@ -44,5 +44,6 @@ button.accept-policy {
   bottom: 0;
   width: 100%;
   white-space: nowrap;
+  nav-down:auto;
   line-height: 60px;
 }

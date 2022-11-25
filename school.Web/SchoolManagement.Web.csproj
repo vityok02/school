@@ -27,8 +27,4 @@
     <None Include="Pages\EmployeeForm.cshtml" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\Forms\" />
-  </ItemGroup>
-
 </Project>

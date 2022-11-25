@@ -18,7 +18,7 @@ namespace SchoolManagement.Web.Pages
             _schoolRepository = schoolRepository;
             _dbContext = db;
         }
-        public void OnGet()
+        public void OnGet(int id)
         {
             Schools = _schoolRepository.GetAll();
         }
@@ -42,18 +42,18 @@ namespace SchoolManagement.Web.Pages
             else
             {
                 Message = "Wrong employee type";
-                return Page();
+                return RedirectToPage($"/school/{id}");
             }
 
             var (valid, error) = currentSchool!.AddEmployee(employee);
             if (!valid)
             {
                 Message = error!;
-                return Page();
+                return RedirectToPage($"/school/{id}");
             }
 
             _dbContext.SaveChanges();
-            return Redirect($"/school/{id}");
+            return Redirect($"/school/{id}/w");
         }
     }
 }

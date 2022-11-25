@@ -18,8 +18,7 @@ namespace SchoolManagement.Web.Pages
             _schoolRepository = schoolRepository;
             _dbContext = db;
         }
-
-        public void OnGet(int id)
+        public void OnGet()
         {
             Schools = _schoolRepository.GetAll();
         }
