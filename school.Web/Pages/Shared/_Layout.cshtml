@@ -28,6 +28,15 @@
                     </ul>
                 </div>
             </div>
+            <details class="details">
+                <summary>Schools</summary>
+                <ul>
+                    @foreach(var school in Schools)
+                    {
+                        <li><a asp-page="School" asp-route-id=@school.Id>@school.Name</a></li>
+                    }
+                </ul>
+            </details>
         </nav>
     </header>
 
