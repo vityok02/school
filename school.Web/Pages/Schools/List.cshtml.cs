@@ -6,12 +6,11 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class SchoolModel : PageModel
+public class SchoolListModel : PageModel
 {
     private readonly IRepository<School> _schoolRepository;
-
-    public IEnumerable<School> Schools { get; private set; }
-    public SchoolModel(IRepository<School> schoolRepository)
+    public static IEnumerable<School> Schools { get; private set; }
+    public SchoolListModel(IRepository<School> schoolRepository)
     {
         _schoolRepository = schoolRepository;
     }
