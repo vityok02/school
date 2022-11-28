@@ -1,5 +1,5 @@
-﻿@page
-@model SchoolManagement.Web.Pages.StudentFormModel
+﻿@page "/roomform/{id}"
+@model             RoomFormModel
 @{
 }
 
@@ -7,34 +7,26 @@
     <table align="center">
         <tr>
             <td>
-                First name
+                Floor number
             </td>
             <td>
-                <input type="text" maxlength="30" required name="firstName"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Last Name
-            </td>
-            <td>
-                <input type="text" maxlength="30" required name="lastName"/>
+                <input type="number" name="floorNumber" />
             </td>
         </tr>
         <tr>
             <td>
-                Age
+                Room number
             </td>
             <td>
-                <input type="number" required name="age"/>
+                <input type="number" name="roomNumber" /><br />
             </td>
         </tr>
         <tr>
             <td>
-                Group
+                Room type
             </td>
             <td>
-                <input type="text" name="group"/>
+                <input type="number" name="roomType" />
             </td>
         </tr>
     </table>
