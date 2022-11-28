@@ -1,5 +1,5 @@
 ﻿@page
-@model school.Web.Pages.SchoolFormModel
+@model SchoolFormModel
 @{
 }
 
@@ -29,9 +29,9 @@
             <td>Opening date:</td>
             <td><input type="date" name="openingDate" required /></td>
         </tr>
-        <tr>
-            <td><input type="submit" /></td>
-            <td><input type="reset" /></td>
-        </tr>
     </table>
+    <div align="center">
+        <input type="submit" value="Submit" />
+        <input type="reset" value="Reset" />
+    </div>
 </form>

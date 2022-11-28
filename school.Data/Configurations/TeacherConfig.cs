@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using school.Models;
+using SchoolManagement.Models;
 using System.Security.Cryptography.X509Certificates;
 
-namespace school.Data.Configurations;
+namespace SchoolManagement.Data.Configurations;
 
 public class TeacherConfig : IEntityTypeConfiguration<Teacher>
 {

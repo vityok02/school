@@ -1,0 +1,12 @@
+﻿@page "/floorform/{id}"
+@model FloorFormModel
+@{
+}
+
+<form method="post">
+    Number:
+    <input type="number" name="number" required />
+    <input type="submit"/>
+    <input type="reset"/>
+    <div class="error">@Model.Message</div>
+</form>

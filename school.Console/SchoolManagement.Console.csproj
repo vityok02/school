@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\school.Data\school.Data.csproj" />
-    <ProjectReference Include="..\school.Models\school.Models.csproj" />
+    <ProjectReference Include="..\school.Data\SchoolManagement.Data.csproj" />
+    <ProjectReference Include="..\school.Models\SchoolManagement.Models.csproj" />
   </ItemGroup>
 
 </Project>

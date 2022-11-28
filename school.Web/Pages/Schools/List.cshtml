@@ -1,0 +1,17 @@
+﻿@page "/schools"
+@model SchoolModel
+@{
+}
+
+<h1 align="center">Your Schools</h1>
+<table align="center" width="500px" border="1">
+    @foreach (var school in Model.Schools)
+    {
+        <tr>
+            <td><a asp-page="School" asp-route-id="@school.Id">@school.Name</a></td>
+            <td>Edit</td>
+            <td>Delete</td>
+        </tr>
+    }
+</table>
+<div align="center"><a asp-page="Add">Add School</a></div>

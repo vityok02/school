@@ -16,3 +16,27 @@ html {
 body {
   margin-bottom: 60px;
 }
+/**/
+sidebar{
+
+}
+
+.table{
+    border: 1px;
+}
+form{
+    align-content:center;
+}
+
+table {
+    align-content:center;
+    align-items:center
+}
+
+ul{
+    list-style-type:none;
+}
+
+.error {
+    color: red;
+}

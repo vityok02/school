@@ -1,4 +1,4 @@
-﻿namespace school;
+﻿namespace SchoolManagement;
 
 public enum MenuItems
 {

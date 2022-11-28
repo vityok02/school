@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "school.Models", "school.Models\school.Models.csproj", "{540405B6-9E8B-4187-BA69-967054EADCBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolManagement.Models", "school.Models\SchoolManagement.Models.csproj", "{540405B6-9E8B-4187-BA69-967054EADCBB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "school.Console", "school.Console\school.Console.csproj", "{4124D17E-A680-4191-A89E-C096D85C9304}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolManagement.Console", "school.Console\SchoolManagement.Console.csproj", "{4124D17E-A680-4191-A89E-C096D85C9304}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "school.Data", "school.Data\school.Data.csproj", "{ED29A7CA-1968-4290-B322-6BFDC3D2DF6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolManagement.Data", "school.Data\SchoolManagement.Data.csproj", "{ED29A7CA-1968-4290-B322-6BFDC3D2DF6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "school.Web", "school.Web\school.Web.csproj", "{F2F5F8A1-B8EB-4371-A80A-DB73A795D4C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolManagement.Web", "school.Web\SchoolManagement.Web.csproj", "{F2F5F8A1-B8EB-4371-A80A-DB73A795D4C8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{540405B6-9E8B-4187-BA69-967054EADCBB} = {540405B6-9E8B-4187-BA69-967054EADCBB}
 		{ED29A7CA-1968-4290-B322-6BFDC3D2DF6F} = {ED29A7CA-1968-4290-B322-6BFDC3D2DF6F}
