@@ -23,6 +23,6 @@ public class SchoolFormModel : PageModel
     {
         School school = new(name, address, openingDate);
         _schoolRepository.Add(school);
-        return RedirectToPage("School");
+        return RedirectToPage("List");
     }
 }
