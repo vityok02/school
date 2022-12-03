@@ -16,9 +16,10 @@ html {
 body {
   margin-bottom: 60px;
 }
-/**/
-sidebar{
 
+sidebar{
+    background-color:forestgreen;
+    width:200px;
 }
 
 .table{

@@ -31,7 +31,7 @@
             <details class="details">
                 <summary>Schools</summary>
                 <ul>
-                    @*@foreach(var school in Schools)
+@*                    @foreach(var school in Schools)
                     {
                         <li><a asp-page="School" asp-route-id=@school.Id>@school.Name</a></li>
                     }*@
@@ -39,6 +39,10 @@
             </details>
         </nav>
     </header>
+    
+    <div>
+        @RenderSection("Sidebar")
+    </div>
 
     <div class="container">
         <main role="main" class="pb-3">
