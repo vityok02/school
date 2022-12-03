@@ -20,20 +20,20 @@ public class SchoolListModel : PageModel
 
     public void OnGet()
     {
-        //Schools = _schoolRepository.GetAll();
-        Schools = _dbCtx.Schools.AsNoTracking().ToList();
+        Schools = _schoolRepository.GetAll();
+        //Schools = _dbCtx.Schools.AsNoTracking().ToList();
     }
 
     public IActionResult OnPostDelete(int id)
     {
-        //var school = _schoolRepository.GetAll()
-            //.Where(s => s.Id == id)
-            //.SingleOrDefault();
-        var school = _dbCtx.Schools.Find(id);
+        var school = _schoolRepository.GetAll()
+            .Where(s => s.Id == id)
+            .SingleOrDefault();
+        //var school = _dbCtx.Schools.Find(id);
 
         if (school != null)
         {
-            _dbCtx.Schools.Remove(school);
+            _schoolRepository.Delete(school);
             _dbCtx.SaveChanges();
         }
         return RedirectToPage("List");
