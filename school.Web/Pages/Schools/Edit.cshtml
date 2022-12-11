@@ -1,0 +1,18 @@
+﻿@page "/schools/{id}/edit"
+@model SchoolManagement.Web.Pages.Schools.EditModel
+@{
+}
+
+<h2>Edit school</h2>
+
+<form method="post">
+    <table>
+        <tr>
+            <td>Name</td>
+            <td><input name="name" value="@Model.School.Name"/></td>
+        </tr>
+        <tr>
+            <td><input type="submit" /></td>
+        </tr>
+    </table>
+</form>
