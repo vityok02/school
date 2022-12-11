@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace SchoolManagement.Web.Pages.Floors
 {
-    public class DetailsModel : PageModel
+    public class ListModel : PageModel
     {
         public void OnGet()
         {
