@@ -29,6 +29,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         _dbContext.Remove(entity);
         _dbContext.SaveChanges();
     }
+
+    public TEntity? Get(int id)
+    {
+        return _dbContext.Set<TEntity>().Find(id);
+    }
+
     public IEnumerable<TEntity> GetAll()
     {
         return _dbContext.Set<TEntity>().ToArray();

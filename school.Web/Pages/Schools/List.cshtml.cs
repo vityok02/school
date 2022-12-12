@@ -24,6 +24,11 @@ public class SchoolListModel : PageModel
         //Schools = _dbCtx.Schools.AsNoTracking().ToList();
     }
 
+    public void OnPost()
+    {
+
+    }
+
     public IActionResult OnPostDelete(int id)
     {
         var school = _schoolRepository.GetAll()
@@ -34,7 +39,6 @@ public class SchoolListModel : PageModel
         if (school != null)
         {
             _schoolRepository.Delete(school);
-            _dbCtx.SaveChanges();
         }
         return RedirectToPage("List");
     }
