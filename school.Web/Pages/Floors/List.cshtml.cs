@@ -17,15 +17,30 @@ namespace SchoolManagement.Web.Pages.Floors
         }
 
         public IEnumerable<School> Schools { get; set; }
-        public IEnumerable<Floor> Floors { get; set; }
+        public ICollection<Floor> Floors { get; set; }
 
-        public int SchoolId { get; set; }
+        public int sId { get; set; }
 
 
         public void OnGet()
         {
-            SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
-            Floors = _floorRepository.GetAll(f => f.SchoolId == SchoolId);
+            sId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
+            Floors = (ICollection<Floor>)_floorRepository.GetAll(f => f.SchoolId == sId);
+        }
+
+        public void OnPostAddFloor()
+        {
+            sId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
+            var school = _schoolRepository.GetAll().Where(s => s.Id == sId);
+            int number;
+            if (Floors is null)
+            {
+                number = 0;
+            }
+            else
+                number = Floors.Last().Number;
+            Floor floor = new(number + 1);
+            Floors.Add(floor);
         }
     }
 }

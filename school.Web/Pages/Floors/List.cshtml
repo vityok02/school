@@ -5,4 +5,16 @@
 
 <partial name="Sidebar" />
 
-<h1>Floors</h1>
+<h1 align="center">Floors</h1>
+
+<table align="center">
+    @foreach(var floor in @Model.Floors)
+    {
+        <tr>
+            <td><a asp-page="Floor">Floor @floor.Number</a></td>
+        </tr>
+    }
+</table>
+<form method="post">
+    <input type="submit" value="Add" asp-page-handler="AddFloor"/>
+</form>
