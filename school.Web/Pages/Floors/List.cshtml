@@ -1,20 +1,23 @@
 ﻿@page "/floors"
-@model SchoolManagement.Web.Pages.Floors.ListModel
+@model FloorListModel
 @{
 }
 
 <partial name="Sidebar" />
 
 <h1 align="center">Floors</h1>
-
 <table align="center">
-    @foreach(var floor in @Model.Floors)
+    @foreach(var floor in FloorListModel.Floors)
     {
         <tr>
             <td><a asp-page="Floor">Floor @floor.Number</a></td>
+            <form method="post" align="center">
+                <td><button type="submit" asp-page-handler="delete" asp-route-id="@floor.Id">Delete</button></td>
+            </form>
         </tr>
     }
 </table>
-<form method="post">
-    <input type="submit" value="Add" asp-page-handler="AddFloor"/>
+<form method="post" align="center">
+    <input type="submit" value="Add basement" asp-page-handler="AddBasement" />
+    <input type="submit" value="Add floor" asp-page-handler="AddFloor"/>
 </form>
