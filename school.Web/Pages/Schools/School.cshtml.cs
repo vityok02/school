@@ -22,7 +22,7 @@ public class CurrentSchoolModel : PageModel
 
     public void OnGet(int id)
     {
-        Response.Cookies.Append("sId", id.ToString());
+        Response.Cookies.Append("SchoolId", id.ToString());
 
         CurrentSchool = _schoolRepository.Get(id);
         Address = _addressRepository.Get(CurrentSchool?.Id ?? 0);

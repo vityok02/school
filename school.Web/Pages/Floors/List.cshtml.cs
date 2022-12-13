@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -7,31 +8,34 @@ namespace SchoolManagement.Web.Pages.Floors
 {
     public class ListModel : PageModel
     {
+        AppDbContext _ctx;
         private readonly IRepository<Floor>? _floorRepository;
         private readonly IRepository<School> _schoolRepository;
 
-        public ListModel(IRepository<Floor>? floorRepository, IRepository<School> schoolRepository)
+        public ListModel(IRepository<Floor>? floorRepository, IRepository<School> schoolRepository, AppDbContext ctx)
         {
             _floorRepository = floorRepository;
             _schoolRepository = schoolRepository;
+            _ctx = ctx;
+            Floors = _ctx.Floors.Where(f=>f.SchoolId == SchoolId);
         }
-
+        public School School { get; set; }
         public IEnumerable<School> Schools { get; set; }
-        public ICollection<Floor> Floors { get; set; }
+        public IEnumerable<Floor> Floors { get; set; }
 
-        public int sId { get; set; }
+        public int SchoolId { get; set; }
 
 
         public void OnGet()
         {
-            sId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
-            Floors = (ICollection<Floor>)_floorRepository.GetAll(f => f.SchoolId == sId);
+            SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
+            Floors = _floorRepository.GetAll(f => f.SchoolId == SchoolId);
         }
 
         public void OnPostAddFloor()
         {
-            sId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
-            var school = _schoolRepository.GetAll().Where(s => s.Id == sId);
+            SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
+            School = _schoolRepository.Get(SchoolId);
             int number;
             if (Floors is null)
             {
@@ -40,7 +44,8 @@ namespace SchoolManagement.Web.Pages.Floors
             else
                 number = Floors.Last().Number;
             Floor floor = new(number + 1);
-            Floors.Add(floor);
+            var (valid, error) = School.AddFloor(floor);
+            _ctx.SaveChanges();
         }
     }
 }
