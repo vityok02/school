@@ -10,7 +10,17 @@
     @foreach(var floor in FloorListModel.Floors)
     {
         <tr>
-            <td><a asp-page="Floor">Floor @floor.Number</a></td>
+            <td><a asp-page="Floor">
+                @if(floor.Number < 1)
+                {
+                    floor.Number = -floor.Number;
+                    @:Basement level @floor.Number
+                }
+                else
+                {
+                    @:Floor @floor.Number
+                }
+            </a></td>
             <form method="post" align="center">
                 <td><button type="submit" asp-page-handler="delete" asp-route-id="@floor.Id">Delete</button></td>
             </form>

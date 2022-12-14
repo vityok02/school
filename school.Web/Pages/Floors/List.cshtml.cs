@@ -28,8 +28,8 @@ public class FloorListModel : PageModel
 
     public void OnGet()
     {
-        Floors = _floorRepository.GetAll(f => f.SchoolId == SchoolId);
         SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
+        Floors = _floorRepository.GetAll(f => f.SchoolId == SchoolId);
     }
 
     public void OnPost()
@@ -41,14 +41,15 @@ public class FloorListModel : PageModel
     {
         SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
         School = _schoolRepository.Get(SchoolId);
+
         int number;
 
-        if (!Floors.Any())
+        if (!Floors.Any() || Floors.Last().Number < 0)
             number = 0;
         else
             number = Floors.Last().Number;
 
-        Floor floor = new(number + 1);
+        Floor floor = new(number+1);
         //_floorRepository!.Add(floor); ?
         var (valid, error) = School.AddFloor(floor);
         _ctx.SaveChanges();
@@ -57,22 +58,25 @@ public class FloorListModel : PageModel
     {
         SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
         School = _schoolRepository.Get(SchoolId);
+
         int number;
-        if (!Floors.Any())
+
+        if (!Floors.Any() || Floors.First().Number >= 0)
             number = 0;
         else
             number = Floors.First().Number;
 
         Floor floor = new(number - 1);
+
         var (valid, error) = School!.AddFloor(floor);
         _ctx.SaveChanges();
     }
-    //public IActionResult OnPostDelete(int id)
-    //{
-    //    var floor = _floorRepository.Get(id);
-    //    //_ctx.Remove(floor);
-    //    //_ctx.SaveChanges();
-    //    _floorRepository.Delete(floor!);
-    //    return RedirectToPage("List");
-    //}
+    public IActionResult OnPostDelete(int id)
+    {
+        var floor = _floorRepository.Get(id);
+        //_ctx.Remove(floor);
+        //_ctx.SaveChanges();
+        _floorRepository.Delete(floor!);
+        return RedirectToPage("List");
+    }
 }
