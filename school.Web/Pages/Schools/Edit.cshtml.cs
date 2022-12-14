@@ -8,24 +8,27 @@ namespace SchoolManagement.Web.Pages.Schools
 {
     public class EditModel : PageModel
     {
-        AppDbContext _dbCtx;
         private readonly IRepository<School> _schoolRepository;
+        private readonly IRepository<Address> _addressRepository;
         [BindProperty]
-        public School School { get; set; }
-        public EditModel(IRepository<School> schoolRepository, AppDbContext ctx)
+        public School? School { get; set; }
+        [BindProperty]
+        public Address? Address { get; set; }
+        public EditModel(IRepository<School> schoolRepository, AppDbContext ctx, IRepository<Address> addressRepository)
         {
             _schoolRepository = schoolRepository;
-            _dbCtx = ctx;
+            _addressRepository = addressRepository;
         }
         public IActionResult OnGet(int id)
         {
-            School = _dbCtx.Schools.Find(id);
+            School = _schoolRepository.Get(id);
+            Address = _addressRepository.Get(School?.Id ?? 0);
             return Page();
         }
         public IActionResult OnPost()
         {
-            _dbCtx.Schools.Update(School);
-            _dbCtx.SaveChanges();
+            _schoolRepository.Update(School!);
+            _addressRepository.Update(Address);
             return RedirectToPage("List");
         }
     }
