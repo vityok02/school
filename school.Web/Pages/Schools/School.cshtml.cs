@@ -12,8 +12,8 @@ public class CurrentSchoolModel : PageModel
     public IEnumerable<School> Schools { get; private set; }
     public string Message { get; private set; } = "";
     public int Id { get; set; }
-    public School CurrentSchool { get; set; }
-    public Address Address { get; set; }
+    public School? CurrentSchool { get; set; }
+    public Address? Address { get; set; }
     public CurrentSchoolModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
     {
         _schoolRepository = schoolRepository;
@@ -22,9 +22,9 @@ public class CurrentSchoolModel : PageModel
 
     public void OnGet(int id)
     {
-        //CurrentSchool = Schools.Where(s => s.Id == id).SingleOrDefault();
-        CurrentSchool = _schoolRepository.GetAll().Where(s => s.Id == id).SingleOrDefault();
-        Address = _addressRepository.GetAll().Where(a => a.Id == CurrentSchool.Id).SingleOrDefault();
-        //Address = CurrentSchool.Address;
+        Response.Cookies.Append("SchoolId", id.ToString());
+
+        CurrentSchool = _schoolRepository.Get(id);
+        Address = _addressRepository.Get(CurrentSchool?.Id ?? 0);
     }
 }

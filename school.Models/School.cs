@@ -36,15 +36,15 @@ public class School : BaseEntity
             return (false, $"Floor {floor.Number} already exists");
         }
 
-        if (floor.Number < 0)
-        {
-            return (false, "*Floor`s number should be more than 0*");
-        }
+        //if (floor.Number < 0)
+        //{
+        //    return (false, "*Floor`s number should be more than 0*");
+        //}
 
-        if (floor.Number > 10)
-        {
-            return (false, "*Floor`s number shouldn`t be more than 10*");
-        }
+        //if (floor.Number > 10)
+        //{
+        //    return (false, "*Floor`s number shouldn`t be more than 10*");
+        //}
 
         Floors.Add(floor);
         return (true, null);

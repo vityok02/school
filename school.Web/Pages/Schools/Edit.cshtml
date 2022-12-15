@@ -9,7 +9,27 @@
     <table>
         <tr>
             <td>Name</td>
-            <td><input name="name" value="@Model.School.Name"/></td>
+            <td><input name="name" value="@Model.School!.Name"/></td>
+        </tr>
+        <tr>
+            <td>Country</td>
+            <td><input name="country" value="@Model.Address.Country"/></td>
+        </tr>
+        <tr>
+            <td>City</td>
+            <td><input name="city" value="@Model.Address.City"/></td>
+        </tr>
+        <tr>
+            <td>Street</td>
+            <td><input name="street" value="@Model.Address.Street"/></td>
+        </tr>
+        <tr>
+            <td>Postal code</td>
+            <td><input name="postalCode" value="@Model.Address.PostalCode"/></td>
+        </tr>
+        <tr>
+            <td>Opening date</td>
+            <td><input type="date" name="openingDate" value="@Model.Address.Country"/></td>
         </tr>
         <tr>
             <td><input type="submit" /></td>
