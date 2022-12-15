@@ -1,0 +1,18 @@
+﻿@page
+@model SchoolManagement.Web.Pages.Rooms.ListModel
+@{
+}
+
+<partial name="Sidebar" />
+
+<table>
+    @foreach(var room in ListModel.Rooms)
+    {
+        <tr>
+            <td><a asp-page="Details" asp-route-id="@room.Id">Room</a></td>
+            <td><input type="submit" value="Edit" asp-route-id="@room.Id"/></td>
+            <td><input type="submit" value="Delete" asp-route-id="@room.Id" asp-page-handler="Delete" /></td>
+        </tr>
+    }
+</table>
+<div><a asp-page="Add">Add</a></div>
