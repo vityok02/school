@@ -8,7 +8,7 @@ public class Room : BaseEntity
     {
 
     }
-    public Room(int number, RoomType type, Floor? floor = null)
+    public Room(int number, RoomType type, Floor floor)
     {
         Number = number;
         Type = type;
