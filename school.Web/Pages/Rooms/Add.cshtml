@@ -27,10 +27,9 @@
                 Room type
             </td>
             <td>
-                @foreach (var roomType in RoomFormModel.RoomTypes)
+                @foreach (var roomType in RoomTypeExt.RoomTypes)
                 {
                     <input type="checkbox" name="roomType"/>@roomType.Value<br />
-                    <label for="roomType"></label>
                 }
             </td>
         </tr>
