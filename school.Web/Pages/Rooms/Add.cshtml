@@ -8,14 +8,6 @@
     <table align="center">
         <tr>
             <td>
-                Floor number
-            </td>
-            <td>
-                <input type="number" name="floorNumber" />
-            </td>
-        </tr>
-        <tr>
-            <td>
                 Room number
             </td>
             <td>
@@ -24,13 +16,28 @@
         </tr>
         <tr>
             <td>
+                Floor
+            </td>
+            <td>
+                <select name="floorNumber">
+                    @foreach(var floor in RoomFormModel.Floors)
+                    {
+                        <option value="@floor.Number">@floor.Number</option>
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 Room type
             </td>
             <td>
-                @foreach (var type in RoomTypeExt.RoomTypes)
-                {
-                    <input type="checkbox" name="roomType" value="@type.Key"/>@type.Value<br />
-                }
+                <details>
+                    @foreach (var type in RoomTypeExt.RoomTypes)
+                    {
+                        <input type="checkbox" name="roomType" value="@type.Key"/>@type.Value<br />
+                    }
+                </details>
             </td>
         </tr>
     </table>
