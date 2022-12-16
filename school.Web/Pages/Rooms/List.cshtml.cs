@@ -19,9 +19,15 @@ namespace SchoolManagement.Web.Pages.Rooms
         public IEnumerable<Floor> Floors { get; set; }
         public void OnGet()
         {
-            SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
+            SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
             Floors = _floorRepository.GetAll(f => f.SchoolId == SchoolId);
             Rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == SchoolId);
+        }
+        public IActionResult OnPostDelete(int id)
+        {
+            var room = _roomRepository.Get(id);
+            _roomRepository.Delete(room);
+            return RedirectToPage("List");
         }
     }
 }
