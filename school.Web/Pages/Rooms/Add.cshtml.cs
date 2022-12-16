@@ -9,24 +9,28 @@ namespace SchoolManagement.Web.Pages.Rooms;
 
 public class RoomFormModel : PageModel
 {
-    AppDbContext _dbContext;
-    public readonly IRepository<School> _schoolRepository;
+    private readonly IRepository<School> _schoolRepository;
+    private readonly IRepository<Floor> _floorRepository;
+    private readonly IRepository<Room> _roomRepository;
     public IEnumerable<School> Schools { get; private set; }
     public string Message { get; private set; } = "";
-    public RoomFormModel(IRepository<School> schoolRepository, AppDbContext db)
+    public static IDictionary<int, string> RoomTypes { get; private set; }
+    public RoomFormModel(IRepository<School> schoolRepository, AppDbContext db, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
     {
         _schoolRepository = schoolRepository;
-        _dbContext = db;
+        _floorRepository = floorRepository;
+        _roomRepository = roomRepository;
     }
     public void OnGet()
     {
         Schools = _schoolRepository.GetAll();
+        RoomTypes = (IDictionary<int, string>)RoomTypeExt.RoomTypes;
     }
     public IActionResult OnPost(int id, int roomNumber, RoomType roomType, int floorNumber)
     {
-        var currentFloor = _dbContext.Floors
-            .Where(f => f.SchoolId == id && f.Number == floorNumber)
-            .Include(f => f.Rooms)
+        var SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
+        var currentFloor = _floorRepository.GetAll()
+            .Where(f => f.SchoolId == SchoolId && f.Number == floorNumber)
             .SingleOrDefault();
 
         if (currentFloor is null)
@@ -35,13 +39,7 @@ public class RoomFormModel : PageModel
             return Page();
         }
 
-        var (valid, error) = currentFloor.AddRoom(new Room(roomNumber, roomType));
-        if (!valid)
-        {
-            Message = error!;
-            return Page();
-        }
-        _dbContext.SaveChanges();
-        return Redirect($"/school/{id}");
+        _roomRepository.Add(new Room(roomNumber, roomType, currentFloor));
+        return RedirectToPage("List");
     }
 }

@@ -1,5 +1,6 @@
-﻿@page ""
+﻿@page "add"
 @model             RoomFormModel
+@using SchoolManagement.Models;
 @{
 }
 
@@ -26,7 +27,11 @@
                 Room type
             </td>
             <td>
-                <input type="number" name="roomType" />
+                @foreach (var roomType in RoomFormModel.RoomTypes)
+                {
+                    <input type="checkbox" name="roomType"/>@roomType.Value<br />
+                    <label for="roomType"></label>
+                }
             </td>
         </tr>
     </table>
