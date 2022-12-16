@@ -7,7 +7,7 @@
 
 <h1 align="center">Floors</h1>
 <table align="center">
-    @foreach(var floor in FloorListModel.Floors)
+    @foreach(var floor in FloorListModel.Floors.Reverse())
     {
         <tr>
             <td><a asp-page="Floor">
