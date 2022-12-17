@@ -9,7 +9,7 @@
     @foreach(var emp in ListModel.Employees!)
     {
     <tr>
-        <td><a asp-page="Details">@emp.FirstName @emp.LastName</a></td>
+        <td><a asp-page="Details" asp-route-id="@emp.Id">@emp.FirstName @emp.LastName</a></td>
     </tr>
     }
 </table>
