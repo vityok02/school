@@ -1,0 +1,22 @@
+﻿@page "/employees/{id}/edit"
+@model SchoolManagement.Web.Pages.Employees.EditModel
+@{
+}
+
+<form method="post">
+    <table>
+        <tr>
+            <td>Name: </td>
+            <td><input value="@Model.Employee.FirstName" name="FirstName"/></td>
+        </tr>
+        <tr>
+            <td>Surname: </td>
+            <td><input value="@Model.Employee.LastName" name="LastName" /></td>
+        </tr>
+        <tr>
+            <td>Age: </td>
+            <td><input value="@Model.Employee.Age" name="Age" /></td>
+        </tr>
+    </table>
+    <input type="submit" value="Submit" />
+</form>
