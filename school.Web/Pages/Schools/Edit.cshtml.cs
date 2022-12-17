@@ -28,7 +28,7 @@ namespace SchoolManagement.Web.Pages.Schools
         public IActionResult OnPost()
         {
             _schoolRepository.Update(School!);
-            _addressRepository.Update(Address);
+            _addressRepository.Update(Address!);
             return RedirectToPage("List");
         }
     }
