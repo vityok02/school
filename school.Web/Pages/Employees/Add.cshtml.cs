@@ -39,6 +39,6 @@ public class EmployeeFormModel : PageModel
         _employeeRepository.SaveChanges();
         //_employeeRepository.Add(employee!);
 
-        return Redirect("List");
+        return RedirectToPage("List");
     }
 }
