@@ -1,4 +1,37 @@
 ﻿@page "/rooms/{id}/edit"
+@using SchoolManagement.Models;
 @model SchoolManagement.Web.Pages.Rooms.EditModel
 @{
 }
+
+<form method="post">
+    <table>
+        <tr>
+            <td>Number: </td>
+            <td><input name="Number" value="@Model.Room!.Number"/></td>
+        </tr>
+        <tr>
+            <td>Floor: </td>
+            <td>
+                <select name="floorNumber">
+                    @foreach(var floor in EditModel.Floors!)
+                    {
+                        <option value="@floor.Number">@floor.Number</option>
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Type: </td>
+            <td>
+                <details>
+                    @foreach (var type in RoomTypeExt.RoomTypes)
+                    {
+                        <input type="checkbox" name="RoomType" value="@type.Key" />@type.Value<br />
+                    }
+                </details>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Submit"/>
+</form>
