@@ -1,0 +1,14 @@
+﻿@page "/employees"
+@model SchoolManagement.Web.Pages.Employees.ListModel
+@{
+}
+
+<table>
+    @foreach(var emp in ListModel.Employees!)
+    {
+    <tr>
+        <td><a asp-page="Details">@emp.FirstName @emp.LastName</a></td>
+    </tr>
+    }
+</table>
+<div><a asp-page="Add">Add</a></div>
