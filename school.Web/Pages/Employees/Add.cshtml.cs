@@ -35,7 +35,12 @@ public class EmployeeFormModel : PageModel
         {
             employee = new Teacher(firstName, lastName, age);
         }
-        var (valid, error) = school.AddEmployee(employee);
+        var (valid, error) = school!.AddEmployee(employee!);
+        if (!valid)
+        {
+            Message = error!;
+            return Page();
+        }
         _employeeRepository.SaveChanges();
         //_employeeRepository.Add(employee!);
 
