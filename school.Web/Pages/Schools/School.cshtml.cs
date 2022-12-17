@@ -11,7 +11,6 @@ public class CurrentSchoolModel : PageModel
     private readonly IRepository<Address> _addressRepository;
     public IEnumerable<School> Schools { get; private set; }
     public string Message { get; private set; } = "";
-    public int Id { get; set; }
     public School? CurrentSchool { get; set; }
     public Address? Address { get; set; }
     public CurrentSchoolModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
