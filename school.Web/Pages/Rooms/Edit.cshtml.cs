@@ -14,7 +14,7 @@ namespace SchoolManagement.Web.Pages.Rooms
         [BindProperty]
         public static IEnumerable<Floor>? Floors { get; set; }
         [BindProperty]
-        public Floor Floor { get; set; }
+        public Floor? Floor { get; set; }
         public EditModel(IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
         {
             _roomRepository = roomRepository;
@@ -28,12 +28,8 @@ namespace SchoolManagement.Web.Pages.Rooms
             Floors = _floorRepository.GetAll().Where(f => f.SchoolId == schoolId);
             return Page();
         }
-        public IActionResult OnPost(int roomNumber, int floorNumber, RoomType roomType)
+        public IActionResult OnPost()
         {
-            var schoolId = int.Parse(HttpContext.Request.Cookies["schoolId"]!);
-            Floor = _floorRepository.GetAll()
-            .Where(f => f.SchoolId == schoolId && f.Number == floorNumber)
-            .SingleOrDefault();
             _roomRepository.Update(Room!);
             return RedirectToPage("List");
         }

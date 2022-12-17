@@ -7,20 +7,16 @@
 <form method="post">
     <table align="center">
         <tr>
-            <td>
-                Number
-            </td>
+            <td>Number</td>
             <td>
                 <input type="number" name="roomNumber" />
             </td>
         </tr>
         <tr>
-            <td>
-                Floor
-            </td>
+            <td>Floor</td>
             <td>
                 <select name="floorNumber">
-                    @foreach(var floor in RoomFormModel.Floors)
+                    @foreach(var floor in RoomFormModel.Floors!)
                     {
                         <option value="@floor.Number">@floor.Number</option>
                     }
@@ -28,9 +24,7 @@
             </td>
         </tr>
         <tr>
-            <td>
-                Type
-            </td>
+            <td>Type</td>
             <td>
                 <details>
                     @foreach (var type in RoomTypeExt.RoomTypes)
@@ -41,7 +35,6 @@
             </td>
         </tr>
     </table>
-    <div class="error" align="center">@Model.Message</div>
     <div align="center">
         <input type="submit" value="Submit" />
         <input type="reset" value="Reset" />

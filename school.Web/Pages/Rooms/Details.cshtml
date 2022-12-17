@@ -1,4 +1,4 @@
-﻿@page "/rooms/{id}/details"
+﻿@page "/rooms/{id}"
 @model SchoolManagement.Web.Pages.Rooms.DetailsModel
 @{
 }
@@ -16,7 +16,7 @@
     </tr>
     <tr>
         <td>Floor: </td>
-        <td>@Model.Floor.Number</td>
+        <td>@Model.Floor!.Number</td>
     </tr>
 </table>
 <div><a asp-page="Edit" asp-route-id="@Model.Room.Id">Edit</a></div>

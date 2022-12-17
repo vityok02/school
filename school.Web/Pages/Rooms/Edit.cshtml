@@ -13,10 +13,10 @@
         <tr>
             <td>Floor: </td>
             <td>
-                <select name="floorNumber">
+                <select name="Floor">
                     @foreach(var floor in EditModel.Floors!)
                     {
-                        <option value="@floor.Number">@floor.Number</option>
+                        <option value="@floor">@floor.Number</option>
                     }
                 </select>
             </td>
@@ -27,7 +27,7 @@
                 <details>
                     @foreach (var type in RoomTypeExt.RoomTypes)
                     {
-                        <input type="checkbox" name="RoomType" value="@type.Key" />@type.Value<br />
+                        <input type="checkbox" name="Type" value="@type.Key" />@type.Value<br />
                     }
                 </details>
             </td>

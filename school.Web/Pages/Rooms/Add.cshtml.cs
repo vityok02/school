@@ -12,9 +12,8 @@ public class RoomFormModel : PageModel
     private readonly IRepository<School> _schoolRepository;
     private readonly IRepository<Floor> _floorRepository;
     private readonly IRepository<Room> _roomRepository;
-    public IEnumerable<School> Schools { get; private set; }
-    public static IEnumerable<Floor> Floors { get; private set; }
-    public string Message { get; private set; } = "";
+    public IEnumerable<School>? Schools { get; private set; }
+    public static IEnumerable<Floor>? Floors { get; private set; }
     public RoomFormModel(IRepository<School> schoolRepository, AppDbContext db, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
     {
         _schoolRepository = schoolRepository;
@@ -34,13 +33,7 @@ public class RoomFormModel : PageModel
             .Where(f => f.SchoolId == SchoolId && f.Number == floorNumber)
             .SingleOrDefault();
 
-        if (floor is null)
-        {
-            Message = $"Floor {floorNumber} does not exists";
-            return Page();
-        }
-
-        _roomRepository.Add(new Room(roomNumber, roomType, floor));
+        _roomRepository.Add(new Room(roomNumber, roomType, floor!));
         return RedirectToPage("List");
     }
 }

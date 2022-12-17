@@ -14,7 +14,7 @@ namespace SchoolManagement.Web.Pages.Schools
         public School? School { get; set; }
         [BindProperty]
         public Address? Address { get; set; }
-        public EditModel(IRepository<School> schoolRepository, AppDbContext ctx, IRepository<Address> addressRepository)
+        public EditModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
         {
             _schoolRepository = schoolRepository;
             _addressRepository = addressRepository;

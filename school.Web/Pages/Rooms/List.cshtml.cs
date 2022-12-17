@@ -14,9 +14,9 @@ namespace SchoolManagement.Web.Pages.Rooms
             _roomRepository = roomRepository;
             _floorRepository = floorRepository;
         }
-        public static IEnumerable<Room> Rooms { get; private set; }
-        public int SchoolId { get; set; }
-        public IEnumerable<Floor> Floors { get; set; }
+        public static IEnumerable<Room>? Rooms { get; private set; }
+        public int? SchoolId { get; set; }
+        public IEnumerable<Floor>? Floors { get; set; }
         public void OnGet()
         {
             SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
