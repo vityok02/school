@@ -1,4 +1,4 @@
-﻿@page "/employeeform/{id}"
+﻿@page "/employees/add"
 @model EmployeeFormModel
 @{
 }
@@ -6,33 +6,25 @@
 <form method="post">
     <table align="center">
         <tr>
-            <td>
-                First name
-            </td>
+            <td>First name</td>
             <td>
                 <input type="text" maxlength="30" required name="firstName"/>
             </td>
         </tr>
         <tr>
-            <td>
-                Last Name
-            </td>
+            <td>Last Name</td>
             <td>
                 <input type="text" maxlength="30" required name="lastName"/>
             </td>
         </tr>
         <tr>
-            <td>
-                Age
-            </td>
+            <td>Age</td>
             <td>
                 <input type="number" required name="age"/>
             </td>
         </tr>
         <tr>
-            <td>
-                Type
-            </td>
+            <td>Type</td>
             <td>
                 <input type="text" name="type"/>
             </td>
