@@ -4,6 +4,9 @@ namespace SchoolManagement.Models;
 
 public class Room : BaseEntity
 {
+    public int Number { get; set; }
+    public RoomType Type { get; set; }
+    public Floor Floor { get; set; }
     public Room()
     {
 
@@ -15,9 +18,6 @@ public class Room : BaseEntity
         Floor = floor;
     }
 
-    public int Number { get; set; }
-    public RoomType Type { get; set; }
-    public Floor Floor { get; set; }
 
     public override string ToString()
     {
