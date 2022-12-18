@@ -26,12 +26,18 @@ public class RoomFormModel : PageModel
         Schools = _schoolRepository.GetAll();
         Floors = _floorRepository.GetAll().Where(f => f.SchoolId == schoolId);
     }
-    public IActionResult OnPost(int id, int roomNumber, int floorNumber, RoomType roomType)
+    public IActionResult OnPost(int id, int roomNumber, int floorNumber, RoomType[] roomTypes)
     {
         var SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
         var floor = _floorRepository.GetAll()
             .Where(f => f.SchoolId == SchoolId && f.Number == floorNumber)
             .SingleOrDefault();
+
+        RoomType roomType = 0;
+        foreach (var rt in roomTypes)
+        {
+            roomType |= rt;
+        }
 
         _roomRepository.Add(new Room(roomNumber, roomType, floor!));
         return RedirectToPage("List");

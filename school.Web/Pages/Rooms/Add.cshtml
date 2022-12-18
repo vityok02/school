@@ -7,13 +7,13 @@
 <form method="post">
     <table align="center">
         <tr>
-            <td>Number</td>
+            <td>Number: </td>
             <td>
                 <input type="number" name="roomNumber" />
             </td>
         </tr>
         <tr>
-            <td>Floor</td>
+            <td>Floor: </td>
             <td>
                 <select name="floorNumber">
                     @foreach(var floor in RoomFormModel.Floors!)
@@ -24,12 +24,14 @@
             </td>
         </tr>
         <tr>
-            <td>Type</td>
+            <td>Type: </td>
             <td>
                 <details>
                     @foreach (var type in RoomTypeExt.RoomTypes)
                     {
-                        <input type="checkbox" name="roomType" value="@type.Key"/>@type.Value<br />
+                        <input name="roomTypes[]" type="checkbox" value="@type.Key" />
+                        @type.Value
+                        <br />
                     }
                 </details>
             </td>
