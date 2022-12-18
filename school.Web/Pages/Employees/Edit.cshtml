@@ -3,20 +3,34 @@
 @{
 }
 
+<partial name="Sidebar" />
+
 <form method="post">
     <table>
         <tr>
             <td>Name: </td>
-            <td><input value="@Model.Employee.FirstName" name="FirstName"/></td>
+            <td><input type="text" value="@Model.Employee.FirstName" name="firstName" @*asp-for="Employee.FirstName"*@/></td>
         </tr>
         <tr>
             <td>Surname: </td>
-            <td><input value="@Model.Employee.LastName" name="LastName" /></td>
+            <td><input value="@Model.Employee.LastName" name="lastName"/></td>
         </tr>
         <tr>
             <td>Age: </td>
-            <td><input value="@Model.Employee.Age" name="Age" /></td>
+            <td><input value="@Model.Employee.Age" name="age"/></td>
         </tr>
+@*        <tr>
+            <td>Type: </td>
+            <td>
+                <select asp-for="Employee.Job">
+                    @foreach(var type in Model.Employee.Job)
+                    {
+                        <option value="@Model."></option>    
+                    }
+                </select>
+            </td>
+        </tr>*@
     </table>
+    <input type="hidden" asp-for="Employee.Id" />
     <input type="submit" value="Submit" />
 </form>

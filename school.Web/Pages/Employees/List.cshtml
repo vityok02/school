@@ -10,6 +10,9 @@
     {
     <tr>
         <td><a asp-page="Details" asp-route-id="@emp.Id">@emp.FirstName @emp.LastName</a></td>
+        <form method="post">
+            <td><input type="submit" asp-route-id="@emp.Id" asp-page-handler="delete" value="Delete"/></td>
+        </form>
     </tr>
     }
 </table>

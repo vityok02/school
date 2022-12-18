@@ -25,6 +25,7 @@ public class EmployeeFormModel : PageModel
     {
         var schoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
         var school = _schoolRepository.Get(schoolId);
+        var employees = _employeeRepository.GetAll(e => e.Id == schoolId);
 
         Employee? employee = null;
         if(type == "Director")
@@ -35,13 +36,15 @@ public class EmployeeFormModel : PageModel
         {
             employee = new Teacher(firstName, lastName, age);
         }
-        var (valid, error) = school!.AddEmployee(employee!);
-        if (!valid)
-        {
-            Message = error!;
-            return Page();
-        }
-        _employeeRepository.SaveChanges();
+        employee.School = school;
+        _employeeRepository.Add(employee);
+        //var (valid, error) = school!.AddEmployee(employee!);
+        //if (!valid)
+        //{
+        //    Message = error!;
+        //    return Page();
+        //}
+        //_employeeRepository.SaveChanges();
         //_employeeRepository.Add(employee!);
 
         return RedirectToPage("List");

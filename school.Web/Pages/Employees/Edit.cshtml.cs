@@ -8,8 +8,7 @@ namespace SchoolManagement.Web.Pages.Employees
     public class EditModel : PageModel
     {
         private readonly IRepository<Employee> _employeeRepository;
-        [BindProperty]
-        public Employee Employee { get; set; }
+        public Employee? Employee { get; set; }
         public EditModel(IRepository<Employee> employeeRepository)
         {
             _employeeRepository = employeeRepository;
@@ -20,10 +19,18 @@ namespace SchoolManagement.Web.Pages.Employees
             Employee = _employeeRepository.Get(id)!;
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPost(int id, string firstName, string lastName, int age)
         {
-            _employeeRepository.Update(Employee);
-            return RedirectToPage("Details");
+            var employee = _employeeRepository.Get(id);
+            if (employee == null) 
+            {
+                return NotFound("Employee is not found");
+            }
+
+            employee.UpdateInfo(firstName, lastName, age);
+
+            _employeeRepository.Update(employee);
+            return Redirect($"/employees/{id}");
         }
     }
 }

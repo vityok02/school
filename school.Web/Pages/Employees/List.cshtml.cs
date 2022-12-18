@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -14,10 +15,22 @@ namespace SchoolManagement.Web.Pages.Employees
             _employeeRepository = employeeRepository;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            var schoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
+            if (!int.TryParse(HttpContext.Request.Cookies["SchoolId"], out int schoolId))
+            {
+                return NotFound("School id is not found");
+            }
             Employees = _employeeRepository.GetAll().Where(e => e.SchoolId == schoolId);
+            return Page();
+        }
+
+        public IActionResult OnPostDelete(int id)
+        {
+            var employee = _employeeRepository.Get(id);
+            _employeeRepository.Delete(employee!);
+
+            return RedirectToPage("List");
         }
     }
 }
