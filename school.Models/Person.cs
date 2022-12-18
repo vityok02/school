@@ -2,9 +2,9 @@
 
 public abstract class Person : BaseEntity
 {
-    public string FirstName { get; }
-    public string LastName { get; }
-    public int Age { get; }
+    public string FirstName { get; private set; }
+    public string LastName { get; private set; }
+    public int Age { get; private set; }
 
     protected Person()
     {
@@ -15,6 +15,12 @@ public abstract class Person : BaseEntity
         FirstName = firstName;
         LastName = lastName;
         Age = age;
+    }
 
+    public void UpdateInfo(string firstName, string lastName, int age)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Age = age;
     }
 }
