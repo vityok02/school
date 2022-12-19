@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/students/add"
 @model             StudentFormModel
 @{
 }
@@ -26,7 +26,7 @@
                 Age
             </td>
             <td>
-                <input type="number" required name="age"/>
+                <input type="number" required name="age" min="5" max="18"/>
             </td>
         </tr>
         <tr>

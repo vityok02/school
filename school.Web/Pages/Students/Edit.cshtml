@@ -1,0 +1,30 @@
+﻿@page "/students/{id}/edit"
+@model SchoolManagement.Web.Pages.Students.EditModel
+@{
+}
+
+<partial name="Sidebar" />
+
+<form method="post">
+    <table>
+        <tr>
+            <td>Name: </td>
+            <td><input type="text" value="@Model.Student!.FirstName" name="firstName" /></td>
+        </tr>
+        <tr>
+            <td>Surname: </td>
+            <td><input value="@Model.Student.LastName" name="lastName"/></td>
+        </tr>
+        <tr>
+            <td>Age: </td>
+            <td><input value="@Model.Student.Age" min="5" max="18" name="age"/></td>
+        </tr>
+        <tr>
+            <td>Group: </td>
+            <td><input value="@Model.Student.Group" name="group"</td>
+        </tr>
+    </table>
+    <div class="error">@Model.Message</div>
+    <input type="hidden" asp-for="Student!.Id" />
+    <input type="submit" value="Submit" />
+</form>
