@@ -1,0 +1,24 @@
+﻿@page "/students"
+@model SchoolManagement.Web.Pages.Students.ListModel
+@{
+    if(!Model.Students!.Any())
+    {
+        <h2>List of students is empty</h2>
+    }
+}
+
+<partial name="Sidebar" />
+
+<table>
+    @foreach(var student in Model.Students!)
+    {
+        <tr>
+            <td><a asp-page="Details" asp-route-id="@student.Id">@student.FirstName @student.LastName</a></td>
+            <td>@student.Group</td>
+            <form method="post">
+                <td><input type="submit" asp-route-id="@student.Id" asp-page-handler="delete" value="Delete"/></td>
+            </form>
+        </tr>
+    }
+</table>
+<div><a asp-page="Add">Add</a></div>

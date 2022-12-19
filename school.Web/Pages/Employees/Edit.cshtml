@@ -17,7 +17,7 @@
         </tr>
         <tr>
             <td>Age: </td>
-            <td><input value="@Model.Employee.Age" name="age"/></td>
+            <td><input value="@Model.Employee.Age" min="18" max="65" name="age"/></td>
         </tr>
     </table>
     <div class="error">@Model.Message</div>
