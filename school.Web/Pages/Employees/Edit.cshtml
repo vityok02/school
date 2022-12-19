@@ -1,0 +1,26 @@
+﻿@page "/employees/{id}/edit"
+@model SchoolManagement.Web.Pages.Employees.EditModel
+@{
+}
+
+<partial name="Sidebar" />
+
+<form method="post">
+    <table>
+        <tr>
+            <td>Name: </td>
+            <td><input type="text" value="@Model.Employee!.FirstName" name="firstName" /></td>
+        </tr>
+        <tr>
+            <td>Surname: </td>
+            <td><input value="@Model.Employee.LastName" name="lastName"/></td>
+        </tr>
+        <tr>
+            <td>Age: </td>
+            <td><input value="@Model.Employee.Age" name="age"/></td>
+        </tr>
+    </table>
+    <div class="error">@Model.Message</div>
+    <input type="hidden" asp-for="Employee!.Id" />
+    <input type="submit" value="Submit" />
+</form>

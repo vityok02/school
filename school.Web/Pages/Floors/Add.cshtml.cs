@@ -29,6 +29,7 @@ public class FloorFormModel : PageModel
             .Include(s => s.Floors)
             .SingleOrDefault();
         Floor floor = new(number);
+
         var (valid, error) = currentSchool!.AddFloor(floor);
         if (!valid)
         {

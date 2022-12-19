@@ -1,0 +1,26 @@
+﻿@page "/employees/{id}"
+@model SchoolManagement.Web.Pages.Employees.DetailsModel
+@{
+}
+
+<partial name="Sidebar" />
+
+<table>
+    <tr>
+        <td>Name: </td>
+        <td>@Model.Employee!.FirstName</td>
+    </tr>
+    <tr>
+        <td>Surname: </td>
+        <td>@Model.Employee!.LastName</td>
+    </tr>
+    <tr>
+        <td>Age: </td>
+        <td>@Model.Employee!.Age</td>
+    </tr>
+    <tr>
+        <td>Type: </td>
+        <td>@Model.Employee.Job</td>
+    </tr>
+</table>
+<div><a asp-page="Edit" asp-route-id="@Model.Employee.Id">Edit</a></div>

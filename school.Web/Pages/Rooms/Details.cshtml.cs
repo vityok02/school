@@ -21,8 +21,9 @@ namespace SchoolManagement.Web.Pages.Rooms
 
         public void OnGet(int id)
         {
+            var schoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
             Room = _roomRepository.Get(id);
-            Floor = _floorRepository.GetAll().Where(f => f.Number == Room.Floor.Number).SingleOrDefault();
+            Floor = _floorRepository.GetAll().Where(f => f.Number == Room.Floor.Number && f.SchoolId == schoolId).SingleOrDefault();
         }
     }
 }
