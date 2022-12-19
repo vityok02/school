@@ -2,7 +2,8 @@
 
 public class Student : Person
 {
-    public string Group { get; }
+    public int SchoolId { get; set; }
+    public string Group { get; private set; }
     public School School { get; set; }
 
     public Student() 
@@ -14,6 +15,12 @@ public class Student : Person
     {
         Group = group;
     }
+    public void UpdateInfo(string firstName, string lastName, int age, string group)
+    {
+        UpdateInfo(firstName, lastName, age);
+        Group = group;
+    }
+
     public override string ToString()
     {
         return $"{LastName} {FirstName} {Age} group: {Group}";
