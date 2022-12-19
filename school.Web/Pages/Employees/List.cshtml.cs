@@ -10,6 +10,7 @@ namespace SchoolManagement.Web.Pages.Employees
     {
         private readonly IRepository<Employee> _employeeRepository;
         public static IEnumerable<Employee>? Employees { get; set; }
+        public string Message { get; set; } = "";
         public ListModel(IRepository<Employee> employeeRepository)
         {
             _employeeRepository = employeeRepository;
@@ -17,17 +18,26 @@ namespace SchoolManagement.Web.Pages.Employees
 
         public IActionResult OnGet()
         {
-            if (!int.TryParse(HttpContext.Request.Cookies["SchoolId"], out int schoolId))
+            var sId = HttpContext.Request.Cookies["SchoolId"];
+            if (!int.TryParse(sId, out int schoolId) || sId is null)
             {
-                return NotFound("School id is not found");
+                return NotFound("School id not found");
             }
+
             Employees = _employeeRepository.GetAll().Where(e => e.SchoolId == schoolId);
+
             return Page();
         }
 
         public IActionResult OnPostDelete(int id)
         {
             var employee = _employeeRepository.Get(id);
+
+            if (employee is null)
+            {
+                return NotFound("Employee not found");
+            }
+
             _employeeRepository.Delete(employee!);
 
             return RedirectToPage("List");

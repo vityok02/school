@@ -14,9 +14,15 @@ namespace SchoolManagement.Web.Pages.Employees
             _employeeRepository = employeeRepository;
         }
 
-        public void OnGet(int id)
+        public IActionResult OnGet(int id)
         {
             Employee = _employeeRepository.Get(id);
+
+            if (Employee == null)
+            {
+                return NotFound("Employee not found");
+            }
+            return Page();
         }
     }
 }

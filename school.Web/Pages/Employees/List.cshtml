@@ -1,6 +1,10 @@
 ﻿@page "/employees"
 @model SchoolManagement.Web.Pages.Employees.ListModel
 @{
+    if(!ListModel.Employees!.Any())
+    {
+        <h2>List of Employee is empty</h2>
+    }
 }
 
 <partial name="Sidebar" />
@@ -10,6 +14,7 @@
     {
     <tr>
         <td><a asp-page="Details" asp-route-id="@emp.Id">@emp.FirstName @emp.LastName</a></td>
+        <td>@emp.Job</td>
         <form method="post">
             <td><input type="submit" asp-route-id="@emp.Id" asp-page-handler="delete" value="Delete"/></td>
         </form>

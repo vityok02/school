@@ -9,23 +9,48 @@ namespace SchoolManagement.Web.Pages.Employees
     {
         private readonly IRepository<Employee> _employeeRepository;
         public Employee? Employee { get; set; }
+        public string Message { get; set; } = "";
         public EditModel(IRepository<Employee> employeeRepository)
         {
             _employeeRepository = employeeRepository;
         }
 
-        public void OnGet(int id)
+        public IActionResult OnGet(int id)
         {
             Employee = _employeeRepository.Get(id)!;
+
+            if (Employee is null)
+            {
+                return NotFound("Employee not found");
+            }
+
+            return Page();
         }
 
         public IActionResult OnPost(int id, string firstName, string lastName, int age)
         {
+            var sId = HttpContext.Request.Cookies["SchoolId"];
+            if (sId is null || !int.TryParse(sId, out int schoolId))
+            {
+                return NotFound("School not found");
+            }
+
+            var employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId);
+
             var employee = _employeeRepository.Get(id);
-            if (employee == null) 
+
+            if (employee is null) 
             {
                 return NotFound("Employee is not found");
             }
+
+            //if(employees.Any(emp => emp.FirstName == firstName 
+            //    && emp.LastName == lastName 
+            //    && emp.Age == age))
+            //{
+            //    Message = "Such employee already exist";
+            //    return Page();
+            //}
 
             employee.UpdateInfo(firstName, lastName, age);
 
