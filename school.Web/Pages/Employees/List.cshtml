@@ -3,7 +3,7 @@
 @{
     if(!ListModel.Employees!.Any())
     {
-        <h2>List of Employee is empty</h2>
+        <h2>List of employees is empty</h2>
     }
 }
 
@@ -12,13 +12,13 @@
 <table>
     @foreach(var emp in ListModel.Employees!)
     {
-    <tr>
-        <td><a asp-page="Details" asp-route-id="@emp.Id">@emp.FirstName @emp.LastName</a></td>
-        <td>@emp.Job</td>
-        <form method="post">
-            <td><input type="submit" asp-route-id="@emp.Id" asp-page-handler="delete" value="Delete"/></td>
-        </form>
-    </tr>
+        <tr>
+            <td><a asp-page="Details" asp-route-id="@emp.Id">@emp.FirstName @emp.LastName</a></td>
+            <td>@emp.Job</td>
+            <form method="post">
+                <td><input type="submit" asp-route-id="@emp.Id" asp-page-handler="delete" value="Delete"/></td>
+            </form>
+        </tr>
     }
 </table>
 <div><a asp-page="Add">Add</a></div>
