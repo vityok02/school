@@ -23,20 +23,42 @@ public class EmployeeFormModel : PageModel
     }
     public IActionResult OnPost(string firstName, string lastName, int age, string type)
     {
-        var schoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
+        var sId = HttpContext.Request.Cookies["SchoolId"];
+        if(sId is null || !int.TryParse(sId, out int schoolId))
+        {
+            return NotFound("School not found");
+        }
+
         var school = _schoolRepository.Get(schoolId);
-        var employees = _employeeRepository.GetAll(e => e.Id == schoolId);
+        var employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId);
 
         Employee? employee = null;
+
+        if (employees.Any(e => e.FirstName == firstName 
+            && e.LastName == lastName
+            && e.Age == age))
+        {
+            Message = "Such employee already exists";
+            return Page();
+        }
+
         if(type == "Director")
         {
             employee = new Director(firstName, lastName, age);
+
+            if(employee is not null)
+            {
+                Message = "Director already exist";
+                return Page();
+            }
         }
         if(type == "Teacher")
         {
             employee = new Teacher(firstName, lastName, age);
         }
-        employee.School = school;
+
+        employee!.School = school!;
+
         _employeeRepository.Add(employee);
         //var (valid, error) = school!.AddEmployee(employee!);
         //if (!valid)
