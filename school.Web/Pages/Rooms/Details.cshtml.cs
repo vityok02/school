@@ -19,11 +19,22 @@ namespace SchoolManagement.Web.Pages.Rooms
             _floorRepository = floorRepository;
         }
 
-        public void OnGet(int id)
+        public IActionResult OnGet(int id)
         {
-            var schoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
+            var sId = HttpContext.Request.Cookies["SchoolId"];
+            if (!int.TryParse(sId, out int schoolId))
+            {
+                return NotFound("School not found");
+            }
+
             Room = _roomRepository.Get(id);
+            if (Room is null)
+            {
+                return NotFound("Room not found");
+            }
+
             Floor = _floorRepository.GetAll().Where(f => f.Number == Room.Floor.Number && f.SchoolId == schoolId).SingleOrDefault();
+            return Page();
         }
     }
 }

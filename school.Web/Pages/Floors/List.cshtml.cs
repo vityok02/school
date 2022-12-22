@@ -8,15 +8,17 @@ namespace SchoolManagement.Web.Pages.Floors;
 
 public class FloorListModel : PageModel
 {
+    private readonly IRepository<Room> _roomsRepository;
     private readonly IRepository<Floor> _floorRepository;
     private readonly IRepository<School> _schoolRepository;
     public School? School { get; set; }
     public IEnumerable<Floor>? Floors { get; private set; }
 
-    public FloorListModel(IRepository<Floor> floorRepository, IRepository<School> schoolRepository)
+    public FloorListModel(IRepository<Floor> floorRepository, IRepository<School> schoolRepository, IRepository<Room> roomsRepository)
     {
         _floorRepository = floorRepository;
         _schoolRepository = schoolRepository;
+        _roomsRepository = roomsRepository;
     }
 
     public IActionResult OnGet()
