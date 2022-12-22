@@ -56,6 +56,12 @@ public class RoomFormModel : PageModel
             roomType |= rt;
         }
 
+        if (roomType == 0)
+        {
+            Message = "Choose room type";
+            return Page();
+        }
+
         _roomRepository.Add(new Room(roomNumber, roomType, floor!));
         return RedirectToPage("List");
     }

@@ -28,7 +28,7 @@
                 <details>
                     @foreach (var type in RoomTypeExt.RoomTypes)
                     {
-                        <input name="roomTypes[]" type="checkbox" value="@type.Key" checked="@Model.Room.Type.HasFlag((RoomType)type.Key)" />
+                        <input name="roomTypes[]" type="checkbox" value="@type.Key" checked="@Model.Room!.Type.HasFlag((RoomType)type.Key)" />
                         @type.Value
                         <br />
                     }

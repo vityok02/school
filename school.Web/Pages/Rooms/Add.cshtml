@@ -9,13 +9,13 @@
         <tr>
             <td>Number: </td>
             <td>
-                <input type="number" name="roomNumber" />
+                <input type="number" required name="roomNumber"/>
             </td>
         </tr>
         <tr>
             <td>Floor: </td>
             <td>
-                <select name="floorNumber">
+                <select name="floorNumber" required>
                     @foreach(var floor in RoomFormModel.Floors!)
                     {
                         <option value="@floor.Number">@floor.Number</option>

@@ -33,7 +33,7 @@ namespace SchoolManagement.Web.Pages.Rooms
                 return NotFound("Room not found");
             }
 
-            Floor = _floorRepository.GetAll().Where(f => f.Number == Room.Floor.Number && f.SchoolId == schoolId).SingleOrDefault();
+            Floor = _floorRepository.GetAll().Where(f => f.Id == Room.Floor.Id).SingleOrDefault();
             return Page();
         }
     }
