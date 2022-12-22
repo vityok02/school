@@ -9,23 +9,32 @@ namespace SchoolManagement.Web.Pages.Rooms
     {
         private readonly IRepository<Room> _roomRepository;
         private readonly IRepository<Floor> _floorRepository;
+        public IEnumerable<Room>? Rooms { get; private set; }
+        public IEnumerable<Floor>? Floors { get; set; }
         public ListModel(IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
         {
             _roomRepository = roomRepository;
             _floorRepository = floorRepository;
         }
-        public static IEnumerable<Room>? Rooms { get; private set; }
-        public int? SchoolId { get; set; }
-        public IEnumerable<Floor>? Floors { get; set; }
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
-            Floors = _floorRepository.GetAll(f => f.SchoolId == SchoolId);
-            Rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == SchoolId);
+            var sId = HttpContext.Request.Cookies["SchoolId"];
+            if (!int.TryParse(sId, out int schoolId) || sId is null)
+            {
+                return NotFound("Room not found");
+            }
+
+            Rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId);
+            return Page();
         }
         public IActionResult OnPostDelete(int id)
         {
             var room = _roomRepository.Get(id);
+            if (room is null)
+            {
+                return NotFound("Room not found");
+            }
+
             _roomRepository.Delete(room);
             return RedirectToPage("List");
         }

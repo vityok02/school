@@ -11,10 +11,7 @@ namespace SchoolManagement.Web.Pages.Rooms
         private readonly IRepository<Floor> _floorRepository;
         [BindProperty]
         public Room? Room { get; set; }
-        [BindProperty]
         public IEnumerable<Floor>? Floors { get; set; }
-        [BindProperty]
-        public Floor? Floor { get; set; }
         public EditModel(IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
         {
             _roomRepository = roomRepository;
@@ -23,20 +20,30 @@ namespace SchoolManagement.Web.Pages.Rooms
 
         public IActionResult OnGet(int id)
         {
+            var sId = HttpContext.Request.Cookies["SchoolId"];
+            if (!int.TryParse(sId, out int schoolId) || sId is null)
+            {
+                return NotFound("School id not found");
+            }
+            
             Room = _roomRepository.Get(id);
-            var schoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
+
+            if (Room is null)
+            {
+                return NotFound("Room not found");
+            }
+
             Floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
             return Page();
         }
         public IActionResult OnPost(Room room, RoomType[] roomTypes)
         {
-            //var schoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
             var floor = _floorRepository.Get(room.Floor.Id);
             if (floor is null)
             {
                 return NotFound("Floor not found");
             }
-            Room.Floor = floor;
+            Room!.Floor = floor;
 
             RoomType roomType = 0;
             foreach (var rt in roomTypes) 

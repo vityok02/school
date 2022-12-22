@@ -1,16 +1,19 @@
 ﻿@page "/floors"
 @model FloorListModel
 @{
+    if(!Model.Floors!.Any())
+    {
+        <h2>List of floors is empty</h2>
+    }
 }
 
 <partial name="Sidebar" />
 
-<h1 align="center">Floors</h1>
 <table align="center">
-    @foreach(var floor in FloorListModel.Floors.Reverse())
+    @foreach(var floor in Model.Floors!.Reverse())
     {
         <tr>
-            <td><a asp-page="Floor">
+            <td><a asp-page="Details" asp-route-id="@floor.Id">
                 @if(floor.Number < 1)
                 {
                     floor.Number = -floor.Number;
@@ -22,7 +25,7 @@
                 }
             </a></td>
             <form method="post" align="center">
-                <td><button type="submit" asp-page-handler="delete" asp-route-id="@floor.Id">Delete</button></td>
+                <td><input type="submit" asp-page-handler="delete" asp-route-id="@floor.Id" value="Delete"/></td>
             </form>
         </tr>
     }

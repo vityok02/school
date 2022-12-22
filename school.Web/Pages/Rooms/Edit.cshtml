@@ -2,7 +2,7 @@
 @using SchoolManagement.Models;
 @model SchoolManagement.Web.Pages.Rooms.EditModel
 @{
-    var floors = Model.Floors.Select(f => new SelectListItem
+    var floors = Model.Floors!.Select(f => new SelectListItem
     {
         Value = f.Id.ToString(),
         Text = f.Number.ToString()
@@ -13,16 +13,12 @@
     <table>
         <tr>
             <td>Number: </td>
-            <td><input asp-for="Room.Number" /></td>
+            <td><input asp-for="Room!.Number" /></td>
         </tr>
         <tr>
             <td>Floor: </td>
             <td>
-                <select asp-for="Room.Floor.Id" asp-items="floors">
-                    @*@foreach(var floor in Model.Floors!)
-                    {
-                    <option value="@floor.Id">@floor.Number</option>
-                    }*@
+                <select asp-for="Room!.Floor.Id" asp-items="floors">
                 </select>
             </td>
         </tr>
@@ -40,6 +36,6 @@
             </td>
         </tr>
     </table>
-    <input type="hidden" asp-for="Room.Id" />
+    <input type="hidden" asp-for="Room!.Id" />
     <input type="submit" value="Submit" />
 </form>
