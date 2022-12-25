@@ -43,13 +43,18 @@ public class FloorListModel : BasePageModel
         int number;
 
         if (!Floors!.Any() || Floors!.Last().Number < 0)
+        {
             number = 0;
+        }
         else
+        {
             number = Floors!.Last().Number;
+        }
 
-        Floor floor = new(number + 1);
-
-        floor.School = school!;
+        Floor floor = new(number + 1)
+        {
+            School = school!
+        };
 
         _floorRepository!.Add(floor);
         return RedirectToPage("List");

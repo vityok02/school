@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SchoolManagement.Models;
+﻿using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
@@ -19,11 +18,13 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         _dbContext.Set<TEntity>().Add(entity);
         _dbContext.SaveChanges();
     }
+
     public void Update(TEntity entity)
     {
         _dbContext.Update(entity);
         _dbContext.SaveChanges();
     }
+
     public void Delete(TEntity entity)
     {
         _dbContext.Remove(entity);
@@ -39,6 +40,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     {
         return _dbContext.Set<TEntity>().ToArray();
     }
+
     public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
     {
         return _dbContext.Set<TEntity>().Where(predicate).ToArray();

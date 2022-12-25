@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -37,7 +35,7 @@ public class SchoolListModel : PageModel
         {
             return RedirectToPage("List");
         }
-        
+
         _schoolRepository.Delete(school);
         return RedirectToPage("List");
     }

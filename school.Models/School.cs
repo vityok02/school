@@ -55,9 +55,9 @@ public class School : BaseEntity
         foreach (Student s in Students)
         {
             Student stud = s;
-            if (stud.FirstName == student.FirstName &&
-                stud.LastName == student.LastName &&
-                stud.Age == student.Age)
+            if (stud.FirstName == student.FirstName
+                && stud.LastName == student.LastName
+                && stud.Age == student.Age)
             {
                 return (false, "*This student already exists*");
             }

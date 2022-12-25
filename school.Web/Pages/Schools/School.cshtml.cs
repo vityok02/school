@@ -21,14 +21,13 @@ public class CurrentSchoolModel : PageModel
 
     public IActionResult OnGet(int id)
     {
-        Response.Cookies.Append("SchoolId", id.ToString());
-
         School = _schoolRepository.Get(id);
         if (School is null)
         {
             return RedirectToPage("List");
         }
 
+        Response.Cookies.Append("SchoolId", id.ToString());
         Address = _addressRepository.Get(School?.Id ?? 0);
 
         return Page();
