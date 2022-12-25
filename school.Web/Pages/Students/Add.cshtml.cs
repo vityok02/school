@@ -1,39 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolManagement.Data;
-using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Models;
-using Microsoft.EntityFrameworkCore;
+using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Students;
 
-public class StudentFormModel : PageModel
+public class StudentFormModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
-    public readonly IRepository<School> _schoolRepository;
-    public IEnumerable<School>? Schools { get; private set; }
-    public string? Message { get; set; } = "";
+    private readonly IRepository<School> _schoolRepository;
+
+    public IEnumerable<School>? Schools { get; set; }
+    public string? Message { get; private set; } = "";
+
     public StudentFormModel(IRepository<Student> studentRepository, IRepository<School> schoolRepository)
     {
         _studentRepository = studentRepository;
         _schoolRepository = schoolRepository;
     }
-    public void OnGet()
-    {
 
-    }
     public IActionResult OnPost(string firstName, string lastName, int age, string group)
     {
-        var sId = HttpContext.Request.Cookies["SchoolId"];
-
-        if (!int.TryParse(sId, out var schoolId))
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            return NotFound("School not found");
+            return RedirectToSchoolList();
         }
 
         var students = _studentRepository.GetAll(s => s.SchoolId == schoolId);
-
-        if(students.Any(s => s.FirstName == firstName 
+        if (students.Any(s => s.FirstName == firstName
             && s.LastName == lastName
             && s.Age == age))
         {

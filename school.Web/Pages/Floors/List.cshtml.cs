@@ -1,49 +1,40 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Floors;
 
-public class FloorListModel : PageModel
+public class FloorListModel : BasePageModel
 {
-    private readonly IRepository<Room> _roomsRepository;
     private readonly IRepository<Floor> _floorRepository;
     private readonly IRepository<School> _schoolRepository;
-    public School? School { get; set; }
+
     public IEnumerable<Floor>? Floors { get; private set; }
 
-    public FloorListModel(IRepository<Floor> floorRepository, IRepository<School> schoolRepository, IRepository<Room> roomsRepository)
+    public FloorListModel(IRepository<Floor> floorRepository, IRepository<School> schoolRepository)
     {
         _floorRepository = floorRepository;
         _schoolRepository = schoolRepository;
-        _roomsRepository = roomsRepository;
     }
 
     public IActionResult OnGet()
     {
-        var sId = HttpContext.Request.Cookies["SchoolId"];
-        if (!int.TryParse(sId, out int schoolId))
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            return NotFound("School not found");
+            return RedirectToSchoolList();
         }
 
         Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
         return Page();
     }
 
-    public void OnPost()
-    {
-
-    }
-
     public IActionResult OnPostAddFloor()
     {
-        var sId = HttpContext.Request.Cookies["SchoolId"];
-        if (!int.TryParse(sId, out int schoolId))
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            return NotFound("School not found");
+            return RedirectToSchoolList();
         }
 
         Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
@@ -54,9 +45,7 @@ public class FloorListModel : PageModel
         if (!Floors!.Any() || Floors!.Last().Number < 0)
             number = 0;
         else
-        {
             number = Floors!.Last().Number;
-        }
 
         Floor floor = new(number + 1);
 
@@ -67,10 +56,10 @@ public class FloorListModel : PageModel
     }
     public IActionResult OnPostAddBasement()
     {
-        var sId = HttpContext.Request.Cookies["SchoolId"];
-        if (!int.TryParse(sId, out int schoolId))
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            return NotFound("School not found");
+            return RedirectToSchoolList();
         }
 
         Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
@@ -84,18 +73,20 @@ public class FloorListModel : PageModel
             number = Floors!.First().Number;
 
         Floor floor = new(number - 1);
+
         floor.School = school!;
 
         _floorRepository!.Add(floor);
         return RedirectToPage("List");
     }
+
     public IActionResult OnPostDelete(int id)
     {
         var floor = _floorRepository!.Get(id);
 
         if (floor is null)
         {
-            return NotFound("Floor not found");
+            return RedirectToPage("List");
         }
 
         _floorRepository.Delete(floor!);

@@ -10,7 +10,10 @@ namespace SchoolManagement.Web.Pages.Schools;
 public class SchoolListModel : PageModel
 {
     private readonly IRepository<School> _schoolRepository;
+
     public static IEnumerable<School>? Schools { get; private set; }
+    public bool Valid { get; set; } = true;
+
     public SchoolListModel(IRepository<School> schoolRepository)
     {
         _schoolRepository = schoolRepository;
@@ -21,13 +24,18 @@ public class SchoolListModel : PageModel
         Schools = _schoolRepository.GetAll();
     }
 
+    public void OnGetError()
+    {
+        OnGet();
+        Valid = false;
+    }
+
     public IActionResult OnPostDelete(int id)
     {
         var school = _schoolRepository.Get(id);
-
         if (school is null)
         {
-            return NotFound("School not found");
+            return RedirectToPage("List");
         }
         
         _schoolRepository.Delete(school);

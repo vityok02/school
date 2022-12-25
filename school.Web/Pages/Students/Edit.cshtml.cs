@@ -1,30 +1,27 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Students;
 
-public class EditModel : PageModel
+public class EditModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
-    private readonly IRepository<School> _schoolRepository;
-    public Student? Student { get; private set; }
-    public string Message { get; set; } = "";
 
-    public EditModel(IRepository<Student> studentRepository, IRepository<School> schoolRepository)
+    public Student? Student { get; set; }
+    public string Message { get; private set; } = "";
+
+    public EditModel(IRepository<Student> studentRepository)
     {
         _studentRepository = studentRepository;
-        _schoolRepository = schoolRepository;
     }
 
     public IActionResult OnGet(int id)
     {
         Student = _studentRepository.Get(id);
-
         if (Student is null)
         {
-            return NotFound("Student not found");
+            return RedirectToPage("List");
         }
 
         return Page();
@@ -32,14 +29,13 @@ public class EditModel : PageModel
 
     public IActionResult OnPost(int id, string firstName, string lastName, int age, string group)
     {
-        var sId = HttpContext.Request.Cookies["SchoolId"];
-        if (!int.TryParse(sId, out int schoolId))
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            return NotFound("School not found");
+            return RedirectToSchoolList();
         }
 
         var students = _studentRepository.GetAll(s => s.SchoolId == schoolId);
-
         if (students.Where(s => s.FirstName == firstName
             && s.LastName == lastName
             && s.Age == age).Count() > 1)
@@ -49,7 +45,7 @@ public class EditModel : PageModel
 
         var student = _studentRepository.Get(id);
 
-        student!.UpdateInfo(firstName, lastName, age);
+        student!.UpdateInfo(firstName, lastName, age, group);
 
         _studentRepository.Update(student);
         return RedirectToPage("List");

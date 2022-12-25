@@ -1,32 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolManagement.Data;
-using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Models;
-using Microsoft.EntityFrameworkCore;
+using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class EmployeeFormModel : PageModel
+public class EmployeeFormModel : BasePageModel
 {
-    public readonly IRepository<Employee> _employeeRepository;
-    public readonly IRepository<School> _schoolRepository;
-    public IEnumerable<School>? Employees { get; private set; }
-    public string Message { get; set; } = "";
+    private readonly IRepository<Employee> _employeeRepository;
+    private readonly IRepository<School> _schoolRepository;
+
+    public IEnumerable<School>? Employees { get; set; }
+    public string Message { get; private set; } = "";
+
     public EmployeeFormModel(IRepository<School> schoolRepository, IRepository<Employee> employeeRepository)
     {
         _schoolRepository = schoolRepository;
         _employeeRepository = employeeRepository;
     }
-    public void OnGet()
-    {
-    }
+
     public IActionResult OnPost(string firstName, string lastName, int age, string type)
     {
-        var sId = HttpContext.Request.Cookies["SchoolId"];
-        if(sId is null || !int.TryParse(sId, out int schoolId))
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            return NotFound("School not found");
+            return RedirectToSchoolList();
         }
 
         var school = _schoolRepository.Get(schoolId);
@@ -34,7 +31,7 @@ public class EmployeeFormModel : PageModel
 
         Employee? employee = null;
 
-        if (employees.Any(e => e.FirstName == firstName 
+        if (employees.Any(e => e.FirstName == firstName
             && e.LastName == lastName
             && e.Age == age))
         {
@@ -42,9 +39,9 @@ public class EmployeeFormModel : PageModel
             return Page();
         }
 
-        if(type == "Director")
+        if (type == "Director")
         {
-            if(employees.Any(e => e.Job == "Director"))
+            if (employees.Any(e => e.Job == "Director"))
             {
                 Message = "Director already exist";
                 return Page();
@@ -53,7 +50,7 @@ public class EmployeeFormModel : PageModel
             employee = new Director(firstName, lastName, age);
         }
 
-        if(type == "Teacher")
+        if (type == "Teacher")
         {
             employee = new Teacher(firstName, lastName, age);
         }
@@ -61,7 +58,6 @@ public class EmployeeFormModel : PageModel
         employee!.School = school!;
 
         _employeeRepository.Add(employee);
-
         return RedirectToPage("List");
     }
 }

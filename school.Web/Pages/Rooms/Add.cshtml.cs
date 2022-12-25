@@ -1,44 +1,43 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
-public class RoomFormModel : PageModel
+public class RoomFormModel : BasePageModel
 {
-    private readonly IRepository<School> _schoolRepository;
     private readonly IRepository<Floor> _floorRepository;
     private readonly IRepository<Room> _roomRepository;
+
     public IEnumerable<School>? Schools { get; private set; }
     public static IEnumerable<Floor>? Floors { get; private set; }
     public string Message { get; private set; } = "";
-    public RoomFormModel(IRepository<School> schoolRepository, AppDbContext db, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
+
+    public RoomFormModel(IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
     {
-        _schoolRepository = schoolRepository;
         _floorRepository = floorRepository;
         _roomRepository = roomRepository;
     }
+
     public IActionResult OnGet()
     {
-        var sId = HttpContext.Request.Cookies["SchoolId"];
-        if (!int.TryParse(sId, out int schoolId))
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            return NotFound("School not found");
+            return RedirectToSchoolList();
         }
 
         Floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
         return Page();
     }
-    public IActionResult OnPost(int id, int roomNumber, int floorNumber, RoomType[] roomTypes)
-    {
 
-        var sId = HttpContext.Request.Cookies["SchoolId"];
-        if (!int.TryParse(sId, out int schoolId))
+    public IActionResult OnPost(int roomNumber, int floorNumber, RoomType[] roomTypes)
+    {
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            return NotFound("School not found");
+            return RedirectToSchoolList();
         }
 
         var rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId);
@@ -51,6 +50,7 @@ public class RoomFormModel : PageModel
         var floor = _floorRepository.GetAll(f => f.SchoolId == schoolId && f.Number == floorNumber).SingleOrDefault();
 
         RoomType roomType = 0;
+
         foreach (var rt in roomTypes)
         {
             roomType |= rt;

@@ -1,40 +1,33 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
-using SchoolManagement.Web.Pages.Floors;
 
-namespace SchoolManagement.Web.Pages.Rooms
+namespace SchoolManagement.Web.Pages.Rooms;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly IRepository<Room> _roomRepository;
+    private readonly IRepository<Floor> _floorRepository;
+
+    public Room? Room { get; private set; }
+    public Floor? Floor { get; private set; }
+
+    public DetailsModel(IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
     {
-        private readonly IRepository<Room> _roomRepository;
-        private readonly IRepository<Floor> _floorRepository;
-        public Room? Room { get; set; }
-        public Floor? Floor { get; set; }
-        public DetailsModel(IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+        _roomRepository = roomRepository;
+        _floorRepository = floorRepository;
+    }
+
+    public IActionResult OnGet(int id)
+    {
+        Room = _roomRepository.Get(id);
+        if (Room is null)
         {
-            _roomRepository = roomRepository;
-            _floorRepository = floorRepository;
+            return NotFound("Room not found");
         }
 
-        public IActionResult OnGet(int id)
-        {
-            var sId = HttpContext.Request.Cookies["SchoolId"];
-            if (!int.TryParse(sId, out int schoolId))
-            {
-                return NotFound("School not found");
-            }
-
-            Room = _roomRepository.Get(id);
-            if (Room is null)
-            {
-                return NotFound("Room not found");
-            }
-
-            Floor = _floorRepository.GetAll().Where(f => f.Id == Room.Floor.Id).SingleOrDefault();
-            return Page();
-        }
+        Floor = _floorRepository.GetAll().Where(f => f.Id == Room.Floor.Id).SingleOrDefault();
+        return Page();
     }
 }

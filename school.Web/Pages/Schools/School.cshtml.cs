@@ -9,8 +9,10 @@ public class CurrentSchoolModel : PageModel
 {
     private readonly IRepository<School> _schoolRepository;
     private readonly IRepository<Address> _addressRepository;
-    public School? School { get; set; }
-    public Address? Address { get; set; }
+
+    public School? School { get; private set; }
+    public Address? Address { get; private set; }
+
     public CurrentSchoolModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
     {
         _schoolRepository = schoolRepository;
@@ -24,10 +26,11 @@ public class CurrentSchoolModel : PageModel
         School = _schoolRepository.Get(id);
         if (School is null)
         {
-            return NotFound("School not found");
+            return RedirectToPage("List");
         }
 
         Address = _addressRepository.Get(School?.Id ?? 0);
+
         return Page();
     }
 }

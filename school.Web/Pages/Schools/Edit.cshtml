@@ -9,31 +9,31 @@
     <table>
         <tr>
             <td>Name</td>
-            <td><input name="name" value="@Model.School!.Name"/></td>
+            <td><input asp-for="School!.Name" /></td>
         </tr>
         <tr>
             <td>Country</td>
-            <td><input name="country" value="@Model.Address!.Country"/></td>
+            <td><input asp-for="Address!.Country" /></td>
         </tr>
         <tr>
             <td>City</td>
-            <td><input name="city" value="@Model.Address.City"/></td>
+            <td><input asp-for="Address!.City" /></td>
         </tr>
         <tr>
             <td>Street</td>
-            <td><input name="street" value="@Model.Address.Street"/></td>
+            <td><input asp-for="Address!.Street" /></td>
         </tr>
         <tr>
             <td>Postal code</td>
-            <td><input name="postalCode" value="@Model.Address.PostalCode"/></td>
+            <td><input asp-for="Address!.PostalCode" /></td>
         </tr>
         <tr>
             <td>Opening date</td>
-            <td><input type="date" name="openingDate" value="@Model.Address.Country"/></td>
-        </tr>
-        <tr>
-            <td><input type="submit" /></td>
+            <td><input asp-for="School!.OpeningDate" /></td>
         </tr>
     </table>
     <div>@Model.Message</div>
+    <input type="hidden" asp-for="School!.Id" />
+    <input type="hidden" asp-for="Address!.Id" />
+    <input type="submit" value="Submit" />
 </form>

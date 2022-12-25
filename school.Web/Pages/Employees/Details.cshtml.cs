@@ -8,7 +8,8 @@ namespace SchoolManagement.Web.Pages.Employees;
 public class DetailsModel : PageModel
 {
     private readonly IRepository<Employee> _employeeRepository;
-    public Employee? Employee { get; set; }
+
+    public Employee? Employee { get; private set; }
 
     public DetailsModel(IRepository<Employee> employeeRepository)
     {
@@ -18,11 +19,11 @@ public class DetailsModel : PageModel
     public IActionResult OnGet(int id)
     {
         Employee = _employeeRepository.Get(id);
-
-        if (Employee == null)
+        if (Employee is null)
         {
-            return NotFound("Employee not found");
+            return RedirectToPage("List");
         }
+
         return Page();
     }
 }
