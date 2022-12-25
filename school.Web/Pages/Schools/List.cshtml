@@ -5,7 +5,7 @@
 
 <h1 align="center">Your Schools</h1>
 <table align="center" width="500px" border="1">
-    @foreach (var school in SchoolListModel.Schools)
+    @foreach (var school in SchoolListModel.Schools!)
     {
         <tr>
             <td><a asp-page="School" asp-route-id="@school.Id">@school.Name</a></td>

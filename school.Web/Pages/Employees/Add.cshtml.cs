@@ -44,14 +44,15 @@ public class EmployeeFormModel : PageModel
 
         if(type == "Director")
         {
-            employee = new Director(firstName, lastName, age);
-
-            if(employee is not null)
+            if(employees.Any(e => e.Job == "Director"))
             {
                 Message = "Director already exist";
                 return Page();
             }
+
+            employee = new Director(firstName, lastName, age);
         }
+
         if(type == "Teacher")
         {
             employee = new Teacher(firstName, lastName, age);
@@ -60,14 +61,6 @@ public class EmployeeFormModel : PageModel
         employee!.School = school!;
 
         _employeeRepository.Add(employee);
-        //var (valid, error) = school!.AddEmployee(employee!);
-        //if (!valid)
-        //{
-        //    Message = error!;
-        //    return Page();
-        //}
-        //_employeeRepository.SaveChanges();
-        //_employeeRepository.Add(employee!);
 
         return RedirectToPage("List");
     }

@@ -38,6 +38,15 @@ public class EditModel : PageModel
             return NotFound("School not found");
         }
 
+        var students = _studentRepository.GetAll(s => s.SchoolId == schoolId);
+
+        if (students.Where(s => s.FirstName == firstName
+            && s.LastName == lastName
+            && s.Age == age).Count() > 1)
+        {
+            Message = "Such student already exists";
+        }
+
         var student = _studentRepository.Get(id);
 
         student!.UpdateInfo(firstName, lastName, age);

@@ -6,11 +6,11 @@
 <table> 
     <tr>
         <td>Name</td>
-        <td>@Model.CurrentSchool.Name</td>
+        <td>@Model.School!.Name</td>
     </tr>
     <tr>
         <td>Country</td>
-        <td>@Model.Address.Country</td>
+        <td>@Model.Address!.Country</td>
     </tr>
     <tr>
         <td>City/town</td>
@@ -26,6 +26,6 @@
     </tr>
     <tr>
         <td>Opening date</td>
-        <td>@Model.CurrentSchool.OpeningDate.ToShortDateString()</td>
+        <td>@Model.School.OpeningDate.ToShortDateString()</td>
     </tr>
 </table>

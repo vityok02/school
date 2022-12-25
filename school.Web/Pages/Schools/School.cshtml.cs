@@ -9,9 +9,7 @@ public class CurrentSchoolModel : PageModel
 {
     private readonly IRepository<School> _schoolRepository;
     private readonly IRepository<Address> _addressRepository;
-    public IEnumerable<School> Schools { get; private set; }
-    public string Message { get; private set; } = "";
-    public School? CurrentSchool { get; set; }
+    public School? School { get; set; }
     public Address? Address { get; set; }
     public CurrentSchoolModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
     {
@@ -19,11 +17,17 @@ public class CurrentSchoolModel : PageModel
         _addressRepository = addressRepository;
     }
 
-    public void OnGet(int id)
+    public IActionResult OnGet(int id)
     {
         Response.Cookies.Append("SchoolId", id.ToString());
 
-        CurrentSchool = _schoolRepository.Get(id);
-        Address = _addressRepository.Get(CurrentSchool?.Id ?? 0);
+        School = _schoolRepository.Get(id);
+        if (School is null)
+        {
+            return NotFound("School not found");
+        }
+
+        Address = _addressRepository.Get(School?.Id ?? 0);
+        return Page();
     }
 }

@@ -9,37 +9,28 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolListModel : PageModel
 {
-    AppDbContext _dbCtx;
     private readonly IRepository<School> _schoolRepository;
-    public static IEnumerable<School> Schools { get; private set; }
-    public SchoolListModel(IRepository<School> schoolRepository, AppDbContext ctx)
+    public static IEnumerable<School>? Schools { get; private set; }
+    public SchoolListModel(IRepository<School> schoolRepository)
     {
         _schoolRepository = schoolRepository;
-        _dbCtx = ctx;
     }
 
     public void OnGet()
     {
         Schools = _schoolRepository.GetAll();
-        //Schools = _dbCtx.Schools.AsNoTracking().ToList();
-    }
-
-    public void OnPost()
-    {
-
     }
 
     public IActionResult OnPostDelete(int id)
     {
-        var school = _schoolRepository.GetAll()
-            .Where(s => s.Id == id)
-            .SingleOrDefault();
-        //var school = _dbCtx.Schools.Find(id);
+        var school = _schoolRepository.Get(id);
 
-        if (school != null)
+        if (school is null)
         {
-            _schoolRepository.Delete(school);
+            return NotFound("School not found");
         }
+        
+        _schoolRepository.Delete(school);
         return RedirectToPage("List");
     }
 }

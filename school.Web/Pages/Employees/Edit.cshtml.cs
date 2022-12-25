@@ -39,6 +39,13 @@ public class EditModel : PageModel
 
         var employee = _employeeRepository.Get(id);
 
+        if(employees.Where(e => e.FirstName == firstName
+            && e.LastName == lastName
+            && e.Age == age).Count() > 1)
+        {
+            Message = "Such employee already exists";
+        }
+
         if (employee is null) 
         {
             return NotFound("Employee is not found");
