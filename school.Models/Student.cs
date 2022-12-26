@@ -8,13 +8,14 @@ public class Student : Person
 
     public Student() 
     {
-
     }
+
     public Student(string firstName, string lastName, int age, string group)
         : base(firstName, lastName, age)
     {
         Group = group;
     }
+
     public void UpdateInfo(string firstName, string lastName, int age, string group)
     {
         UpdateInfo(firstName, lastName, age);
@@ -26,4 +27,3 @@ public class Student : Person
         return $"{LastName} {FirstName} {Age} group: {Group}";
     }
 }
-

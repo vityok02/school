@@ -9,8 +9,8 @@ public class Address : BaseEntity
 
     public Address()
     {
-        
     }
+
     public Address(string country, string city, string street, int postalCode)
     {
         Country = country;

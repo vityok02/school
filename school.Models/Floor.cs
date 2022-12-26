@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Newtonsoft.Json;
 
 namespace SchoolManagement.Models;
 
@@ -12,8 +11,8 @@ public class Floor : BaseEntity
 
     public Floor()
     {
-
     }
+
     public Floor(int number)
     {
         Number = number;

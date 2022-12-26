@@ -26,10 +26,13 @@ public class StudentFormModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var students = _studentRepository.GetAll(s => s.SchoolId == schoolId);
-        if (students.Any(s => s.FirstName == firstName
+        var students = _studentRepository
+            .GetAll(s => s.SchoolId == schoolId 
+            && s.FirstName == firstName
             && s.LastName == lastName
-            && s.Age == age))
+            && s.Age == age);
+
+        if (students.Any())
         {
             Message = "Such student already exist";
             return Page();

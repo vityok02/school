@@ -19,11 +19,7 @@ public class DetailsModel : PageModel
     public IActionResult OnGet(int id)
     {
         Employee = _employeeRepository.Get(id);
-        if (Employee is null)
-        {
-            return RedirectToPage("List");
-        }
 
-        return Page();
+        return Employee is null ? RedirectToPage("List") : Page();
     }
 }

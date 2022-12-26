@@ -41,7 +41,7 @@ public class EditModel : BasePageModel
         var floor = _floorRepository.Get(room.Floor.Id);
         if (floor is null)
         {
-            return NotFound("Floor not found");
+            return RedirectToPage("List");
         }
 
         Room!.Floor = floor;

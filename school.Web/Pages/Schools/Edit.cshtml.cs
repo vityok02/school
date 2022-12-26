@@ -28,7 +28,7 @@ namespace SchoolManagement.Web.Pages.Schools
             School = _schoolRepository.Get(id);
             if (School is null)
             {
-                return NotFound("School not found");
+                return RedirectToPage("List");
             }
 
             Address = _addressRepository.Get(School?.Id ?? 0);

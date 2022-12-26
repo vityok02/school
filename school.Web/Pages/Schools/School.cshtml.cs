@@ -28,6 +28,7 @@ public class CurrentSchoolModel : PageModel
         }
 
         Response.Cookies.Append("SchoolId", id.ToString());
+
         Address = _addressRepository.Get(School?.Id ?? 0);
 
         return Page();

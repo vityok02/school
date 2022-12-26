@@ -20,7 +20,9 @@ public class ListModel : BasePageModel
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
+        {
             return RedirectToSchoolList();
+        }
 
         Rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId);
         return Page();

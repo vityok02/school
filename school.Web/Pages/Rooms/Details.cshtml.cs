@@ -24,10 +24,10 @@ public class DetailsModel : PageModel
         Room = _roomRepository.Get(id);
         if (Room is null)
         {
-            return NotFound("Room not found");
+            return RedirectToPage("List");
         }
 
-        Floor = _floorRepository.GetAll().Where(f => f.Id == Room.Floor.Id).SingleOrDefault();
+        Floor = _floorRepository.GetAll(f => f.Id == Room.Floor.Id).SingleOrDefault();
         return Page();
     }
 }

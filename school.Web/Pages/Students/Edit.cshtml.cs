@@ -19,12 +19,7 @@ public class EditModel : BasePageModel
     public IActionResult OnGet(int id)
     {
         Student = _studentRepository.Get(id);
-        if (Student is null)
-        {
-            return RedirectToPage("List");
-        }
-
-        return Page();
+        return Student is null ? RedirectToPage("List") : Page();
     }
 
     public IActionResult OnPost(int id, string firstName, string lastName, int age, string group)
