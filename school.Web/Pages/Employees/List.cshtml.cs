@@ -1,16 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class ListModel : PageModel
+public class ListModel : BasePageModel
 {
     private readonly IRepository<Employee> _employeeRepository;
-    public static IEnumerable<Employee>? Employees { get; set; }
-    public string Message { get; set; } = "";
+
+    public static IEnumerable<Employee>? Employees { get; private set; }
+    public string Message { get; private set; } = "";
+
     public ListModel(IRepository<Employee> employeeRepository)
     {
         _employeeRepository = employeeRepository;
@@ -18,10 +18,10 @@ public class ListModel : PageModel
 
     public IActionResult OnGet()
     {
-        var sId = HttpContext.Request.Cookies["SchoolId"];
-        if (!int.TryParse(sId, out int schoolId) || sId is null)
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            return NotFound("School id not found");
+            return RedirectToSchoolList();
         }
 
         Employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId);
@@ -32,10 +32,9 @@ public class ListModel : PageModel
     public IActionResult OnPostDelete(int id)
     {
         var employee = _employeeRepository.Get(id);
-
         if (employee is null)
         {
-            return NotFound("Employee not found");
+            return RedirectToPage("List");
         }
 
         _employeeRepository.Delete(employee!);

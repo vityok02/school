@@ -1,42 +1,64 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
-public class RoomFormModel : PageModel
+public class RoomFormModel : BasePageModel
 {
-    private readonly IRepository<School> _schoolRepository;
     private readonly IRepository<Floor> _floorRepository;
     private readonly IRepository<Room> _roomRepository;
+
     public IEnumerable<School>? Schools { get; private set; }
     public static IEnumerable<Floor>? Floors { get; private set; }
-    public RoomFormModel(IRepository<School> schoolRepository, AppDbContext db, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
+    public string Message { get; private set; } = "";
+
+    public RoomFormModel(IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
     {
-        _schoolRepository = schoolRepository;
         _floorRepository = floorRepository;
         _roomRepository = roomRepository;
     }
-    public void OnGet()
+
+    public IActionResult OnGet()
     {
-        var schoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
-        Schools = _schoolRepository.GetAll();
-        Floors = _floorRepository.GetAll().Where(f => f.SchoolId == schoolId);
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
+        {
+            return RedirectToSchoolList();
+        }
+
+        Floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+        return Page();
     }
-    public IActionResult OnPost(int id, int roomNumber, int floorNumber, RoomType[] roomTypes)
+
+    public IActionResult OnPost(int roomNumber, int floorNumber, RoomType[] roomTypes)
     {
-        var SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
-        var floor = _floorRepository.GetAll()
-            .Where(f => f.SchoolId == SchoolId && f.Number == floorNumber)
-            .SingleOrDefault();
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
+        {
+            return RedirectToSchoolList();
+        }
+
+        var rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId);
+        if (rooms.Any(r => r.Number == roomNumber))
+        {
+            Message = "Such room already exist";
+            return Page();
+        }
+
+        var floor = _floorRepository.GetAll(f => f.SchoolId == schoolId && f.Number == floorNumber).SingleOrDefault();
 
         RoomType roomType = 0;
+
         foreach (var rt in roomTypes)
         {
             roomType |= rt;
+        }
+
+        if (roomType == 0)
+        {
+            Message = "Choose room type";
+            return Page();
         }
 
         _roomRepository.Add(new Room(roomNumber, roomType, floor!));

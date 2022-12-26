@@ -1,33 +1,42 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
-namespace SchoolManagement.Web.Pages.Rooms
+namespace SchoolManagement.Web.Pages.Rooms;
+
+public class ListModel : BasePageModel
 {
-    public class ListModel : PageModel
+    private readonly IRepository<Room> _roomRepository;
+
+    public IEnumerable<Room>? Rooms { get; private set; }
+    public IEnumerable<Floor>? Floors { get; private set; }
+
+    public ListModel(IRepository<Room> roomRepository)
     {
-        private readonly IRepository<Room> _roomRepository;
-        private readonly IRepository<Floor> _floorRepository;
-        public ListModel(IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+        _roomRepository = roomRepository;
+    }
+
+    public IActionResult OnGet()
+    {
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            _roomRepository = roomRepository;
-            _floorRepository = floorRepository;
+            return RedirectToSchoolList();
         }
-        public static IEnumerable<Room>? Rooms { get; private set; }
-        public int? SchoolId { get; set; }
-        public IEnumerable<Floor>? Floors { get; set; }
-        public void OnGet()
+
+        Rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId);
+        return Page();
+    }
+
+    public IActionResult OnPostDelete(int id)
+    {
+        var room = _roomRepository.Get(id);
+        if (room is null)
         {
-            SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]!);
-            Floors = _floorRepository.GetAll(f => f.SchoolId == SchoolId);
-            Rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == SchoolId);
-        }
-        public IActionResult OnPostDelete(int id)
-        {
-            var room = _roomRepository.Get(id);
-            _roomRepository.Delete(room);
             return RedirectToPage("List");
         }
+
+        _roomRepository.Delete(room);
+        return RedirectToPage("List");
     }
 }

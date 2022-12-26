@@ -1,12 +1,16 @@
 ﻿@page "/rooms"
 @model SchoolManagement.Web.Pages.Rooms.ListModel
 @{
+    if(!Model.Rooms!.Any())
+    {
+        <h2>List of rooms is empty</h2>
+    }
 }
 
 <partial name="Sidebar" />
 
 <table align="center">
-    @foreach(var room in ListModel.Rooms)
+    @foreach(var room in Model.Rooms!)
     {
         <tr>
             <td><a asp-page="Details" asp-route-id="@room.Id">Room @room.Number</a></td>

@@ -1,74 +1,65 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolManagement.Data;
-using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Models;
-using Microsoft.EntityFrameworkCore;
+using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class EmployeeFormModel : PageModel
+public class EmployeeFormModel : BasePageModel
 {
-    public readonly IRepository<Employee> _employeeRepository;
-    public readonly IRepository<School> _schoolRepository;
-    public IEnumerable<School>? Employees { get; private set; }
-    public string Message { get; set; } = "";
+    private readonly IRepository<Employee> _employeeRepository;
+    private readonly IRepository<School> _schoolRepository;
+
+    public IEnumerable<School>? Employees { get; set; }
+    public string Message { get; private set; } = "";
+
     public EmployeeFormModel(IRepository<School> schoolRepository, IRepository<Employee> employeeRepository)
     {
         _schoolRepository = schoolRepository;
         _employeeRepository = employeeRepository;
     }
-    public void OnGet()
-    {
-    }
+
     public IActionResult OnPost(string firstName, string lastName, int age, string type)
     {
-        var sId = HttpContext.Request.Cookies["SchoolId"];
-        if(sId is null || !int.TryParse(sId, out int schoolId))
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            return NotFound("School not found");
+            return RedirectToSchoolList();
         }
 
-        var school = _schoolRepository.Get(schoolId);
-        var employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId);
-
-        Employee? employee = null;
-
-        if (employees.Any(e => e.FirstName == firstName 
+        var employees = _employeeRepository
+            .GetAll(e => e.SchoolId == schoolId
+            && e.FirstName == firstName
             && e.LastName == lastName
-            && e.Age == age))
+            && e.Age == age);
+
+        if (employees.Any())
         {
             Message = "Such employee already exists";
             return Page();
         }
 
-        if(type == "Director")
-        {
-            employee = new Director(firstName, lastName, age);
+        Employee? employee = null;
 
-            if(employee is not null)
+        if (type == "Director")
+        {
+            if (employees.Any(e => e.Job == "Director"))
             {
                 Message = "Director already exist";
                 return Page();
             }
+
+            employee = new Director(firstName, lastName, age);
         }
-        if(type == "Teacher")
+
+        if (type == "Teacher")
         {
             employee = new Teacher(firstName, lastName, age);
         }
 
+        var school = _schoolRepository.Get(schoolId);
         employee!.School = school!;
 
         _employeeRepository.Add(employee);
-        //var (valid, error) = school!.AddEmployee(employee!);
-        //if (!valid)
-        //{
-        //    Message = error!;
-        //    return Page();
-        //}
-        //_employeeRepository.SaveChanges();
-        //_employeeRepository.Add(employee!);
-
         return RedirectToPage("List");
     }
 }

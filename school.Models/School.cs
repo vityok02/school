@@ -7,15 +7,10 @@ public class School : BaseEntity
     public string Name { get; set; }
     public Address Address { get; set; }
     public DateTime OpeningDate { get; set; }
-
     public Employee? Director => Employees.SingleOrDefault(e => e is Director);
-
     public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
-
     public ICollection<Student> Students { get; set; } = new HashSet<Student>();
-
     public ICollection<Floor> Floors { get; set; } = new HashSet<Floor>();
-
     public IEnumerable<Room> Rooms => Floors.SelectMany(f => f.Rooms).ToList();
 
     public School()
@@ -36,16 +31,6 @@ public class School : BaseEntity
             return (false, $"Floor {floor.Number} already exists");
         }
 
-        //if (floor.Number < 0)
-        //{
-        //    return (false, "*Floor`s number should be more than 0*");
-        //}
-
-        //if (floor.Number > 10)
-        //{
-        //    return (false, "*Floor`s number shouldn`t be more than 10*");
-        //}
-
         Floors.Add(floor);
         return (true, null);
     }
@@ -55,9 +40,9 @@ public class School : BaseEntity
         foreach (Student s in Students)
         {
             Student stud = s;
-            if (stud.FirstName == student.FirstName &&
-                stud.LastName == student.LastName &&
-                stud.Age == student.Age)
+            if (stud.FirstName == student.FirstName
+                && stud.LastName == student.LastName
+                && stud.Age == student.Age)
             {
                 return (false, "*This student already exists*");
             }

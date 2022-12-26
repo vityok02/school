@@ -8,6 +8,7 @@ namespace SchoolManagement.Web.Pages.Students;
 public class DetailsModel : PageModel
 {
     private readonly IRepository<Student> _studentRepository;
+
     public Student? Student { get; private set; }
 
     public DetailsModel(IRepository<Student> studentRepository)
@@ -19,10 +20,6 @@ public class DetailsModel : PageModel
     {
         Student = _studentRepository.Get(id);
 
-        if (Student is null)
-        {
-            return NotFound("Student not found");
-        }
-        return Page();
+        return Student is null ? RedirectToPage("List") : Page();
     }
 }

@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Students;
 
-public class ListModel : PageModel
+public class ListModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
-    public IEnumerable<Student>? Students { get; set; }
+
+    public IEnumerable<Student>? Students { get; private set; }
+
     public ListModel(IRepository<Student> studentRepository)
     {
         _studentRepository = studentRepository;
@@ -16,11 +17,12 @@ public class ListModel : PageModel
 
     public IActionResult OnGet()
     {
-        var sId = HttpContext.Request.Cookies["SchoolId"];
-        if (!int.TryParse(sId, out int schoolId))
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
         {
-            return NotFound("School not found");
+            return RedirectToSchoolList();
         }
+
         Students = _studentRepository.GetAll(s => s.SchoolId == schoolId);
         return Page();
     }
@@ -28,10 +30,9 @@ public class ListModel : PageModel
     public IActionResult OnPostDelete(int id)
     {
         var student = _studentRepository.Get(id);
-
         if (student is null)
         {
-            return NotFound("Student not found");
+            return RedirectToPage("List");
         }
 
         _studentRepository.Delete(student);

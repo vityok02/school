@@ -8,8 +8,8 @@ public abstract class Person : BaseEntity
 
     protected Person()
     {
-
     }
+
     protected Person(string firstName, string lastName, int age)
     {
         FirstName = firstName;

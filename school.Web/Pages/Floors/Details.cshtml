@@ -1,4 +1,18 @@
-﻿@page
+﻿@page "/floors/{id}"
 @model SchoolManagement.Web.Pages.Floors.DetailsModel
 @{
 }
+
+<partial name="Sidebar" />
+
+<p>Floor @Model.Floor!.Number</p>
+<p>Rooms count: @Model.Rooms!.Count()</p>
+
+<table>
+    @foreach(var room in Model.Rooms!)
+    {
+        <tr>
+            <td>Room @room.Number</td>
+        </tr>
+    }
+</table>

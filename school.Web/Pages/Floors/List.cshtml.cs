@@ -1,81 +1,99 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Floors;
 
-public class FloorListModel : PageModel
+public class FloorListModel : BasePageModel
 {
-    AppDbContext _ctx;
-    private readonly IRepository<Floor>? _floorRepository;
+    private readonly IRepository<Floor> _floorRepository;
     private readonly IRepository<School> _schoolRepository;
 
-    public FloorListModel(IRepository<Floor>? floorRepository, IRepository<School> schoolRepository, AppDbContext ctx)
+    public IEnumerable<Floor>? Floors { get; private set; }
+
+    public FloorListModel(IRepository<Floor> floorRepository, IRepository<School> schoolRepository)
     {
         _floorRepository = floorRepository;
         _schoolRepository = schoolRepository;
-        _ctx = ctx;
-        Floors = _ctx.Floors.Where(f=>f.SchoolId == SchoolId);
-    }
-    public School School { get; set; }
-    public IEnumerable<School> Schools { get; set; }
-    public static IEnumerable<Floor> Floors { get; private set; }
-
-    public int SchoolId { get; set; }
-
-
-    public void OnGet()
-    {
-        SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
-        Floors = _floorRepository.GetAll(f => f.SchoolId == SchoolId);
     }
 
-    public void OnPost()
+    public IActionResult OnGet()
     {
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
+        {
+            return RedirectToSchoolList();
+        }
 
+        Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
+        return Page();
     }
 
-    public void OnPostAddFloor()
+    public IActionResult OnPostAddFloor()
     {
-        SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
-        School = _schoolRepository.Get(SchoolId);
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
+        {
+            return RedirectToSchoolList();
+        }
 
+        Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
+
+        var school = _schoolRepository.Get(schoolId);
         int number;
 
-        if (!Floors.Any() || Floors.Last().Number < 0)
+        if (!Floors!.Any() || Floors!.Last().Number < 0)
+        {
             number = 0;
+        }
         else
-            number = Floors.Last().Number;
+        {
+            number = Floors!.Last().Number;
+        }
 
-        Floor floor = new(number+1);
-        //_floorRepository!.Add(floor); ?
-        var (valid, error) = School.AddFloor(floor);
-        _ctx.SaveChanges();
+        Floor floor = new(number + 1)
+        {
+            School = school!
+        };
+
+        _floorRepository!.Add(floor);
+        return RedirectToPage("List");
     }
-    public void OnPostAddBasement()
+    public IActionResult OnPostAddBasement()
     {
-        SchoolId = int.Parse(HttpContext.Request.Cookies["SchoolId"]);
-        School = _schoolRepository.Get(SchoolId);
+        var schoolId = GetSchoolId();
+        if (schoolId == -1)
+        {
+            return RedirectToSchoolList();
+        }
 
+        Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
+
+        var school = _schoolRepository.Get(schoolId);
         int number;
 
-        if (!Floors.Any() || Floors.First().Number >= 0)
+        if (!Floors!.Any() || Floors!.First().Number >= 0)
             number = 0;
         else
-            number = Floors.First().Number;
+            number = Floors!.First().Number;
 
         Floor floor = new(number - 1);
 
-        var (valid, error) = School!.AddFloor(floor);
-        _ctx.SaveChanges();
+        floor.School = school!;
+
+        _floorRepository!.Add(floor);
+        return RedirectToPage("List");
     }
+
     public IActionResult OnPostDelete(int id)
     {
-        var floor = _floorRepository.Get(id);
-        //_ctx.Remove(floor);
-        //_ctx.SaveChanges();
+        var floor = _floorRepository!.Get(id);
+
+        if (floor is null)
+        {
+            return RedirectToPage("List");
+        }
+
         _floorRepository.Delete(floor!);
         return RedirectToPage("List");
     }
