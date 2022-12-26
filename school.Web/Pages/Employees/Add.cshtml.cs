@@ -26,21 +26,19 @@ public class EmployeeFormModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var school = _schoolRepository.Get(schoolId);
-
         var employees = _employeeRepository
             .GetAll(e => e.SchoolId == schoolId
             && e.FirstName == firstName
             && e.LastName == lastName
             && e.Age == age);
 
-        Employee? employee = null;
-
         if (employees.Any())
         {
             Message = "Such employee already exists";
             return Page();
         }
+
+        Employee? employee = null;
 
         if (type == "Director")
         {
@@ -58,6 +56,7 @@ public class EmployeeFormModel : BasePageModel
             employee = new Teacher(firstName, lastName, age);
         }
 
+        var school = _schoolRepository.Get(schoolId);
         employee!.School = school!;
 
         _employeeRepository.Add(employee);
