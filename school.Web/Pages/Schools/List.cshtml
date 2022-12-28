@@ -12,7 +12,7 @@
     @foreach (var school in SchoolListModel.Schools!)
     {
         <tr>
-            <td><a asp-page="School" asp-route-id="@school.Id">@school.Name</a></td>
+            <td><a asp-page="Details" asp-route-id="@school.Id">@school.Name</a></td>
             <form method="post">
                 <td><a asp-page="Edit" asp-route-id="@school.Id">Edit</a></td>
                 <td><button type="submit" asp-page-handler="delete" asp-route-id="@school.Id">Delete</button></td>
