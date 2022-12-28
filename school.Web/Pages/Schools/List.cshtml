@@ -3,13 +3,15 @@
 @{
     if(Model.IsError)
     {
-        
+        <script>alert('No school selected, please select a school');</script>
     }
-    if(Model.IsFirst)
+    if(!Model.IsFirst)
     {
         <partial name="Sidebar" />;
     }
 }
+
+
 
 <h1 align="center">Your Schools</h1>
 <table align="center" width="500px" border="1">
@@ -17,9 +19,12 @@
     {
         <tr>
             <td><a asp-page="Details" asp-route-id="@school.Id">@school.Name</a></td>
-            <form method="post">
-                <td><input type="submit" asp-page-handler="delete" asp-route-id="@school.Id" value="Delete"/></td>
-            </form>
+            <td>
+                <form asp-page-handler="Delete" method="post" asp-route-id="@school.Id" 
+                onclick="return confirm('Are you sure you want to delete school @school.Name?')">
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
         </tr>
     }
 </table>

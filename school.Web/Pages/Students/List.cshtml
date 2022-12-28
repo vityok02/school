@@ -15,9 +15,12 @@
         <tr>
             <td><a asp-page="Details" asp-route-id="@student.Id">@student.FirstName @student.LastName</a></td>
             <td>@student.Group</td>
-            <form method="post">
-                <td><input type="submit" asp-route-id="@student.Id" asp-page-handler="delete" value="Delete"/></td>
-            </form>
+            <td>
+                <form asp-page-handler="Delete" method="post" asp-route-id="@student.Id" 
+                onclick="return confirm('Are you sure you want to delete Student @student.FirstName @student.LastName?')">
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
         </tr>
     }
 </table>

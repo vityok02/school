@@ -14,9 +14,12 @@
     {
         <tr>
             <td><a asp-page="Details" asp-route-id="@room.Id">Room @room.Number</a></td>
-            <form method="post">
-                <td><input type="submit" value="Delete" asp-page-handler="delete" asp-route-id="@room.Id" /></td>
-            </form>
+            <td>
+                <form asp-page-handler="Delete" method="post" asp-route-id="@room.Id" 
+                onclick="return confirm('Are you sure you want to delete room @room.Number?')">
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
         </tr>
     }
 </table>

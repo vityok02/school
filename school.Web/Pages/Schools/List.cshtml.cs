@@ -11,7 +11,7 @@ public class SchoolListModel : PageModel
 
     public static IEnumerable<School>? Schools { get; private set; }
     public bool IsError { get; set; } = false;
-    public bool IsFirst { get; set; } = false;
+    public bool IsFirst { get; set; } = true;
 
     public SchoolListModel(IRepository<School> schoolRepository)
     {
@@ -21,7 +21,7 @@ public class SchoolListModel : PageModel
     public void OnGet()
     {
         Schools = _schoolRepository.GetAll();
-        IsFirst = true;
+        IsFirst = false;
     }
 
     public void OnGetFirstTime()
@@ -32,7 +32,7 @@ public class SchoolListModel : PageModel
     public void OnGetError()
     {
         OnGet();
-        IsError = false;
+        IsError = true;
     }
 
     public IActionResult OnPostDelete(int id)
