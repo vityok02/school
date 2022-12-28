@@ -11,6 +11,7 @@ public class SchoolListModel : PageModel
 
     public static IEnumerable<School>? Schools { get; private set; }
     public bool IsError { get; set; } = false;
+    public bool IsFirst { get; set; } = false;
 
     public SchoolListModel(IRepository<School> schoolRepository)
     {
@@ -18,6 +19,12 @@ public class SchoolListModel : PageModel
     }
 
     public void OnGet()
+    {
+        Schools = _schoolRepository.GetAll();
+        IsFirst = true;
+    }
+
+    public void OnGetFirstTime()
     {
         Schools = _schoolRepository.GetAll();
     }

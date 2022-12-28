@@ -5,6 +5,10 @@
     {
         
     }
+    if(Model.IsFirst)
+    {
+        <partial name="Sidebar" />;
+    }
 }
 
 <h1 align="center">Your Schools</h1>
@@ -14,7 +18,7 @@
         <tr>
             <td><a asp-page="Details" asp-route-id="@school.Id">@school.Name</a></td>
             <form method="post">
-                <td><button type="submit" asp-page-handler="delete" asp-route-id="@school.Id">Delete</button></td>
+                <td><input type="submit" asp-page-handler="delete" asp-route-id="@school.Id" value="Delete"/></td>
             </form>
         </tr>
     }
