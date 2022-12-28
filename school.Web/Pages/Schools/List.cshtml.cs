@@ -10,7 +10,7 @@ public class SchoolListModel : PageModel
     private readonly IRepository<School> _schoolRepository;
 
     public static IEnumerable<School>? Schools { get; private set; }
-    public bool Valid { get; set; } = true;
+    public bool IsError { get; set; } = false;
 
     public SchoolListModel(IRepository<School> schoolRepository)
     {
@@ -25,7 +25,7 @@ public class SchoolListModel : PageModel
     public void OnGetError()
     {
         OnGet();
-        Valid = false;
+        IsError = false;
     }
 
     public IActionResult OnPostDelete(int id)
