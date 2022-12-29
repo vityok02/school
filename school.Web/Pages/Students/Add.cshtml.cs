@@ -10,7 +10,6 @@ public class StudentFormModel : BasePageModel
     private readonly IRepository<School> _schoolRepository;
 
     public IEnumerable<School>? Schools { get; set; }
-    public string? Message { get; private set; } = "";
 
     public StudentFormModel(IRepository<Student> studentRepository, IRepository<School> schoolRepository)
     {
@@ -34,14 +33,20 @@ public class StudentFormModel : BasePageModel
 
         if (students.Any())
         {
-            Message = "Such student already exist";
+            ErrorMessage = "Such student already exist";
             return Page();
         }
 
-        Student student = new(firstName, lastName, age, group);
-
         var school = _schoolRepository.Get(schoolId);
-        student.School = school!;
+        if (school is null)
+        {
+            return RedirectToSchoolList();
+        }
+
+        Student student = new(firstName, lastName, age, group)
+        {
+            School = school!
+        };
 
         _studentRepository.Add(student);
         return RedirectToPage("List");

@@ -9,9 +9,6 @@ public class EmployeeFormModel : BasePageModel
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IRepository<School> _schoolRepository;
 
-    public IEnumerable<School>? Employees { get; set; }
-    public string Message { get; private set; } = "";
-
     public EmployeeFormModel(IRepository<School> schoolRepository, IRepository<Employee> employeeRepository)
     {
         _schoolRepository = schoolRepository;
@@ -34,7 +31,7 @@ public class EmployeeFormModel : BasePageModel
 
         if (employees.Any())
         {
-            Message = "Such employee already exists";
+            ErrorMessage = "Such employee already exists";
             return Page();
         }
 
@@ -44,7 +41,7 @@ public class EmployeeFormModel : BasePageModel
         {
             if (employees.Any(e => e.Job == "Director"))
             {
-                Message = "Director already exist";
+                ErrorMessage = "Director already exist";
                 return Page();
             }
 
@@ -57,6 +54,11 @@ public class EmployeeFormModel : BasePageModel
         }
 
         var school = _schoolRepository.Get(schoolId);
+        if(school is null)
+        {
+            return RedirectToSchoolList();
+        }
+
         employee!.School = school!;
 
         _employeeRepository.Add(employee);
