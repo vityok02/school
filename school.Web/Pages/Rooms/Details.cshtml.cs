@@ -5,7 +5,7 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
-public class DetailsModel : PageModel
+public class DetailsModel : BasePageModel
 {
     private readonly IRepository<Room> _roomRepository;
     private readonly IRepository<Floor> _floorRepository;
@@ -27,7 +27,7 @@ public class DetailsModel : PageModel
             return RedirectToPage("List");
         }
 
-        Floor = _floorRepository.GetAll(f => f.Id == Room.Floor.Id).SingleOrDefault();
+        Floor = _floorRepository.GetAll().Where(f => f.Id == Room.Floor.Id).SingleOrDefault();
         return Page();
     }
 }

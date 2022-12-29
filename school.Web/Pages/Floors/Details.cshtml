@@ -3,7 +3,16 @@
 
 <partial name="Sidebar" />
 
-<p>Floor @Model.Floor!.Number</p>
+@{
+    if(Model.Floor!.Number < 0)
+    {
+        <p>Basement level @(-Model.Floor!.Number)</p>
+    }
+    else
+    {
+        <p>Floor @Model.Floor!.Number</p>
+    }
+}
 <p>Rooms count: @Model.Rooms!.Count()</p>
 
 <table>
