@@ -1,0 +1,23 @@
+﻿@page "/floors/add"
+@model FloorFormModel
+
+<form method="post">
+    <table>
+        <tr>
+            <td>Type: </td>
+            <td>
+                <select name="type">
+                    <option value="floor">Floor</option>
+                    <option value="basement">Basement</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Number: </td>
+            <td>
+                <input type="number" value="@Model.PossibleNumber" name="number"/>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Submit"/>
+</form>
