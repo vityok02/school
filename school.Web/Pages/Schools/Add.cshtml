@@ -1,7 +1,5 @@
 ﻿@page "/schools/add"
 @model SchoolFormModel
-@{
-}
 
 <form method="post">
     <table align="center">
@@ -31,7 +29,7 @@
         </tr>
     </table>
     <div align="center">
-        @Model.Message
+        @Model.ErrorMessage
         <input type="submit" value="Submit" />
         <input type="reset" value="Reset" />
     </div>

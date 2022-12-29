@@ -5,11 +5,9 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class SchoolFormModel : PageModel
+public class SchoolFormModel : BasePageModel
 {
     private readonly IRepository<School> _schoolRepository;
-
-    public string Message { get; private set; } = "";
 
     public SchoolFormModel(IRepository<School> schoolRepository)
     {
@@ -21,7 +19,7 @@ public class SchoolFormModel : PageModel
         var schools = _schoolRepository.GetAll();
         if (schools.Any(s => s.Name == name))
         {
-            Message = "School with this name already exists";
+            ErrorMessage = "School with this name already exists";
             return Page();
         }
 

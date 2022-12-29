@@ -1,7 +1,7 @@
 ﻿@page "/employees"
-@model SchoolManagement.Web.Pages.Employees.ListModel
+@model ListModel
 @{
-    if(!ListModel.Employees!.Any())
+    if (!ListModel.Employees!.Any())
     {
         <h2>List of employees is empty</h2>
     }
@@ -10,14 +10,14 @@
 <partial name="Sidebar" />
 
 <table>
-    @foreach(var emp in ListModel.Employees!)
+    @foreach (var emp in ListModel.Employees!)
     {
         <tr>
             <td><a asp-page="Details" asp-route-id="@emp.Id">@emp.FirstName @emp.LastName</a></td>
             <td>@emp.Job</td>
             <td>
                 <form asp-page-handler="Delete" method="post" asp-route-id="@emp.Id" 
-                onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
+            onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
                     <input type="submit" value="Delete" />
                 </form>
             </td>

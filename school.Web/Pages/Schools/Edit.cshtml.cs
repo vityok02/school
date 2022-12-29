@@ -5,7 +5,7 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools
 {
-    public class EditModel : PageModel
+    public class EditModel : BasePageModel
     {
         private readonly IRepository<School> _schoolRepository;
         private readonly IRepository<Address> _addressRepository;
@@ -15,7 +15,6 @@ namespace SchoolManagement.Web.Pages.Schools
 
         [BindProperty]
         public Address? Address { get; set; }
-        public string Message { get; private set; } = "";
 
         public EditModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
         {

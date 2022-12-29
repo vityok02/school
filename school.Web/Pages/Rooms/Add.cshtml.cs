@@ -11,7 +11,6 @@ public class RoomFormModel : BasePageModel
 
     public IEnumerable<School>? Schools { get; private set; }
     public static IEnumerable<Floor>? Floors { get; private set; }
-    public string Message { get; private set; } = "";
 
     public RoomFormModel(IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
     {
@@ -42,7 +41,7 @@ public class RoomFormModel : BasePageModel
         var rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId);
         if (rooms.Any(r => r.Number == roomNumber))
         {
-            Message = "Such room already exist";
+            ErrorMessage = "Such room already exist";
             return Page();
         }
 
@@ -57,7 +56,7 @@ public class RoomFormModel : BasePageModel
 
         if (roomType == 0)
         {
-            Message = "Choose room type";
+            ErrorMessage = "Choose room type";
             return Page();
         }
 

@@ -9,7 +9,6 @@ public class EditModel : BasePageModel
     private readonly IRepository<Employee> _employeeRepository;
 
     public Employee? Employee { get; set; }
-    public string Message { get; set; } = "";
 
     public EditModel(IRepository<Employee> employeeRepository)
     {
@@ -42,7 +41,7 @@ public class EditModel : BasePageModel
             && e.LastName == lastName
             && e.Age == age).Count() > 1)
         {
-            Message = "Such employee already exists";
+            ErrorMessage = "Such employee already exists";
         }
 
         employee.UpdateInfo(firstName, lastName, age);

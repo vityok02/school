@@ -9,7 +9,6 @@ public class EditModel : BasePageModel
     private readonly IRepository<Student> _studentRepository;
 
     public Student? Student { get; set; }
-    public string Message { get; private set; } = "";
 
     public EditModel(IRepository<Student> studentRepository)
     {
@@ -35,7 +34,7 @@ public class EditModel : BasePageModel
             && s.LastName == lastName
             && s.Age == age).Count() > 1)
         {
-            Message = "Such student already exists";
+            ErrorMessage = "Such student already exists";
         }
 
         var student = _studentRepository.Get(id);

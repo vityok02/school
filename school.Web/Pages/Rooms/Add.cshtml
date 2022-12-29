@@ -1,8 +1,6 @@
 ﻿@page "/rooms/add"
-@model             RoomFormModel
 @using SchoolManagement.Models;
-@{
-}
+@model RoomFormModel
 
 <form method="post">
     <table align="center">
@@ -16,7 +14,7 @@
             <td>Floor: </td>
             <td>
                 <select name="floorNumber" required>
-                    @foreach(var floor in RoomFormModel.Floors!)
+                    @foreach (var floor in RoomFormModel.Floors!)
                     {
                         <option value="@floor.Number">@floor.Number</option>
                     }
@@ -37,7 +35,7 @@
             </td>
         </tr>
     </table>
-    <div class="error">@Model.Message</div>
+    <div class="error">@Model.ErrorMessage</div>
     <div align="center">
         <input type="submit" value="Submit" />
         <input type="reset" value="Reset" />

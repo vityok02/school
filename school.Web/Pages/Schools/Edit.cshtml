@@ -1,7 +1,5 @@
 ﻿@page "/schools/{id}/edit"
-@model SchoolManagement.Web.Pages.Schools.EditModel
-@{
-}
+@model EditModel
 
 <partial name="Sidebar" />
 
@@ -34,7 +32,7 @@
             <td><input type="date" asp-for="School!.OpeningDate" /></td>
         </tr>
     </table>
-    <div>@Model.Message</div>
+    <div>@Model.ErrorMessage</div>
     <input type="hidden" asp-for="School!.Id" />
     <input type="hidden" asp-for="Address!.Id" />
     <input type="submit" value="Submit" />
