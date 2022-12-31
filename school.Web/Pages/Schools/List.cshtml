@@ -11,21 +11,34 @@
     }
 }
 
+<link rel="stylesheet" href="~/css/main.css"/>
 
-
-<h1 align="center">Your Schools</h1>
-<table align="center" width="500px" border="1">
-    @foreach (var school in SchoolListModel.Schools!)
-    {
+<table class="table">
+    <thead>
         <tr>
-            <td><a asp-page="Details" asp-route-id="@school.Id">@school.Name</a></td>
-            <td>
-                <form asp-page-handler="Delete" method="post" asp-route-id="@school.Id" 
-                onclick="return confirm('Are you sure you want to delete school @school.Name?')">
-                    <input type="submit" value="Delete" />
-                </form>
-            </td>
+            <th>Name</th>
+            <th>City</th>
+            <th>Street</th>
+            <th></th>
+            <th></th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var school in SchoolListModel.Schools!)
+        {
+            <tr class="active">
+                <td class="name">@school.Name</td>
+                <td>City</td>
+                <td>Street</td>
+                <td><a class="details" asp-page="Details" asp-route-id="@school.Id">Details</a></td>
+                <td>
+                    <form asp-page-handler="Delete" method="post" asp-route-id="@school.Id" 
+                    onclick="return confirm('Are you sure you want to delete school @school.Name?')">
+                        <input type="submit" value="Delete" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 <div align="center"><a asp-page="Add">Add School</a></div>

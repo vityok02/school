@@ -8,19 +8,23 @@ namespace SchoolManagement.Web.Pages.Schools;
 public class SchoolListModel : PageModel
 {
     private readonly IRepository<School> _schoolRepository;
+    private readonly IRepository<Address> _addressRepository;
 
     public static IEnumerable<School>? Schools { get; private set; }
+    public Address Address { get; set; }
     public bool IsError { get; set; } = false;
     public bool IsFirst { get; set; } = true;
 
-    public SchoolListModel(IRepository<School> schoolRepository)
+    public SchoolListModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
     {
         _schoolRepository = schoolRepository;
+        _addressRepository = addressRepository;
     }
 
     public void OnGet()
     {
         Schools = _schoolRepository.GetAll();
+
         IsFirst = false;
     }
 

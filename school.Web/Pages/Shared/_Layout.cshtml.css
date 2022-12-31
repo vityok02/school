@@ -40,14 +40,21 @@ button.accept-policy {
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  nav-down:auto;
-  line-height: 60px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    nav-down: auto;
+    line-height: 60px;
+    background-color: #242424;
 }
 
 .details{
     padding-left:20px;
+}
+
+
+
+.main {
+    margin-left: 250px;
 }

@@ -1,0 +1,59 @@
+﻿body {
+    background-image: url(images/fon.webp);
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.table tr {
+    width: 1500px;
+    align-content: center;
+    border-collapse: collapse;
+    height: 80px;
+    font-size: 24px;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.table thead tr {
+    background-color: #009879;
+    color: #fff;
+    text-align: left;
+
+}
+
+.table html,
+.table td {
+
+}
+
+.table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+table td .name{
+    padding-left: 30px;
+    margin-left: 30px
+}
+
+.details {
+    width: 160px;
+    height: 50px;
+    background-color: #2670FF;
+    border-radius: 10px;
+    align-content: center;
+}
