@@ -1,4 +1,5 @@
 ﻿.header {
+    display: flex;
     height: 100px;
-    background-color: rgba(134, 157, 174, 1);
+    background: linear-gradient(#768A9B, #97B3CA);
 }
