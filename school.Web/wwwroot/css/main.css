@@ -8,19 +8,22 @@ body {
 }
 
 .wrapper {
-    min-height: 100%;
-    height: auto;
+    background: url(fon.webp);
     width: 100%;
     margin-right: auto;
     margin-left: auto;
 }
 
 .table {
-    border-collapse: collapse;
+    display: block;
+    overflow: auto;
     border-radius: 10px;
     margin: auto;
-    width: 80%;
+    padding-bottom: 200px;
+    width: 90%;
+    height: 500px;
     margin-top: 20px;
+    height: 800px;
 }
 
     .table tr {
@@ -28,18 +31,29 @@ body {
         height: 80px;
         font-size: 24px;
         min-width: 400px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     }
 
     .table thead tr {
+        position: relative;
         background-color: #009879;
         color: #fff;
+    }
+
+    .table thead th {
+        position: sticky;
+        top: 0;
+        background-color: #009879;
     }
 
     .table html,
     .table td {
         vertical-align: middle;
         width: 100%;
+    }
+
+    .table body {
+        overflow: auto;
     }
 
     .table tbody tr {
@@ -50,12 +64,12 @@ table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
 
-.table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+.table tbody tr:nth-child(2n+1) {
+    background-color: #F5F5F5;
 }
 
 .table tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.15)
+    background-color: #dddddd;
 }
 
 .table tbody tr.active-row {
@@ -63,41 +77,20 @@ table tbody tr:nth-of-type(even) {
     color: #009879;
 }
 
-.details {
-    display: flex;
-    text-align: center;
-    height: 50px;
-    width: 140px;
-    background-color: #2670FF;
-    border-radius: 10px;
-    align-content: center;
-    color: white;
+.table tr:last-of-type {
+    background: none;
 }
 
-    .details a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        border-radius: 10px;
-        height: 100%;
-        font-size: 20px;
-        text-decoration: none;
-        text-align: center;
-        color: white;
-    }
+.table tr:last-of-type:hover {
+    background: none;
+}
 
-.delete input[type=submit] {
-    position: static;
-    border: 0;
-    border-radius: 10px;
-    font-size: 20px;
-    text-decoration: none;
-    color: white;
-    height: 50px;
-    width: 120px;
-    background-color: red;
-    align-content: center;
+.upper-border {
+    border-top: 5px solid #009879;
+}
+
+.unhover tr:hover {
+    background-color: none;
 }
 
 .add {
@@ -127,6 +120,50 @@ table tbody tr:nth-of-type(even) {
         color: white;
     }
 
+.city {
+    width: 300px;
+}
+
+.street{
+    width: 300px;
+}
+
+.details {
+    display: flex;
+    text-align: center;
+    height: 50px;
+    width: 140px;
+    background-color: #2670FF;
+    border-radius: 10px;
+    align-content: center;
+    color: white;
+}
+
+    .details a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        border-radius: 10px;
+        height: 100%;
+        font-size: 20px;
+        text-decoration: none;
+        text-align: center;
+        color: white;
+    }
+
+.delete input[type=submit] {
+    border: 0;
+    border-radius: 10px;
+    font-size: 20px;
+    text-decoration: none;
+    color: white;
+    height: 50px;
+    width: 120px;
+    background-color: red;
+    align-content: center;
+}
+
 .choose {
     display: flex;
     height: 50px;
@@ -135,6 +172,7 @@ table tbody tr:nth-of-type(even) {
     border-radius: 10px;
     color: white;
 }
+
     .choose a {
         display: flex;
         align-items: center;

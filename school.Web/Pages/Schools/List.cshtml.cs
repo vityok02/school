@@ -11,7 +11,7 @@ public class SchoolListModel : PageModel
     private readonly IRepository<Address> _addressRepository;
 
     public static IEnumerable<School>? Schools { get; private set; }
-    public Address Address { get; set; }
+    public IEnumerable<Address> Addresses { get; set; }
     public bool IsError { get; set; } = false;
     public bool IsFirst { get; set; } = true;
 
@@ -24,6 +24,7 @@ public class SchoolListModel : PageModel
     public void OnGet()
     {
         Schools = _schoolRepository.GetAll();
+        Addresses = _addressRepository.GetAll();
 
         IsFirst = false;
     }
