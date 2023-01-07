@@ -1,39 +1,43 @@
 ﻿@page "/schools/{id}/edit"
 @model EditModel
 
+<link rel="stylesheet" href="~/css/edit.css"/>
+
 <partial name="Sidebar" />
 
-<h2>Edit school</h2>
-
-<form method="post">
-    <table>
-        <tr>
-            <td>Name: </td>
-            <td><input asp-for="School!.Name" /></td>
-        </tr>
-        <tr>
-            <td>Country: </td>
-            <td><input asp-for="Address!.Country" /></td>
-        </tr>
-        <tr>
-            <td>City: </td>
-            <td><input asp-for="Address!.City" /></td>
-        </tr>
-        <tr>
-            <td>Street: </td>
-            <td><input asp-for="Address!.Street" /></td>
-        </tr>
-        <tr>
-            <td>Postal code: </td>
-            <td><input asp-for="Address!.PostalCode" /></td>
-        </tr>
-        <tr>
-            <td>Opening date: </td>
-            <td><input type="date" asp-for="School!.OpeningDate" /></td>
-        </tr>
-    </table>
-    <div>@Model.ErrorMessage</div>
-    <input type="hidden" asp-for="School!.Id" />
-    <input type="hidden" asp-for="Address!.Id" />
-    <input type="submit" value="Submit" />
-</form>
+<div class="wrapper">
+    <div class="edit">
+        <form method="post">
+            <table class="tab">
+                <tr>
+                    <td>Name: </td>
+                    <td><input asp-for="School!.Name" /></td>
+                </tr>
+                <tr>
+                    <td>Country: </td>
+                    <td><input asp-for="Address!.Country" /></td>
+                </tr>
+                <tr>
+                    <td>City/town: </td>
+                    <td><input asp-for="Address!.City" /></td>
+                </tr>
+                <tr>
+                    <td>Street: </td>
+                    <td><input asp-for="Address!.Street" /></td>
+                </tr>
+                <tr>
+                    <td>Postal code: </td>
+                    <td><input asp-for="Address!.PostalCode" /></td>
+                </tr>
+                <tr>
+                    <td>Opening date: </td>
+                    <td><input type="date" asp-for="School!.OpeningDate" /></td>
+                </tr>
+            </table>
+            <div>@Model.ErrorMessage</div>
+            <input type="hidden" asp-for="School!.Id" />
+            <input type="hidden" asp-for="Address!.Id" />
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+</div>

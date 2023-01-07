@@ -13,7 +13,7 @@ public class SchoolListModel : PageModel
     public static IEnumerable<School>? Schools { get; private set; }
     public IEnumerable<Address> Addresses { get; set; }
     public bool IsError { get; set; } = false;
-    public bool IsFirst { get; set; } = true;
+    public bool IsFirst { get; set; } = false;
 
     public SchoolListModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
     {
@@ -25,13 +25,12 @@ public class SchoolListModel : PageModel
     {
         Schools = _schoolRepository.GetAll();
         Addresses = _addressRepository.GetAll();
-
-        IsFirst = false;
     }
 
     public void OnGetFirstTime()
     {
-        Schools = _schoolRepository.GetAll();
+        IsFirst = true;
+        OnGet();
     }
 
     public void OnGetError()

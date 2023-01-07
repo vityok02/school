@@ -39,7 +39,7 @@ namespace SchoolManagement.Web.Pages.Schools
             School!.Address = address;
 
             _schoolRepository.Update(School!);
-            return RedirectToPage("List");
+            return Redirect("Details");
         }
     }
 }

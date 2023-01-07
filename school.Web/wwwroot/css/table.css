@@ -19,11 +19,11 @@ body {
     overflow: auto;
     border-radius: 10px;
     margin: auto;
-    padding-bottom: 200px;
+    margin-bottom: 100px;
     width: 90%;
-    height: 500px;
     margin-top: 20px;
     height: 800px;
+    padding-bottom: 50px;
 }
 
     .table tr {
@@ -31,7 +31,7 @@ body {
         height: 80px;
         font-size: 24px;
         min-width: 400px;
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+        /*box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);*/
     }
 
     .table thead tr {
@@ -57,7 +57,7 @@ body {
     }
 
     .table tbody tr {
-        border-bottom: 1px solid #dddddd;
+/*        border-bottom: 1px solid #dddddd;*/
     }
 
 table tbody tr:nth-of-type(even) {
@@ -78,45 +78,59 @@ table tbody tr:nth-of-type(even) {
 }
 
 .table tr:last-of-type {
+    margin-bottom: 0px;
     background: none;
+}
+
+table tr:last-of-type td{
+    background: none;
+}
+
+.upper-border tr {
+    background: none;
+    border-top: 5px solid #009879;
+    border-bottom: none;
+    position: relative;
+}
+
+.table td {
+    background: none;
+    border-bottom: 1px solid #dddddd;
 }
 
 .table tr:last-of-type:hover {
     background: none;
 }
 
-.upper-border {
-    border-top: 5px solid #009879;
-}
-
-.unhover tr:hover {
-    background-color: none;
+.upper-border td {
+    border-bottom: none;
+    background: none;
 }
 
 .add {
     margin-left: auto;
     margin-right: auto;
     display: block;
-    text-align: center;
     height: 60px;
     width: 400px;
     background-color: #009879;
     border-radius: 10px;
-    align-content: center;
     color: white;
     margin-top: 20px;
+    text-align: center;
+    align-content: center;
 }
 
     .add a {
         display: flex;
         align-items: center;
+        text-align: center;
         justify-content: center;
         width: 100%;
         border-radius: 10px;
         height: 100%;
         font-size: 24px;
         text-decoration: none;
-        text-align: center;
         color: white;
     }
 
