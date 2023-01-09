@@ -5,7 +5,7 @@ namespace SchoolManagement.Web.Pages;
 
 public class BasePageModel : PageModel
 {
-    public string ErrorMessage { get; set; } = "";
+    public string ErrorMessage { get; set; } = null!;
 
     protected int GetSchoolId()
     {
