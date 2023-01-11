@@ -56,8 +56,8 @@
                             </div>
                         </td>
                         <td class="td">
-                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@school.Id" 
-                            onclick="return confirm('Are you sure you want to delete school @school.Name?')">
+                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@school.Id"> 
+                            @*onclick="return confirm('Are you sure you want to delete school @school.Name?')">*@
                                 <input type="submit" value="Delete" />
                             </form>
                         </td>

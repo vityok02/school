@@ -9,6 +9,10 @@ public class SchoolFormModel : BasePageModel
 {
     private readonly IRepository<School> _schoolRepository;
 
+    public string Name { get; set; } = "";
+    public Address Address { get; set; } = new Address();
+    public DateTime OpeningDate { get; set; }
+
     public SchoolFormModel(IRepository<School> schoolRepository)
     {
         _schoolRepository = schoolRepository;
@@ -20,6 +24,10 @@ public class SchoolFormModel : BasePageModel
         if (schools.Any(s => s.Name == name))
         {
             ErrorMessage = "School with this name already exists";
+            Name = name;
+            Address = address;
+            OpeningDate = openingDate;
+
             return Page();
         }
 
