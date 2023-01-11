@@ -56,26 +56,18 @@
                             </div>
                         </td>
                         <td class="td">
-                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@school.Id"> 
-                            @*onclick="return confirm('Are you sure you want to delete school @school.Name?')">*@
+                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@school.Id"
+                            onclick="return confirm('Are you sure you want to delete school @school.Name?')">
                                 <input type="submit" value="Delete" />
                             </form>
                         </td>
                     }
                 </tr>
             }
-            @if(!Model.IsFirst)
-            {
-                <tr class="upper-border">
-                    <td class="upper-border" colspan="5">
-                        <div class="add">
-                            <a asp-page="Add">Add</a>
-                        </div>
-                    </td>
-                </tr>
-            }
         </tbody>
     </table>
-@*    <div class="add"><a asp-page="Add">Add</a></div>*@
-
+        @if(!Model.IsFirst)
+        {
+            <div class="add"><a asp-page="Add">Add</a></div>
+        }
 </div>

@@ -8,6 +8,7 @@ body {
 }
 
 .wrapper {
+    position: relative;
     background: url(fon.webp);
     width: 100%;
     margin-right: auto;
@@ -15,14 +16,20 @@ body {
 }
 
 .table {
+    width: auto;
+    top: 20px;
+    right: 5%;
+    left: 5%;
+    margin-right: 5%;
+    position: absolute;
     display: block;
     overflow: auto;
     border-radius: 10px;
     margin: auto;
     margin-bottom: 100px;
-    width: 90%;
+    bottom: 200px;
+
     margin-top: 20px;
-    height: 800px;
     padding-bottom: 50px;
 }
 
@@ -77,46 +84,16 @@ table tbody tr:nth-of-type(even) {
     color: #009879;
 }
 
-.table tr:last-of-type {
-    margin-bottom: 0px;
-    background: none;
-}
-
-table tr:last-of-type td{
-    background: none;
-}
-
-.upper-border tr {
-    background: none;
-    border-top: 5px solid #009879;
-    border-bottom: none;
-    position: relative;
-}
-
-.table td {
-    background: none;
-    border-bottom: 1px solid #dddddd;
-}
-
-.table tr:last-of-type:hover {
-    background: none;
-}
-
-.upper-border td {
-    border-bottom: none;
-    background: none;
-}
-
 .add {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+    position: absolute;
+    left: 50%;
+    margin-left: -200px;
+    bottom: 200px;
     height: 60px;
     width: 400px;
     background-color: #009879;
     border-radius: 10px;
     color: white;
-    margin-top: 20px;
     text-align: center;
     align-content: center;
 }
