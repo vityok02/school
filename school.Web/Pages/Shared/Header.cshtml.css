@@ -1,5 +1,50 @@
 ﻿.header {
     display: flex;
-    height: 100px;
+    height: 80px;
     background: linear-gradient(#768A9B, #97B3CA);
+}
+
+.name {
+    font-size: 24px;
+    margin-left: 20px;
+    margin-block: auto;
+}
+
+details > summary {
+    list-style: none;
+}
+
+details[open] .content {
+    position: absolute; 
+    display: block;
+  animation: slide .3s ease-in-out;
+}
+
+@keyframes slide {
+  0%    {opacity: 0; transform:  translate(0, -10px); }
+  100%  {opacity: 1; transform:  translate(0, 0);}
+}
+
+body {
+  padding: 2rem 5rem;
+}
+
+.drop-down {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+}
+
+.avatar {
+    border-radius: 30px;
+    height: 60px;
+    width: 60px;
+    background-color: blue;
+}
+
+.content {
+    display: block;
+    height: 200px;
+    width: 100px;
+    background-color: gray;
 }
