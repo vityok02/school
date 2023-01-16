@@ -37,6 +37,11 @@
                 <td><input type="date" value="@Model.OpeningDate" name="openingDate" required /></td>
             </tr>
         </table>
-        <input class="btn-add" type="submit" value="Add school" />
+        <div class="btns">
+            <input class="btn-add" type="submit" value="Add school" />
+            <div class="cancel">
+                 <a asp-page="List">Cancel</a>
+            </div>
+        </div>
     </form>
 </div>

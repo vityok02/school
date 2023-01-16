@@ -9,7 +9,6 @@ body {
 
 .wrapper {
     position: relative;
-    background: url(fon.webp);
     width: 100%;
     margin-right: auto;
     margin-left: auto;
@@ -102,6 +101,10 @@ table tbody tr:nth-of-type(even) {
         text-decoration: none;
         color: white;
     }
+
+.add:hover {
+    background-color: #008066;
+}
 
 .city {
     width: 300px;

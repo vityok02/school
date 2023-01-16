@@ -33,6 +33,11 @@
                 <td>@Model.School.OpeningDate.ToShortDateString()</td>
             </tr>
         </table>
-        <div class="edit"><a asp-page="Edit" asp-route-id="@Model.School.Id">Edit</a></div>
+        <div class="btns">
+            <div class="edit"><a asp-page="Edit" asp-route-id="@Model.School.Id">Edit</a></div>
+            <div class="cancel">
+                <a asp-page="List">Cancel</a>
+            </div>
+        </div>
     </div>
 </div>

@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
-using SchoolManagement.Web.Pages;
 
 namespace SchoolManagement.Web.Pages.Schools;
 

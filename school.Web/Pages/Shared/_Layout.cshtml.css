@@ -1,8 +1,6 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 body, html {
-    height: 100%;
-    width: 100%;
 }
 
 a.navbar-brand {
@@ -54,13 +52,6 @@ button.accept-policy {
     background-color: #242424;
 }
 
-@media (max-width: 900px)
-{
-    .footer{
-        margin-left: 0px;
-    }
-}
-
 .details{
     padding-left:20px;
 }
@@ -86,7 +77,8 @@ button.accept-policy {
     }
 }
 
-.cont {
-    height: 100%;
-    width: 100%;
+@media (max-height: 600px) {
+    .footer {
+        line-height: 40px;
+    }
 }
