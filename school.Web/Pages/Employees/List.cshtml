@@ -3,25 +3,43 @@
 @{
     if (!ListModel.Employees!.Any())
     {
-        <h2>List of employees is empty</h2>
+        <div>List of employees is empty</div>
     }
 }
 
-<partial name="Sidebar" />
+<link rel="stylesheet" href="~/css/list.css"/>
 
-<table>
-    @foreach (var emp in ListModel.Employees!)
-    {
-        <tr>
-            <td><a asp-page="Details" asp-route-id="@emp.Id">@emp.FirstName @emp.LastName</a></td>
-            <td>@emp.Job</td>
-            <td>
-                <form asp-page-handler="Delete" method="post" asp-route-id="@emp.Id" 
-            onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
-                    <input type="submit" value="Delete" />
-                </form>
-            </td>
-        </tr>
-    }
-</table>
-<div><a asp-page="Add">Add</a></div>
+<partial name="Sidebar" />
+<div class="wrapper">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th colspan="2">Job</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in ListModel.Employees!)
+            {
+                <tr>
+                    <td>@emp.FirstName</td>
+                    <td>@emp.LastName</td>
+                    <td>@emp.Job</td>
+                    <td>
+                        <div class="btns">
+                            <div class="details">
+                                <a href="employees/@emp.Id">Details</a>
+                            </div>
+                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@emp.Id" 
+                            onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
+                                <input type="submit" value="Delete" />
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div><a asp-page="Add">Add</a></div>
+</div>
