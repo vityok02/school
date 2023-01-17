@@ -6,7 +6,7 @@
     position: relative;
 }
 
-.add {
+.form {
     margin-top: 2%;
     vertical-align: middle;
     position: relative;
@@ -56,14 +56,18 @@
     margin-bottom: 0px;
 }
 
+.btn, .btn input[type=submit] {
+    height: 50px;
+    width: 200px;
+    font-size: inherit;
+}
+
 .btn-add {
     margin-right: 5px;
     border-radius: 10px;
     border: none;
     background-color: #009879;
     color: white;
-    height: 50px;
-    width: 150px;
 }
 
 .btn-add:hover {
@@ -74,8 +78,7 @@
     margin-left: 5px;
     border-radius: 10px;
     background-color: lightslategray;
-    height: 50px;
-    width: 150px;
+
 }
 
     .cancel:hover {
@@ -93,6 +96,7 @@
 
 
 .error {
+    text-align: center;
     display: block;
     outline: none;
     color: red;

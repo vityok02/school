@@ -16,16 +16,19 @@
             <tr>
                 <th>First name</th>
                 <th>Last name</th>
-                <th colspan="2">Job</th>
+                <th>Age</th>
+                <th class="job-column">Job</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var emp in ListModel.Employees!)
             {
                 <tr>
-                    <td>@emp.FirstName</td>
-                    <td>@emp.LastName</td>
-                    <td>@emp.Job</td>
+                    <td class="columns">@emp.FirstName</td>
+                    <td class="columns">@emp.LastName</td>
+                    <td class="age-column">@emp.Age</td>
+                    <td class="job-column">@emp.Job</td>
                     <td>
                         <div class="btns">
                             <div class="details">
@@ -41,5 +44,5 @@
             }
         </tbody>
     </table>
-    <div><a asp-page="Add">Add</a></div>
+    <div class="add"><a asp-page="Add">Add</a></div>
 </div>

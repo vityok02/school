@@ -1,0 +1,13 @@
+﻿.columns {
+    width: 20%
+}
+
+.age-column {
+    margin-left: 0;
+    width: 5%;
+}
+
+.job-column {
+    text-align: center;
+    margin-inline: auto;
+}
