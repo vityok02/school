@@ -10,7 +10,7 @@
     vertical-align: middle;
     position: relative;
     padding-top: 20px;
-    padding-bottom: 60px;
+    padding-bottom: 10px;
     font-size: 28px;
     border-radius: 10px 10px 0 0;
     border-top: 10px solid #009879;
@@ -42,21 +42,22 @@
 }
 
 .btns {
-    padding-top: 10px;
+    margin-top: 20px;
     width: 100%;
-    position: absolute;
-    bottom: 20px;
+    position: relative;
     display: flex;
     justify-content: center;
     margin-right: auto;
     margin-left: auto;
-    margin-bottom: 0px;
 }
 
-.edit {
+.button {
     width: 150px;
     height: 50px;
     border-radius: 10px;
+}
+
+.edit {
     background-color: #009879;
     margin-right: 5px;
 }
@@ -77,10 +78,7 @@
 
 .cancel {
     margin-left: 5px;
-    border-radius: 10px;
     background-color: lightslategray;
-    height: 50px;
-    width: 150px;
 }
 
     .cancel:hover {
@@ -95,3 +93,35 @@
         text-decoration: none;
         display: flex;
     }
+
+@media (max-height: 600px) {
+    .button {
+        height: 40px;
+        width: 140px;
+    }
+
+    .details {
+        font-size: 24px;
+        width: 520px;
+    }
+
+    .tab tr {
+        height: 50px;
+    }
+}
+
+@media (max-height: 500px) {
+    .button {
+        height: 35px;
+        width: 120px;
+    }
+
+    .details {
+        font-size: 20px;
+        width: 440px;
+    }
+
+    .tab tr {
+        height: auto;
+    }
+}

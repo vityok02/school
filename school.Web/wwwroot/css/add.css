@@ -11,7 +11,6 @@
     vertical-align: middle;
     position: relative;
     padding-top: 20px;
-    padding-bottom: 60px;
     font-size: 28px;
     border-radius: 10px 10px 0 0;
     border-top: 10px solid #009879;
@@ -46,9 +45,9 @@
     }
 
 .btns {
-    margin-top: auto;
+    margin-top: 20px;
     width: 100%;
-    position: absolute;
+    position: relative;
     bottom: 10px;
     display: flex;
     justify-content: center;

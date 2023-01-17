@@ -6,17 +6,18 @@
 }
 
 .edit {
+    margin-top: 2%;
+    vertical-align: middle;
     position: relative;
+    padding-top: 20px;
+    padding-bottom: 10px;
     font-size: 28px;
-    display: block;
     border-radius: 10px 10px 0 0;
     border-top: 10px solid #009879;
     border-bottom: 5px solid #009879;
-    margin-top: 100px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 650px;
-    height: 480px;
+    margin-inline: auto;
+    width: 600px;
+    height: auto;
     background-color: #F1F6FF;
     -webkit-box-shadow: 1px 1px 10px 0px rgba(135,135,135,1);
     -moz-box-shadow: 1px 1px 10px 0px rgba(135,135,135,1);
@@ -41,24 +42,26 @@
     }
 
 .btns {
+    margin-top: 20px;
     width: 100%;
-    position: absolute;
-    bottom: 20px;
+    position: relative;
     display: flex;
     justify-content: center;
     margin-right: auto;
     margin-left: auto;
-    margin-bottom: 0px;
+}
+
+.button {
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
 }
 
 .save {
     margin-right: 5px;
-    border-radius: 10px;
     border: none;
     background-color: #009879;
     color: white;
-    height: 50px;
-    width: 150px;
 }
 
 .save:hover {
@@ -67,10 +70,7 @@
 
 .cancel {
     margin-left: 5px;
-    border-radius: 10px;
     background-color: lightslategray;
-    height: 50px;
-    width: 150px;
 }
 
 .cancel:hover {
@@ -87,6 +87,40 @@
     }
 
 .error {
+    display: block;
+    outline: none;
     color: red;
-    font-size: 24px;
+    font-size: 18px;
+}
+
+@media (max-height: 600px) {
+    .button {
+        height: 40px;
+        width: 140px;
+    }
+
+    .edit {
+        font-size: 24px;
+        width: 520px;
+    }
+
+    .tab tr {
+        height: 50px;
+    }
+}
+
+@media (max-height: 500px) {
+    .button {
+        height: 35px;
+        width: 120px;
+    }
+
+    .edit {
+        font-size: 20px;
+        width: 440px;
+    }
+
+    .tab tr {
+        height: auto;
+    }
 }

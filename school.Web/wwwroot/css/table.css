@@ -27,7 +27,7 @@ body {
     margin: auto;
     margin-bottom: 100px;
     bottom: 200px;
-
+    height: auto;
     margin-top: 20px;
     padding-bottom: 50px;
 }
@@ -79,7 +79,7 @@ table tbody tr:nth-of-type(even) {
     position: absolute;
     left: 50%;
     margin-left: -200px;
-    bottom: 200px;
+    bottom: 180px;
     height: 60px;
     width: 400px;
     background-color: #009879;
