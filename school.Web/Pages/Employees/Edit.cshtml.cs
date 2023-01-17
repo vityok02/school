@@ -47,6 +47,6 @@ public class EditModel : BasePageModel
         employee.UpdateInfo(firstName, lastName, age);
 
         _employeeRepository.Update(employee);
-        return Redirect($"/employees/{id}");
+        return RedirectToPage("List");
     }
 }

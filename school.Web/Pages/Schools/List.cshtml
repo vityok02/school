@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="~/css/list.css"/>
 
 <div class="wrapper">
-    <table class="table">
+    <table>
         <thead>
             <tr>
                 <th>Name</th>
@@ -26,7 +26,7 @@
             @foreach (var school in SchoolListModel.Schools!)
             {
                 <tr>
-                    <td class="name">@school.Name</td>
+                    <td>@school.Name</td>
                     <td>
                         <div class="city">
                             @Model.Addresses.Where(a => a.Id == school.AddressId).SingleOrDefault()!.City

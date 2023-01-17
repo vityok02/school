@@ -14,7 +14,6 @@ namespace SchoolManagement.Web.Pages.Schools
 
         [BindProperty]
         public Address? Address { get; set; }
-        public string Message { get; private set; } = "";
 
         public EditModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
         {

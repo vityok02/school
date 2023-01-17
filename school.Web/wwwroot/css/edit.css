@@ -6,37 +6,38 @@
 }
 
 .edit {
-    margin-top: 2%;
-    vertical-align: middle;
     position: relative;
+    margin-top: 2%;
+    margin-inline: auto;
     padding-top: 20px;
     padding-bottom: 10px;
-    font-size: 28px;
-    border-radius: 10px 10px 0 0;
+    padding-inline: 20px;
+    height: auto;
+    width: max-content;
+    background-color: #F1F6FF;
     border-top: 10px solid #009879;
     border-bottom: 5px solid #009879;
-    margin-inline: auto;
-    width: 600px;
-    height: auto;
-    background-color: #F1F6FF;
+    border-radius: 10px 10px 0 0;
+    vertical-align: middle;
+    font-size: 28px;
     -webkit-box-shadow: 1px 1px 10px 0px rgba(135,135,135,1);
     -moz-box-shadow: 1px 1px 10px 0px rgba(135,135,135,1);
     box-shadow: 1px 1px 10px 0px rgba(135,135,135,1);
 }
 
-.tab tr {
+table tr {
     height: 58px;
 }
 
-.tab td {
+table td {
     padding-left: 20px;
 }
 
-    .tab td:first-of-type {
+    table td:first-of-type {
         font-weight: bold;
     }
 
-    .tab td:last-of-type {
+    table td:last-of-type {
         margin-left: 20px;
         padding-left: 40px;
     }
@@ -101,7 +102,6 @@
 
     .edit {
         font-size: 24px;
-        width: 520px;
     }
 
     .tab tr {
@@ -117,7 +117,6 @@
 
     .edit {
         font-size: 20px;
-        width: 440px;
     }
 
     .tab tr {

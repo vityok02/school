@@ -5,7 +5,7 @@
     margin-left: auto;
 }
 
-.table {
+table {
     position: absolute;
     top: 20px;
     right: 5%;
@@ -22,26 +22,26 @@
     overflow: auto;
 }
 
-    .table tr {
+    table tr {
         height: 80px;
         min-width: 400px;
         font-size: 24px;
         box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     }
 
-    .table thead tr {
+    table thead tr {
         position: sticky;
         top: 0;
         background-color: #009879;
         color: #fff;
     }
 
-    .table thead th {
+    table thead th {
         border-bottom: none;
     }
 
-    .table html,
-    .table td {
+    table html,
+    table td {
         vertical-align: middle;
         width: 100%;
     }
@@ -50,11 +50,11 @@ table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
 
-.table tbody tr:nth-child(2n+1) {
+table tbody tr:nth-child(2n+1) {
     background-color: #F5F5F5;
 }
 
-.table tbody tr:hover {
+table tbody tr:hover {
     background-color: #dddddd;
 }
 
