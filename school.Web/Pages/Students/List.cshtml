@@ -7,21 +7,43 @@
     }
 }
 
+<link rel="stylesheet" href="~/css/list.css"/>
+
 <partial name="Sidebar" />
 
-<table>
-    @foreach(var student in Model.Students!)
-    {
-        <tr>
-            <td><a asp-page="Details" asp-route-id="@student.Id">@student.FirstName @student.LastName</a></td>
-            <td>@student.Group</td>
-            <td>
-                <form asp-page-handler="Delete" method="post" asp-route-id="@student.Id" 
-                onclick="return confirm('Are you sure you want to delete student @student.FirstName @student.LastName?')">
-                    <input type="submit" value="Delete" />
-                </form>
-            </td>
-        </tr>
-    }
-</table>
-<div><a asp-page="Add">Add</a></div>
+<div class="wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Age</th>
+                <th class="group-column">Group</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var student in Model.Students!)
+            {
+                <tr>
+                    <td class="first-columns">@student.FirstName</td>
+                    <td class="first-columns">@student.LastName</td>
+                    <td class="age-column">@student.Age</td>
+                    <td class="group-column">@student.Group</td>
+                    <td>
+                        <div class="btns">
+                            <div class="details">
+                                <a href="students/@student.Id/edit">Edit</a>
+                            </div>
+                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@student.Id" 
+                            onclick="return confirm('Are you sure you want to delete student @student.FirstName @student.LastName?')">
+                                <input type="submit" value="Delete" />
+                            </form> 
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="add"><a asp-page="Add">Add</a></div>
+</div>

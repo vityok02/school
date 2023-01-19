@@ -1,41 +1,44 @@
 ﻿@page "/students/add"
 @model StudentFormModel
 
-<form method="post">
-    <table align="center">
-        <tr>
-            <td>First name</td>
-            <td>
-                <input type="text" maxlength="30" required name="firstName"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Last Name
-            </td>
-            <td>
-                <input type="text" maxlength="30" required name="lastName"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Age
-            </td>
-            <td>
-                <input type="number" required name="age" min="5" max="18"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Group
-            </td>
-            <td>
-                <input type="text" name="group"/>
-            </td>
-        </tr>
-    </table>
-    <div class="error" align="center">@Model.ErrorMessage</div>
-    <div align="center">
-        <input type="submit" value="Add student" />
-    </div>
-</form>
+<link rel="stylesheet" href="~/css/add.css"/>
+
+<partial name="Sidebar" />
+
+<div class="wrapper">
+    <form method="post" class="form">
+        <table>
+            <tr>
+                <td>First name</td>
+                <td>
+                    <input type="text" maxlength="30" required name="firstName"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td>
+                    <input type="text" maxlength="30" required name="lastName"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Age</td>
+                <td>
+                    <input type="number" required name="age" min="5" max="18"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Group</td>
+                <td>
+                    <input type="text" name="group"/>
+                </td>
+            </tr>
+        </table>
+        <div class="error">@Model.ErrorMessage</div>
+        <div class="btns">
+            <input class="button add" type="submit" value="Add student" />
+            <div class="button cancel">
+                <a asp-page="List">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
