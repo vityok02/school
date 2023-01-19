@@ -24,12 +24,11 @@ public class EmployeeFormModel : BasePageModel
         }
 
         var employees = _employeeRepository
-            .GetAll(e => e.SchoolId == schoolId
-            && e.FirstName == firstName
-            && e.LastName == lastName
-            && e.Age == age);
+            .GetAll(e => e.SchoolId == schoolId);
 
-        if (employees.Any())
+        if (employees.Any(e => e.FirstName == firstName 
+            && e.LastName == lastName
+            && e.Age == age))
         {
             ErrorMessage = "Such employee already exists";
             return Page();

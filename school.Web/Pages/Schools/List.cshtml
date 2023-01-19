@@ -3,18 +3,18 @@
 @{
     if(Model.IsError)
     {
-        <script>alert('No school selected, please select a school');</script>
+    <script>alert('No school selected, please select a school');</script>
     }
     if(!Model.IsFirst)
     {
-        <partial name="Sidebar" />;
+    <partial name="Sidebar" />;
     }
 }
 
 <link rel="stylesheet" href="~/css/list.css"/>
 
 <div class="wrapper">
-    <table>
+    <table id="tab">
         <thead>
             <tr>
                 <th>Name</th>
