@@ -1,16 +1,17 @@
 ﻿@page "/rooms"
 @model ListModel
-@{
-    if(!Model.Rooms!.Any())
-    {
-        <h2>List of rooms is empty</h2>
-    }
-}
 
 <link rel="stylesheet" href="~/css/list.css">
 
 <partial name="Sidebar" />
+
 <div class="wrapper">
+    @if(!Model.Rooms.Any())
+    {
+        <div class="empty">List of rooms is empty</div>
+    }
+    else
+    {
     <table>
         <thead>
             <tr>
@@ -40,5 +41,6 @@
             </tr>
         }
     </table>
+    }
     <div class="add"><a asp-page="Add">Add</a></div>
 </div>

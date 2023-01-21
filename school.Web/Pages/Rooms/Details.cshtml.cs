@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -13,7 +12,8 @@ public class DetailsModel : BasePageModel
     public Room? Room { get; private set; }
     public Floor? Floor { get; private set; }
 
-    public DetailsModel(IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+    public DetailsModel(IRepository<School> schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+        :base(schoolRepository)
     {
         _roomRepository = roomRepository;
         _floorRepository = floorRepository;

@@ -16,8 +16,8 @@ namespace SchoolManagement.Web.Pages.Schools
         public Address? Address { get; set; }
 
         public EditModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
+            :base(schoolRepository)
         {
-            _schoolRepository = schoolRepository;
             _addressRepository = addressRepository;
         }
 

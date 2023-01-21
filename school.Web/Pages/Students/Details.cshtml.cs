@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Students;
 
-public class DetailsModel : PageModel
+public class DetailsModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
     public Student? Student { get; private set; }
 
-    public DetailsModel(IRepository<Student> studentRepository)
+    public DetailsModel(IRepository<School> schoolRepository, IRepository<Student> studentRepository)
+        :base(schoolRepository)
     {
         _studentRepository = studentRepository;
     }

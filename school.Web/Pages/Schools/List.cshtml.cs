@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
@@ -6,17 +7,15 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolListModel : BasePageModel
 {
-    private readonly IRepository<School> _schoolRepository;
     private readonly IRepository<Address> _addressRepository;
 
-    public static IEnumerable<School>? Schools { get; private set; }
-    public IEnumerable<Address> Addresses { get; set; }
+    public IEnumerable<Address> Addresses { get; set; } = null!;
     public bool IsError { get; set; } = false;
     public bool IsFirst { get; set; } = false;
 
     public SchoolListModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
+        :base(schoolRepository)
     {
-        _schoolRepository = schoolRepository;
         _addressRepository = addressRepository;
     }
 
@@ -25,7 +24,7 @@ public class SchoolListModel : BasePageModel
         //NameSort = String.IsNullOrEmpty(sortOrder) ? "name-desc" : "";
         //DateSort = sortOrder == "Date" ? "date=desc" : "Date";
 
-        Schools = _schoolRepository.GetAll();
+        Schools = GetSchools();
 
         //IQueryable<School> schoolsIQ = ;
 
@@ -46,13 +45,13 @@ public class SchoolListModel : BasePageModel
 
     public IActionResult OnPostDelete(int id)
     {
-        var school = _schoolRepository.Get(id);
+        var school = SchoolRepository.Get(id);
         if (school is null)
         {
             return RedirectToPage("List");
         }
-
-        _schoolRepository.Delete(school);
+        
+        SchoolRepository.Delete(school);
         return RedirectToPage("List");
     }
 }

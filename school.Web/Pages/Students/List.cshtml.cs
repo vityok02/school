@@ -8,9 +8,9 @@ public class ListModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
-    public IEnumerable<Student>? Students { get; private set; }
-
-    public ListModel(IRepository<Student> studentRepository)
+    public IEnumerable<Student> Students { get; private set; } = null!;
+    public ListModel(IRepository<School> schoolRepository, IRepository<Student> studentRepository)
+        : base(schoolRepository)
     {
         _studentRepository = studentRepository;
     }
@@ -24,6 +24,7 @@ public class ListModel : BasePageModel
         }
 
         Students = _studentRepository.GetAll(s => s.SchoolId == schoolId);
+
         return Page();
     }
 

@@ -13,7 +13,8 @@ public class EditModel : BasePageModel
     public Room? Room { get; set; }
     public IEnumerable<Floor>? Floors { get; set; }
 
-    public EditModel(IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+    public EditModel(IRepository<School> schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+        : base(schoolRepository)
     {
         _roomRepository = roomRepository;
         _floorRepository = floorRepository;
@@ -46,7 +47,7 @@ public class EditModel : BasePageModel
 
         Room!.Floor = floor;
 
-        RoomType roomType = 0;
+        RoomType roomType = RoomHelper.GetRoomType(roomTypes);
         foreach (var rt in roomTypes)
         {
             roomType |= rt;

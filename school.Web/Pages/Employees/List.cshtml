@@ -1,17 +1,17 @@
 ﻿@page "/employees"
 @model ListModel
-@{
-    if (!ListModel.Employees!.Any())
-    {
-        <div>List of employees is empty</div>
-    }
-}
 
-<link rel="stylesheet" href="~/css/list.css"/>
+<link rel="stylesheet" href="~/css/list.css" />
 
 <partial name="Sidebar" />
 
 <div class="wrapper">
+    @if (!Model.Employees.Any())
+    {
+    <div class="empty">List of employees is empty</div>
+    }
+    else
+    {
     <table>
         <thead>
             <tr>
@@ -23,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var emp in ListModel.Employees!)
+            @foreach (var emp in Model.Employees)
             {
                 <tr>
                     <td class="first-columns">@emp.FirstName</td>
@@ -35,8 +35,8 @@
                             <div class="details">
                                 <a href="employees/@emp.Id/edit">Edit</a>
                             </div>
-                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@emp.Id" 
-                            onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
+                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@emp.Id"
+                              onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
                                 <input type="submit" value="Delete" />
                             </form>
                         </div>
@@ -45,5 +45,6 @@
             }
         </tbody>
     </table>
+    }
     <div class="add"><a asp-page="Add">Add</a></div>
 </div>

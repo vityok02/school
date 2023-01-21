@@ -7,14 +7,11 @@ namespace SchoolManagement.Web.Pages.Students;
 public class StudentFormModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
-    private readonly IRepository<School> _schoolRepository;
 
-    public IEnumerable<School>? Schools { get; set; }
-
-    public StudentFormModel(IRepository<Student> studentRepository, IRepository<School> schoolRepository)
+    public StudentFormModel(IRepository<School> schoolRepository, IRepository<Student> studentRepository)
+        :base(schoolRepository)
     {
         _studentRepository = studentRepository;
-        _schoolRepository = schoolRepository;
     }
 
     public IActionResult OnPost(string firstName, string lastName, int age, string group)
@@ -37,7 +34,7 @@ public class StudentFormModel : BasePageModel
             return Page();
         }
 
-        var school = _schoolRepository.Get(schoolId);
+        var school = SchoolRepository.Get(schoolId);
         if (school is null)
         {
             return RedirectToSchoolList();

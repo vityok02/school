@@ -9,10 +9,11 @@ public class ListModel : BasePageModel
     private readonly IRepository<Room> _roomRepository;
     private readonly IRepository<Floor> _floorRepository;
 
-    public IEnumerable<Room>? Rooms { get; private set; }
-    public IEnumerable<Floor>? Floors { get; private set; }
+    public IEnumerable<Room> Rooms { get; private set; } = null!;
+    public IEnumerable<Floor> Floors { get; private set; } = null!;
 
-    public ListModel(IRepository<Room> roomRepository, IRepository<Floor> floorRepository = null)
+    public ListModel(IRepository<School> schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+        : base(schoolRepository)
     {
         _roomRepository = roomRepository;
         _floorRepository = floorRepository;

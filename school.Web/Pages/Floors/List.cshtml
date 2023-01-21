@@ -1,38 +1,39 @@
 ﻿@page "/floors"
 @model FloorListModel
-@{
-    if (!Model.Floors!.Any())
-    {
-        <h2>List of floors is empty</h2>
-    }
-}
 
 <partial name="Sidebar" />
 
-<table align="center">
-    @foreach (var floor in Model.Floors!.Reverse())
-    {
-        <tr>
-            <td>
-                <a asp-page="Details" asp-route-id="@floor.Id">
-                    @if (floor.Number < 1)
-                    {
-                        floor.Number = -floor.Number;
-                        @:Basement level @floor.Number
-                    }
-                    else
-                    {
-                        @:Floor @floor.Number
-                    }
-                </a>
-            </td>
-            <td>
-                <form asp-page-handler="Delete" method="post" asp-route-id="@floor.Id" 
-                onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
-                    <input type="submit" value="Delete" />
-                </form>
-            </td>
-        </tr>
-    }
-</table>
+@if (!Model.Floors.Any())
+{
+    <div class="empty">List of floors is empty</div>
+}
+else
+{
+    <table>
+        @foreach (var floor in Model.Floors!.Reverse())
+        {
+            <tr>
+                <td>
+                    <a asp-page="Details" asp-route-id="@floor.Id">
+                        @if (floor.Number < 1)
+                        {
+                            floor.Number = -floor.Number;
+                            @:Basement level @floor.Number
+                        }
+                        else
+                        {
+                            @:Floor @floor.Number
+                        }
+                    </a>
+                </td>
+                <td>
+                    <form asp-page-handler="Delete" method="post" asp-route-id="@floor.Id"
+                  onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
+                        <input type="submit" value="Delete" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+}
 <div><a asp-page="Add">Add</a></div>

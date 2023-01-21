@@ -6,20 +6,18 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolFormModel : BasePageModel
 {
-    private readonly IRepository<School> _schoolRepository;
-
     public string Name { get; set; } = "";
     public Address Address { get; set; } = new Address();
     public DateTime OpeningDate { get; set; }
 
     public SchoolFormModel(IRepository<School> schoolRepository)
+        : base(schoolRepository)
     {
-        _schoolRepository = schoolRepository;
     }
 
     public IActionResult OnPost(string name, Address address, DateTime openingDate)
     {
-        var schools = _schoolRepository.GetAll();
+        var schools = SchoolRepository.GetAll();
         if (schools.Any(s => s.Name == name))
         {
             ErrorMessage = "School with this name already exists";
@@ -32,7 +30,10 @@ public class SchoolFormModel : BasePageModel
 
         School school = new(name, address, openingDate);
 
-        _schoolRepository.Add(school);
+        SchoolRepository.Add(school);
+
+        SetSchoolId(school.Id);
+
         return RedirectToPage("List");
     }
 }
