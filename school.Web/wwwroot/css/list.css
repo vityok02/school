@@ -138,3 +138,9 @@ table tbody tr:hover {
     .add:hover {
         background-color: #008066;
     }
+
+.empty {
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center
+}

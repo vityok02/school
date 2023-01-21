@@ -1,9 +1,23 @@
-﻿<div class="header">
+﻿@model BasePageModel
+@{
+    IEnumerable<SchoolManagement.Models.School> schools = Model.GetSchools();
+}
+
+<div class="header">
     <div class="name">School name</div>
+    <form asp-page-handler="SelectSchool" method="post">
+        <select class="name" name="selectedSchool">
+            @foreach (var school in schools)
+            {
+                <option value="@school.Id">@school.Name</option>
+            }
+        </select>
+        <button type="submit">Change</button>
+    </form>
     <details class="drop-down">
         <summary>
             <div class="avatar"></div>
         </summary>
-            <div class="content">user</div>
+        <div class="content">user</div>
     </details>
 </div>
