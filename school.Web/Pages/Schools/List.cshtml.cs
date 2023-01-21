@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class SchoolListModel : PageModel
+public class SchoolListModel : BasePageModel
 {
     private readonly IRepository<School> _schoolRepository;
     private readonly IRepository<Address> _addressRepository;
@@ -21,9 +20,15 @@ public class SchoolListModel : PageModel
         _addressRepository = addressRepository;
     }
 
-    public void OnGet()
+    public void OnGet(/*string sortOrder*/)
     {
+        //NameSort = String.IsNullOrEmpty(sortOrder) ? "name-desc" : "";
+        //DateSort = sortOrder == "Date" ? "date=desc" : "Date";
+
         Schools = _schoolRepository.GetAll();
+
+        //IQueryable<School> schoolsIQ = ;
+
         Addresses = _addressRepository.GetAll();
     }
 

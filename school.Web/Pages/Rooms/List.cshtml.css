@@ -1,0 +1,14 @@
+﻿.first-column {
+    width: 100px;
+}
+
+.second-column {
+    width: auto;
+    padding-left: 20px;
+    white-space: nowrap;
+}
+
+.floor-column {
+    text-align: center;
+    margin-inline: auto;
+}

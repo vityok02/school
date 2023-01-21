@@ -7,13 +7,15 @@ namespace SchoolManagement.Web.Pages.Rooms;
 public class ListModel : BasePageModel
 {
     private readonly IRepository<Room> _roomRepository;
+    private readonly IRepository<Floor> _floorRepository;
 
     public IEnumerable<Room>? Rooms { get; private set; }
     public IEnumerable<Floor>? Floors { get; private set; }
 
-    public ListModel(IRepository<Room> roomRepository)
+    public ListModel(IRepository<Room> roomRepository, IRepository<Floor> floorRepository = null)
     {
         _roomRepository = roomRepository;
+        _floorRepository = floorRepository;
     }
 
     public IActionResult OnGet()
@@ -25,6 +27,8 @@ public class ListModel : BasePageModel
         }
 
         Rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId);
+        Floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+
         return Page();
     }
 

@@ -6,6 +6,10 @@ namespace SchoolManagement.Web.Pages;
 public class BasePageModel : PageModel
 {
     public string ErrorMessage { get; set; } = null!;
+    public string NameSort { get; set; }
+    public string DateSort { get; set; }
+    public string CurrentFilter { get; set; }
+    public string CurrentSort { get; set; }
 
     protected int GetSchoolId()
     {
