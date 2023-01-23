@@ -5,9 +5,11 @@
 }
 
 .name {
+    display: block;
+    margin-top: 15px;
     font-size: 24px;
     margin-left: 20px;
-    margin-block: auto;
+    background-color: #009879;
 }
 
 details > summary {
@@ -17,7 +19,7 @@ details > summary {
 details[open] .content {
     position: absolute; 
     display: block;
-  animation: slide .3s ease-in-out;
+    animation: slide .3s ease-in-out;
 }
 
 @keyframes slide {
@@ -49,4 +51,34 @@ body {
     height: 200px;
     width: 100px;
     background-color: gray;
+}
+
+details[open] .dropdown-menu {
+    animation: slide .3s ease-in-out;
+}
+
+@keyframes slide {
+    0% {
+        opacity: 0;
+        transform: translate(0, -10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
+
+.list details[open] {
+    text-align: right;
+}
+
+.dropdown-menu {
+    display: block;
+    background-color: #daeeff;
+    left: 20px;
+    width: 250px;
+    height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

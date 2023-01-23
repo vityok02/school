@@ -30,6 +30,8 @@ public class SchoolModel : BasePageModel
 
         Address = _addressRepository.Get(School?.Id ?? 0);
 
+        SelectedSchoolName = School.Name;
+
         return Page();
     }
 }
