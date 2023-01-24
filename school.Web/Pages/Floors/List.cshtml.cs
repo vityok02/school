@@ -7,13 +7,15 @@ namespace SchoolManagement.Web.Pages.Floors;
 public class FloorListModel : BasePageModel
 {
     private readonly IRepository<Floor> _floorRepository;
+    private readonly IRepository<Room> _roomRepository;
 
     public IEnumerable<Floor> Floors { get; private set; } = null!;
 
-    public FloorListModel(IRepository<School> schoolRepository, IRepository<Floor> floorRepository)
-        :base(schoolRepository)
+    public FloorListModel(IRepository<School> schoolRepository, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
+        : base(schoolRepository)
     {
         _floorRepository = floorRepository;
+        _roomRepository = roomRepository;
     }
 
     public IActionResult OnGet()
@@ -95,5 +97,10 @@ public class FloorListModel : BasePageModel
 
         _floorRepository.Delete(floor!);
         return RedirectToPage("List");
+    }
+
+    public IEnumerable<Room> GetRooms(Floor floor)
+    {
+        return _roomRepository.GetAll(r => r.Floor.Id == floor.Id);
     }
 }

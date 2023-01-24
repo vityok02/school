@@ -31,6 +31,10 @@ public abstract class BasePageModel : PageModel
     {
         var sId = GetSchoolId();
         var school = SchoolRepository.Get(sId);
+        if(school is null)
+        {
+            return "Not selected";
+        }
 
         return school!.Name;
     }

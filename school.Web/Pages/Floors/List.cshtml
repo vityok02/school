@@ -3,18 +3,38 @@
 
 <partial name="Sidebar" />
 
-@if (!Model.Floors.Any())
-{
-    <div class="empty">List of floors is empty</div>
-}
-else
-{
-    <table>
-        @foreach (var floor in Model.Floors!.Reverse())
-        {
-            <tr>
-                <td>
-                    <a asp-page="Details" asp-route-id="@floor.Id">
+<div class="wrapper">
+    @if (!Model.Floors.Any())
+    {
+        <div class="empty">List of floors is empty</div>
+    }
+    else
+    {
+        <div class="list">
+            @foreach(var floor in Model.Floors)
+            {
+                <details>
+                    <summary>
+                        <div class="name">Floor @floor.Number</div>
+                        <div class="count">Rooms count @Model.GetRooms(floor).Count()</div>
+                        </summary>
+                    <div>
+                        @foreach(var room in Model.GetRooms(floor))
+                        {
+                            <div>Room @room.Number</div>
+                        }
+                    </div>
+                </details>
+            }
+        </div>
+    }
+@*    {
+        <table>
+            @foreach (var floor in Model.Floors!.Reverse())
+            {
+                <tr>
+                    <td>
+                        <a asp-page="Details" asp-route-id="@floor.Id">
                         @if (floor.Number < 1)
                         {
                             floor.Number = -floor.Number;
@@ -24,16 +44,16 @@ else
                         {
                             @:Floor @floor.Number
                         }
-                    </a>
-                </td>
-                <td>
-                    <form asp-page-handler="Delete" method="post" asp-route-id="@floor.Id"
-                  onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
-                        <input type="submit" value="Delete" />
-                    </form>
-                </td>
-            </tr>
-        }
-    </table>
-}
+                        </a>
+                    </td>
+                    <td>
+                        <form asp-page-handler="Delete" method="post" asp-route-id="@floor.Id"
+                        onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
+                            <input type="submit" value="Delete" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>*@
 <div><a asp-page="Add">Add</a></div>
+</div>
