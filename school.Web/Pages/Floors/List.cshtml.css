@@ -6,14 +6,25 @@
 }
 
 summary {
+    padding-left: 10px;
+    margin-top: 2px;
+    color: white;
     display: flex;
     align-items: center;
     position: relative;
-    margin-top: 40px;
-    border-radius: 5px 5px 0 0;
-    margin-inline: 5%;
+    border-radius: 5px 5px 5px 5px;
     background-color: #009879;
-    height: 60px;
+    height: 80px;
+}
+
+.list {
+    margin-top: 30px;
+    display: block;
+    margin-inline: 5%;
+}
+
+details {
+    display: block;
 }
 
 .name {
@@ -26,3 +37,47 @@ summary {
     position: absolute;
     right: 30px;
 }
+
+.content {
+    font-size: 24px;
+    background-color: #a6c5bf;
+    margin-left: 10px;
+    margin-right: 5px;
+    border-radius: 0 0 5px 5px;
+    animation: slide .3s ease-in-out;
+}
+
+@keyframes slide {
+    0% {
+        opacity: 0;
+        transform: translate(0, -10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
+
+.border-bottom {
+    border-bottom: 1px solid white;
+}
+
+.btn-delete input[type=submit] {
+    position: absolute;
+    right: 250px;
+    top: 15px;
+    background-color: red;
+    height: 50px;
+    width: 120px;
+    margin-left: 5px;
+    border: 0;
+    border-radius: 10px;
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+    .btn-delete input[type=submit]:hover {
+        background-color: #B40000;
+    }

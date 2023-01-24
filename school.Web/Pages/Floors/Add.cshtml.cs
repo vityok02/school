@@ -51,9 +51,17 @@ public class FloorFormModel : BasePageModel
             return RedirectToSchoolList();
         }
 
+        var floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+
+        if(floors.Any(f => f.Number == number))
+        {
+            ErrorMessage = "Such floor already exists";
+            return Page();
+        }
+
         Floor floor = new(number)
         {
-            School = school!
+            School = school
         };
 
         if (type == "floor")

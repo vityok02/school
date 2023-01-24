@@ -1,6 +1,8 @@
 ﻿@page "/floors"
 @model FloorListModel
 
+<link rel="stylesheet" href="~/css/floorList.css"/>
+
 <partial name="Sidebar" />
 
 <div class="wrapper">
@@ -15,13 +17,30 @@
             {
                 <details>
                     <summary>
-                        <div class="name">Floor @floor.Number</div>
+                        <div class="name">
+                            @if (floor.Number < 1)
+                            {
+                                floor.Number = -floor.Number;
+                                @:Basement level @floor.Number
+                            }
+                            else
+                            {
+                                @:Floor @floor.Number
+                            }
+                        </div>
+                            <form class="btn-delete" asp-page-handler="Delete" method="post" asp-route-id="@floor.Id"
+                            onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
+                                <input type="submit" value="Delete" />
+                            </form>
                         <div class="count">Rooms count @Model.GetRooms(floor).Count()</div>
                         </summary>
-                    <div>
+                    <div class="content">
                         @foreach(var room in Model.GetRooms(floor))
                         {
-                            <div>Room @room.Number</div>
+                            <div class="border-bottom">
+                                <div>Room @room.Number</div>
+                                <div class="type">@room.Type</div>
+                            </div>
                         }
                     </div>
                 </details>
@@ -55,5 +74,5 @@
                 </tr>
             }
         </table>*@
-<div><a asp-page="Add">Add</a></div>
+<div class="add"><a asp-page="Add">Add</a></div>
 </div>
