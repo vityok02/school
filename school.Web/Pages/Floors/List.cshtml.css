@@ -6,6 +6,7 @@
 }
 
 summary {
+    padding-right: 10px;
     padding-left: 10px;
     margin-top: 2px;
     color: white;
@@ -18,9 +19,15 @@ summary {
 }
 
 .list {
-    margin-top: 30px;
+    position: absolute;
+    top: 38px;
+    right: 5%;
+    left: 5%;
+    bottom: 260px;
+    width: auto;
+    height: auto;
     display: block;
-    margin-inline: 5%;
+    overflow: auto;
 }
 
 details {
@@ -81,3 +88,39 @@ details {
     .btn-delete input[type=submit]:hover {
         background-color: #B40000;
     }
+
+details[open] summary ~ * {
+    animation: open 0.3s ease-in-out;
+}
+
+@keyframes open {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+summary::before,
+summary::after {
+    width: 0.75em;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    content: "";
+    background-color: currentColor;
+    text-align: right;
+    transform: translateY(-50%);
+    transition: transform 0.2s ease-in-out;
+}
+
+[open] summary::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+summary::after {
+    transform: translateY(-50%) rotate(90deg);
+}
