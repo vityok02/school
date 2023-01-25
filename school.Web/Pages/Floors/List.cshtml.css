@@ -34,6 +34,12 @@ details {
     display: block;
 }
 
+.empty {
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center
+}
+
 .name {
     font-size: 28px;
     font-weight: bold;
@@ -46,6 +52,7 @@ details {
 }
 
 .content {
+    padding-left: 10px;
     font-size: 24px;
     background-color: #a6c5bf;
     margin-left: 10px;
@@ -67,6 +74,8 @@ details {
 }
 
 .border-bottom {
+    position: relative;
+    display: flex;
     border-bottom: 1px solid white;
 }
 
@@ -123,4 +132,9 @@ summary::after {
 
 summary::after {
     transform: translateY(-50%) rotate(90deg);
+}
+
+.type {
+    position: absolute;
+    left: 200px;
 }

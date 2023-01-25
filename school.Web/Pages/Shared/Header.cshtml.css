@@ -17,18 +17,25 @@ details > summary {
 }
 
 details[open] .content {
-    position: absolute; 
+    position: absolute;
     display: block;
     animation: slide .3s ease-in-out;
 }
 
 @keyframes slide {
-  0%    {opacity: 0; transform:  translate(0, -10px); }
-  100%  {opacity: 1; transform:  translate(0, 0);}
+    0% {
+        opacity: 0;
+        transform: translate(0, -10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
 }
 
 body {
-  padding: 2rem 5rem;
+    padding: 2rem 5rem;
 }
 
 .drop-down {
@@ -42,15 +49,6 @@ body {
     height: 60px;
     width: 60px;
     background-color: blue;
-}
-
-.content {
-    
-    z-index: 1;
-    display: block;
-    height: 200px;
-    width: 100px;
-    background-color: gray;
 }
 
 details[open] .dropdown-menu {
@@ -78,7 +76,29 @@ details[open] .dropdown-menu {
     background-color: #daeeff;
     left: 20px;
     width: 250px;
-    height: 300px;
+    max-height: 300px;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.item {
+    height: 30px;
+    border-bottom: 1px solid white;
+}
+
+    .item:hover {
+        background-color: #bedffb;
+    }
+
+details-item {
+    display: block;
+    background-color: #bedffb;
+}
+
+.content {
+    z-index: 1;
+    display: block;
+    height: 200px;
+    width: 100px;
+    background-color: gray;
 }
