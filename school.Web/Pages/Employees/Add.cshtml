@@ -1,38 +1,47 @@
 ﻿@page "/employees/add"
 @model EmployeeFormModel
 
+<link rel="stylesheet" href="~/css/add.css" />
+
 <partial name="Sidebar" />
 
-<form method="post">
-    <table align="center">
-        <tr>
-            <td>First name</td>
-            <td>
-                <input type="text" maxlength="30" required name="firstName"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Last Name</td>
-            <td>
-                <input type="text" maxlength="30" required name="lastName"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Age</td>
-            <td>
-                <input type="number" required name="age" min="18" max="65"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Type</td>
-            <td>
-                <select name="type">
-                    <option value="Teacher">Teacher</option>
-                    <option value="Director">Director</option>
-                </select>
-            </td>
-        </tr>
-    </table>
-    <div class="error" align="center">@Model.ErrorMessage</div>
-    <input type="submit" value="Add employee" />
-</form>
+<div class="wrapper">
+    <form method="post" class="form">
+        <table>
+            <tr>
+                <td>First name</td>
+                <td>
+                    <input class="static" type="text" maxlength="30" required name="firstName"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td>
+                    <input type="text" maxlength="30" required name="lastName"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Age</td>
+                <td>
+                    <input type="number" required name="age" min="18" max="65"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td>
+                    <select name="type">
+                        <option value="Teacher">Teacher</option>
+                        <option value="Director">Director</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <div class="error">@Model.ErrorMessage</div>
+        <div class="btns">
+            <input class="button add" type="submit" value="Add employee" />
+            <div class="button cancel">
+                 <a asp-page="List">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

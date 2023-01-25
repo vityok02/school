@@ -6,6 +6,7 @@ public class School : BaseEntity
 {
     public string Name { get; set; }
     public Address Address { get; set; }
+    public int AddressId { get; set; }
     public DateTime OpeningDate { get; set; }
     public Employee? Director => Employees.SingleOrDefault(e => e is Director);
     public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();

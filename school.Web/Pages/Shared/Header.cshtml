@@ -1,0 +1,34 @@
+﻿@model BasePageModel
+@{
+    if(Model.SelectedSchoolName is null)
+    {
+        Model.SelectedSchoolName = Model.GetSelectedSchoolName();
+    }
+}
+
+<div class="header">
+    <details class="dropdown">
+        <summary class="name btn btn-secondary dropdown-toggle">@Model.SelectedSchoolName</summary>
+        <div class="dropdown-menu show">
+            @foreach(var school in Model.GetSchools())
+            {
+                <a class="dropdown-item" asp-route-id="@school.Id" asp-page="/Schools/Details">@school.Name</a><br />
+            }
+        </div>
+    </details>
+@*    <form asp-page-handler="SelectSchool" method="post">
+        <select class="name" name="selectedSchool">
+            @foreach (var school in schools)
+            {
+                <option value="@school.Id"><a asp-page="/Schools/Details">@school.Name</a></option>
+            }
+        </select>
+        <button type="submit">Change</button>
+    </form>*@
+    <details class="drop-down">
+        <summary>
+            <div class="avatar"></div>
+        </summary>
+        <div class="content">user</div>
+    </details>
+</div>

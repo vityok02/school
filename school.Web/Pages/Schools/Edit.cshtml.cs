@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -17,8 +16,8 @@ namespace SchoolManagement.Web.Pages.Schools
         public Address? Address { get; set; }
 
         public EditModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
+            :base(schoolRepository)
         {
-            _schoolRepository = schoolRepository;
             _addressRepository = addressRepository;
         }
 
@@ -34,12 +33,12 @@ namespace SchoolManagement.Web.Pages.Schools
             return Page();
         }
 
-        public IActionResult OnPost(Address address)
+        public IActionResult OnPost(Address address, int id)
         {
             School!.Address = address;
 
             _schoolRepository.Update(School!);
-            return RedirectToPage("List");
+            return Redirect($"/schools/{id}");
         }
     }
 }

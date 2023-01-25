@@ -1,35 +1,47 @@
 ﻿@page "/schools/add"
 @model SchoolFormModel
+<link rel="stylesheet" href="~/css/add.css"/>
 
-<form method="post">
-    <table align="center">
-        <tr>
-            <td>Name:</td>
-            <td><input type="text" name="name" required /></td>
-        </tr>
-        <tr>
-            <td>Country:</td>
-            <td><input type="text" name="country" required /></td>
-        </tr>
-        <tr>
-            <td>City/town:</td>
-            <td><input type="text" name="city" required /></td>
-        </tr>
-        <tr>
-            <td>Street:</td>
-            <td><input type="text" name="street" required /></td>
-        </tr>
-        <tr>
-            <td>Postal code:</td>
-            <td><input type="number" name="postalCode" required /></td>
-        </tr>
-        <tr>
-            <td>Opening date:</td>
-            <td><input type="date" name="openingDate" required /></td>
-        </tr>
-    </table>
-    <div align="center">
-        @Model.ErrorMessage
-        <input type="submit" value="Add school" />
-    </div>
-</form>
+<partial name="Sidebar" />
+
+<div class="wrapper">
+    <form method="post" class="form">
+        <table>
+            <tr>
+                <td>Name:</td>
+                <td>
+                    <div style="display: block">
+                        <input class="static" type="text" value="@Model.Name" id="name" name="name" required/>
+                        <div class="error">@Model.ErrorMessage</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Country:</td>
+                <td><input type="text" value="@Model.Address.Country" name="country" required /></td>
+            </tr>
+            <tr>
+                <td>City/town:</td>
+                <td><input type="text" value="@Model.Address.City" name="city" required /></td>
+            </tr>
+            <tr>
+                <td>Street:</td>
+                <td><input type="text" value="@Model.Address.Street" name="street" required /></td>
+            </tr>
+            <tr>
+                <td>Postal code:</td>
+                <td><input type="number" value="@Model.Address.PostalCode" name="postalCode" required /></td>
+            </tr>
+            <tr>
+                <td>Opening date:</td>
+                <td><input type="date" value="@Model.OpeningDate" name="openingDate" required /></td>
+            </tr>
+        </table>
+        <div class="btns">
+            <input class="button add" type="submit" value="Add school" />
+            <div class="button cancel">
+                 <a asp-page="List">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

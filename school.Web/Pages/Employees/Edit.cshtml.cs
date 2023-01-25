@@ -10,7 +10,8 @@ public class EditModel : BasePageModel
 
     public Employee? Employee { get; set; }
 
-    public EditModel(IRepository<Employee> employeeRepository)
+    public EditModel(IRepository<School> schoolRepository, IRepository<Employee> employeeRepository)
+        :base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
     }
@@ -47,6 +48,6 @@ public class EditModel : BasePageModel
         employee.UpdateInfo(firstName, lastName, age);
 
         _employeeRepository.Update(employee);
-        return Redirect($"/employees/{id}");
+        return RedirectToPage("List");
     }
 }

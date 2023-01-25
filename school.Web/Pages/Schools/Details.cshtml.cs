@@ -5,23 +5,22 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class SchoolModel : PageModel
+public class SchoolModel : BasePageModel
 {
-    private readonly IRepository<School> _schoolRepository;
     private readonly IRepository<Address> _addressRepository;
 
     public School? School { get; private set; }
     public Address? Address { get; private set; }
 
     public SchoolModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
+        :base(schoolRepository)
     {
-        _schoolRepository = schoolRepository;
         _addressRepository = addressRepository;
     }
 
     public IActionResult OnGet(int id)
     {
-        School = _schoolRepository.Get(id);
+        School = SchoolRepository.Get(id);
         if (School is null)
         {
             return RedirectToPage("List");
@@ -30,6 +29,8 @@ public class SchoolModel : PageModel
         Response.Cookies.Append("SchoolId", id.ToString());
 
         Address = _addressRepository.Get(School?.Id ?? 0);
+
+        SelectedSchoolName = School.Name;
 
         return Page();
     }

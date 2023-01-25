@@ -2,41 +2,50 @@
 @using SchoolManagement.Models;
 @model RoomFormModel
 
-<form method="post">
-    <table align="center">
-        <tr>
-            <td>Number: </td>
-            <td>
-                <input type="number" required name="roomNumber"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Floor: </td>
-            <td>
-                <select name="floorNumber" required>
-                    @foreach (var floor in RoomFormModel.Floors!)
-                    {
-                        <option value="@floor.Number">@floor.Number</option>
-                    }
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Type: </td>
-            <td>
-                <details>
-                    @foreach (var type in RoomTypeExt.RoomTypes)
-                    {
-                        <input name="roomTypes[]" type="checkbox" value="@type.Key" />
-                        @type.Value
-                        <br />
-                    }
-                </details>
-            </td>
-        </tr>
-    </table>
-    <div class="error">@Model.ErrorMessage</div>
-    <div align="center">
-        <input type="submit" value="Add room" />
-    </div>
-</form>
+<link rel="stylesheet" href="~/css/add.css"/>
+
+<partial name="Sidebar" />
+
+<div class="wrapper">
+    <form method="post" class="form">
+        <table align="center">
+            <tr>
+                <td>Number: </td>
+                <td>
+                    <input type="number" required name="roomNumber"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Floor: </td>
+                <td>
+                    <select name="floorNumber" required>
+                        @foreach (var floor in RoomFormModel.Floors!)
+                        {
+                            <option value="@floor.Number">@floor.Number</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Type: </td>
+                <td>
+                    <details>
+                        @foreach (var type in RoomTypeExt.RoomTypes)
+                        {
+                            <input name="roomTypes[]" type="checkbox" value="@type.Key" />
+                            @type.Value
+                            <br />
+                        }
+                    </details>
+                </td>
+            </tr>
+        </table>
+        <div class="error">@Model.ErrorMessage</div>
+        <div class="btns">
+            <input class="button add" type="submit" value="Add room" />
+            <div class="button cancel">
+                <a asp-page="List">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

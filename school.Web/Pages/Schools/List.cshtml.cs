@@ -1,49 +1,67 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class SchoolListModel : PageModel
+public class SchoolListModel : BasePageModel
 {
-    private readonly IRepository<School> _schoolRepository;
+    private readonly IRepository<Address> _addressRepository;
+    public readonly IRepository<Employee> _empRepository;
 
-    public static IEnumerable<School>? Schools { get; private set; }
+    public IEnumerable<Address> Addresses { get; set; } = null!;
     public bool IsError { get; set; } = false;
-    public bool IsFirst { get; set; } = true;
+    public bool IsFirst { get; set; } = false;
 
-    public SchoolListModel(IRepository<School> schoolRepository)
+    public SchoolListModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository, IRepository<Employee> empRepository)
+        : base(schoolRepository)
     {
-        _schoolRepository = schoolRepository;
+        _addressRepository = addressRepository;
+        _empRepository = empRepository;
     }
 
-    public void OnGet()
+    public void OnGet(/*string sortOrder*/)
     {
-        Schools = _schoolRepository.GetAll();
-        IsFirst = false;
+        //NameSort = String.IsNullOrEmpty(sortOrder) ? "name-desc" : "";
+        //DateSort = sortOrder == "Date" ? "date=desc" : "Date";
+
+        Schools = GetSchools();
+
+        //IQueryable<School> schoolsIQ = ;
+
+        Addresses = _addressRepository.GetAll();
     }
 
     public void OnGetFirstTime()
     {
-        Schools = _schoolRepository.GetAll();
+        IsFirst = true;
+        OnGet();
     }
 
     public void OnGetError()
     {
-        OnGet();
         IsError = true;
+        IsFirst = true;
+        OnGet();
     }
 
     public IActionResult OnPostDelete(int id)
     {
-        var school = _schoolRepository.Get(id);
+        var school = SchoolRepository.Get(id);
         if (school is null)
         {
             return RedirectToPage("List");
         }
 
-        _schoolRepository.Delete(school);
+        var employees = _empRepository.GetAll(e => e.SchoolId == id);
+        foreach (var emp in employees)
+        {
+            school.Employees.Clear();
+        }
+
+        SchoolRepository.Delete(school);
         return RedirectToPage("List");
     }
 }

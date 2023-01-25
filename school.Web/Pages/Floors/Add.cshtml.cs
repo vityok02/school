@@ -7,14 +7,13 @@ namespace SchoolManagement.Web.Pages.Floors;
 public class FloorFormModel : BasePageModel
 {
     private readonly IRepository<Floor> _floorRepository;
-    private readonly IRepository<School> _schoolRepository;
 
     public int PossibleNumber { get; set; }
 
-    public FloorFormModel(IRepository<Floor> floorRepository, IRepository<School> schoolRepository)
+    public FloorFormModel(IRepository<School> schoolRepository, IRepository<Floor> floorRepository)
+        :base(schoolRepository)
     {
         _floorRepository = floorRepository;
-        _schoolRepository = schoolRepository;
     }
 
     public IActionResult OnGet()
@@ -46,15 +45,23 @@ public class FloorFormModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var school = _schoolRepository.Get(schoolId);
+        var school = SchoolRepository.Get(schoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
         }
 
+        var floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+
+        if(floors.Any(f => f.Number == number))
+        {
+            ErrorMessage = "Such floor already exists";
+            return Page();
+        }
+
         Floor floor = new(number)
         {
-            School = school!
+            School = school
         };
 
         if (type == "floor")

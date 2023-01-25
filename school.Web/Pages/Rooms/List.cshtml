@@ -1,26 +1,46 @@
 ﻿@page "/rooms"
 @model ListModel
-@{
-    if(!Model.Rooms!.Any())
-    {
-        <h2>List of rooms is empty</h2>
-    }
-}
+
+<link rel="stylesheet" href="~/css/list.css">
 
 <partial name="Sidebar" />
 
-<table align="center">
-    @foreach(var room in Model.Rooms!)
+<div class="wrapper">
+    @if(!Model.Rooms.Any())
     {
-        <tr>
-            <td><a asp-page="Details" asp-route-id="@room.Id">Room @room.Number</a></td>
-            <td>
-                <form asp-page-handler="Delete" method="post" asp-route-id="@room.Id" 
-                onclick="return confirm('Are you sure you want to delete room @room.Number?')">
-                    <input type="submit" value="Delete" />
-                </form>
-            </td>
-        </tr>
+        <div class="empty">List of rooms is empty</div>
     }
-</table>
-<div><a asp-page="Add">Add</a></div>
+    else
+    {
+    <table>
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th class="second-column">Type</th>
+                <th class="floor-column">Floor</th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach(var room in Model.Rooms!)
+        {
+            <tr>
+                <td class="first-column">@room.Number</td>
+                <td class="second-column">@room.Type</td>
+                <td class="floor-column">@room.Floor.Number</td>
+                <td>
+                    <div class="btns">
+                        <div class="details">
+                            <a href="rooms/@room.Id/edit">Edit</a>
+                        </div>
+                        <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@room.Id" 
+                        onclick="return confirm('Are you sure you want to delete room @room.Number?')">
+                            <input type="submit" value="Delete" />
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+    }
+    <div class="add"><a asp-page="Add">Add</a></div>
+</div>

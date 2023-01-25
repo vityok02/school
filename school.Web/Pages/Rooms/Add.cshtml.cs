@@ -9,10 +9,10 @@ public class RoomFormModel : BasePageModel
     private readonly IRepository<Floor> _floorRepository;
     private readonly IRepository<Room> _roomRepository;
 
-    public IEnumerable<School>? Schools { get; private set; }
     public static IEnumerable<Floor>? Floors { get; private set; }
 
-    public RoomFormModel(IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
+    public RoomFormModel(IRepository<School> schoolRepository, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
+        :base(schoolRepository)
     {
         _floorRepository = floorRepository;
         _roomRepository = roomRepository;
@@ -47,13 +47,7 @@ public class RoomFormModel : BasePageModel
 
         var floor = _floorRepository.GetAll(f => f.SchoolId == schoolId && f.Number == floorNumber).SingleOrDefault();
 
-        RoomType roomType = 0;
-
-        foreach (var rt in roomTypes)
-        {
-            roomType |= rt;
-        }
-
+        RoomType roomType = RoomHelper.GetRoomType(roomTypes);
         if (roomType == 0)
         {
             ErrorMessage = "Choose room type";

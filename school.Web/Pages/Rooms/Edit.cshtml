@@ -9,33 +9,44 @@
     });
 }
 
-<form method="post">
-    <table>
-        <tr>
-            <td>Number: </td>
-            <td><input asp-for="Room!.Number" /></td>
-        </tr>
-        <tr>
-            <td>Floor: </td>
-            <td>
-                <select asp-for="Room!.Floor.Id" asp-items="floors">
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Type: </td>
-            <td>
-                <details>
-                    @foreach (var type in RoomTypeExt.RoomTypes)
-                    {
-                        <input name="roomTypes[]" type="checkbox" value="@type.Key" checked="@Model.Room!.Type.HasFlag((RoomType)type.Key)" />
-                        @type.Value
-                        <br />
-                    }
-                </details>
-            </td>
-        </tr>
-    </table>
-    <input type="hidden" asp-for="Room!.Id" />
-    <input type="submit" value="Submit" />
-</form>
+<link rel="stylesheet" href="~/css/edit.css" />
+
+<partial name="Sidebar" />
+
+<div class="wrapper">
+    <form method="post" class="edit">
+        <table>
+            <tr>
+                <td>Number: </td>
+                <td><input asp-for="Room!.Number" /></td>
+            </tr>
+            <tr>
+                <td>Floor: </td>
+                <td>
+                    <select asp-for="Room!.Floor.Id" asp-items="floors">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Type: </td>
+                <td>
+                    <details>
+                        @foreach (var type in RoomTypeExt.RoomTypes)
+                        {
+                            <input name="roomTypes[]" type="checkbox" value="@type.Key" checked="@Model.Room!.Type.HasFlag((RoomType)type.Key)" />
+                            @type.Value
+                            <br />
+                        }
+                    </details>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" asp-for="Room!.Id" />
+        <div class="btns">
+            <input class="button save" type="submit" value="Save" />
+            <div class="button cancel">
+                <a asp-page="List">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

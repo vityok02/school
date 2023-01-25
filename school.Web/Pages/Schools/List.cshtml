@@ -1,31 +1,79 @@
 ﻿@page "/schools"
 @model SchoolListModel
 @{
-    if(Model.IsError)
+    if (Model.IsError)
     {
         <script>alert('No school selected, please select a school');</script>
     }
-    if(!Model.IsFirst)
+    if (!Model.IsFirst)
     {
-        <partial name="Sidebar" />;
+        <partial name="Sidebar" />
+        ;
     }
 }
 
+<link rel="stylesheet" href="~/css/list.css" />
 
-
-<h1 align="center">Your Schools</h1>
-<table align="center" width="500px" border="1">
-    @foreach (var school in SchoolListModel.Schools!)
+<div class="wrapper">
+    @if (!Model.Schools.Any())
     {
-        <tr>
-            <td><a asp-page="Details" asp-route-id="@school.Id">@school.Name</a></td>
-            <td>
-                <form asp-page-handler="Delete" method="post" asp-route-id="@school.Id" 
-                onclick="return confirm('Are you sure you want to delete school @school.Name?')">
-                    <input type="submit" value="Delete" />
-                </form>
-            </td>
-        </tr>
+        <div class="empty">List of schools if empty</div>
     }
-</table>
-<div align="center"><a asp-page="Add">Add School</a></div>
+    else
+    {
+        <table id="tab">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th colspan="2">Street</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var school in Model.Schools)
+                {
+                    <tr>
+                        <td>@school.Name</td>
+                        <td>
+                            <div class="city">
+                                @Model.Addresses.Where(a => a.Id == school.AddressId).SingleOrDefault()!.City
+                            </div>
+                        </td>
+                        <td>
+                            <div class="street">
+                                @Model.Addresses.Where(a => a.Id == school.AddressId).SingleOrDefault()!.Street
+                            </div>
+                        </td>
+
+                        @if (Model.IsFirst)
+                        {
+                            <td>
+                                <div class="choose">
+                                    <a href="schools/@school.Id">Choose</a>
+                                </div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <div class="btns">
+                                    <div class="button details">
+                                        <a asp-page="Details" asp-route-id="@school.Id">Details</a>
+                                    </div>
+                                    <form class="button delete" asp-page-handler="Delete" method="post" asp-route-id="@school.Id"
+                                    onclick="return confirm('Are you sure you want to delete school @school.Name?')">
+                                        <input type="submit" value="Delete" />
+                                    </form>
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    @if (!Model.IsFirst)
+    {
+        <div class="add"><a asp-page="Add">Add</a></div>
+    }
+</div>

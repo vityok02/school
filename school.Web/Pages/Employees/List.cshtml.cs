@@ -8,10 +8,10 @@ public class ListModel : BasePageModel
 {
     private readonly IRepository<Employee> _employeeRepository;
 
-    public static IEnumerable<Employee>? Employees { get; private set; }
-    public string Message { get; private set; } = "";
+    public IEnumerable<Employee> Employees { get; private set; } = null!;
 
-    public ListModel(IRepository<Employee> employeeRepository)
+    public ListModel(IRepository<School> schoolRepository, IRepository<Employee> employeeRepository)
+        :base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
     }

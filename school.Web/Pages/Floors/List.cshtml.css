@@ -1,0 +1,126 @@
+﻿.wrapper {
+    position: relative;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+summary {
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: 2px;
+    color: white;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-radius: 5px 5px 5px 5px;
+    background-color: #009879;
+    height: 80px;
+}
+
+.list {
+    position: absolute;
+    top: 38px;
+    right: 5%;
+    left: 5%;
+    bottom: 260px;
+    width: auto;
+    height: auto;
+    display: block;
+    overflow: auto;
+}
+
+details {
+    display: block;
+}
+
+.name {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.count {
+    font-size: 24px;
+    position: absolute;
+    right: 30px;
+}
+
+.content {
+    font-size: 24px;
+    background-color: #a6c5bf;
+    margin-left: 10px;
+    margin-right: 5px;
+    border-radius: 0 0 5px 5px;
+    animation: slide .3s ease-in-out;
+}
+
+@keyframes slide {
+    0% {
+        opacity: 0;
+        transform: translate(0, -10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
+
+.border-bottom {
+    border-bottom: 1px solid white;
+}
+
+.btn-delete input[type=submit] {
+    position: absolute;
+    right: 250px;
+    top: 15px;
+    background-color: red;
+    height: 50px;
+    width: 120px;
+    margin-left: 5px;
+    border: 0;
+    border-radius: 10px;
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+    .btn-delete input[type=submit]:hover {
+        background-color: #B40000;
+    }
+
+details[open] summary ~ * {
+    animation: open 0.3s ease-in-out;
+}
+
+@keyframes open {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+summary::before,
+summary::after {
+    width: 0.75em;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    content: "";
+    background-color: currentColor;
+    text-align: right;
+    transform: translateY(-50%);
+    transition: transform 0.2s ease-in-out;
+}
+
+[open] summary::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+summary::after {
+    transform: translateY(-50%) rotate(90deg);
+}

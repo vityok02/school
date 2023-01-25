@@ -7,14 +7,15 @@ namespace SchoolManagement.Web.Pages.Floors;
 public class FloorListModel : BasePageModel
 {
     private readonly IRepository<Floor> _floorRepository;
-    private readonly IRepository<School> _schoolRepository;
+    private readonly IRepository<Room> _roomRepository;
 
-    public IEnumerable<Floor>? Floors { get; private set; }
+    public IEnumerable<Floor> Floors { get; private set; } = null!;
 
-    public FloorListModel(IRepository<Floor> floorRepository, IRepository<School> schoolRepository)
+    public FloorListModel(IRepository<School> schoolRepository, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
+        : base(schoolRepository)
     {
         _floorRepository = floorRepository;
-        _schoolRepository = schoolRepository;
+        _roomRepository = roomRepository;
     }
 
     public IActionResult OnGet()
@@ -39,7 +40,7 @@ public class FloorListModel : BasePageModel
 
         Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
 
-        var school = _schoolRepository.Get(schoolId);
+        var school = SchoolRepository.Get(schoolId);
         int number;
 
         if (!Floors!.Any() || Floors!.Last().Number < 0)
@@ -69,7 +70,7 @@ public class FloorListModel : BasePageModel
 
         Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
 
-        var school = _schoolRepository.Get(schoolId);
+        var school = SchoolRepository.Get(schoolId);
         int number;
 
         if (!Floors!.Any() || Floors!.First().Number >= 0)
@@ -96,5 +97,10 @@ public class FloorListModel : BasePageModel
 
         _floorRepository.Delete(floor!);
         return RedirectToPage("List");
+    }
+
+    public IEnumerable<Room> GetRooms(Floor floor)
+    {
+        return _roomRepository.GetAll(r => r.Floor.Id == floor.Id);
     }
 }
