@@ -6,7 +6,6 @@ namespace SchoolManagement.Web.Pages.Schools
 {
     public class EditModel : BasePageModel
     {
-        private readonly IRepository<School> _schoolRepository;
         private readonly IRepository<Address> _addressRepository;
 
         [BindProperty]
@@ -23,7 +22,7 @@ namespace SchoolManagement.Web.Pages.Schools
 
         public IActionResult OnGet(int id)
         {
-            School = _schoolRepository.Get(id);
+            School = SchoolRepository.Get(id);
             if (School is null)
             {
                 return RedirectToPage("List");
@@ -37,7 +36,7 @@ namespace SchoolManagement.Web.Pages.Schools
         {
             School!.Address = address;
 
-            _schoolRepository.Update(School!);
+            SchoolRepository.Update(School!);
             return Redirect($"/schools/{id}");
         }
     }

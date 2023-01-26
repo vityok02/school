@@ -47,32 +47,5 @@
             }
         </div>
     }
-@*    {
-        <table>
-            @foreach (var floor in Model.Floors!.Reverse())
-            {
-                <tr>
-                    <td>
-                        <a asp-page="Details" asp-route-id="@floor.Id">
-                        @if (floor.Number < 1)
-                        {
-                            floor.Number = -floor.Number;
-                            @:Basement level @floor.Number
-                        }
-                        else
-                        {
-                            @:Floor @floor.Number
-                        }
-                        </a>
-                    </td>
-                    <td>
-                        <form asp-page-handler="Delete" method="post" asp-route-id="@floor.Id"
-                        onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
-                            <input type="submit" value="Delete" />
-                        </form>
-                    </td>
-                </tr>
-            }
-        </table>*@
 <div class="add"><a asp-page="Add">Add</a></div>
 </div>

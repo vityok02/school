@@ -53,6 +53,11 @@ public class FloorFormModel : BasePageModel
 
         var floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
 
+        if (type == "basement")
+        {
+            number = -number;
+        }
+
         if(floors.Any(f => f.Number == number))
         {
             ErrorMessage = "Such floor already exists";
@@ -63,15 +68,6 @@ public class FloorFormModel : BasePageModel
         {
             School = school
         };
-
-        if (type == "floor")
-        {
-            floor.Number = number;
-        }
-        else
-        {
-            floor.Number = -number;
-        }
 
         _floorRepository.Add(floor);
         return RedirectToPage("List");

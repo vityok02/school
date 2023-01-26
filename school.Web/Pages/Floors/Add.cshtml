@@ -1,23 +1,35 @@
 ﻿@page "/floors/add"
 @model FloorFormModel
 
-<form method="post">
-    <table>
-        <tr>
-            <td>Type: </td>
-            <td>
-                <select name="type">
-                    <option value="floor">Floor</option>
-                    <option value="basement">Basement</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Number: </td>
-            <td>
-                <input type="number" value="@Model.PossibleNumber" name="number"/>
-            </td>
-        </tr>
-    </table>
-    <input type="submit" value="Add floor"/>
-</form>
+<link rel="stylesheet" href="~/css/add.css" />
+
+<partial name="Sidebar" />
+
+<div class="wrapper">
+    <form method="post" class="form">
+        <table>
+            <tr>
+                <td>Type: </td>
+                <td>
+                    <select name="type">
+                        <option value="floor">Floor</option>
+                        <option value="basement">Basement</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Number: </td>
+                <td>
+                    <input type="number" value="@Model.PossibleNumber" name="number"/>
+                </td>
+            </tr>
+        </table>
+        <div class="error">@Model.ErrorMessage</div>
+        <div class="btns">
+            <input class="button add" type="submit" value="Add floor"/>
+            <div class="button cancel">
+                <a asp-page="List">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
