@@ -26,11 +26,9 @@ public class SchoolModel : BasePageModel
             return RedirectToPage("List");
         }
 
-        Response.Cookies.Append("SchoolId", id.ToString());
-
         Address = _addressRepository.Get(School?.Id ?? 0);
 
-        SelectedSchoolName = School.Name;
+        SelectedSchoolName = School!.Name;
 
         return Page();
     }

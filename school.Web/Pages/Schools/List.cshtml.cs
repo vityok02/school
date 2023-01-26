@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -45,6 +43,21 @@ public class SchoolListModel : BasePageModel
         IsError = true;
         IsFirst = true;
         OnGet();
+    }
+
+    public IActionResult OnGetSelectSchool(int id)
+    {
+        OnGet();
+        var school = SchoolRepository.Get(id);
+        if(school is null)
+        {
+            IsError = true;
+        }
+
+        SelectedSchoolName = school.Name;
+
+        SetSchoolId(school!.Id);
+        return Page();
     }
 
     public IActionResult OnPostDelete(int id)

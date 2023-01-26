@@ -13,7 +13,7 @@
             @foreach(var school in Model.GetSchools())
             {
                 <div class="item">
-                    <a class="dropdown-item" asp-route-id="@school.Id" asp-page="/Schools/Details">@school.Name</a>
+                    <a class="dropdown-item" asp-route-id="@school.Id" asp-page="/Schools/List" asp-page-handler="SelectSchool">@school.Name</a>
                 </div>
             }
         </div>

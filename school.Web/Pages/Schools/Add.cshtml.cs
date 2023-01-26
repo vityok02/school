@@ -32,8 +32,6 @@ public class SchoolFormModel : BasePageModel
 
         SchoolRepository.Add(school);
 
-        SetSchoolId(school.Id);
-
         return RedirectToPage("List");
     }
 }

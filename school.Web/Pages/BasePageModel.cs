@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -9,8 +8,8 @@ namespace SchoolManagement.Web.Pages;
 public abstract class BasePageModel : PageModel
 {
     protected IRepository<School> SchoolRepository { get; }
-    public string SelectedSchoolName { get; set; } = null!;
 
+    public string SelectedSchoolName { get; set; } = null!;
     public IEnumerable<School> Schools { get; set; } = null!;
     public string ErrorMessage { get; set; } = null!;
 
@@ -50,7 +49,7 @@ public abstract class BasePageModel : PageModel
         return RedirectToPage("/Schools/List", "error");
     }
 
-    public IActionResult OnPostSelectSchool(int selectedSchool)
+    public IActionResult SelectSchool(int selectedSchool)
     {
         SetSchoolId(selectedSchool);
 
