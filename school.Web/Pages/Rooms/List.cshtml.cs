@@ -19,7 +19,7 @@ public class ListModel : BasePageModel
         _floorRepository = floorRepository;
     }
 
-    public IActionResult OnGet()
+    public IActionResult OnGet(string orderBy)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -27,11 +27,12 @@ public class ListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        Rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId);
+        Rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId).OrderBy(r => r.Number);
         Floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
 
         return Page();
     }
+
 
     public IActionResult OnPostDelete(int id)
     {

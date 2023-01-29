@@ -16,8 +16,6 @@ public class EmployeeFormModel : BasePageModel
 
     public IActionResult OnPost(string firstName, string lastName, int age, string type)
     {
-        Schools = GetSchools();
-
         var schoolId = GetSchoolId();
         if (schoolId == -1)
         {

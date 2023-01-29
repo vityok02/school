@@ -41,7 +41,6 @@ public class ListModel : BasePageModel
         }
     }
 
-
     public IActionResult OnPostDelete(int id)
     {
         var employee = _employeeRepository.Get(id);

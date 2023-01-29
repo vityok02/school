@@ -36,9 +36,16 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return _dbContext.Set<TEntity>().Find(id);
     }
 
-    public IEnumerable<TEntity> GetAll()
+    public IEnumerable<TEntity> GetAll(Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
     {
-        return _dbContext.Set<TEntity>().ToArray();
+        IQueryable<TEntity> entities = _dbContext.Set<TEntity>();
+
+        if (orderBy is not null)
+        {
+            entities = orderBy(entities);
+        }
+
+        return entities.ToArray();
     }
 
     public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate,

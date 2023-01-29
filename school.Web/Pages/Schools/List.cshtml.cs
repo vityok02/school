@@ -20,34 +20,41 @@ public class SchoolListModel : BasePageModel
         _empRepository = empRepository;
     }
 
-    public void OnGet(/*string sortOrder*/)
+    public void OnGet(string orderBy)
     {
-        //NameSort = String.IsNullOrEmpty(sortOrder) ? "name-desc" : "";
-        //DateSort = sortOrder == "Date" ? "date=desc" : "Date";
-
-        Schools = GetSchools();
-
-        //IQueryable<School> schoolsIQ = ;
+        Schools = SchoolRepository.GetAll(Sort(orderBy));
 
         Addresses = _addressRepository.GetAll();
+
+        Func<IQueryable<School>, IOrderedQueryable<School>> Sort(string orderBy)
+        {
+            return orderBy switch
+            {
+                "name" => s => s.OrderBy(s => s.Name),
+                "city" => s => s.OrderBy(s => s.Address.City),
+                "street" => s => s.OrderBy(s => s.Address.Street),
+                _ => s => s.OrderBy(s => s.Name),
+            };
+        }
     }
 
-    public void OnGetFirstTime()
+
+    public void OnGetFirstTime(string orderBy)
     {
         IsFirst = true;
-        OnGet();
+        OnGet(orderBy);
     }
 
-    public void OnGetError()
+    public void OnGetError(string orderBy)
     {
         IsError = true;
         IsFirst = true;
-        OnGet();
+        OnGet(orderBy);
     }
 
-    public IActionResult OnGetSelectSchool(int id)
+    public IActionResult OnGetSelectSchool(int id, string orderBy)
     {
-        OnGet();
+        OnGet(orderBy);
         var school = SchoolRepository.Get(id);
         if(school is null)
         {

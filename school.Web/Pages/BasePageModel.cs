@@ -24,7 +24,7 @@ public abstract class BasePageModel : PageModel
         return int.TryParse(sId, out int schoolId) ? schoolId : -1;
     }
     
-    public IEnumerable<School> GetSchools() => SchoolRepository.GetAll();
+    public IEnumerable<School> GetSchools() => SchoolRepository.GetAll().OrderBy(s => s.Name);
 
     public string GetSelectedSchoolName()
     {
