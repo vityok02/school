@@ -13,6 +13,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

@@ -1,7 +1,13 @@
-﻿<div class="sidenav">
-    <a asp-page="/Schools/List" style="border-top: 1px solid black">Schools</a>
-    <a asp-page="/Floors/List">Floors</a>
-    <a asp-page="/Rooms/List">Rooms</a>
-    <a asp-page="/Employees/List">Employees</a>
-    <a asp-page="/Students/List">Students</a>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor Accessor
+
+@{
+    var currentPage = Accessor.HttpContext.Request.Path.Value;
+}
+
+<div class="sidenav">
+    <a class="@(currentPage.StartsWith("/schools") ? "active" : "")" asp-page="/Schools/List" style="border-top: 1px solid black">Schools</a>
+    <a class="@(currentPage.StartsWith("/floors") ? "active" : "")" asp-page="/Floors/List">Floors</a>
+    <a class="@(currentPage.StartsWith("/rooms") ? "active" : "")" asp-page="/Rooms/List">Rooms</a>
+    <a class="@(currentPage.StartsWith("/employees") ? "active" : "")" asp-page="/Employees/List">Employees</a>
+    <a class="@(currentPage.StartsWith("/students") ? "active" : "")" asp-page="/Students/List">Students</a>
 </div>
