@@ -9,6 +9,7 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
     void Delete(TEntity entity);
     TEntity? Get(int id);
     IEnumerable<TEntity> GetAll();
-    IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate);
+    IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
     void SaveChanges();
 }
