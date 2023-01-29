@@ -8,7 +8,6 @@
     if (!Model.IsFirst)
     {
         <partial name="Sidebar" />
-        ;
     }
 }
 
@@ -24,9 +23,15 @@
         <table id="tab">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>City</th>
-                    <th colspan="2">Street</th>
+                    <th>
+                        <a asp-route-orderBy="name">Name</a>
+                    </th>
+                    <th>
+                        <a asp-route-orderBy="city">City</a>
+                    </th>
+                    <th colspan="2">
+                        <a asp-route-orderBy="street">Street</a>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -49,7 +54,7 @@
                         {
                             <td>
                                 <div class="choose">
-                                    <a href="schools/@school.Id">Choose</a>
+                                    <a asp-page="/Schools/List">Choose</a>
                                 </div>
                             </td>
                         }

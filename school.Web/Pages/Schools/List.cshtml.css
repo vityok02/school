@@ -1,32 +1,7 @@
-﻿body {
-}
-
-.city {
+﻿.city {
     width: 300px;
 }
 
 .street {
     width: 300px;
 }
-
-.choose {
-    display: flex;
-    margin-right: 10px;
-    height: 50px;
-    width: 200px;
-    background: #002B98;
-    border-radius: 10px;
-    color: white;
-}
-
-    .choose a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        border-radius: 10px;
-        height: 100%;
-        font-size: 20px;
-        text-decoration: none;
-        color: white;
-    }
