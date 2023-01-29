@@ -43,6 +43,10 @@ table {
         width: 100%;
     }
 
+    table th a{
+        text-decoration: none;
+        color: white;
+    }
 table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
@@ -141,3 +145,25 @@ table tbody tr:hover {
     font-weight: bold;
     text-align: center
 }
+
+.choose {
+    display: flex;
+    margin-right: 10px;
+    height: 50px;
+    width: 200px;
+    background: #002B98;
+    border-radius: 10px;
+    color: white;
+}
+
+    .choose a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        border-radius: 10px;
+        height: 100%;
+        font-size: 20px;
+        text-decoration: none;
+        color: white;
+    }

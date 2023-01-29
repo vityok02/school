@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -16,7 +17,7 @@ public class ListModel : BasePageModel
         _employeeRepository = employeeRepository;
     }
 
-    public IActionResult OnGet()
+    public IActionResult OnGet(string orderBy)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -24,10 +25,22 @@ public class ListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        Employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId);
+        Employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId, Sort(orderBy));
 
         return Page();
+
+        static Func<IQueryable<Employee>, IOrderedQueryable<Employee>> Sort(string orderBy)
+        {
+            return orderBy switch
+            {
+                "firstName" => e => e.OrderBy(e => e.FirstName),
+                "lastName" => e => e.OrderBy(e => e.LastName),
+                "age" => e => e.OrderBy(e => e.Age),
+                _ => e => e.OrderBy(e => e.FirstName),
+            };
+        }
     }
+
 
     public IActionResult OnPostDelete(int id)
     {

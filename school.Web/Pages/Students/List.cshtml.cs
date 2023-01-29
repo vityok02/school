@@ -15,7 +15,7 @@ public class ListModel : BasePageModel
         _studentRepository = studentRepository;
     }
 
-    public IActionResult OnGet()
+    public IActionResult OnGet(string orderBy)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -23,9 +23,21 @@ public class ListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        Students = _studentRepository.GetAll(s => s.SchoolId == schoolId);
+        Students = _studentRepository.GetAll(s => s.SchoolId == schoolId, Sort(orderBy));
 
         return Page();
+
+        Func<IQueryable<Student>, IOrderedQueryable<Student>> Sort(string orderBy)
+        {
+            return orderBy switch
+            {
+                "firstName" => s => s.OrderBy(s => s.FirstName),
+                "lastName" => s => s.OrderBy(s => s.LastName),
+                "age" => s => s.OrderBy(s => s.Age),
+                "group" => s => s.OrderBy(s => s.Group),
+                _ => s => s.OrderBy(s => s.FirstName),
+            };
+        }
     }
 
     public IActionResult OnPostDelete(int id)
