@@ -1,5 +1,6 @@
 ﻿using SchoolManagement.Data;
 using SchoolManagement.Models;
+using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement;
 

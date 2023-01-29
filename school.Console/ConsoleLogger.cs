@@ -1,4 +1,4 @@
-﻿using SchoolManagement.Models;
+﻿using SchoolManagement.Models.Interfaces;
 using static SchoolManagement.TextColors;
 
 namespace SchoolManagement;
