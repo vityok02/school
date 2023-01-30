@@ -10,22 +10,25 @@
     background: linear-gradient(rgba(151, 179, 202, 1), rgba(134, 157, 174, 0))
 }
 
+a {
+    color: gray;
+}
+
     .sidenav a {
         padding: 6px 8px 6px 16px;
         text-decoration: none;
         font-size: 32px;
-        color: #818181;
         display: block;
         border-bottom: 1px solid black;
     }
 
         .sidenav a:hover {
-            color: #f1f1f1;
+            color: white
         }
 
 .active {
-    color: purple;
-    background: black;
+    color: white;
+    background: linear-gradient(90deg, rgba(79,100,108,1) 0%, rgba(79,100,108,0) 100%);
 }
 
 @media screen and (max-width: 900px) {

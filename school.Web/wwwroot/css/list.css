@@ -26,6 +26,10 @@ table {
         box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     }
 
+    table td:first-child, th:first-child{
+        padding-left: 10px;
+    }
+
     table thead tr {
         position: sticky;
         top: 0;
@@ -47,17 +51,17 @@ table {
         text-decoration: none;
         color: white;
     }
-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
+    table tbody tr:nth-of-type(even) {
+        background-color: #d5d5d5;
+    }
 
-table tbody tr:nth-child(2n+1) {
-    background-color: #F5F5F5;
-}
+    table tbody tr:nth-child(2n+1) {
+        background-color: #dfdfdf;
+    }
 
-table tbody tr:hover {
-    background-color: #dddddd;
-}
+    table tbody tr:hover {
+        background-color: #cfcfcf;
+    }
 
 .btns {
     margin-right: 10px;
