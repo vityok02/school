@@ -24,13 +24,13 @@
             <thead>
                 <tr>
                     <th>
-                        <a asp-route-orderBy="name">Name</a>
+                        <a asp-route-orderBy="@Model.NameSort">Name</a>
                     </th>
                     <th>
-                        <a asp-route-orderBy="city">City</a>
+                        <a asp-route-orderBy="@Model.CitySort">City</a>
                     </th>
                     <th colspan="2">
-                        <a asp-route-orderBy="street">Street</a>
+                        <a asp-route-orderBy="@Model.StreetSort">Street</a>
                     </th>
                 </tr>
             </thead>

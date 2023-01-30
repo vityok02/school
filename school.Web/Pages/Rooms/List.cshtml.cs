@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
@@ -19,7 +20,7 @@ public class ListModel : BasePageModel
         _floorRepository = floorRepository;
     }
 
-    public IActionResult OnGet(string orderBy)
+    public IActionResult OnGet(string filterBy)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -28,6 +29,7 @@ public class ListModel : BasePageModel
         }
 
         Rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId).OrderBy(r => r.Number);
+
         Floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
 
         return Page();

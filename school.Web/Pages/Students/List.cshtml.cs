@@ -9,6 +9,10 @@ public class ListModel : BasePageModel
     private readonly IRepository<Student> _studentRepository;
 
     public IEnumerable<Student> Students { get; private set; } = null!;
+    public string FirstNameSort { get; set; } = null!;
+    public string LastNameSort { get; set; } = null!;
+    public string AgeSort { get; set; } = null!;
+
     public ListModel(IRepository<School> schoolRepository, IRepository<Student> studentRepository)
         : base(schoolRepository)
     {
@@ -23,6 +27,10 @@ public class ListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
+        FirstNameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
+        LastNameSort = orderBy == "lastName" ? "lastName_desc" : "lastName";
+        AgeSort = orderBy == "age" ? "age_desc" : "age";
+
         Students = _studentRepository.GetAll(s => s.SchoolId == schoolId, Sort(orderBy));
 
         return Page();
@@ -31,9 +39,11 @@ public class ListModel : BasePageModel
         {
             return orderBy switch
             {
-                "firstName" => s => s.OrderBy(s => s.FirstName),
-                "lastName" => s => s.OrderBy(s => s.LastName),
-                "age" => s => s.OrderBy(s => s.Age),
+                "name_desc" => e => e.OrderByDescending(e => e.FirstName),
+                "lastName" => e => e.OrderBy(e => e.LastName),
+                "lastName_desc" => e => e.OrderByDescending(e => e.LastName),
+                "age" => e => e.OrderBy(e => e.Age),
+                "age_desc" => e => e.OrderByDescending(e => e.Age),
                 "group" => s => s.OrderBy(s => s.Group),
                 _ => s => s.OrderBy(s => s.FirstName),
             };

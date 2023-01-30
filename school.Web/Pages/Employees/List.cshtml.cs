@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -10,6 +9,9 @@ public class ListModel : BasePageModel
     private readonly IRepository<Employee> _employeeRepository;
 
     public IEnumerable<Employee> Employees { get; private set; } = null!;
+    public string FirstNameSort { get; set; } = null!;
+    public string LastNameSort { get; set; } = null!;
+    public string AgeSort { get; set; } = null!;
 
     public ListModel(IRepository<School> schoolRepository, IRepository<Employee> employeeRepository)
         :base(schoolRepository)
@@ -25,6 +27,10 @@ public class ListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
+        FirstNameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
+        LastNameSort = orderBy == "lastName" ? "lastName_desc" : "lastName";
+        AgeSort = orderBy == "age" ? "age_desc" : "age";
+
         Employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId, Sort(orderBy));
 
         return Page();
@@ -33,9 +39,11 @@ public class ListModel : BasePageModel
         {
             return orderBy switch
             {
-                "firstName" => e => e.OrderBy(e => e.FirstName),
+                "name_desc" => e => e.OrderByDescending(e => e.FirstName),
                 "lastName" => e => e.OrderBy(e => e.LastName),
+                "lastName_desc" => e => e.OrderByDescending(e => e.LastName),
                 "age" => e => e.OrderBy(e => e.Age),
+                "age_desc" => e => e.OrderByDescending(e => e.Age),
                 _ => e => e.OrderBy(e => e.FirstName),
             };
         }

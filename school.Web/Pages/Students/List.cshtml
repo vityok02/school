@@ -16,13 +16,13 @@
             <thead>
                 <tr>
                     <th>
-                        <a asp-route-orderBy="firstName">First name</a>
+                        <a asp-route-orderBy="@Model.FirstNameSort">First name</a>
                     </th>
                     <th>
-                        <a asp-route-orderBy="lastName">Last name</a>
+                        <a asp-route-orderBy="@Model.LastNameSort">Last name</a>
                     </th>
                     <th>
-                        <a asp-route-orderBy="age">Age</a>
+                        <a asp-route-orderBy="@Model.AgeSort">Age</a>
                     </th>
                     <th class="group-column">
                         <a asp-route-orderBy="group">Group</a>

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -7,21 +8,28 @@ namespace SchoolManagement.Web.Pages.Schools;
 public class SchoolListModel : BasePageModel
 {
     private readonly IRepository<Address> _addressRepository;
-    public readonly IRepository<Employee> _empRepository;
+    private readonly IRepository<Employee> _employeeRepository;
 
     public IEnumerable<Address> Addresses { get; set; } = null!;
     public bool IsError { get; set; } = false;
     public bool IsFirst { get; set; } = false;
+    public string NameSort { get; set; } = null!;
+    public string CitySort { get; set; } = null!;
+    public string StreetSort { get; set; } = null!;
 
     public SchoolListModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository, IRepository<Employee> empRepository)
         : base(schoolRepository)
     {
         _addressRepository = addressRepository;
-        _empRepository = empRepository;
+        _employeeRepository = empRepository;
     }
 
     public void OnGet(string orderBy)
     {
+        NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
+        CitySort = orderBy == "city" ? "city_desc" : "city";
+        StreetSort = orderBy == "street" ? "street_desc" : "street";
+
         Schools = SchoolRepository.GetAll(Sort(orderBy));
 
         Addresses = _addressRepository.GetAll();
@@ -30,9 +38,11 @@ public class SchoolListModel : BasePageModel
         {
             return orderBy switch
             {
-                "name" => s => s.OrderBy(s => s.Name),
+                "name_desc" => s => s.OrderByDescending(s => s.Name),
                 "city" => s => s.OrderBy(s => s.Address.City),
+                "city_desc" => s => s.OrderByDescending(s => s.Address.City),
                 "street" => s => s.OrderBy(s => s.Address.Street),
+                "street_desc" => s => s.OrderByDescending(s => s.Address.Street),
                 _ => s => s.OrderBy(s => s.Name),
             };
         }
@@ -75,7 +85,7 @@ public class SchoolListModel : BasePageModel
             return RedirectToPage("List");
         }
 
-        var employees = _empRepository.GetAll(e => e.SchoolId == id);
+        var employees = _employeeRepository.GetAll(e => e.SchoolId == id);
         foreach (var emp in employees)
         {
             school.Employees.Clear();
