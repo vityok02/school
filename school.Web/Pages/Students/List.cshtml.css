@@ -11,3 +11,30 @@
     text-align: center;
     margin-inline: auto;
 }
+
+.sidebar {
+    position: fixed;
+    z-index: 1;
+    height: 100%;
+    right: 0;
+    background: linear-gradient(rgba(151, 179, 202, 1), rgba(255, 255, 255, 100));
+    transition: 0.5s;
+    padding-top: 0px;
+}
+
+.sidebar .closebtn {
+    margin-top: 0px;
+    top: 0;
+    right: 0px;
+    font-size: 36px;
+}
+
+.openbtn {
+    top: 0;
+    right: 0;
+    position: absolute;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+}
