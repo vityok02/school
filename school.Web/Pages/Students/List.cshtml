@@ -1,32 +1,38 @@
 ﻿@page "/students"
 @model ListModel
 
+@{
+    ViewData["Title"] = "Students";
+
+    var message = "List of students is empty";
+    if(Model.Message is not null)
+    {
+        message = Model.Message;
+    }
+}
+
 <link rel="stylesheet" href="~/css/list.css" />
 
 <partial name="Sidebar" />
 
 <div class="wrapper">
     <div>
-        <div id="sidebar" class="sidebar">
+        <div class="filter">
             <form method="get">
-                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
-                <div>First name: </div>
-                <input type="text" name="firstName"/>
-                <div>Last name: </div>
-                <input type="text" name="lastName"/>
-                <div>Age: </div>
-                <input type="number" name="age"/>
-                <div>Group: </div>
-                <input type="text" name="group"/>
-                <br />
-                <input type="submit" value="Submit" />
+                <label>Name: </label>
+                <input asp-for="FilterByName"/>
+                <label>Age: </label>
+                <input asp-for="FilterByAge" />
+                <label>Group: </label>
+                <input asp-for="FilterByGroup" />
+                <input type="submit" value="Search" />
+                <a asp-action="/Students/List">Back to full list</a>
             </form>
         </div>
-        <button class="openbtn" onclick="openNav()">Search ☰</button>
     </div>
     @if (!Model.Students!.Any())
     {
-        <div class="empty">List of students if empty</div>
+        <div class="empty">@message</div>
     }
     else
     {
@@ -74,13 +80,3 @@
     }
     <div class="add"><a asp-page="Add">Add</a></div>
 </div>
-
-<script>
-function openNav() {
-  document.getElementById("sidebar").style.width = "250px";
-}
-
-function closeNav() {
-  document.getElementById("sidebar").style.width = "0";
-}
-</script>

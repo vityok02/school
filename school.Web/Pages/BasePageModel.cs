@@ -12,6 +12,10 @@ public abstract class BasePageModel : PageModel
     public string SelectedSchoolName { get; set; } = null!;
     public IEnumerable<School> Schools { get; set; } = null!;
     public string ErrorMessage { get; set; } = null!;
+    public string Message { get; set; } = null!;
+
+    public string FilterByName { get; set; } = null!;
+    public int FilterByAge { get; set; }
 
     protected BasePageModel(IRepository<School> schoolRepository)
     {

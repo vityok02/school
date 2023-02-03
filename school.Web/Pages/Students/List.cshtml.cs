@@ -8,11 +8,11 @@ public class ListModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
-    [BindProperty]
     public IEnumerable<Student> Students { get; set; } = null!;
     public string FirstNameSort { get; set; } = null!;
     public string LastNameSort { get; set; } = null!;
     public string AgeSort { get; set; } = null!;
+    public string FilterByGroup { get; set; }
 
     public ListModel(IRepository<School> schoolRepository, IRepository<Student> studentRepository)
         : base(schoolRepository)
@@ -20,7 +20,7 @@ public class ListModel : BasePageModel
         _studentRepository = studentRepository;
     }
 
-    public IActionResult OnGet(IEnumerable<Student> students, string orderBy, string firstName = null!, string lastName = null!, int age = 0, string group = null!)
+    public IActionResult OnGet(string orderBy, string filterByName, int filterByAge, string filterByGroup)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -32,46 +32,60 @@ public class ListModel : BasePageModel
         LastNameSort = orderBy == "lastName" ? "lastName_desc" : "lastName";
         AgeSort = orderBy == "age" ? "age_desc" : "age";
 
-        Students = _studentRepository.GetAll(s => s.SchoolId == schoolId);
+        Students = _studentRepository.GetAll(s => s.SchoolId == schoolId, Sort(orderBy));
 
-        Students = Filter(firstName, lastName, age, group);
-
-        Students = Sort(orderBy);
-
+        Students = FilterBy(filterByName, filterByAge, filterByGroup);
+        
         return Page();
 
-        IEnumerable<Student> Sort(string orderBy)
+        static Func<IQueryable<Student>, IOrderedQueryable<Student>> Sort(string orderBy)
         {
             return orderBy switch
             {
-                "name_desc" => Students.OrderByDescending(e => e.FirstName),
-                "lastName" => Students.OrderBy(e => e.LastName),
-                "lastName_desc" => Students.OrderByDescending(e => e.LastName),
-                "age" => Students.OrderBy(e => e.Age),
-                "age_desc" => Students.OrderByDescending(e => e.Age),
-                "group" => Students.OrderBy(s => s.Group),
-                _ => Students.OrderBy(s => s.FirstName),
+                "name_desc" => s => s.OrderByDescending(s => s.FirstName),
+                "lastName" => s => s.OrderBy(e => e.LastName),
+                "lastName_desc" => s => s.OrderByDescending(e => e.LastName),
+                "age" => s => s.OrderBy(e => e.Age),
+                "age_desc" => s => s.OrderByDescending(e => e.Age),
+                "group" => s => s.OrderBy(s => s.Group),
+                _ => s => s.OrderBy(s => s.FirstName),
             };
         }
     }
 
-    private IEnumerable<Student> Filter(string firstName, string lastName, int age, string group)
+    private IEnumerable<Student> FilterBy(string filterByName, int filterByAge, string filterByGroup)
     {
-        if (firstName is not null)
+        if (filterByName is not null)
         {
-            Students = Students.Where(s => s.FirstName == firstName);
+            Students = Students.Where(s => s.FirstName.Contains(filterByName) || s.LastName.Contains(filterByName));
         }
-        if (lastName is not null)
+        else if (filterByAge != 0)
         {
-            Students = Students.Where(s => s.LastName == lastName);
+            Students = Students.Where(s => s.Age == filterByAge);
         }
-        if (age is not 0)
+        else if (filterByGroup is not null)
         {
-            Students = Students.Where(s => s.Age == age);
+            Students = Students.Where(s => s.Group == filterByGroup);
         }
-        if (group is not null)
+        else
         {
-            Students = Students.Where(s => s.Group == group);
+            Message = "No matching results";
+        }
+        return Students;
+    }
+
+    private IEnumerable<Student> FilterBy(string filterBy)
+    {
+        if (filterBy is not null)
+        {
+            Students = Students.Where(s => s.FirstName == filterBy
+            || s.LastName == filterBy
+            || s.Age.ToString() == filterBy
+            || s.Group == filterBy);
+        }
+        else
+        {
+            ViewData["EmptyMessage"] = "No matching results";
         }
         return Students;
     }

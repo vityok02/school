@@ -31,3 +31,12 @@ ul{
 .wrapper {
     background: url(v748-toon-103.jpg)
 }
+
+
+.sidebar .closebtn {
+    position: absolute;
+    margin-top: 0px;
+    top: 0;
+    right: 0px;
+    font-size: 36px;
+}
