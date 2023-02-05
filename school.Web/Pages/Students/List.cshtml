@@ -5,7 +5,7 @@
     ViewData["Title"] = "Students";
 
     var message = "List of students is empty";
-    if(Model.Message is not null)
+    if (Model.Message is not null)
     {
         message = Model.Message;
     }
@@ -18,16 +18,17 @@
 <div class="wrapper">
     <div>
         <div class="filter">
-            <form method="get">
+            <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
                 <label>Name: </label>
-                <input asp-for="FilterByName"/>
+                <input asp-for="FilterByName" />
                 <label>Age: </label>
                 <input asp-for="FilterByAge" />
                 <label>Group: </label>
                 <input asp-for="FilterByGroup" />
+                <input type="hidden" asp-for="OrderBy" />
                 <input type="submit" value="Search" />
-                <a asp-action="/Students/List">Back to full list</a>
             </form>
+            <a asp-page="/Students/List">Back to full list</a>
         </div>
     </div>
     @if (!Model.Students!.Any())
@@ -40,16 +41,24 @@
             <thead>
                 <tr>
                     <th>
-                        <a asp-route-orderBy="@Model.FirstNameSort">First name</a>
+                        <a asp-all-route-data="Model.FirstNameParams">
+                            First name
+                        </a>
                     </th>
                     <th>
-                        <a asp-route-orderBy="@Model.LastNameSort">Last name</a>
+                        <a asp-all-route-data="Model.LastNameParams">
+                            Last name
+                        </a>
                     </th>
                     <th>
-                        <a asp-route-orderBy="@Model.AgeSort">Age</a>
+                        <a asp-all-route-data="Model.AgeParams">
+                            Age
+                        </a>
                     </th>
                     <th class="group-column">
-                        <a asp-route-orderBy="group">Group</a>
+                        <a asp-all-route-data="Model.GroupParams">
+                            Group
+                        </a>
                     </th>
                     <th></th>
                 </tr>
