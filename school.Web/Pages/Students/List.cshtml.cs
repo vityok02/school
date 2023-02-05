@@ -83,14 +83,14 @@ public class ListModel : BasePageModel
         {
             return orderBy switch
             {
-                "firstName_desc" => e => e.OrderByDescending(e => e.FirstName),
-                "lastName" => e => e.OrderBy(e => e.LastName),
-                "lastName_desc" => e => e.OrderByDescending(e => e.LastName),
-                "age" => e => e.OrderBy(e => e.Age),
-                "age_desc" => e => e.OrderByDescending(e => e.Age),
-                "group" => s => s.OrderBy(s => s.Group, if(sf),
+                "firstName_desc" => s => s.OrderByDescending(s => s.FirstName),
+                "lastName" => s => s.OrderBy(s => s.LastName),
+                "lastName_desc" => s => s.OrderByDescending(s => s.LastName),
+                "age" => s => s.OrderBy(s => s.Age),
+                "age_desc" => s => s.OrderByDescending(s => s.Age),
+                "group" => s => s.OrderBy(s => s.Group),
                 "group_desc" => s => s.OrderByDescending(s => s.Group),
-                _ => e => e.OrderBy(e => e.FirstName),
+                _ => s => s.OrderBy(s => s.FirstName),
             };
         }
 
