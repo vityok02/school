@@ -11,11 +11,22 @@ public abstract class BasePageModel : PageModel
 
     public string SelectedSchoolName { get; set; } = null!;
     public IEnumerable<School> Schools { get; set; } = null!;
+
     public string ErrorMessage { get; set; } = null!;
     public string Message { get; set; } = null!;
 
+    public string FirstNameSort { get; set; } = null!;
+    public string LastNameSort { get; set; } = null!;
+    public string AgeSort { get; set; } = null!;
+    public string OrderBy { get; set; } = null!;
+
     public string FilterByName { get; set; } = null!;
     public int FilterByAge { get; set; }
+
+    public IDictionary<string, string> FirstNameParams { get; set; } = null!;
+    public IDictionary<string, string> LastNameParams { get; set; } = null!;
+    public IDictionary<string, string> AgeParams { get; set; } = null!;
+    public IDictionary<string, string> FilterParams { get; set; } = null!;
 
     protected BasePageModel(IRepository<School> schoolRepository)
     {

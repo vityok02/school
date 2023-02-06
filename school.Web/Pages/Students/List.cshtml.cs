@@ -10,18 +10,9 @@ public class ListModel : BasePageModel
     private readonly IRepository<Student> _studentRepository;
 
     public IEnumerable<Student> Students { get; set; } = null!;
-    public string FirstNameSort { get; set; } = null!;
-    public string LastNameSort { get; set; } = null!;
-    public string AgeSort { get; set; } = null!;
     public string GroupSort { get; set; } = null!;
-    public string OrderBy { get; set; }
-    public string CurrentFilter { get; set; }
-    public string FilterByGroup { get; set; }
-    public IDictionary<string, string> FirstNameParams { get; set; }
-    public IDictionary<string, string> LastNameParams { get; set; }
-    public IDictionary<string, string> GroupParams { get; set; }
-    public IDictionary<string, string> AgeParams { get; set; }
-    public IDictionary<string, string> FilterParams { get; set; }
+    public string FilterByGroup { get; set; } = null!;
+    public IDictionary<string, string> GroupParams { get; set; } = null!;
 
     public ListModel(IRepository<School> schoolRepository, IRepository<Student> studentRepository)
         : base(schoolRepository)
@@ -67,17 +58,25 @@ public class ListModel : BasePageModel
             { nameof(orderBy), LastNameSort }
         };
 
-        GroupParams = new Dictionary<string, string>(filterParams)
-        {
-            { nameof(orderBy), GroupSort }
-        };
-
         AgeParams = new Dictionary<string, string>(filterParams)
         {
             { nameof(orderBy), AgeSort }
         };
 
+        GroupParams = new Dictionary<string, string>(filterParams)
+        {
+            { nameof(orderBy), GroupSort }
+        };
+
         return Page();
+
+        static Expression<Func<Student, bool>> FilterBy(string filterByName, int filterByAge, string filterByGroup, int schoolId)
+        {
+            return student => student.SchoolId == schoolId
+                && (string.IsNullOrEmpty(filterByName) || student.FirstName.Contains(filterByName))
+                && (string.IsNullOrEmpty(filterByGroup) || student.Group.Contains(filterByGroup))
+                && (filterByAge == 0 || student.Age == filterByAge);
+        }
 
         static Func<IQueryable<Student>, IOrderedQueryable<Student>> Sort(string orderBy)
         {
@@ -93,41 +92,6 @@ public class ListModel : BasePageModel
                 _ => s => s.OrderBy(s => s.FirstName),
             };
         }
-
-        static Expression<Func<Student, bool>> FilterBy(string filterByName, int filterByAge, string filterByGroup, int schoolId)
-        {
-            return student => student.SchoolId == schoolId
-                && (string.IsNullOrEmpty(filterByName) || student.FirstName.Contains(filterByName))
-                && (string.IsNullOrEmpty(filterByGroup) || student.Group.Contains(filterByGroup))
-                && (filterByAge == 0 || student.Age == filterByAge);
-        }
-        //static bool FilterBy(Student student, int schoolId, string filterByName, int filterByAge, string filterByGroup)
-        //{
-        //    //            IEnumerable<Student> students;
-            //            if (!String.IsNullOrEmpty(filterByName))
-            //            {
-            //                Students = Students
-            //                    .Where(s => s.FirstName
-            //.ToUpper()
-            //                    .Contains(filterByName.ToUpper()) || s.LastName
-            //                    .ToUpper()
-            //                    .Contains(filterByName.ToUpper()));
-            //            }
-            //            if (filterByAge != 0)
-            //            {
-            //                //students = _studentRepository.Where(s => s.Age == filterByAge);
-            //            }
-            //            if (!String.IsNullOrEmpty(filterByName))
-            //            {
-            //                Students = Students.Where(s => s.Group.ToUpper().Contains(filterByGroup.ToUpper()));
-            //            }
-            //            else
-            //            {
-            //                return _studentRepository.GetAll(s => s.SchoolId == schoolId);
-            //            }
-            //            return Students;
-
-        //}
     }
 
 
@@ -152,14 +116,14 @@ public class ListModel : BasePageModel
             filterParams.Add(nameof(FilterByName), FilterByName);
         }
 
-        if (!string.IsNullOrWhiteSpace(FilterByGroup))
-        {
-            filterParams.Add(nameof(FilterByGroup), FilterByGroup);
-        }
-
         if (FilterByAge > 0)
         {
             filterParams.Add(nameof(FilterByAge), FilterByAge.ToString());
+        }
+
+        if (!string.IsNullOrWhiteSpace(FilterByGroup))
+        {
+            filterParams.Add(nameof(FilterByGroup), FilterByGroup);
         }
 
         return filterParams;
