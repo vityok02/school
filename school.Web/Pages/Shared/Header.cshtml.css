@@ -1,7 +1,7 @@
 ﻿.header {
     display: flex;
     height: 80px;
-    background: linear-gradient(#768A9B, #97B3CA);
+    background: linear-gradient(#5d468c, #73678b)
 }
 
 .name {
@@ -9,7 +9,7 @@
     margin-top: 15px;
     font-size: 24px;
     margin-left: 20px;
-    background-color: #009879;
+    background-color: #2D1A38;
 }
 
 details > summary {

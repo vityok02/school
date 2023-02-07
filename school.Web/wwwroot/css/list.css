@@ -15,7 +15,7 @@ table {
     width: auto;
     height: auto;
     margin-inline: auto;
-    border-radius: 10px;
+    border-radius: 5px;
     overflow: auto;
 }
 
@@ -33,7 +33,7 @@ table {
     table thead tr {
         position: sticky;
         top: 0;
-        background-color: #009879;
+        background-color: #2D1A38;
         color: #fff;
     }
 
