@@ -3,12 +3,6 @@
 
 @{
     ViewData["Title"] = "Students";
-
-    var message = "List of students is empty";
-    if (Model.Message is not null)
-    {
-        message = Model.Message;
-    }
 }
 
 <link rel="stylesheet" href="~/css/list.css" />
@@ -16,24 +10,24 @@
 <partial name="Sidebar" />
 
 <div class="wrapper">
-    <div>
+    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
         <div class="filter">
-            <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
-                <label>Name: </label>
-                <input asp-for="FilterByName" />
-                <label>Age: </label>
-                <input asp-for="FilterByAge" />
-                <label>Group: </label>
-                <input asp-for="FilterByGroup" />
-                <input type="hidden" asp-for="OrderBy" />
-                <input type="submit" value="Search" />
-            </form>
-            <a asp-page="/Students/List">Back to full list</a>
+            <label>Name: </label>
+            <input asp-for="FilterByName" />
+            <label>Age: </label>
+            <input asp-for="FilterByAge"/>
+            <label>Group: </label>
+            <input class="group" asp-for="FilterByGroup" />
+            <input type="hidden" asp-for="OrderBy" />
+            <input class="search" type="submit" value="Search" />
+            <div class="back">
+                <a asp-page="/Students/List">Back to full list</a>
+            </div>
         </div>
-    </div>
+    </form>
     @if (!Model.Students!.Any())
     {
-        <div class="empty">@message</div>
+        <div class="empty">@Model.Message</div>
     }
     else
     {

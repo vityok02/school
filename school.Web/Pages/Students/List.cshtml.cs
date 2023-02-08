@@ -40,6 +40,10 @@ public class ListModel : BasePageModel
 
         Students = _studentRepository.GetAll(FilterBy(FilterByName, FilterByAge, FilterByGroup, schoolId),
             Sort(orderBy));
+        if(!Students.Any())
+        {
+            Message = "Not found";
+        }
 
         var filterParams = GetFilters();
 

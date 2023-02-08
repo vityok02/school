@@ -11,15 +11,3 @@
     text-align: center;
     margin-inline: auto;
 }
-
-.sidebar {
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    height: 100%;
-    right: 0;
-    background: linear-gradient(rgba(151, 179, 202, 1), rgba(255, 255, 255, 100));
-    transition: 0.5s;
-    padding-top: 0px;
-    border-right: solid #ccc 1px;
-}
