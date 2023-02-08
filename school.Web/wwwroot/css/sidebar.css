@@ -7,7 +7,7 @@
     left: 0;
     background-color: rgba(134, 157, 174, 1);
     overflow-x: hidden;
-    background: linear-gradient(#73678b, rgba(134, 157, 174, 0));
+    background: linear-gradient(rgba(160, 132, 220, 1), rgba(134, 157, 174, 0));
 }
 
 a {

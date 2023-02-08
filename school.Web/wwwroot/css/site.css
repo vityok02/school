@@ -15,28 +15,6 @@ body {
     margin-bottom: 60px;
 }
 
-
-form{
-    align-content:center;
-}
-
-ul{
-    list-style-type:none;
-}
-
-.error {
-    color: red;
-}
-
 .wrapper {
-    background: url(v748-toon-103.jpg)
-}
-
-
-.sidebar .closebtn {
-    position: absolute;
-    margin-top: 0px;
-    top: 0;
-    right: 0px;
-    font-size: 36px;
+    background: #EAE0FF;
 }

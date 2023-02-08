@@ -1,10 +1,11 @@
 ﻿.header {
     display: flex;
     height: 80px;
-    background: linear-gradient(#5d468c, #73678b)
+    background: linear-gradient(#645CBB, #A084DC)
 }
 
 .name {
+    border: none;
     display: block;
     margin-top: 15px;
     font-size: 24px;
@@ -45,6 +46,7 @@ body {
 }
 
 .avatar {
+    display: none;
     border-radius: 30px;
     height: 60px;
     width: 60px;
@@ -76,6 +78,7 @@ details[open] .dropdown-menu {
     background-color: #daeeff;
     left: 20px;
     width: 250px;
+    border: none;
     max-height: 300px;
     overflow-y: auto;
     overflow-x: hidden;
