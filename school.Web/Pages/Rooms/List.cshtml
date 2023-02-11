@@ -1,46 +1,76 @@
 ﻿@page "/rooms"
 @model ListModel
 
+@{
+    ViewData["Title"] = "Rooms";
+}
+
 <link rel="stylesheet" href="~/css/list.css">
 
 <partial name="Sidebar" />
 
 <div class="wrapper">
+    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
+        <div class="filter">
+            <label>Number: </label>
+            <input asp-for="FilterByRoomNumber" />
+            <label>Type: </label>
+            <input asp-for="FilterByRoomType" />
+            <label>Floor: </label>
+            <input asp-for="FilterByFloorNumber" />
+            <input class="search" type="submit" value="Search" />
+            <div class="back">
+                <a asp-page="List">Back to full list</a>
+            </div>
+            <div class="add"><a asp-page="Add">Add</a></div>
+        </div>
+    </form>
     @if(!Model.Rooms.Any())
     {
         <div class="empty">List of rooms is empty</div>
     }
     else
     {
-    <table>
-        <thead>
-            <tr>
-                <th>Number</th>
-                <th class="second-column">Type</th>
-                <th class="floor-column">Floor</th>
-                <th></th>
-            </tr>
-        </thead>
-        @foreach(var room in Model.Rooms!)
-        {
-            <tr>
-                <td class="first-column">@room.Number</td>
-                <td class="second-column">@room.Type</td>
-                <td class="floor-column">@room.Floor.Number</td>
-                <td>
-                    <div class="btns">
-                        <div class="details">
-                            <a href="rooms/@room.Id/edit">Edit</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <a asp-all-route-data="Model.RoomNumberParams">
+                            Number
+                        </a>
+                    </th>
+                    <th class="second-column">
+                        <a asp-all-route-data="Model.RoomTypeParams">
+                            Type
+                        </a>
+                    </th>
+                    <th class="floor-column">
+                        <a asp-all-route-data="Model.FloorNumberParams">
+                            Floor
+                        </a>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach(var room in Model.Rooms!)
+            {
+                <tr>
+                    <td class="first-column">@room.Number</td>
+                    <td class="second-column">@room.Type</td>
+                    <td class="floor-column">@room.Floor.Number</td>
+                    <td>
+                        <div class="btns">
+                            <div class="details">
+                                <a href="rooms/@room.Id/edit">Edit</a>
+                            </div>
+                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@room.Id" 
+                            onclick="return confirm('Are you sure you want to delete room @room.Number?')">
+                                <input type="submit" value="Delete" />
+                            </form>
                         </div>
-                        <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@room.Id" 
-                        onclick="return confirm('Are you sure you want to delete room @room.Number?')">
-                            <input type="submit" value="Delete" />
-                        </form>
-                    </div>
-                </td>
-            </tr>
-        }
-    </table>
+                    </td>
+                </tr>
+            }
+        </table>
     }
-    <div class="add"><a asp-page="Add">Add</a></div>
 </div>

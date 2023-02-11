@@ -49,7 +49,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     }
 
     public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null!)
     {
         var entities = _dbContext.Set<TEntity>().Where(predicate);
         

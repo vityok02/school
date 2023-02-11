@@ -23,6 +23,7 @@
             <div class="back">
                 <a asp-page="/Students/List">Back to full list</a>
             </div>
+            <div class="add"><a asp-page="Add">Add</a></div>
         </div>
     </form>
     @if (!Model.Students!.Any())
@@ -81,5 +82,4 @@
             </tbody>
         </table>
     }
-    <div class="add"><a asp-page="Add">Add</a></div>
 </div>

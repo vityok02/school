@@ -40,6 +40,7 @@ public class ListModel : BasePageModel
 
         Students = _studentRepository.GetAll(FilterBy(FilterByName, FilterByAge, FilterByGroup, schoolId),
             Sort(orderBy));
+
         if(!Students.Any())
         {
             Message = "Not found";
@@ -92,7 +93,7 @@ public class ListModel : BasePageModel
                 "age" => s => s.OrderBy(s => s.Age),
                 "age_desc" => s => s.OrderByDescending(s => s.Age),
                 "group" => s => s.OrderBy(s => s.Group),
-                "group_desc" => s => s.OrderByDescending(s => s.Group),
+                "group_desc" => s => s.OrderByDescending(s => s.Group), 
                 _ => s => s.OrderBy(s => s.FirstName),
             };
         }
@@ -133,4 +134,3 @@ public class ListModel : BasePageModel
         return filterParams;
     }
 }
-
