@@ -115,9 +115,9 @@ table {
 }
 
 .add {
-    right: 5%;
-    position: absolute;
-    top: 5px;
+    display: inline-block;
+    float: right;
+    margin-right: 10%;
     height: 30px;
     width: 200px;
     background-color: #695E93;
@@ -172,8 +172,9 @@ table {
     }
 
 .filter {
-    margin-left: 5%;
-    float: left;
+    position: absolute;
+    right: 5%;
+    left: 5%;
     width: 100%;
     padding: 5px;
 }
