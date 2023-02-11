@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
@@ -16,6 +16,10 @@ public class SchoolListModel : BasePageModel
     public string NameSort { get; set; } = null!;
     public string CitySort { get; set; } = null!;
     public string StreetSort { get; set; } = null!;
+    public string FilterByParam { get; set; } = null!;
+    public Dictionary<string, string> NameParams { get; set; } = null!;
+    public Dictionary<string, string> CityParams { get; set; } = null!;
+    public Dictionary<string, string> StreetParams { get; set; } = null!;
 
     public SchoolListModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository, IRepository<Employee> empRepository)
         : base(schoolRepository)
@@ -24,17 +28,49 @@ public class SchoolListModel : BasePageModel
         _employeeRepository = empRepository;
     }
 
-    public void OnGet(string orderBy)
+    public void OnGet(string orderBy, string filterBy)
     {
+        OrderBy = orderBy;
         NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
         CitySort = orderBy == "city" ? "city_desc" : "city";
         StreetSort = orderBy == "street" ? "street_desc" : "street";
 
-        Schools = SchoolRepository.GetAll(Sort(orderBy));
+        FilterByParam = filterBy;
+
+        Schools = SchoolRepository.GetAll(FilterBy(FilterByParam), Sort(orderBy));
 
         Addresses = _addressRepository.GetAll();
 
-        Func<IQueryable<School>, IOrderedQueryable<School>> Sort(string orderBy)
+        var filterParams = GetFilters();
+
+        FilterParams = new Dictionary<string, string>(filterParams)
+        {
+            {nameof(orderBy), orderBy }
+        };
+
+        NameParams = new Dictionary<string, string>(filterParams)
+        {
+            {nameof(orderBy), NameSort }
+        };
+
+        CityParams = new Dictionary<string, string>(filterParams)
+        {
+            {nameof(orderBy), CitySort }
+        };
+
+        StreetParams = new Dictionary<string, string>(filterParams)
+        {
+            {nameof(orderBy), StreetSort }
+        };
+
+        static Expression<Func<School, bool>> FilterBy(string filterBy)
+        {
+            return s => (string.IsNullOrEmpty(filterBy) || s.Name.Contains(filterBy))
+            && (string.IsNullOrEmpty(filterBy) || s.Address.City.Contains(filterBy))
+            && (string.IsNullOrEmpty(filterBy) || s.Address.Street.Contains(filterBy));
+        }
+
+        static Func<IQueryable<School>, IOrderedQueryable<School>> Sort(string orderBy)
         {
             return orderBy switch
             {
@@ -49,29 +85,29 @@ public class SchoolListModel : BasePageModel
     }
 
 
-    public void OnGetFirstTime(string orderBy)
+    public void OnGetFirstTime(string orderBy, string filterBy)
     {
         IsFirst = true;
-        OnGet(orderBy);
+        OnGet(orderBy, filterBy);
     }
 
-    public void OnGetError(string orderBy)
+    public void OnGetError(string orderBy, string filterBy)
     {
         IsError = true;
         IsFirst = true;
-        OnGet(orderBy);
+        OnGet(orderBy, filterBy);
     }
 
-    public IActionResult OnGetSelectSchool(int id, string orderBy)
+    public IActionResult OnGetSelectSchool(int id, string orderBy, string filterBy)
     {
-        OnGet(orderBy);
+        OnGet(orderBy, filterBy);
         var school = SchoolRepository.Get(id);
         if(school is null)
         {
             IsError = true;
         }
 
-        SelectedSchoolName = school.Name;
+        SelectedSchoolName = school!.Name;
 
         SetSchoolId(school!.Id);
         return Page();
@@ -93,5 +129,15 @@ public class SchoolListModel : BasePageModel
 
         SchoolRepository.Delete(school);
         return RedirectToPage("List");
+    }
+    private IDictionary<string, string> GetFilters()
+    {
+        var filterParams = new Dictionary<string, string>();
+        if (!string.IsNullOrEmpty(FilterByParam))
+        {
+            filterParams.Add(nameof(FilterByParam), FilterByParam);
+        }
+
+        return filterParams;
     }
 }

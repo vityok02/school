@@ -14,6 +14,21 @@
 <link rel="stylesheet" href="~/css/list.css" />
 
 <div class="wrapper">
+    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
+        <div class="filter">
+            <label>Enter the params: </label>
+            <input asp-for="FilterByParam" />
+            <input type="hidden" asp-for="OrderBy" />
+            <input class="search" type="submit" value="Search" />
+            <div class="back">
+                <a asp-page="/List">Back to full list</a>
+            </div>
+            @if (!Model.IsFirst)
+            {
+                <div class="add"><a asp-page="Add">Add</a></div>
+            }
+        </div>
+    </form>
     @if (!Model.Schools.Any())
     {
         <div class="empty">List of schools if empty</div>
@@ -24,13 +39,13 @@
             <thead>
                 <tr>
                     <th>
-                        <a asp-route-orderBy="@Model.NameSort">Name</a>
+                        <a asp-all-route-data="@Model.NameParams">Name</a>
                     </th>
                     <th>
-                        <a asp-route-orderBy="@Model.CitySort">City</a>
+                        <a asp-all-route-data="@Model.CityParams">City</a>
                     </th>
                     <th colspan="2">
-                        <a asp-route-orderBy="@Model.StreetSort">Street</a>
+                        <a asp-all-route-data="@Model.StreetParams">Street</a>
                     </th>
                 </tr>
             </thead>
@@ -76,9 +91,5 @@
                 }
             </tbody>
         </table>
-    }
-    @if (!Model.IsFirst)
-    {
-        <div class="add"><a asp-page="Add">Add</a></div>
     }
 </div>
