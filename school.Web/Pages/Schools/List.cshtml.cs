@@ -28,14 +28,14 @@ public class SchoolListModel : BasePageModel
         _employeeRepository = empRepository;
     }
 
-    public void OnGet(string orderBy, string filterBy)
+    public IActionResult OnGet(string orderBy, string filterByParam)
     {
         OrderBy = orderBy;
         NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
         CitySort = orderBy == "city" ? "city_desc" : "city";
         StreetSort = orderBy == "street" ? "street_desc" : "street";
 
-        FilterByParam = filterBy;
+        FilterByParam = filterByParam;
 
         Schools = SchoolRepository.GetAll(FilterBy(FilterByParam), Sort(orderBy));
 
@@ -63,11 +63,14 @@ public class SchoolListModel : BasePageModel
             {nameof(orderBy), StreetSort }
         };
 
+        return Page();
+
         static Expression<Func<School, bool>> FilterBy(string filterBy)
         {
-            return s => (string.IsNullOrEmpty(filterBy) || s.Name.Contains(filterBy))
-            && (string.IsNullOrEmpty(filterBy) || s.Address.City.Contains(filterBy))
-            && (string.IsNullOrEmpty(filterBy) || s.Address.Street.Contains(filterBy));
+            return s => (string.IsNullOrEmpty(filterBy) 
+                || (s.Name.Contains(filterBy) 
+                || s.Address.City.Contains(filterBy) 
+                || s.Address.Street.Contains(filterBy)));
         }
 
         static Func<IQueryable<School>, IOrderedQueryable<School>> Sort(string orderBy)

@@ -97,7 +97,7 @@ public class ListModel : BasePageModel
         {
             return RedirectToPage("List");
         }
-
+        
         _employeeRepository.Delete(employee!);
 
         return RedirectToPage("List");

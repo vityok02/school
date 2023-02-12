@@ -172,9 +172,9 @@ table {
     }
 
 .filter {
-    position: absolute;
-    right: 5%;
-    left: 5%;
+    display: block;
+    margin-right: 5%;
+    margin-left: 5%;
     width: 100%;
     padding: 5px;
 }

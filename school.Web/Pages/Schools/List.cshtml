@@ -1,6 +1,8 @@
 ﻿@page "/schools"
 @model SchoolListModel
 @{
+    ViewData["Titile"] = "Schools";
+
     if (Model.IsError)
     {
         <script>alert('No school selected, please select a school');</script>
@@ -21,7 +23,7 @@
             <input type="hidden" asp-for="OrderBy" />
             <input class="search" type="submit" value="Search" />
             <div class="back">
-                <a asp-page="/List">Back to full list</a>
+                <a asp-page="/Schools/List">Back to full list</a>
             </div>
             @if (!Model.IsFirst)
             {
