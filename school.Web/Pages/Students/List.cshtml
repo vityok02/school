@@ -1,14 +1,34 @@
 ﻿@page "/students"
 @model ListModel
 
+@{
+    ViewData["Title"] = "Students";
+}
+
 <link rel="stylesheet" href="~/css/list.css" />
 
 <partial name="Sidebar" />
 
 <div class="wrapper">
+    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
+        <div class="filter">
+            <label>Name: </label>
+            <input asp-for="FilterByName" />
+            <label>Age: </label>
+            <input asp-for="FilterByAge"/>
+            <label>Group: </label>
+            <input class="group" asp-for="FilterByGroup" />
+            <input type="hidden" asp-for="OrderBy" />
+            <input class="search" type="submit" value="Search" />
+            <div class="back">
+                <a asp-page="/Students/List">Back to full list</a>
+            </div>
+            <div class="add"><a asp-page="Add">Add</a></div>
+        </div>
+    </form>
     @if (!Model.Students!.Any())
     {
-        <div class="empty">List of students if empty</div>
+        <div class="empty">@Model.Message</div>
     }
     else
     {
@@ -16,16 +36,24 @@
             <thead>
                 <tr>
                     <th>
-                        <a asp-route-orderBy="@Model.FirstNameSort">First name</a>
+                        <a asp-all-route-data="Model.FirstNameParams">
+                            First name
+                        </a>
                     </th>
                     <th>
-                        <a asp-route-orderBy="@Model.LastNameSort">Last name</a>
+                        <a asp-all-route-data="Model.LastNameParams">
+                            Last name
+                        </a>
                     </th>
                     <th>
-                        <a asp-route-orderBy="@Model.AgeSort">Age</a>
+                        <a asp-all-route-data="Model.AgeParams">
+                            Age
+                        </a>
                     </th>
                     <th class="group-column">
-                        <a asp-route-orderBy="group">Group</a>
+                        <a asp-all-route-data="Model.GroupParams">
+                            Group
+                        </a>
                     </th>
                     <th></th>
                 </tr>
@@ -54,5 +82,4 @@
             </tbody>
         </table>
     }
-    <div class="add"><a asp-page="Add">Add</a></div>
 </div>

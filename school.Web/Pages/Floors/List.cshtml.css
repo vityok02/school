@@ -14,7 +14,7 @@ summary {
     align-items: center;
     position: relative;
     border-radius: 5px 5px 5px 5px;
-    background-color: #009879;
+    background-color: #beabe7;
     height: 80px;
 }
 
@@ -54,7 +54,7 @@ details {
 .content {
     padding-left: 10px;
     font-size: 24px;
-    background-color: #a6c5bf;
+    background-color: #c2b7c5;
     margin-left: 10px;
     margin-right: 5px;
     border-radius: 0 0 5px 5px;

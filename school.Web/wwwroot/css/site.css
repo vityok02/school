@@ -15,19 +15,6 @@ body {
     margin-bottom: 60px;
 }
 
-
-form{
-    align-content:center;
-}
-
-ul{
-    list-style-type:none;
-}
-
-.error {
-    color: red;
-}
-
 .wrapper {
-    background: url(v748-toon-103.jpg)
+    background: #EAE0FF;
 }

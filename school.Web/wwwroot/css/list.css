@@ -15,12 +15,12 @@ table {
     width: auto;
     height: auto;
     margin-inline: auto;
-    border-radius: 10px;
+    border-radius: 5px;
     overflow: auto;
 }
 
     table tr {
-        height: 80px;
+        height: 60px;
         min-width: 400px;
         font-size: 24px;
         box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
@@ -33,7 +33,7 @@ table {
     table thead tr {
         position: sticky;
         top: 0;
-        background-color: #009879;
+        background-color: #2D1A38;
         color: #fff;
     }
 
@@ -52,11 +52,11 @@ table {
         color: white;
     }
     table tbody tr:nth-of-type(even) {
-        background-color: #d5d5d5;
+        background-color: #C2B7C5;
     }
 
     table tbody tr:nth-child(2n+1) {
-        background-color: #dfdfdf;
+        background-color: #CBC2CD;
     }
 
     table tbody tr:hover {
@@ -69,7 +69,7 @@ table {
 }
 
 .button {
-    height: 50px;
+    height: 40px;
     text-align: center;
     color: white;
 }
@@ -96,7 +96,7 @@ table {
 .delete input[type=submit] {
     display: block;
     background-color: red;
-    height: 50px;
+    height: 40px;
     width: 120px;
     margin-left: 5px;
     border: 0;
@@ -115,14 +115,13 @@ table {
 }
 
 .add {
-    position: absolute;
-    left: 50%;
-    bottom: 180px;
-    height: 60px;
-    width: 400px;
-    margin-left: -200px;
-    background-color: #009879;
-    border-radius: 10px;
+    display: inline-block;
+    float: right;
+    margin-right: 10%;
+    height: 30px;
+    width: 200px;
+    background-color: #695E93;
+    border-radius: 5px;
     color: white;
     text-align: center;
     align-content: center;
@@ -171,3 +170,48 @@ table {
         text-decoration: none;
         color: white;
     }
+
+.filter {
+    display: block;
+    margin-right: 5%;
+    margin-left: 5%;
+    width: 100%;
+    padding: 5px;
+}
+
+.search {
+    padding-inline: 5px;
+    color: white;
+    background: #695E93;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+}
+
+.back {
+    padding-inline: 5px;
+    display: inline-block;
+    background: #695E93;
+    height: 30px;
+    border-radius: 5px;
+}
+
+    .back a {
+        color: white;
+        align-items: center;
+        display: flex;
+        text-decoration: none;
+        padding-top: 0px;
+        margin-top: 0px;
+        height: 100%;
+        width: 100%;
+    }
+
+.filter input[type=number]
+{
+    width: 50px;
+}
+
+.filter .group {
+    width: 100px;
+}

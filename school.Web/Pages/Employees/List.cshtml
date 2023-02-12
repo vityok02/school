@@ -1,56 +1,85 @@
 ﻿@page "/employees"
 @model ListModel
 
+@{
+    ViewData["Title"] = "Employees";
+}
+
 <link rel="stylesheet" href="~/css/list.css" />
 
 <partial name="Sidebar" />
 
 <div class="wrapper">
+        <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
+        <div class="filter">
+            <label>Name: </label>
+            <input asp-for="FilterByName" />
+            <label>Age: </label>
+            <input asp-for="FilterByAge"/>
+            <label>Job: </label>
+            <input asp-for="FilterByJob" />
+            <input type="hidden" asp-for="OrderBy" />
+            <input class="search" type="submit" value="Search" />
+            <div class="back">
+                <a asp-page="/Students/List">Back to full list</a>
+            </div>
+            <div class="add"><a asp-page="Add">Add</a></div>
+        </div>
+    </form>
     @if (!Model.Employees.Any())
     {
     <div class="empty">List of employees is empty</div>
     }
     else
     {
-    <table>
-        <thead>
-            <tr>
-                <th>
-                    <a asp-route-orderBy="@Model.FirstNameSort">First name</a>
-                </th>
-                <th>
-                    <a asp-route-orderBy="@Model.LastNameSort">Last name</a>
-                </th>
-                <th>
-                    <a asp-route-orderBy="@Model.AgeSort">Age</a>
-                </th>
-                <th class="job-column">Job</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var emp in Model.Employees)
-            {
+        <table>
+            <thead>
                 <tr>
-                    <td class="first-columns">@emp.FirstName</td>
-                    <td class="first-columns">@emp.LastName</td>
-                    <td class="age-column">@emp.Age</td>
-                    <td class="job-column">@emp.Job</td>
-                    <td>
-                        <div class="btns">
-                            <div class="details">
-                                <a href="employees/@emp.Id/edit">Edit</a>
-                            </div>
-                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@emp.Id"
-                              onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
-                                <input type="submit" value="Delete" />
-                            </form>
-                        </div>
-                    </td>
+                    <th>
+                        <a asp-all-route-data="Model.FirstNameParams">
+                            First name
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-all-route-data="Model.LastNameParams">
+                            Last name
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-all-route-data="Model.LastNameParams">
+                            Age
+                        </a>
+                    </th>
+                    <th class="job-column">
+                        <a asp-all-route-data="Model.JobParams">
+                            Job
+                        </a>
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var emp in Model.Employees)
+                {
+                    <tr>
+                        <td class="first-columns">@emp.FirstName</td>
+                        <td class="first-columns">@emp.LastName</td>
+                        <td class="age-column">@emp.Age</td>
+                        <td class="job-column">@emp.Job</td>
+                        <td>
+                            <div class="btns">
+                                <div class="details">
+                                    <a href="employees/@emp.Id/edit">Edit</a>
+                                </div>
+                                <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@emp.Id"
+                                  onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
+                                    <input type="submit" value="Delete" />
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
-    <div class="add"><a asp-page="Add">Add</a></div>
 </div>

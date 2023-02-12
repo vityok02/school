@@ -42,13 +42,13 @@ button.accept-policy {
 }
 
 .footer {
-    display: flex;
-    position: absolute;
+    position: fixed;
+    left: 250px;
     width: 100%;
     bottom: 0;
     white-space: nowrap;
     nav-down: auto;
-    line-height: 60px;
+    height: 60px;
     background-color: #242424;
 }
 
