@@ -16,7 +16,7 @@ public class ListModel : BasePageModel
     public string RoomTypeSort { get; set; } = null!;
     public string FloorNumberSort { get; set; } = null!;
     public int FilterByRoomNumber { get; set; }
-    public string FilterByRoomType { get; set; } = null!;
+    public RoomType FilterByRoomType { get; set; }
     public int FilterByFloorNumber { get; set; }
     public Dictionary<string, string> RoomNumberParams { get; private set; } = null!;
     public Dictionary<string, string> RoomTypeParams { get; private set; } = null!;
@@ -29,7 +29,7 @@ public class ListModel : BasePageModel
         _floorRepository = floorRepository;
     }
 
-    public IActionResult OnGet(string orderBy, int filterByRoomNumber, string filterByRoomType, int filterByFloorNumber)
+    public IActionResult OnGet(string orderBy, int filterByRoomNumber, RoomType[] filterByRoomTypes, int filterByFloorNumber)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -43,7 +43,7 @@ public class ListModel : BasePageModel
         FloorNumberSort = orderBy == "floorNumber" ? "floorNumber_desc" : "floorNumber";
 
         FilterByRoomNumber = filterByRoomNumber;
-        FilterByRoomType = filterByRoomType;
+        FilterByRoomType = RoomHelper.GetRoomType(filterByRoomTypes);
         FilterByFloorNumber = filterByFloorNumber;
 
         Rooms = _roomRepository.GetAll(FilterBy(FilterByRoomNumber, FilterByRoomType, FilterByFloorNumber, schoolId), 
@@ -75,11 +75,11 @@ public class ListModel : BasePageModel
 
         return Page();
 
-        static Expression<Func<Room, bool>> FilterBy(int filterByRoomNumber, string filterByRoomType, int filterByFloorNumber, int schoolId)
+        static Expression<Func<Room, bool>> FilterBy(int filterByRoomNumber, RoomType filterByRoomTypes, int filterByFloorNumber, int schoolId)
         {
             return r => r.Floor.SchoolId == schoolId
                 && (filterByRoomNumber == 0 || r.Number.ToString().Contains(filterByRoomNumber.ToString()))
-                && (string.IsNullOrEmpty(filterByRoomType) || r.Type.ToString().Contains(filterByRoomType))
+                && (filterByRoomTypes == 0 || (r.Type == filterByRoomTypes))
                 && (filterByFloorNumber == 0 || r.Floor.Number == filterByFloorNumber);
         }
 
@@ -106,7 +106,7 @@ public class ListModel : BasePageModel
             filterParams.Add(nameof(FilterByRoomNumber), FilterByRoomNumber.ToString());
         }
 
-        if(!string.IsNullOrWhiteSpace(FilterByRoomType))
+        if (FilterByRoomType > 0)
         {
             filterParams.Add(nameof(FilterByRoomType), FilterByRoomType.ToString());
         }

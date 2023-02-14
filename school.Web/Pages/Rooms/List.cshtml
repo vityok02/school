@@ -1,5 +1,6 @@
 ﻿@page "/rooms"
 @model ListModel
+@using SchoolManagement.Models;
 
 @{
     ViewData["Title"] = "Rooms";
@@ -14,8 +15,16 @@
         <div class="filter">
             <label>Number: </label>
             <input asp-for="FilterByRoomNumber" />
+            @*<input asp-for="FilterByRoomTypes" />*@
             <label>Type: </label>
-            <input asp-for="FilterByRoomType" />
+            <details style="z-index:2; display: block;">
+                @foreach (var type in RoomTypeExt.RoomTypes)
+                {
+                    <input name="filterByRoomType" type="checkbox" value="@type.Key"/>
+                    @type.Value
+                    <br />
+                }
+            </details>
             <label>Floor: </label>
             <input asp-for="FilterByFloorNumber" />
             <input class="search" type="submit" value="Search" />
