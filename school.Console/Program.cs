@@ -263,12 +263,12 @@ void AddRoom()
         var roomNumber = GetIntValueFromConsole("Enter room number: ");
         var roomType = GetRoomTypeFromConsole("Enter room type");
 
-        var (valid, error) = currentFloor.AddRoom(new Room(roomNumber, roomType));
-        if(!valid)
-        {
-            logger.LogError(error!);
-            return;
-        }
+        //var (valid, error) = currentFloor.AddRoom(new Room(roomNumber, roomType));
+        //if(!valid)
+        //{
+        //    logger.LogError(error!);
+        //    return;
+        //}
 
         dbContext.SaveChanges();
         logger.LogSuccess($"Room {roomNumber} successfully added");
