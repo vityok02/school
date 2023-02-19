@@ -17,16 +17,17 @@
             <input asp-for="FilterByRoomNumber" />
             @*<input asp-for="FilterByRoomTypes" />*@
             <label>Type: </label>
-            <details style="z-index:2; display: block;">
+            <details class="roomType">
                 @foreach (var type in RoomTypeExt.RoomTypes)
                 {
-                    <input name="filterByRoomType" type="checkbox" value="@type.Key"/>
+                    <input name="filterByRoomType" type="checkbox" value="@type.Key" checked="@Model.FilterByRoomType.HasFlag((RoomType)type.Key)"/>
                     @type.Value
                     <br />
                 }
             </details>
             <label>Floor: </label>
             <input asp-for="FilterByFloorNumber" />
+            <input type="hidden" asp-for="OrderBy" />
             <input class="search" type="submit" value="Search" />
             <div class="back">
                 <a asp-page="List">Back to full list</a>

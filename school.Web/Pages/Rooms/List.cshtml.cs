@@ -29,7 +29,7 @@ public class ListModel : BasePageModel
         _floorRepository = floorRepository;
     }
 
-    public IActionResult OnGet(string orderBy, int filterByRoomNumber, RoomType[] filterByRoomTypes, int filterByFloorNumber)
+    public IActionResult OnGet(string orderBy, int filterByRoomNumber, RoomType[] filterByRoomType, int filterByFloorNumber)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -43,7 +43,7 @@ public class ListModel : BasePageModel
         FloorNumberSort = orderBy == "floorNumber" ? "floorNumber_desc" : "floorNumber";
 
         FilterByRoomNumber = filterByRoomNumber;
-        FilterByRoomType = RoomHelper.GetRoomType(filterByRoomTypes);
+        FilterByRoomType = RoomHelper.GetRoomType(filterByRoomType);
         FilterByFloorNumber = filterByFloorNumber;
 
         Rooms = _roomRepository.GetAll(FilterBy(FilterByRoomNumber, FilterByRoomType, FilterByFloorNumber, schoolId), 
@@ -55,7 +55,7 @@ public class ListModel : BasePageModel
 
         FilterParams = new Dictionary<string, string>(filterParams)
         {
-            {nameof(orderBy), FirstNameSort }
+            {nameof(orderBy), orderBy }
         };
 
         RoomNumberParams = new Dictionary<string, string>(filterParams)
@@ -79,7 +79,7 @@ public class ListModel : BasePageModel
         {
             return r => r.Floor.SchoolId == schoolId
                 && (filterByRoomNumber == 0 || r.Number.ToString().Contains(filterByRoomNumber.ToString()))
-                && (filterByRoomTypes == 0 || (r.Type == filterByRoomTypes))
+                && (filterByRoomTypes == 0 || r.Type.HasFlag(filterByRoomTypes))
                 && (filterByFloorNumber == 0 || r.Floor.Number == filterByFloorNumber);
         }
 

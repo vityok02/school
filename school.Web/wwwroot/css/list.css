@@ -75,8 +75,8 @@ table {
 }
 
 .details {
-    background-color: #2670FF;
-    width: 140px;
+    background-color: #00538f;
+    width: 100px;
     margin-right: 5px;
     border-radius: 10px;
 }
@@ -93,11 +93,32 @@ table {
         background: #0040E5
     }
 
+.choose {
+    display: flex;
+    margin-right: 10px;
+    width: 100px;
+    background: #480cff;
+    border-radius: 10px;
+    color: white;
+}
+
+    .choose a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        border-radius: 10px;
+        height: 100%;
+        font-size: 20px;
+        text-decoration: none;
+        color: white;
+    }
+
 .delete input[type=submit] {
     display: block;
     background-color: red;
     height: 40px;
-    width: 120px;
+    width: 80px;
     margin-left: 5px;
     border: 0;
     border-radius: 10px;
@@ -149,30 +170,9 @@ table {
     text-align: center
 }
 
-.choose {
-    display: flex;
-    margin-right: 10px;
-    height: 50px;
-    width: 200px;
-    background: #002B98;
-    border-radius: 10px;
-    color: white;
-}
-
-    .choose a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        border-radius: 10px;
-        height: 100%;
-        font-size: 20px;
-        text-decoration: none;
-        color: white;
-    }
 
 .filter {
-    display: block;
+    display: inline-block;
     margin-right: 5%;
     margin-left: 5%;
     width: 100%;
