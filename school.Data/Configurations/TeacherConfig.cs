@@ -9,5 +9,8 @@ public class TeacherConfig : IEntityTypeConfiguration<Teacher>
     public void Configure(EntityTypeBuilder<Teacher> builder)
     {
         builder.ToTable("Teachers");
-    }
+
+        builder.HasOne(t => t.School)
+        .WithMany(t => t.Teachers);
+    }   
 }
