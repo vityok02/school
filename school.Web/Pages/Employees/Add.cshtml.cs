@@ -6,9 +6,9 @@ namespace SchoolManagement.Web.Pages.Employees;
 
 public class EmployeeFormModel : BasePageModel
 {
-    private readonly IRepository<Employee> _employeeRepository;
+    private readonly IEmployeeRepository _employeeRepository;
 
-    public EmployeeFormModel(IRepository<School> schoolRepository, IRepository<Employee> employeeRepository)
+    public EmployeeFormModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository)
         : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
@@ -22,26 +22,25 @@ public class EmployeeFormModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var employees = _employeeRepository
-            .GetAll(e => e.SchoolId == schoolId);
+        //var employees = GetSchoolEmployees();
 
-        if (employees.Any(e => e.FirstName == firstName 
-            && e.LastName == lastName
-            && e.Age == age))
-        {
-            ErrorMessage = "Such employee already exists";
-            return Page();
-        }
+        //if (employees.Any(e => e.FirstName == firstName
+        //    && e.LastName == lastName
+        //    && e.Age == age))
+        //{
+        //    ErrorMessage = "Such employee already exists";
+        //    return Page();
+        //}
 
         Employee? employee = null;
 
         if (type == "Director")
         {
-            if (employees.Any(e => e.Job == "Director"))
-            {
-                ErrorMessage = "Director already exist";
-                return Page();
-            }
+            //if (employees.Any(e => e.Job == "Director"))
+            //{
+            //    ErrorMessage = "Director already exist";
+            //    return Page();
+            //}
 
             employee = new Director(firstName, lastName, age);
         }
@@ -57,7 +56,7 @@ public class EmployeeFormModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        employee!.School = school!;
+        //employee!.School = school!;
 
         _employeeRepository.Add(employee);
         return RedirectToPage("List");

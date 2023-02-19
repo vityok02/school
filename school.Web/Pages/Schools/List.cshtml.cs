@@ -124,11 +124,11 @@ public class SchoolListModel : BasePageModel
             return RedirectToPage("List");
         }
 
-        var employees = _employeeRepository.GetAll(e => e.SchoolId == id);
-        foreach (var emp in employees)
-        {
-            school.Employees.Clear();
-        }
+        //var employees = _employeeRepository.GetAll(e => e.SchoolId == id);
+        //foreach (var emp in employees)
+        //{
+        //    school.Employees.Clear();
+        //}
 
         SchoolRepository.Delete(school);
         return RedirectToPage("List");

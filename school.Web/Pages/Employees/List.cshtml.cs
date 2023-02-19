@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
@@ -7,14 +8,14 @@ namespace SchoolManagement.Web.Pages.Employees;
 
 public class ListModel : BasePageModel
 {
-    private readonly IRepository<Employee> _employeeRepository;
+    private readonly IEmployeeRepository _employeeRepository;
 
     public IEnumerable<Employee> Employees { get; private set; } = null!;
     public string JobSort { get; set; } = null!;
     public string FilterByJob { get; set; } = null!;
     public IDictionary<string, string> JobParams { get; set; } = null!;
 
-    public ListModel(IRepository<School> schoolRepository, IRepository<Employee> employeeRepository)
+    public ListModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository)
         :base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
@@ -37,7 +38,8 @@ public class ListModel : BasePageModel
         FilterByAge= filterByAge;
         FilterByJob = filterByJob;
 
-        Employees = _employeeRepository.GetAll(FilterBy(FilterByName, FilterByAge, FilterByJob, schoolId), Sort(orderBy));
+        Employees = _employeeRepository.GetSchoolEmployees(schoolId, filterByName, filterByAge, filterByJob);
+        //Employees = _employeeRepository.GetAll(FilterBy(FilterByName, FilterByAge, FilterByJob, schoolId), Sort(orderBy));
 
         var filterParams = GetFilters();
 
@@ -66,13 +68,13 @@ public class ListModel : BasePageModel
         };
         return Page();
 
-        static Expression<Func<Employee, bool>> FilterBy(string filterByName, int filterByAge, string filterByJob, int schoolId)
-        {
-            return emp => emp.SchoolId == schoolId
-            && (string.IsNullOrEmpty(filterByName) || emp.FirstName.Contains(filterByName))
-            && (string.IsNullOrEmpty(filterByJob) || emp.Job.Contains(filterByJob))
-            && (filterByAge == 0 || emp.Age == filterByAge);
-        }
+        //static Expression<Func<Employee, bool>> FilterBy(string filterByName, int filterByAge, string filterByJob, int schoolId)
+        //{
+        //    return emp => (emp as Director)?.SchoolId == schoolId
+        //    && (string.IsNullOrEmpty(filterByName) || emp.FirstName.Contains(filterByName))
+        //    && (string.IsNullOrEmpty(filterByJob) || emp.Job.Contains(filterByJob))
+        //    && (filterByAge == 0 || emp.Age == filterByAge);
+        //}
 
         static Func<IQueryable<Employee>, IOrderedQueryable<Employee>> Sort(string orderBy)
         {
