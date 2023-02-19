@@ -4,6 +4,8 @@ public class Teacher : Employee
 {
     private readonly List<string> _subjects;
 
+    public int SchoolId { get; set; }
+    public School School { get; set; }
     public ICollection<string> Subjects => _subjects;
     public override string Job => nameof(Teacher);
 

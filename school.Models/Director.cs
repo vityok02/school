@@ -2,6 +2,9 @@
 
 public class Director : Employee
 {
+    public int SchoolId { get; set; }
+    public School School { get; set; }
+
     public Director(string firstName, string lastName, int age)
         : base(firstName, lastName, age)
     {

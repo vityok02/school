@@ -8,8 +8,11 @@ public class School : BaseEntity
     public Address Address { get; set; }
     public int AddressId { get; set; }
     public DateTime OpeningDate { get; set; }
-    public Employee? Director => Employees.SingleOrDefault(e => e is Director);
-    public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
+    //public Employee? Director =>
+    //    Employees.SingleOrDefault(e => e is Director);
+    public Director? Director { get; set; }
+    public ICollection<Teacher>? Teachers { get; set; } = new HashSet<Teacher>();
+    //public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
     public ICollection<Student> Students { get; set; } = new HashSet<Student>();
     public ICollection<Floor> Floors { get; set; } = new HashSet<Floor>();
     public IEnumerable<Room> Rooms => Floors.SelectMany(f => f.Rooms).ToList();
@@ -80,14 +83,14 @@ public class School : BaseEntity
             return (false, "Employee shouldn`t be under 18 or over 65");
         }
 
-        if (Employees.Any(emp => emp.FirstName == employee.FirstName &&
-            emp.LastName == employee.LastName &&
-            emp.Age == employee.Age))
-        {
-            return (false, "This employee already exists");
-        }
+        //if (Employees.Any(emp => emp.FirstName == employee.FirstName &&
+        //    emp.LastName == employee.LastName &&
+        //    emp.Age == employee.Age))
+        //{
+        //    return (false, "This employee already exists");
+        //}
 
-        Employees.Add(employee);
+        //Employees.Add(employee);
         return(true, null);
     }
 
@@ -105,9 +108,9 @@ public class School : BaseEntity
 
         sb.AppendLine();
         sb.AppendLine("==========Employees==========");
-        foreach (Employee employee in Employees)
+        //foreach (Employee employee in Employees)
         {
-            sb.AppendLine(employee.ToString());
+            //sb.AppendLine(employee.ToString());
         }
 
         sb.AppendLine();
