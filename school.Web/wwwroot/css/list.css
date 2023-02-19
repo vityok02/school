@@ -6,15 +6,11 @@
 }
 
 table {
-    position: absolute;
-    top: 300px;
-    right: 5%;
-    left: 5%;
-    bottom: 260px;
     display: block;
     width: auto;
     height: auto;
-    margin-inline: auto;
+    margin: auto 20px;
+    margin-bottom: 80px;
     border-radius: 5px;
     overflow: auto;
 }

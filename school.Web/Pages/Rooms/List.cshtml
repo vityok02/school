@@ -6,28 +6,39 @@
     ViewData["Title"] = "Rooms";
 }
 
-<link rel="stylesheet" href="~/css/list.css">
+@section styles {
+    <link rel="stylesheet" href="~/css/list.css">
+}
 
 <partial name="Sidebar" />
 
 <div class="wrapper">
     <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
         <div class="filter">
-            <label>Number: </label>
-            <input asp-for="FilterByRoomNumber" />
+            <label for="@(nameof(Model.FilterByRoomNumber))">
+                Number:
+                <input asp-for="FilterByRoomNumber" />
+            </label>
             @*<input asp-for="FilterByRoomTypes" />*@
             <label>Type: </label>
-            <details class="roomType">
-                @foreach (var type in RoomTypeExt.RoomTypes)
-                {
-                    <input name="filterByRoomType" type="checkbox" value="@type.Key" checked="@Model.FilterByRoomType.HasFlag((RoomType)type.Key)"/>
-                    @type.Value
-                    <br />
-                }
-            </details>
+            @*<details class="roomType">*@
+
+            @*</details>*@
             <label>Floor: </label>
             <input asp-for="FilterByFloorNumber" />
             <input type="hidden" asp-for="OrderBy" />
+            <div>
+                @foreach (var type in RoomTypeExt.RoomTypes)
+                {
+                    <label for="filterByRoomType">
+                        <input name="filterByRoomType"
+                            type="checkbox"
+                            value="@type.Key"
+                            checked="@Model.FilterByRoomType.HasFlag((RoomType)type.Key)" />
+                        @type.Value
+                    </label>
+                }
+            </div>
             <input class="search" type="submit" value="Search" />
             <div class="back">
                 <a asp-page="List">Back to full list</a>
@@ -35,7 +46,7 @@
             <div class="add"><a asp-page="Add">Add</a></div>
         </div>
     </form>
-    @if(!Model.Rooms.Any())
+    @if (!Model.Rooms.Any())
     {
         <div class="empty">List of rooms is empty</div>
     }
@@ -62,7 +73,7 @@
                     <th></th>
                 </tr>
             </thead>
-            @foreach(var room in Model.Rooms!)
+            @foreach (var room in Model.Rooms!)
             {
                 <tr>
                     <td class="first-column">@room.Number</td>
@@ -73,8 +84,8 @@
                             <div class="details">
                                 <a href="rooms/@room.Id/edit">Edit</a>
                             </div>
-                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@room.Id" 
-                            onclick="return confirm('Are you sure you want to delete room @room.Number?')">
+                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@room.Id"
+                          onclick="return confirm('Are you sure you want to delete room @room.Number?')">
                                 <input type="submit" value="Delete" />
                             </form>
                         </div>

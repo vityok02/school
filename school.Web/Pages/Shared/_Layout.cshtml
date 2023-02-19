@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SchoolManagement.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/sidebar.css" asp-append-version="true" />
+    @await RenderSectionAsync("styles", required: false)
 </head>
 <body class="cont">
-    <partial name="Header" >
+    <partial name="Header" />
+
     <header>
 @*        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
