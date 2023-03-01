@@ -14,7 +14,7 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
         _dbContext = dbContext;
     }
 
-    public IEnumerable<Employee> GetSchoolEmployees(int schoolId, string filterByName = null, int filterByAge = 0, string filterByJob = null)
+    public IEnumerable<Employee> GetSchoolEmployees(int schoolId, string filterByName = null!, int filterByAge = 0, string filterByJob = null!)
     {
         bool filters<T>(T e) where T : Employee
         {
