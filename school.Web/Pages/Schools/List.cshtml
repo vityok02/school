@@ -76,7 +76,7 @@
                                     <div class="button details">
                                         <a asp-page="Details" asp-route-id="@school.Id">Details</a>
                                     </div>
-                                    <form method="post" class="button delete" asp-page-handler="Delete" asp-route-id="@school.Id"
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@school.Id"
                                     onclick="return confirm('Are you sure you want to delete school @school.Name?')">
                                         <div class="button delete">
                                             <button type="submit">Delete</button>

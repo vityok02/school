@@ -37,7 +37,7 @@
     }
     else
     {
-        <table>
+        <table class="tab">
             <thead>
                 <tr>
                     <th>
@@ -57,9 +57,10 @@
                     </th>
                     <th class="job-column">
                         <a asp-all-route-data="Model.JobParams">
-                            Job
+                            Position
                         </a>
                     </th>
+                    <th></th>
                     <th></th>
                 </tr>
             </thead>
@@ -70,15 +71,17 @@
                         <td class="first-columns">@emp.FirstName</td>
                         <td class="first-columns">@emp.LastName</td>
                         <td class="age-column">@emp.Age</td>
-                        <td class="job-column">@emp.Job</td>
+                        <td class="job-column">@emp.Position.Name</td>
                         <td>
                             <div class="btns">
-                                <div class="details">
+                                <div class="button details">
                                     <a href="employees/@emp.Id/edit">Edit</a>
                                 </div>
-                                <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@emp.Id"
+                                <form asp-page-handler="Delete" method="post" asp-route-id="@emp.Id"
                                   onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
-                                    <input type="submit" value="Delete" />
+                                    <div class="button delete">
+                                        <button type="submit">Delete</button>
+                                    </div>
                                 </form>
                             </div>
                         </td>

@@ -37,13 +37,13 @@ public class EditModel : BasePageModel
             return RedirectToPage("List");
         }
 
-        var employees = _employeeRepository.GetSchoolEmployees(schoolId, null, 0, null);
-        if (employees.Where(e => e.FirstName == firstName
-            && e.LastName == lastName
-            && e.Age == age).Count() > 1)
-        {
-            ErrorMessage = "Such employee already exists";
-        }
+        //var employees = _employeeRepository.GetSchoolEmployees(schoolId, null, 0, null);
+        //if (employees.Where(e => e.FirstName == firstName
+        //    && e.LastName == lastName
+        //    && e.Age == age).Count() > 1)
+        //{
+        //    ErrorMessage = "Such employee already exists";
+        //}
 
         employee.UpdateInfo(firstName, lastName, age);
 

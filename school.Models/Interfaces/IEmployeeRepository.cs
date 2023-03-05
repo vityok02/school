@@ -2,5 +2,5 @@
 
 public interface IEmployeeRepository : IRepository<Employee>
 {
-    IEnumerable<Employee> GetSchoolEmployees(int schoolId, string filterByName, int filterByAge, string filterByJob);
+    //IEnumerable<Employee> GetSchoolEmployees(int schoolId, string filterByName, int filterByAge, string filterByJob);
 }

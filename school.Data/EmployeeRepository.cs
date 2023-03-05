@@ -14,29 +14,29 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
         _dbContext = dbContext;
     }
 
-    public IEnumerable<Employee> GetSchoolEmployees(int schoolId, string filterByName = null!, int filterByAge = 0, string filterByJob = null!)
-    {
-        bool filters<T>(T e) where T : Employee
-        {
-            return (string.IsNullOrEmpty(filterByName) || e.FirstName.Contains(filterByName))
-                && (string.IsNullOrEmpty(filterByJob) || e.Job.Contains(filterByJob))
-                && (filterByAge == 0 || e.Age == filterByAge);
-        }
+    //public IEnumerable<Employee> GetSchoolEmployees(int schoolId, string filterByName = null!, int filterByAge = 0, string filterByJob = null!)
+    //{
+    //    bool filters<T>(T e) where T : Employee
+    //    {
+    //        return (string.IsNullOrEmpty(filterByName) || e.FirstName.Contains(filterByName))
+    //            && (string.IsNullOrEmpty(filterByJob) || e.Job.Contains(filterByJob))
+    //            && (filterByAge == 0 || e.Age == filterByAge);
+    //    }
 
-        var directors = _dbContext.Set<Director>()
-            .Where(d => d.SchoolId == schoolId)
-            .Where(filters)
-            .ToArray();
+    //    var directors = _dbContext.Set<Director>()
+    //        .Where(d => d.SchoolId == schoolId)
+    //        .Where(filters)
+    //        .ToArray();
 
-        var teachers = _dbContext.Set<Teacher>()
-            .Where(d => d.SchoolId == schoolId)
-            .Where(filters)
-            .ToArray();
+    //    var teachers = _dbContext.Set<Teacher>()
+    //        .Where(d => d.SchoolId == schoolId)
+    //        .Where(filters)
+    //        .ToArray();
 
-        var employees = new List<Employee>();
-        employees.AddRange(directors);
-        employees.AddRange(teachers);
+    //    var employees = new List<Employee>();
+    //    employees.AddRange(directors);
+    //    employees.AddRange(teachers);
 
-        return employees;
-    }
+    //    return employees;
+    //}
 }

@@ -8,11 +8,7 @@ public class School : BaseEntity
     public Address Address { get; set; }
     public int AddressId { get; set; }
     public DateTime OpeningDate { get; set; }
-    //public Employee? Director =>
-    //    Employees.SingleOrDefault(e => e is Director);
-    public Director? Director { get; set; }
-    public ICollection<Teacher>? Teachers { get; set; } = new HashSet<Teacher>();
-    //public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
+    public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
     public ICollection<Student> Students { get; set; } = new HashSet<Student>();
     public ICollection<Floor> Floors { get; set; } = new HashSet<Floor>();
     public IEnumerable<Room> Rooms => Floors.SelectMany(f => f.Rooms).ToList();
@@ -68,10 +64,6 @@ public class School : BaseEntity
 
     public (bool Valid, string? Error) AddEmployee(Employee employee)
     {
-        if (employee is Director && Director is not null)
-        {
-            return (false, "The director already exists*");
-        }
 
         if (string.IsNullOrEmpty(employee.FirstName) || string.IsNullOrEmpty(employee.LastName))
         {

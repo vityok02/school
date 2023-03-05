@@ -1,21 +1,21 @@
 ﻿namespace SchoolManagement.Models;
 
-public abstract class Employee : Person
+public class Employee : Person
 {
-    public abstract string Job { get; }
+    public School School { get; set; } = null!;
+    public int SchoolId { get; set; }
+    public Position Position => Positions.FirstOrDefault()!;
+    public ICollection<Position> Positions { get; set; } = new HashSet<Position>();
 
-    protected Employee()
-    {
+    public Employee() { }
 
-    }
-
-    protected Employee(string firstName, string lastName, int age)
+    public Employee(string firstName, string lastName, int age)
         : base(firstName, lastName, age)
     {
     }
 
     public override string ToString()
     {
-        return $"{LastName} {FirstName} {Age} {Job}";
+        return $"{LastName} {FirstName} {Age}";
     }
 }

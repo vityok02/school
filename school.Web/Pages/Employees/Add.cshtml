@@ -29,10 +29,16 @@
             <tr>
                 <td>Type</td>
                 <td>
-                    <select name="type">
+                    @foreach(var position in Model.Positions)
+                    {
+                        <input type="checkbox" name="positions" value="@position.Id">
+                        <div>@position.Name</div>
+                    }
+                    @*<input type="text" name="stringPosition"/>*@
+@*                    <select name="type">
                         <option value="Teacher">Teacher</option>
                         <option value="Director">Director</option>
-                    </select>
+                    </select>*@
                 </td>
             </tr>
         </table>

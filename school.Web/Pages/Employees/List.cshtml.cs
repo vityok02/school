@@ -7,16 +7,19 @@ namespace SchoolManagement.Web.Pages.Employees;
 public class ListModel : BasePageModel
 {
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IRepository<Position> _positionRepository;
 
     public IEnumerable<Employee> Employees { get; private set; } = null!;
+    public IEnumerable<Position> Positions { get; private set; }
     public string JobSort { get; set; } = null!;
     public string FilterByJob { get; set; } = null!;
     public IDictionary<string, string> JobParams { get; set; } = null!;
 
-    public ListModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository)
-        :base(schoolRepository)
+    public ListModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository, IRepository<Position> positionRepository)
+        : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
+        _positionRepository = positionRepository;
     }
 
     public IActionResult OnGet(string orderBy, string filterByName, int filterByAge, string filterByJob)
@@ -36,7 +39,10 @@ public class ListModel : BasePageModel
         FilterByAge= filterByAge;
         FilterByJob = filterByJob;
 
-        Employees = _employeeRepository.GetSchoolEmployees(schoolId, filterByName, filterByAge, filterByJob);
+        Employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId);
+        Positions = Employees.Select(e => e.Position);
+
+        //Employees = _employeeRepository.GetSchoolEmployees(schoolId, filterByName, filterByAge, filterByJob);
         //Employees = _employeeRepository.GetAll(FilterBy(FilterByName, FilterByAge, FilterByJob, schoolId), Sort(orderBy));
 
         var filterParams = GetFilters();
@@ -83,8 +89,8 @@ public class ListModel : BasePageModel
                 "lastName_desc" => e => e.OrderByDescending(e => e.LastName),
                 "age" => e => e.OrderBy(e => e.Age),
                 "age_desc" => e => e.OrderByDescending(e => e.Age),
-                "group" => e => e.OrderBy(e => e.Job),
-                "group_desc" => e => e.OrderByDescending(e => e.Job),
+               // "group" => e => e.OrderBy(e => e.Job),
+                //"group_desc" => e => e.OrderByDescending(e => e.Job),
                 _ => e => e.OrderBy(e => e.FirstName),
             };
         }
