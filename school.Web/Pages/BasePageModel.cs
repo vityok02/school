@@ -40,6 +40,9 @@ public abstract class BasePageModel : PageModel
     public string GetSelectedSchoolName()
     {
         var sId = GetSchoolId();
+
+        SetSchoolId(sId);
+
         var school = SchoolRepository.Get(sId);
         if(school is null)
         {
@@ -60,10 +63,8 @@ public abstract class BasePageModel : PageModel
         return RedirectToPage("/Schools/List", "error");
     }
 
-    public IActionResult SelectSchool(int selectedSchool)
+    public void SelectSchool(int selectedSchoolId)
     {
-        SetSchoolId(selectedSchool);
-
-        return Redirect("/Schools/" + selectedSchool);
+        SetSchoolId(selectedSchoolId);
     }
 }

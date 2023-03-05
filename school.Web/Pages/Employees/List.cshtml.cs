@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
-using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 

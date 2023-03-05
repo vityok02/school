@@ -30,6 +30,16 @@ public class SchoolListModel : BasePageModel
 
     public IActionResult OnGet(string orderBy, string filterByParam)
     {
+        //for (int i = 0; i < 10; i++)
+        //{
+        //    var school = new School()
+        //    {
+        //        Name = i.ToString(),
+        //        Address = new Address(i.ToString(), i.ToString(), i.ToString(), 0),
+        //        OpeningDate = DateTime.Now
+        //    };
+        //    SchoolRepository.Add(school);
+        //}
         OrderBy = orderBy;
         NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
         CitySort = orderBy == "city" ? "city_desc" : "city";
@@ -114,6 +124,17 @@ public class SchoolListModel : BasePageModel
 
         SetSchoolId(school!.Id);
         return Page();
+    }
+
+    public IActionResult OnPostSetSchool(int id)
+    {
+        if (id == 0)
+        {
+            return RedirectToPage("List");
+        }
+
+        SelectSchool(id);
+        return RedirectToPage();
     }
 
     public IActionResult OnPostDelete(int id)

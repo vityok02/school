@@ -5,27 +5,29 @@
 
     if (Model.IsError)
     {
-        <script>alert('No school selected, please select a school');</script>
+    <script>alert('No school selected, please select a school');</script>
     }
     if (!Model.IsFirst)
     {
-        <partial name="Sidebar" />
+    <partial name="Sidebar" />
     }
 }
 
 <link rel="stylesheet" href="~/css/list.css" />
 
 <div class="wrapper">
-    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
-        <div class="filter">
-            <label>Enter the params: </label>
-            <input asp-for="FilterByParam" />
+    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
+        <div class="content">
+            <label asp-for="FilterByParam">
+                Enter the params: 
+                <input asp-for="FilterByParam" />
+            </label>
             <input type="hidden" asp-for="OrderBy" />
-            <input class="search" type="submit" value="Search" />
-            <div class="back">
+            <input class="filter-btn" type="submit" value="Search" />
+            <div class="filter-btn">
                 <a asp-page="/Schools/List">Back to full list</a>
             </div>
-            <div class="add"><a asp-page="Add">Add</a></div>
+            <div class="filter-btn add"><a asp-page="Add">Add</a></div>
         </div>
     </form>
     @if (!Model.Schools.Any())
@@ -34,54 +36,58 @@
     }
     else
     {
-        <table>
-            <thead>
-                <tr>
-                    <th>
-                        <a asp-all-route-data="@Model.NameParams">Name</a>
-                    </th>
-                    <th>
-                        <a asp-all-route-data="@Model.CityParams">City</a>
-                    </th>
-                    <th colspan="3">
-                        <a asp-all-route-data="@Model.StreetParams">Street</a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var school in Model.Schools)
-                {
+        <div class="tab">
+            <table>
+                <thead>
                     <tr>
-                        <td>@school.Name</td>
-                        <td>
-                            <div class="city">
-                                @Model.Addresses.Where(a => a.Id == school.AddressId).SingleOrDefault()!.City
-                            </div>
-                        </td>
-                        <td>
-                            <div class="street">
-                                @Model.Addresses.Where(a => a.Id == school.AddressId).SingleOrDefault()!.Street
-                            </div>
-                        </td>
-                        <td>
-                            <div class="button choose">
-                                <a asp-page="/Schools/List">Choose</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="btns">
-                                <div class="button details">
-                                    <a asp-page="Details" asp-route-id="@school.Id">Details</a>
-                                </div>
-                                <form class="button delete" asp-page-handler="Delete" method="post" asp-route-id="@school.Id"
-                                onclick="return confirm('Are you sure you want to delete school @school.Name?')">
-                                    <input type="submit" value="Delete" />
-                                </form>
-                            </div>
-                        </td>
+                        <th>
+                            <a asp-all-route-data="@Model.NameParams">Name</a>
+                        </th>
+                        <th>
+                            <a asp-all-route-data="@Model.CityParams">City</a>
+                        </th>
+                        <th colspan="3">
+                            <a asp-all-route-data="@Model.StreetParams">Street</a>
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var school in Model.Schools)
+                    {
+                        <tr>
+                            <td>@school.Name</td>
+                            <td>
+                                <div class="city">
+                                    @Model.Addresses.Where(a => a.Id == school.AddressId).SingleOrDefault()!.City
+                                </div>
+                            </td>
+                            <td>
+                                <div class="street">
+                                    @Model.Addresses.Where(a => a.Id == school.AddressId).SingleOrDefault()!.Street
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btns">
+                                    <form method="post">
+                                        <div class="button choose">
+                                            <button asp-route-id="@school.Id" asp-page-handler="SetSchool">Choose</button>
+                                        </div>
+                                    </form>
+                                    <div class="button details">
+                                        <a asp-page="Details" asp-route-id="@school.Id">Details</a>
+                                    </div>
+                                    <form method="post" class="button delete" asp-page-handler="Delete" asp-route-id="@school.Id"
+                                    onclick="return confirm('Are you sure you want to delete school @school.Name?')">
+                                        <div class="button delete">
+                                            <button type="submit">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 </div>

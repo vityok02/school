@@ -9,20 +9,26 @@
 <partial name="Sidebar" />
 
 <div class="wrapper">
-        <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
-        <div class="filter">
-            <label>Name: </label>
-            <input asp-for="FilterByName" />
-            <label>Age: </label>
-            <input asp-for="FilterByAge"/>
-            <label>Job: </label>
-            <input asp-for="FilterByJob" />
+        <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
+        <div class="content">
+            <label asp-for="FilterByName">
+                Name: 
+                <input asp-for="FilterByName" />
+            </label>
+            <label asp-for="FilterByAge">
+                Age: 
+                <input asp-for="FilterByAge"/>
+            </label>
+            <label asp-for="FilterByJob">
+                Job: 
+                <input asp-for="FilterByJob" />
+            </label>
             <input type="hidden" asp-for="OrderBy" />
-            <input class="search" type="submit" value="Search" />
-            <div class="back">
+            <input class="filter-btn" type="submit" value="Search" />
+            <div class="filter-btn">
                 <a asp-page="/Employees/List">Back to full list</a>
             </div>
-            <div class="add"><a asp-page="Add">Add</a></div>
+            <div class="filter-btn add"><a asp-page="Add">Add</a></div>
         </div>
     </form>
     @if (!Model.Employees.Any())
