@@ -19,9 +19,9 @@
                 Age: 
                 <input asp-for="FilterByAge"/>
             </label>
-            <label asp-for="FilterByJob">
+            <label asp-for="FilterByPosition">
                 Job: 
-                <input asp-for="FilterByJob" />
+                <input asp-for="FilterByPosition" />
             </label>
             <input type="hidden" asp-for="OrderBy" />
             <input class="filter-btn" type="submit" value="Search" />
@@ -56,7 +56,7 @@
                         </a>
                     </th>
                     <th class="job-column">
-                        <a asp-all-route-data="Model.JobParams">
+                        <a asp-all-route-data="Model.PositionParams">
                             Position
                         </a>
                     </th>
