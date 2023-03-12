@@ -4,7 +4,10 @@
     ViewData["Title"] = "Employees";
 }
 
-<link rel="stylesheet" href="~/css/list.css" />
+@section styles
+    {
+    <link rel="stylesheet" href="~/css/list.css" />
+}
 
 <partial name="Sidebar" />
 
@@ -28,7 +31,9 @@
             <div class="filter-btn">
                 <a asp-page="/Employees/List">Back to full list</a>
             </div>
-            <div class="filter-btn add"><a asp-page="Add">Add</a></div>
+            <div class="filter-btn add">
+                <a asp-page="Add">Add</a>
+            </div>
         </div>
     </form>
     @if (!Model.Employees.Any())
@@ -51,7 +56,7 @@
                         </a>
                     </th>
                     <th>
-                        <a asp-all-route-data="Model.LastNameParams">
+                        <a asp-all-route-data="Model.AgeParams">
                             Age
                         </a>
                     </th>
@@ -71,7 +76,7 @@
                         <td class="first-columns">@emp.FirstName</td>
                         <td class="first-columns">@emp.LastName</td>
                         <td class="age-column">@emp.Age</td>
-                        <td class="job-column">@emp.Position.Name</td>
+                        <td class="job-column">@emp.Position</td>
                         <td>
                             <div class="btns">
                                 <div class="button details">

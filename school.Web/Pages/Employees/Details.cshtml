@@ -1,7 +1,10 @@
 ﻿@page "/employees/{id}"
 @model DetailsModel
 
-<link rel="stylesheet" href="~/css/details.css"/>
+@section styles
+    {
+        <link rel="stylesheet"  href="~/css/details.css" />
+}
 
 <partial name="Sidebar" />
 <div class="wrapper">

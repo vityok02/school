@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using System.Linq;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
@@ -47,8 +48,13 @@ public class EmployeeFormModel : BasePageModel
 
         foreach(var positionId in positions )
         {
-            employee.Positions.Add(_positionRepository.Get(positionId));
+            employee.Positions.Add(_positionRepository.Get(positionId)!);
         }
+
+        //if (_employeeRepository.GetAll(e => e.SchoolId == schoolId).Any(employee.Positions.Any(p => p.Name == "Director")))
+        //{
+        //    Message = "Director already exists in this school";
+        //}
 
 
         //var employees = _employeeRepository.GetSchoolEmployees(schoolId, null!, 0, null!);

@@ -9,12 +9,12 @@ public class ListModel : BasePageModel
 {
     private readonly IEmployeeRepository _employeeRepository;
 
-    public IEnumerable<Employee> Employees { get; private set; } = null!;
+    public IEnumerable<Employee> Employees { get; set; } = null!;
     public string PositionSort { get; set; } = null!;
     public string FilterByPosition { get; set; } = null!;
     public IDictionary<string, string> PositionParams { get; set; } = null!;
 
-    public ListModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository, IRepository<Position> positionRepository)
+    public ListModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository)
         : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
@@ -31,7 +31,7 @@ public class ListModel : BasePageModel
         FirstNameSort = String.IsNullOrEmpty(orderBy) ? "firstName_desc" : "";
         LastNameSort = orderBy == "lastName" ? "lastName_desc" : "lastName";
         AgeSort = orderBy == "age" ? "age_desc" : "age";
-        PositionSort = orderBy == "job" ? "group_desc" : "group";
+        PositionSort = orderBy == "position" ? "position_desc" : "position";
 
         FilterByName = filterByName;
         FilterByAge= filterByAge;
@@ -70,9 +70,9 @@ public class ListModel : BasePageModel
         static Expression<Func<Employee, bool>> FilterBy(string filterByName, int filterByAge, string filterByPosition, int schoolId)
         {
             return emp => emp.SchoolId == schoolId
-            && (string.IsNullOrEmpty(filterByName) || emp.FirstName.Contains(filterByName))
-            && (string.IsNullOrEmpty(filterByPosition) || emp.Position.ToString()!.Contains(filterByPosition))
-            && (filterByAge == 0 || emp.Age == filterByAge);
+                && (string.IsNullOrEmpty(filterByName) || emp.FirstName.Contains(filterByName))
+                && (string.IsNullOrEmpty(filterByPosition) || emp.Positions.Any(p => p.Name.Contains(filterByPosition)))
+                && (filterByAge == 0 || emp.Age == filterByAge);
         }
 
         static Func<IQueryable<Employee>, IOrderedQueryable<Employee>> Sort(string orderBy)
@@ -84,9 +84,8 @@ public class ListModel : BasePageModel
                 "lastName_desc" => e => e.OrderByDescending(e => e.LastName),
                 "age" => e => e.OrderBy(e => e.Age),
                 "age_desc" => e => e.OrderByDescending(e => e.Age),
-
-                "group" => e => e.OrderBy(e => e.Position),
-                "group_desc" => e => e.OrderByDescending(e => e.Position),
+                "position" => e => e.OrderBy(e => e.Positions.FirstOrDefault()!.Name),
+                "position_desc" => e => e.OrderByDescending(e => e.Positions.FirstOrDefault()!.Name),
                 _ => e => e.OrderBy(e => e.FirstName),
             };
         }

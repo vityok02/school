@@ -1,7 +1,10 @@
 ﻿@page "/employees/add"
 @model EmployeeFormModel
 
-<link rel="stylesheet" href="~/css/add.css" />
+@section styles
+{
+    <link rel="stylesheet" href="~/css/add.css" />
+}
 
 <partial name="Sidebar" />
 
@@ -31,14 +34,8 @@
                 <td>
                     @foreach(var position in Model.Positions)
                     {
-                        <input type="checkbox" name="positions" value="@position.Id">
-                        <div>@position.Name</div>
+                        <input type="checkbox" name="positions" value="@position.Id">@position.Name
                     }
-                    @*<input type="text" name="stringPosition"/>*@
-@*                    <select name="type">
-                        <option value="Teacher">Teacher</option>
-                        <option value="Director">Director</option>
-                    </select>*@
                 </td>
             </tr>
         </table>

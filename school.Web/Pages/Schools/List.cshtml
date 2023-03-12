@@ -13,7 +13,10 @@
     }
 }
 
-<link rel="stylesheet" href="~/css/list.css" />
+@section styles
+{
+    <link rel="stylesheet" href="~/css/list.css" />
+}
 
 <div class="wrapper">
     <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
