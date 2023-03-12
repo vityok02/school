@@ -15,17 +15,8 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
         _dbContext = dbContext;
     }
 
-    public IEnumerable<Employee> GetEmployees()
-    {
-        var employees = _dbContext
-            .Employees
-            .Include(e => e.Positions);
-
-        return employees;
-    }
-
     public IEnumerable<Employee> GetEmployees(Expression<Func<Employee, bool>> predicate,
-    Func<IQueryable<Employee>, IOrderedQueryable<Employee>> orderBy = null!)
+        Func<IQueryable<Employee>, IOrderedQueryable<Employee>> orderBy = null!)
     {
         var employees = _dbContext
             .Employees

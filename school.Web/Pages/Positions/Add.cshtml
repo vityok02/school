@@ -1,0 +1,30 @@
+﻿@page
+@model SchoolManagement.Web.Pages.Positions.AddModel
+@{
+}
+
+@section styles
+    {
+        <link rel="stylesheet" href="~/css/add.css" />
+}
+
+<partial name="Sidebar" />
+
+<div class="wrapper">
+    <form class="form" method="post">
+        <table>
+            <tr>
+                <td>Name</td>
+                <td>
+                    <input type="text" name="name" value="Job title"/>
+                </td>
+            </tr>
+        </table>
+        <div class="btns">
+            <input class="button add" type="submit" value="Add position" />
+            <div class="button cancel">
+                <a asp-page="List">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,66 @@
+﻿@page "/positions"
+@model ListModel
+@{
+}
+
+@section styles
+{
+    <link rel="stylesheet" href="~/css/list.css" />
+}
+
+<partial name="Sidebar" />
+
+<div class="wrapper">
+    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
+        <div class="content">
+            <label asp-for="FilterByName">
+                Name:
+                <input asp-for="FilterByName" />
+            </label>
+            <input type="hidden" asp-for="OrderBy" />
+            <input class="filter-btn" type="submit" value="Search" />
+            <div class="filter-btn">
+                <a asp-page="/Employees/List">Back to full list</a>
+            </div>
+            <div class="filter-btn add">
+                <a asp-page="Add">Add</a>
+            </div>
+        </div>
+    </form>
+    @if(!Model.Positions.Any())
+    {
+        <div class="empty">List of positions is empty</div>
+    }
+    else
+    {
+        <table class="tab">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var position in Model.Positions)
+                {
+                    <tr>
+                        <td>@position.Name</td>
+                        <td>
+                            <div class="btns">
+                                <div class="button details">
+                                    <a href="positions/@position.Id">Edit</a>
+                                </div>
+                                <form asp-page-handler="Delete" method="post" asp-route-id="@position.Id"
+                                  onclick="return confirm('Are you sure you want to delete position @position.Name?')">
+                                    <div class="button delete">
+                                        <button type="submit">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -17,6 +17,9 @@ public class PositionConfig : IEntityTypeConfiguration<Position>
         builder.Property(t => t.Name)
             .IsRequired();
 
+        builder.HasMany(t => t.Schools)
+            .WithMany(t => t.Positions);
+
         builder.HasMany(t => t.Employees)
             .WithMany(t => t.Positions);
     }
