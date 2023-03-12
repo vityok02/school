@@ -1,4 +1,5 @@
-﻿using SchoolManagement.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
@@ -14,6 +15,30 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
         _dbContext = dbContext;
     }
 
+    public IEnumerable<Employee> GetEmployees()
+    {
+        var employees = _dbContext
+            .Employees
+            .Include(e => e.Positions);
+
+        return employees;
+    }
+
+    public IEnumerable<Employee> GetEmployees(Expression<Func<Employee, bool>> predicate,
+    Func<IQueryable<Employee>, IOrderedQueryable<Employee>> orderBy = null!)
+    {
+        var employees = _dbContext
+            .Employees
+            .Include(e => e.Positions)
+            .Where(predicate);
+
+        if (orderBy is not null)
+        {
+            employees = orderBy(employees);
+        }
+
+        return employees.ToArray();
+    }
     //public IEnumerable<Employee> GetSchoolEmployees(int schoolId, string filterByName = null!, int filterByAge = 0, string filterByJob = null!)
     //{
     //    bool filters<T>(T e) where T : Employee
