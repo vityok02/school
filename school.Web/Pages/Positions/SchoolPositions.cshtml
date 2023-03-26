@@ -1,0 +1,121 @@
+﻿@page "/positions/school"
+@model SchoolPositionsModel;
+
+@section styles
+{
+    <link rel="stylesheet" href="~/css/list.css" />
+}
+
+<partial name="Sidebar" />
+
+<div class="wrapper">
+    <div class="tables">
+        <form method="get" asp-page="List" class="filter">
+            <div class="content">
+                <label asp-for="Filter">
+                    Name:
+                    <input asp-for="Filter" />
+                </label>
+                <input type="hidden" asp-for="OrderBy" />
+                <input class="filter-btn" type="submit" value="Search" />
+                <div class="filter-btn">
+                    <a asp-page="/Employees/List">Back to full list</a>
+                </div>
+                <div class="filter-btn add">
+                    <a asp-page="Add">Add</a>
+                </div>
+            </div>
+        </form>
+        @if (!Model.SchoolPositions.Any())
+        {
+                <div class="empty">List of positions is empty</div>
+        }
+        else
+        {
+            <table class="tab">
+                <thead>
+                    <tr>
+                        <th>
+                            <a asp-route-orderBy="@Model.NameSort" asp-route-filter="@Model.Filter">
+                                Name
+                            </a>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var position in Model.SchoolPositions)
+                {
+                    <tr>
+                        <td>@position.Name</td>
+                        <td>
+                            <div class="btns">
+                                <div class="button delete">
+                                    <form asp-page-handler="Delete" method="post" asp-route-id="@position.Id"
+                                    onclick="return confirm('Are you sure you want to delete position @position.Name?')">
+                                            <button type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+    <div class="tables">
+        <form method="get" asp-page="List" class="filter">
+            <div class="content">
+                <label asp-for="Filter">
+                    Name:
+                    <input asp-for="Filter" />
+                </label>
+                <input type="hidden" asp-for="OrderBy" />
+                <input class="filter-btn" type="submit" value="Search" />
+                <div class="filter-btn">
+                    <a asp-page="/Employees/List">Back to full list</a>
+                </div>
+                <div class="filter-btn add">
+                    <a asp-page="Add">Add</a>
+                </div>
+            </div>
+        </form>
+        @if (!Model.AllPositions.Any())
+        {
+            <div class="empty">List of positions is empty</div>
+        }
+        else
+        {
+            <table class="tab">
+                <thead>
+                    <tr>
+                        <th>
+                            <a asp-route-orderBy="@Model.NameSort" asp-route-filter="@Model.Filter">
+                                Name
+                            </a>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var position in Model.AllPositions)
+                {
+                    <tr>
+                        <td>@position.Name</td>
+                        <td>
+                            <form asp-page-handler="Add" method="post" asp-route-id="@position.Id">
+                                <div class="btns">
+                                    <div class="button add">
+                                        <button type="submit">Add</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

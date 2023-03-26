@@ -1,7 +1,5 @@
-﻿@page "/positions"
-@model ListModel
-@{
-}
+﻿@page "/positions/full"
+@model AllPositionsModel;
 
 @section styles
 {
@@ -11,11 +9,11 @@
 <partial name="Sidebar" />
 
 <div class="wrapper">
-    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
+    <form method="get" asp-page="List" class="filter">
         <div class="content">
-            <label asp-for="FilterByName">
+            <label asp-for="Filter">
                 Name:
-                <input asp-for="FilterByName" />
+                <input asp-for="Filter" />
             </label>
             <input type="hidden" asp-for="OrderBy" />
             <input class="filter-btn" type="submit" value="Search" />
@@ -36,7 +34,11 @@
         <table class="tab">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>
+                        <a asp-route-orderBy="@Model.NameSort" asp-route-filter="@Model.Filter">
+                            Name
+                        </a>
+                    </th>
                     <th></th>
                 </tr>
             </thead>
