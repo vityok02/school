@@ -9,7 +9,7 @@ public class AddModel : BasePageModel
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
 
-    public IEnumerable<Position> Positions { get; set; } = null!;
+    public IEnumerable<Position> Positions { get; set; }
 
     public AddModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
@@ -47,6 +47,16 @@ public class AddModel : BasePageModel
         if(school is null)
         {
             return RedirectToSchoolList();
+        }
+
+        var employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId);
+
+        if (employees.Any(s => s.FirstName == firstName
+                && s.LastName == lastName
+                && s.Age == age))
+        {
+            Message = "Such employee already exists";
+            return RedirectToPage("Add");
         }
 
         var employee = new Employee(firstName, lastName, age)
