@@ -39,7 +39,7 @@ public class SchoolPositionsModel : BasePageModel
             RedirectToSchoolList();
         }
 
-        AllPositions = _positionRepository.GetAll();
+        AllPositions = _positionRepository.GetUnSelectedPositions(schoolId);
         SchoolPositions = _positionRepository.GetSchoolPositions(schoolId);
     }
 

@@ -28,7 +28,7 @@ namespace SchoolManagement.Data
         {
             var positions = _dbContext
                 .Positions
-                .Where(p => p.Schools.Any(s => s.Id != schoolId))
+                .Where(p => p.Schools.All(s => s.Id != schoolId))
                 .ToArray();
 
             return positions;
