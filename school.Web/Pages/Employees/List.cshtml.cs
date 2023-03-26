@@ -37,8 +37,8 @@ public class ListModel : BasePageModel
         FilterByAge= filterByAge;
         FilterByPosition = filterByPosition;
 
-        Employees = _employeeRepository.GetSchoolEmployees(FilterBy(FilterByName, FilterByAge, FilterByPosition),
-            Sort(orderBy), schoolId);
+        Employees = _employeeRepository.GetEmployees(FilterBy(FilterByName, FilterByAge, FilterByPosition, schoolId),
+            Sort(orderBy));
 
         var filterParams = GetFilters();
 
@@ -67,9 +67,10 @@ public class ListModel : BasePageModel
         };
         return Page();
 
-        static Expression<Func<Employee, bool>> FilterBy(string filterByName, int filterByAge, string filterByPosition)
+        static Expression<Func<Employee, bool>> FilterBy(string filterByName, int filterByAge, string filterByPosition, int schoolId)
         {
-            return emp => (string.IsNullOrEmpty(filterByName) || emp.FirstName.Contains(filterByName))
+            return emp => emp.SchoolId == schoolId
+                && (string.IsNullOrEmpty(filterByName) || emp.FirstName.Contains(filterByName))
                 && (string.IsNullOrEmpty(filterByPosition) || emp.Positions.Any(p => p.Name.Contains(filterByPosition)))
                 && (filterByAge == 0 || emp.Age == filterByAge);
         }
@@ -88,6 +89,19 @@ public class ListModel : BasePageModel
                 _ => e => e.OrderBy(e => e.FirstName),
             };
         }
+    }
+
+    public IActionResult OnPostDelete(int id)
+    {
+        var employee = _employeeRepository.Get(id);
+        if (employee is null)
+        {
+            return RedirectToPage("List");
+        }
+        
+        _employeeRepository.Delete(employee!);
+
+        return RedirectToPage("List");
     }
 
     private IDictionary<string, string> GetFilters()
@@ -110,18 +124,5 @@ public class ListModel : BasePageModel
         }
 
         return filterParams;
-    }
-
-    public IActionResult OnPostDelete(int id)
-    {
-        var employee = _employeeRepository.Get(id);
-        if (employee is null)
-        {
-            return RedirectToPage("List");
-        }
-        
-        _employeeRepository.Delete(employee!);
-
-        return RedirectToPage("List");
     }
 }

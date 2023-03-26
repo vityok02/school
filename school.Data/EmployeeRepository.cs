@@ -15,12 +15,11 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
         _dbContext = dbContext;
     }
 
-    public IEnumerable<Employee> GetSchoolEmployees(Expression<Func<Employee, bool>> predicate,
-        Func<IQueryable<Employee>, IOrderedQueryable<Employee>> orderBy = null!, int schoolId = 0)
+    public IEnumerable<Employee> GetEmployees(Expression<Func<Employee, bool>> predicate,
+        Func<IQueryable<Employee>, IOrderedQueryable<Employee>> orderBy = null!)
     {
         var employees = _dbContext
             .Employees
-            .Where(e => e.SchoolId == schoolId)
             .Include(e => e.Positions)
             .Where(predicate);
 
@@ -31,15 +30,29 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
 
         return employees.ToArray();
     }
+    //public IEnumerable<Employee> GetSchoolEmployees(int schoolId, string filterByName = null!, int filterByAge = 0, string filterByJob = null!)
+    //{
+    //    bool filters<T>(T e) where T : Employee
+    //    {
+    //        return (string.IsNullOrEmpty(filterByName) || e.FirstName.Contains(filterByName))
+    //            && (string.IsNullOrEmpty(filterByJob) || e.Job.Contains(filterByJob))
+    //            && (filterByAge == 0 || e.Age == filterByAge);
+    //    }
 
-    public Employee GetEmployee(int id)
-    {
-        var employee = _dbContext
-            .Employees
-            .Where(e => e.Id == id)
-            .Include(e => e.Positions)
-            .SingleOrDefault();
+    //    var directors = _dbContext.Set<Director>()
+    //        .Where(d => d.SchoolId == schoolId)
+    //        .Where(filters)
+    //        .ToArray();
 
-        return employee!;
-    }
+    //    var teachers = _dbContext.Set<Teacher>()
+    //        .Where(d => d.SchoolId == schoolId)
+    //        .Where(filters)
+    //        .ToArray();
+
+    //    var employees = new List<Employee>();
+    //    employees.AddRange(directors);
+    //    employees.AddRange(teachers);
+
+    //    return employees;
+    //}
 }

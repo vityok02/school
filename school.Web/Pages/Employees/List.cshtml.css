@@ -8,5 +8,6 @@
 }
 
 .job-column {
-    padding-left: 10%;
+    text-align: center;
+    margin-inline: auto;
 }

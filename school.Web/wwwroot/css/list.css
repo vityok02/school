@@ -63,29 +63,29 @@ table {
         background-color: #cfcfcf;
     }
 
-table .btns {
+.btns {
     display: flex;
 }
 
-table .button {
+button {
     color: white;
     font-size: 20px;
+    padding-inline: 10px;
     display: inline-block;
-    margin-right: 10px;
+    margin-inline: 10px;
     height: 40px;
     text-align: center;
 }
 
 .details {
+    padding-inline: 10px;
     background-color: #00538f;
     border-radius: 10px;
 }
 
     .details a {
-        padding-inline: 10px;
         display: flex;
         height: 100%;
-        width: 100%;
         align-items: center;
         justify-content: center;
     }
@@ -115,14 +115,53 @@ table .button {
         text-decoration: none;
     }
 
+
 .delete button:hover {
     background-color: #B40000;
 }
+
 
 .empty {
     font-size: 48px;
     font-weight: bold;
     text-align: center
+}
+
+.filter {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.content {
+    width: 100%;
+    display: inline-block;
+    padding: 5px 0px;
+}
+
+.filter-btn {
+    border-radius: 5px;
+    display: inline-block;
+    background: #695E93;
+    color: white;
+    border: none;
+}
+
+.content input[type=submit] {
+    padding: 2px 10px;
+}
+
+    .filter-btn a {
+        padding: 2px 10px;
+        color: white;
+        align-items: center;
+        display: flex;
+        text-decoration: none;
+        height: 100%;
+        width: 100%;
+    }
+
+.add {
+    float: right;
 }
 
 .add a {
@@ -135,61 +174,9 @@ table .button {
 
 .filter input[type=number]
 {
-    max-width: 50px;
+    width: 50px;
 }
 
 .filter .group {
-    max-width: 100px;
+    width: 100px;
 }
-
-.filter ul {
-    margin-block: 10px;
-    padding: 0px;
-}
-
-.filter li {
-    padding: 0;
-    list-style: none;
-    display: inline-block;
-}
-
-.filter .btn-search {
-    padding: var(--btn-padding);
-    border: none;
-    color: white;
-    background: var(--bgcolor);
-    border-radius: var(--corner-radius);
-}
-
-    .filter .btn-search:hover {
-        background: var(--bghover);
-    }
-
-.filter .button {
-    padding: var(--btn-padding);
-    background: var(--bgcolor);
-    border-radius: var(--corner-radius);
-}
-
-.filter .button:hover {
-    background: var(--bghover);
-}
-
-.filter a {
-    height: 100%;
-    align-items: center;
-    color: var(--text-color);
-    border-radius: 5px;
-    text-decoration: none;
-}
-
-div {
-    --btn-padding: 2px 10px;
-    --corner-radius: 5px;
-    --text-color: white;
-    --bgcolor: #695E93
-}
-
-    div:hover {
-        --bghover: #574893
-    }

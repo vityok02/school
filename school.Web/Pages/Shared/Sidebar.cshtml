@@ -9,7 +9,6 @@
     <a class="@(currentPage.StartsWith("/floors") ? "active" : "")" asp-page="/Floors/List">Floors</a>
     <a class="@(currentPage.StartsWith("/rooms") ? "active" : "")" asp-page="/Rooms/List">Rooms</a>
     <a class="@(currentPage.StartsWith("/employees") ? "active" : "")" asp-page="/Employees/List">Employees</a>
-    <a class="@(currentPage.StartsWith("/positions/full") ? "active" : "")" asp-page="/Positions/AllPositions">All Positions</a>
-    <a class="@(currentPage.StartsWith("/positions/school") ? "active" : "")" asp-page="/Positions/SchoolPositions">School Positions</a>
     <a class="@(currentPage.StartsWith("/students") ? "active" : "")" asp-page="/Students/List">Students</a>
+    <a class="@(currentPage.StartsWith("/positions") ? "active" : "")" asp-page="/Positions/List">Positions</a>
 </div>

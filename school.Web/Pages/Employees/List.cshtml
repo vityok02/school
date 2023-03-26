@@ -13,51 +13,32 @@
 
 <div class="wrapper">
         <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
-        <div class="filter">
-            <ul>
-                <li>
-                    <label asp-for="FilterByName">
-                        Name: 
-                        <input asp-for="FilterByName" />
-                    </label>
-                </li>
-                <li>
-                    <label asp-for="FilterByAge">
-                        Age: 
-                        <input asp-for="FilterByAge"/>
-                    </label>
-                </li>
-                <li>
-                    <label asp-for="FilterByPosition">
-                        Job: 
-                        <input asp-for="FilterByPosition" />
-                    </label>
-                    <input type="hidden" asp-for="OrderBy" />
-                </li>
-                <li>
-                    <input class="btn-search" type="submit" value="Search" />
-                </li>
-                <li>
-                    <div class="button">
-                        <a asp-page="/Employees/List">Back to full list</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="button">
-                        <a asp-page="/Employees/Add">Add</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="button">
-                        <a asp-page="/Positions/SchoolPositions">Positions</a>
-                    </div>
-                </li>
-            </ul>
+        <div class="content">
+            <label asp-for="FilterByName">
+                Name: 
+                <input asp-for="FilterByName" />
+            </label>
+            <label asp-for="FilterByAge">
+                Age: 
+                <input asp-for="FilterByAge"/>
+            </label>
+            <label asp-for="FilterByPosition">
+                Job: 
+                <input asp-for="FilterByPosition" />
+            </label>
+            <input type="hidden" asp-for="OrderBy" />
+            <input class="filter-btn" type="submit" value="Search" />
+            <div class="filter-btn">
+                <a asp-page="/Employees/List">Back to full list</a>
+            </div>
+            <div class="filter-btn add">
+                <a asp-page="Add">Add</a>
+            </div>
         </div>
     </form>
     @if (!Model.Employees.Any())
     {
-        <div class="empty">List of employees is empty</div>
+    <div class="empty">List of employees is empty</div>
     }
     else
     {
@@ -85,6 +66,7 @@
                         </a>
                     </th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -100,12 +82,12 @@
                                 <div class="button details">
                                     <a href="employees/@emp.Id/edit">Edit</a>
                                 </div>
-                                <div class="button delete">
-                                    <form asp-page-handler="Delete" method="post" asp-route-id="@emp.Id"
-                                    onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
+                                <form asp-page-handler="Delete" method="post" asp-route-id="@emp.Id"
+                                  onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
+                                    <div class="button delete">
                                         <button type="submit">Delete</button>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </td>
                     </tr>
