@@ -42,24 +42,16 @@ button.accept-policy {
 }
 
 .footer {
-    position: absolute;
+    display: none;
+    clear: both;
     width: 100%;
-    bottom: 0;
     white-space: nowrap;
-    nav-down: auto;
     height: 60px;
     background-color: #242424;
 }
 
 .details{
     padding-left:20px;
-}
-
-.innercontainer {
-    position: fixed;
-    display: flex;
-    min-height: 100%;
-    width: 100%;
 }
 
 .main {
