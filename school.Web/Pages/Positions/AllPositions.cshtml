@@ -50,7 +50,7 @@
                         <td>
                             <div class="btns">
                                 <div class="button details">
-                                    <a href="positions/@position.Id">Edit</a>
+                                    <a asp-page="Edit" asp-route-id="@position.Id">Edit</a>
                                 </div>
                                 <form asp-page-handler="Delete" method="post" asp-route-id="@position.Id"
                                   onclick="return confirm('Are you sure you want to delete position @position.Name?')">
