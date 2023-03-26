@@ -29,6 +29,23 @@
                     <input type="number" value="@Model.Employee.Age" min="18" max="65" name="age"/>
                 </td>
             </tr>
+            <tr>
+                <td>Position: </td>
+                <td>
+                    @foreach (var position in Model.Positions)
+                    {
+                        if (Model.Employee.Positions.Where(p => p.Id == position.Id).Any())
+                        {
+                            <input type="checkbox" name="positions" value="@position.Id" checked/>
+                        }
+                        else
+                        {
+                            <input type="checkbox" name="positions" value="@position.Id"/>
+                        }
+                        @position.Name
+                    }
+                </td>
+            </tr>
         </table>
         <div class="error">@Model.ErrorMessage</div>
         <input type="hidden" asp-for="Employee!.Id" />
