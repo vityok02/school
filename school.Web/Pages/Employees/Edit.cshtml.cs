@@ -7,23 +7,44 @@ namespace SchoolManagement.Web.Pages.Employees;
 public class EditModel : BasePageModel
 {
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IPositionRepository _positionRepository;
 
-    public Employee? Employee { get; set; }
+    public Employee? Employee { get; set; } = null!;
+    public IEnumerable<Position> Positions { get; set; } = null!;
 
-    public EditModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository)
-        :base(schoolRepository)
+    public EditModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
+        : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
+        _positionRepository = positionRepository;
     }
 
     public IActionResult OnGet(int id)
     {
-        Employee = _employeeRepository.Get(id)!;
+        Employee = _employeeRepository.GetEmployee(id);
 
-        return Employee is null ? RedirectToPage("List") : Page();
+        if (Employee is null)
+        {
+            return RedirectToPage("List");
+        }
+
+        var schoolId = GetSchoolId();
+        if(schoolId == -1)
+        {
+            RedirectToSchoolList();
+        }
+
+        Positions = _positionRepository.GetSchoolPositions(schoolId);
+
+        return Page();
     }
 
-    public IActionResult OnPost(int id, string firstName, string lastName, int age)
+    public void OnGetEmptyPositions(int id)
+    {
+
+    }
+
+    public IActionResult OnPost(int id, string firstName, string lastName, int age, int[] positions)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -31,21 +52,27 @@ public class EditModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var employee = _employeeRepository.Get(id);
+        var employee = _employeeRepository.GetEmployee(id);
         if (employee is null)
         {
             return RedirectToPage("List");
         }
 
-        //var employees = _employeeRepository.GetSchoolEmployees(schoolId, null, 0, null);
-        //if (employees.Where(e => e.FirstName == firstName
-        //    && e.LastName == lastName
-        //    && e.Age == age).Count() > 1)
-        //{
-        //    ErrorMessage = "Such employee already exists";
-        //}
-
         employee.UpdateInfo(firstName, lastName, age);
+
+        employee.Positions.Clear();
+        _employeeRepository.SaveChanges();
+
+        foreach(var position in positions)
+        {
+            employee.Positions.Add(_positionRepository.Get(position)!);
+        }
+
+        if(!employee.Positions.Any())
+        {
+            return RedirectToPage("Edit");
+            //display message
+        }
 
         _employeeRepository.Update(employee);
         return RedirectToPage("List");

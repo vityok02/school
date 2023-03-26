@@ -4,7 +4,20 @@ public class Employee : Person
 {
     public School School { get; set; } = null!;
     public int SchoolId { get; set; }
-    public string Position => Positions.FirstOrDefault()!.Name;
+    public string Position 
+    {
+        get
+        {
+            string position = Positions.FirstOrDefault()?.Name!;
+            if (position is null)
+            {
+                position = "None";
+            }
+
+            return position;
+        }
+    }
+
     public ICollection<Position> Positions { get; set; } = new HashSet<Position>();
 
     public Employee() { }

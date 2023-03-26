@@ -10,8 +10,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
