@@ -10,7 +10,7 @@ public class EditModel : BasePageModel
 
     public Student? Student { get; set; }
 
-    public EditModel(IRepository<School> schoolRepository, IRepository<Student> studentRepository)
+    public EditModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         :base(schoolRepository)
     {
         _studentRepository = studentRepository;

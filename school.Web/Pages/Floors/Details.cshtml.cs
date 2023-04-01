@@ -13,7 +13,7 @@ public class DetailsModel : BasePageModel
     public Floor? Floor { get; private set; }
     public IEnumerable<Room>? Rooms { get; private set; }
 
-    public DetailsModel(IRepository<School> schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+    public DetailsModel(ISchoolRepository schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
         :base(schoolRepository)
     {
         _roomRepository = roomRepository;

@@ -14,7 +14,7 @@ public class SchoolPositionsModel : BasePageModel
     public string NameSort { get; private set; } = null!;
     public IEnumerable<Position> AllPositions { get; set; } = null!;
 
-    public SchoolPositionsModel(IRepository<School> schoolRepository, IPositionRepository positionRepository)
+    public SchoolPositionsModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
     {
         _positionRepository = positionRepository;

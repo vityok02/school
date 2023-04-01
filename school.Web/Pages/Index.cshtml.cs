@@ -8,7 +8,7 @@ namespace SchoolManagement.Web.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(IRepository<School> schoolRepository, ILogger<IndexModel> logger)
+        public IndexModel(ISchoolRepository schoolRepository, ILogger<IndexModel> logger)
             : base(schoolRepository)
         {
             _logger = logger;

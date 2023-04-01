@@ -10,7 +10,7 @@ public class DetailsModel : BasePageModel
 
     public Student? Student { get; private set; }
 
-    public DetailsModel(IRepository<School> schoolRepository, IRepository<Student> studentRepository)
+    public DetailsModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         :base(schoolRepository)
     {
         _studentRepository = studentRepository;

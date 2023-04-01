@@ -10,7 +10,7 @@ public class SchoolFormModel : BasePageModel
     public Address Address { get; set; } = new Address();
     public DateTime OpeningDate { get; set; }
 
-    public SchoolFormModel(IRepository<School> schoolRepository)
+    public SchoolFormModel(ISchoolRepository schoolRepository)
         : base(schoolRepository)
     {
     }

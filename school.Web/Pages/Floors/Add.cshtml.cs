@@ -10,7 +10,7 @@ public class FloorFormModel : BasePageModel
 
     public int PossibleNumber { get; set; }
 
-    public FloorFormModel(IRepository<School> schoolRepository, IRepository<Floor> floorRepository)
+    public FloorFormModel(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository)
         :base(schoolRepository)
     {
         _floorRepository = floorRepository;
