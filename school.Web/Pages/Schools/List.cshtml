@@ -9,7 +9,10 @@
     }
     if (!Model.IsFirst)
     {
-    <partial name="Sidebar" />
+    <script>
+            var element = document.getElementById("choose);
+            element.classList.add("choose-active");
+    </script>
     }
 }
 
@@ -18,6 +21,7 @@
     <link rel="stylesheet" href="~/css/list.css" />
 }
 
+<partial name="Sidebar" />
 <div class="wrapper">
     <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
         <div class="content">
@@ -39,58 +43,54 @@
     }
     else
     {
-        <div class="tab">
-            <table>
-                <thead>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <a asp-all-route-data="@Model.NameParams">Name</a>
+                    </th>
+                    <th>
+                        <a asp-all-route-data="@Model.CityParams">City</a>
+                    </th>
+                    <th colspan="3">
+                        <a asp-all-route-data="@Model.StreetParams">Street</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var school in Model.Schools)
+                {
                     <tr>
-                        <th>
-                            <a asp-all-route-data="@Model.NameParams">Name</a>
-                        </th>
-                        <th>
-                            <a asp-all-route-data="@Model.CityParams">City</a>
-                        </th>
-                        <th colspan="3">
-                            <a asp-all-route-data="@Model.StreetParams">Street</a>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var school in Model.Schools)
-                    {
-                        <tr>
-                            <td>@school.Name</td>
-                            <td>
-                                <div class="city">
-                                    @Model.Addresses.Where(a => a.Id == school.AddressId).SingleOrDefault()!.City
-                                </div>
-                            </td>
-                            <td>
-                                <div class="street">
-                                    @Model.Addresses.Where(a => a.Id == school.AddressId).SingleOrDefault()!.Street
-                                </div>
-                            </td>
-                            <td>
-                                <div class="btns">
-                                    <form method="post">
-                                        <div class="button choose">
-                                            <button asp-route-id="@school.Id" asp-page-handler="SetSchool">Choose</button>
-                                        </div>
-                                    </form>
-                                    <div class="button details">
-                                        <a asp-page="Details" asp-route-id="@school.Id">Details</a>
+                        <td>@school.Name</td>
+                        <td>
+                            <div class="city">
+                                @school.Address.City
+                            </div>
+                        </td>
+                        <td>
+                            <div class="street">
+                                @school.Address.Street
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btns">
+                                <form method="post">
+                                    <div>
+                                        <button class="btn btn-choose" asp-route-id="@school.Id" asp-page-handler="SetSchool">Choose</button>
                                     </div>
-                                    <form method="post" asp-page-handler="Delete" asp-route-id="@school.Id"
-                                    onclick="return confirm('Are you sure you want to delete school @school.Name?')">
-                                        <div class="button delete">
-                                            <button type="submit">Delete</button>
-                                        </div>
-                                    </form>
+                                </form>
+                                <div>
+                                    <a class="btn btn-details" asp-page="Details" asp-route-id="@school.Id">Details</a>
                                 </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@school.Id"
+                                onclick="return confirm('Are you sure you want to delete school @school.Name?')">
+                                    <button class="btn btn-delete" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
 </div>

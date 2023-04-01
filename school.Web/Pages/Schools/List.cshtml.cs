@@ -7,7 +7,6 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolListModel : BasePageModel
 {
-    private readonly IRepository<Address> _addressRepository;
     private readonly IRepository<Employee> _employeeRepository;
 
     public IEnumerable<Address> Addresses { get; set; } = null!;
@@ -21,10 +20,9 @@ public class SchoolListModel : BasePageModel
     public Dictionary<string, string> CityParams { get; set; } = null!;
     public Dictionary<string, string> StreetParams { get; set; } = null!;
 
-    public SchoolListModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository, IRepository<Employee> empRepository)
+    public SchoolListModel(ISchoolRepository schoolRepository, IRepository<Employee> empRepository)
         : base(schoolRepository)
     {
-        _addressRepository = addressRepository;
         _employeeRepository = empRepository;
     }
 
@@ -40,16 +38,14 @@ public class SchoolListModel : BasePageModel
         //    };
         //    SchoolRepository.Add(school);
         //}
-        OrderBy = orderBy;
+        OrderBy = orderBy;  
         NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
         CitySort = orderBy == "city" ? "city_desc" : "city";
         StreetSort = orderBy == "street" ? "street_desc" : "street";
 
         FilterByParam = filterByParam;
 
-        Schools = SchoolRepository.GetAll(FilterBy(FilterByParam), Sort(orderBy));
-
-        Addresses = _addressRepository.GetAll();
+        Schools = SchoolRepository.GetSchools(FilterBy(FilterByParam), Sort(orderBy));
 
         var filterParams = GetFilters();
 
