@@ -10,9 +10,9 @@ public class EditModel : BasePageModel
     private readonly IPositionRepository _positionRepository;
 
     public Employee? Employee { get; set; } = null!;
-    public IEnumerable<Position> Positions { get; set; } = null!;
+    public IEnumerable<Position>? Positions { get; set; } = null!;
 
-    public EditModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
+    public EditModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
@@ -55,7 +55,7 @@ public class EditModel : BasePageModel
         var employee = _employeeRepository.GetEmployee(id);
         if (employee is null)
         {
-            return RedirectToPage("List");
+            return OnGet(id);
         }
 
         employee.UpdateInfo(firstName, lastName, age);
@@ -70,7 +70,7 @@ public class EditModel : BasePageModel
 
         if(!employee.Positions.Any())
         {
-            return RedirectToPage("Edit");
+            return OnGet(id);
             //display message
         }
 

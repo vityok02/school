@@ -9,9 +9,10 @@ public class RoomFormModel : BasePageModel
     private readonly IRepository<Floor> _floorRepository;
     private readonly IRepository<Room> _roomRepository;
 
-    public static IEnumerable<Floor>? Floors { get; private set; }
+    public IEnumerable<Floor>? Floors { get; set; } = null!;
 
-    public RoomFormModel(IRepository<School> schoolRepository, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
+
+    public RoomFormModel(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
         :base(schoolRepository)
     {
         _floorRepository = floorRepository;
@@ -41,17 +42,18 @@ public class RoomFormModel : BasePageModel
         var rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId);
         if (rooms.Any(r => r.Number == roomNumber))
         {
-            ErrorMessage = "Such room already exist";
-            return Page();
+            ErrorMessage = "A room with this number already exists";
+            return OnGet();
         }
 
         var floor = _floorRepository.GetAll(f => f.SchoolId == schoolId && f.Number == floorNumber).SingleOrDefault();
 
         RoomType roomType = RoomHelper.GetRoomType(roomTypes);
+
         if (roomType == 0)
         {
             ErrorMessage = "Choose room type";
-            return Page();
+            return OnGet();
         }
 
         _roomRepository.Add(new Room(roomNumber, roomType, floor!));

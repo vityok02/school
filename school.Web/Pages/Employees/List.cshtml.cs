@@ -14,7 +14,7 @@ public class ListModel : BasePageModel
     public string FilterByPosition { get; set; } = null!;
     public IDictionary<string, string> PositionParams { get; set; } = null!;
 
-    public ListModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository)
+    public ListModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository)
         : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;

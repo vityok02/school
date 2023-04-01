@@ -1,5 +1,6 @@
 ﻿@page "/positions/school"
-@model SchoolPositionsModel;
+@using SchoolManagement.Web.Pages.Positions
+@model SchoolPositionsModel
 
 @section styles
 {
@@ -11,20 +12,24 @@
 <div class="wrapper">
     <div class="tables">
         <form method="get" asp-page="List" class="filter">
-            <div class="content">
-                <label asp-for="Filter">
-                    Name:
-                    <input asp-for="Filter" />
-                </label>
-                <input type="hidden" asp-for="OrderBy" />
-                <input class="filter-btn" type="submit" value="Search" />
-                <div class="filter-btn">
-                    <a asp-page="/Employees/List">Back to full list</a>
-                </div>
-                <div class="filter-btn add">
-                    <a asp-page="Add">Add</a>
-                </div>
-            </div>
+            <ul>
+                <li>
+                    <label asp-for="Filter">
+                        Name:
+                        <input asp-for="Filter" />
+                    </label>
+                </li>
+                <li>
+                    <input type="submit" class="btn btn-success btn-sm" value="Search" />
+                </li>
+                <li>
+                    <a asp-page="/Positions/List" class="btn btn-secondary btn-sm">Back to full list</a>
+                </li>
+                <li>
+                    <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
+                </li>
+            </ul>
+            <input type="hidden" asp-for="OrderBy" />
         </form>
         @if (!Model.SchoolPositions.Any())
         {
@@ -50,12 +55,10 @@
                         <td>@position.Name</td>
                         <td>
                             <div class="btns">
-                                <div class="button delete">
-                                    <form asp-page-handler="Delete" method="post" asp-route-id="@position.Id"
-                                    onclick="return confirm('Are you sure you want to delete position @position.Name?')">
-                                            <button type="submit">Delete</button>
-                                    </form>
-                                </div>
+                                <form asp-page-handler="Delete" method="post" asp-route-id="@position.Id"
+                                onclick="return confirm('Are you sure you want to delete position @position.Name?')">
+                                    <button class="btn btn-delete" type="submit">Delete</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -66,20 +69,24 @@
     </div>
     <div class="tables">
         <form method="get" asp-page="List" class="filter">
-            <div class="content">
-                <label asp-for="Filter">
-                    Name:
-                    <input asp-for="Filter" />
-                </label>
-                <input type="hidden" asp-for="OrderBy" />
-                <input class="filter-btn" type="submit" value="Search" />
-                <div class="filter-btn">
-                    <a asp-page="/Employees/List">Back to full list</a>
-                </div>
-                <div class="filter-btn add">
-                    <a asp-page="Add">Add</a>
-                </div>
-            </div>
+            <ul>
+                <li>
+                    <label asp-for="Filter">
+                        Name:
+                        <input asp-for="Filter" />
+                    </label>
+                </li>
+                <li>
+                    <input type="submit" class="btn btn-success btn-sm" value="Search" />
+                </li>
+                <li>
+                    <a asp-page="/Positions/List" class="btn btn-secondary btn-sm">Back to full list</a>
+                </li>
+                <li>
+                    <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
+                </li>
+            </ul>
+            <input type="hidden" asp-for="OrderBy" />
         </form>
         @if (!Model.AllPositions.Any())
         {
@@ -106,9 +113,7 @@
                         <td>
                             <form asp-page-handler="Add" method="post" asp-route-id="@position.Id">
                                 <div class="btns">
-                                    <div class="button add">
-                                        <button type="submit">Add</button>
-                                    </div>
+                                    <button class="btn btn-details" type="submit">Add</button>
                                 </div>
                             </form>
                         </td>

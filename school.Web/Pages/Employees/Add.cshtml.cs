@@ -9,30 +9,30 @@ public class AddModel : BasePageModel
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
 
-    public IEnumerable<Position> Positions { get; set; }
+    public IEnumerable<Position> Positions { get; set; } = null!;
 
-    public AddModel(IRepository<School> schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
+    public AddModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
         _positionRepository = positionRepository;
     }
 
-    public void OnGet()
+    public IActionResult OnGet()
     {
         var schoolId = GetSchoolId();
         if(schoolId == -1)
         {
-            RedirectToSchoolList();
+            return RedirectToSchoolList();
         }
         var school = SchoolRepository.Get(schoolId);
         if(school is null)
         {
-            RedirectToSchoolList();
+            return RedirectToSchoolList();
         }
 
         Positions = _positionRepository.GetSchoolPositions(schoolId);
-        //return RedirectToPage("List");
+        return Page();
     }
 
     public IActionResult OnPost(string firstName, string lastName, int age, int[] positions)
@@ -64,7 +64,7 @@ public class AddModel : BasePageModel
             School = school
         };
 
-        foreach(var positionId in positions )
+        foreach(var positionId in positions)
         {
             employee.Positions.Add(_positionRepository.Get(positionId)!);
         }

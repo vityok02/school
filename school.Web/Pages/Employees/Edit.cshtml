@@ -12,21 +12,27 @@
     <form method="post" class="edit">
         <table>
             <tr>
-                <td>Name: </td>
                 <td>
-                    <input type="text" value="@Model.Employee!.FirstName" name="firstName" />
+                    <label for="firstName">First name</label>   
+                </td>
+                <td>
+                    <input type="text" name="firstName" id="firstName" value="@Model.Employee!.FirstName" maxlength="50" required/>
                 </td>
             </tr>
             <tr>
-                <td>Surname: </td>
                 <td>
-                    <input value="@Model.Employee.LastName" name="lastName"/>
+                    <label for="lastName">Last name</label>    
+                </td>
+                <td>
+                    <input type="text" name="lastName" id="lastName" value="@Model.Employee.LastName" maxlength="50" required/>
                 </td>
             </tr>
             <tr>
-                <td>Age: </td>
                 <td>
-                    <input type="number" value="@Model.Employee.Age" min="18" max="65" name="age"/>
+                    <label for="age">Age</label>
+                </td>
+                <td>
+                    <input type="number" name="age" id="age" value="@Model.Employee.Age" min="18" max="65" required/>
                 </td>
             </tr>
             <tr>
@@ -34,15 +40,17 @@
                 <td>
                     @foreach (var position in Model.Positions)
                     {
-                        if (Model.Employee.Positions.Where(p => p.Id == position.Id).Any())
+                        if (Model.Employee!.Positions.Any(p => p.Id == position.Id))
                         {
-                            <input type="checkbox" name="positions" value="@position.Id" checked/>
+                            <input type="checkbox" name="positions" id="@position.Id" value="@position.Id" class="btn-check" checked/>
                         }
                         else
                         {
-                            <input type="checkbox" name="positions" value="@position.Id"/>
+                            <input type="checkbox" name="positions" id="@position.Id" value="@position.Id" class="btn-check"/>
                         }
-                        @position.Name
+                        <label for="@position.Id" class="btn btn-outline-secondary">
+                            @position.Name
+                        </label>
                     }
                 </td>
             </tr>
@@ -50,10 +58,8 @@
         <div class="error">@Model.ErrorMessage</div>
         <input type="hidden" asp-for="Employee!.Id" />
         <div class="btns">
-            <input class="button save" type="submit" value="Save" />
-            <div class="button cancel">
-                <a asp-page="List">Cancel</a>
-            </div>
+            <input class="btn btn-save btn-lg" type="submit" value="Save" />
+            <a class="btn btn-cancel btn-lg" asp-page="List">Cancel</a>
         </div>
     </form>
 </div>

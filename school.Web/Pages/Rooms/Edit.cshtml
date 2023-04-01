@@ -10,7 +10,7 @@
 }
 
 @section styles
-    {
+{
     <link rel="stylesheet" href="~/css/edit.css" />
 }
 
@@ -20,36 +20,42 @@
     <form method="post" class="edit">
         <table>
             <tr>
-                <td>Number: </td>
-                <td><input asp-for="Room!.Number" /></td>
+                <td>
+                    <label asp-for="Room.Number">Number</label>
+                </td>
+                <td>
+                        <input asp-for="Room.Number" required/>
+                </td>
             </tr>
             <tr>
-                <td>Floor: </td>
                 <td>
-                    <select asp-for="Room!.Floor.Id" asp-items="floors">
+                    <label asp-for="Room.Floor.Id">Floor</label>
+                </td>
+                <td>
+                    <select asp-for="Room!.Floor.Id" asp-items="floors" required>
                     </select>
                 </td>
             </tr>
             <tr>
-                <td>Type: </td>
                 <td>
-                    <details>
-                        @foreach (var type in RoomTypeExt.RoomTypes)
-                        {
-                            <input name="roomTypes[]" type="checkbox" value="@type.Key" checked="@Model.Room!.Type.HasFlag((RoomType)type.Key)" />
+                    Type
+                </td>
+                <td>
+                    @foreach (var type in RoomTypeExt.RoomTypes)
+                    {
+                        <input name="roomTypes[]" type="checkbox" value="@type.Key" class="btn-check" checked="@Model.Room!.Type.HasFlag((RoomType)type.Key)" id="@type.Key"/>
+                        <label for="@type.Key" class="btn btn-outline-secondary">
                             @type.Value
-                            <br />
-                        }
-                    </details>
+                        </label>
+                    }
                 </td>
             </tr>
         </table>
         <input type="hidden" asp-for="Room!.Id" />
+        <div class="error">@Model.ErrorMessage</div>
         <div class="btns">
-            <input class="button save" type="submit" value="Save" />
-            <div class="button cancel">
-                <a asp-page="List">Cancel</a>
-            </div>
+            <input class="btn btn-save btn-lg" type="submit" value="Save" />
+            <a class="btn btn-cancel btn-lg" asp-page="List">Cancel</a>
         </div>
     </form>
 </div>

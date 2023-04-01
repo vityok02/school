@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -10,10 +11,10 @@ public class EditModel : BasePageModel
     private readonly IRepository<Floor> _floorRepository;
 
     [BindProperty]
-    public Room? Room { get; set; }
-    public IEnumerable<Floor>? Floors { get; set; }
+    public Room? Room { get; set; } = null!;
+    public IEnumerable<Floor>? Floors { get; set; } = null!;
 
-    public EditModel(IRepository<School> schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+    public EditModel(ISchoolRepository schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
         : base(schoolRepository)
     {
         _roomRepository = roomRepository;

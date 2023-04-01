@@ -6,6 +6,7 @@
 <partial name="Sidebar" />
 
 <div class="wrapper">
+    <a class="btn btn-sm btn-primary" asp-page="Add">Add</a>
     @if (!Model.Floors.Any())
     {
         <div class="empty">List of floors is empty</div>
@@ -28,10 +29,10 @@
                                 @:Floor @floor.Number
                             }
                         </div>
-                            <form class="btn-delete" asp-page-handler="Delete" method="post" asp-route-id="@floor.Id"
-                            onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
-                                <input type="submit" value="Delete" />
-                            </form>
+                        <form class="btn-delete" asp-page-handler="Delete" method="post" asp-route-id="@floor.Id"
+                        onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
+                            <input type="submit" value="Delete" />
+                        </form>
                         <div class="count">Rooms count @Model.GetRooms(floor).Count()</div>
                         </summary>
                     <div class="content">
@@ -47,5 +48,4 @@
             }
         </div>
     }
-<div class="add"><a asp-page="Add">Add</a></div>
 </div>

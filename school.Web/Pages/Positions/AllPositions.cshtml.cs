@@ -7,13 +7,13 @@ namespace SchoolManagement.Web.Pages.Positions;
 
 public class AllPositionsModel : BasePageModel
 {
-    private readonly IRepository<Position> _positionRepository;
+    private readonly IPositionRepository _positionRepository;
 
     public string Filter { get; set; } = null!;
     public string NameSort { get; private set; } = null!;
     public IEnumerable<Position> Positions { get; set; } = null!;
 
-    public AllPositionsModel(IRepository<School> schoolRepository, IRepository<Position> positionRepository)
+    public AllPositionsModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
         :base(schoolRepository)
     {
         _positionRepository = positionRepository;
@@ -33,7 +33,7 @@ public class AllPositionsModel : BasePageModel
         return p => (string.IsNullOrEmpty(filter) || p.Name.Contains(filter));
     }
 
-    private Func<IQueryable<Position>, IOrderedQueryable<Position>> Sort(string orderBy)
+    private static Func<IQueryable<Position>, IOrderedQueryable<Position>> Sort(string orderBy)
     {
         if (orderBy == "name_desc")
         {

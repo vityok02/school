@@ -5,55 +5,47 @@
 }
 
 @section styles
-    {
+{
     <link rel="stylesheet" href="~/css/list.css" />
 }
 
 <partial name="Sidebar" />
 
 <div class="wrapper">
-        <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
-        <div class="filter">
-            <ul>
-                <li>
-                    <label asp-for="FilterByName">
-                        Name: 
-                        <input asp-for="FilterByName" />
-                    </label>
-                </li>
-                <li>
-                    <label asp-for="FilterByAge">
-                        Age: 
-                        <input asp-for="FilterByAge"/>
-                    </label>
-                </li>
-                <li>
-                    <label asp-for="FilterByPosition">
-                        Job: 
-                        <input asp-for="FilterByPosition" />
-                    </label>
-                    <input type="hidden" asp-for="OrderBy" />
-                </li>
-                <li>
-                    <input class="btn-search" type="submit" value="Search" />
-                </li>
-                <li>
-                    <div class="button">
-                        <a asp-page="/Employees/List">Back to full list</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="button">
-                        <a asp-page="/Employees/Add">Add</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="button">
-                        <a asp-page="/Positions/SchoolPositions">Positions</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
+        <ul>
+            <li>
+                <label asp-for="FilterByName">
+                    Name: 
+                    <input asp-for="FilterByName" />
+                </label>
+            </li>
+            <li>
+                <label asp-for="FilterByAge">
+                    Age: 
+                    <input asp-for="FilterByAge" />
+                </label>
+            </li>
+            <li>
+                <label asp-for="FilterByPosition">
+                    Position:
+                    <input asp-for="FilterByPosition" />
+                </label>
+                <input type="hidden" asp-for="OrderBy" />
+            </li>
+            <li>
+                <input class="btn btn-success btn-sm" type="submit" value="Search" />
+            </li>
+            <li>
+                <a class="btn btn-secondary btn-sm" asp-page="/Employees/List">Back to full list</a>
+            </li>
+            <li>
+                <a class="btn btn-secondary btn-sm" asp-page="/Employees/Add">Add</a>
+            </li>
+            <li>
+                <a class="btn btn-secondary btn-sm" asp-page="/Positions/SchoolPositions">Positions</a>
+            </li>
+        </ul>
     </form>
     @if (!Model.Employees.Any())
     {
@@ -97,15 +89,11 @@
                         <td class="job-column">@emp.Position</td>
                         <td>
                             <div class="btns">
-                                <div class="button details">
-                                    <a href="employees/@emp.Id/edit">Edit</a>
-                                </div>
-                                <div class="button delete">
-                                    <form asp-page-handler="Delete" method="post" asp-route-id="@emp.Id"
-                                    onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
-                                        <button type="submit">Delete</button>
-                                    </form>
-                                </div>
+                                <a class="btn btn-edit" asp-page="Edit" asp-route-id="@emp.Id">Edit</a>
+                                <form asp-page-handler="Delete" method="post" asp-route-id="@emp.Id"
+                                onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
+                                    <button class="btn btn-delete" type="submit">Delete</button>
+                                </form>
                             </div>
                         </td>
                     </tr>

@@ -1,5 +1,6 @@
-﻿@page "/positions/full"
-@model AllPositionsModel;
+﻿@page "/positions/all"
+@using SchoolManagement.Web.Pages.Positions
+@model AllPositionsModel
 
 @section styles
 {
@@ -10,20 +11,24 @@
 
 <div class="wrapper">
     <form method="get" asp-page="List" class="filter">
-        <div class="content">
-            <label asp-for="Filter">
-                Name:
-                <input asp-for="Filter" />
-            </label>
-            <input type="hidden" asp-for="OrderBy" />
-            <input class="filter-btn" type="submit" value="Search" />
-            <div class="filter-btn">
-                <a asp-page="/Employees/List">Back to full list</a>
-            </div>
-            <div class="filter-btn add">
-                <a asp-page="Add">Add</a>
-            </div>
-        </div>
+        <ul>
+            <li>
+                <label asp-for="Filter">
+                    Name:
+                    <input asp-for="Filter" />
+                </label>
+            </li>
+            <li>
+                <input type="submit" class="btn btn-success btn-sm" value="Search" />
+            </li>
+            <li>
+                <a asp-page="/Positions/List" class="btn btn-secondary btn-sm">Back to full list</a>
+            </li>
+            <li>
+                <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
+            </li>
+        </ul>
+        <input type="hidden" asp-for="OrderBy" />
     </form>
     @if(!Model.Positions.Any())
     {
@@ -49,14 +54,10 @@
                         <td>@position.Name</td>
                         <td>
                             <div class="btns">
-                                <div class="button details">
-                                    <a asp-page="Edit" asp-route-id="@position.Id">Edit</a>
-                                </div>
+                                <a class="btn btn-details" asp-page="Edit" asp-route-id="@position.Id">Edit</a>
                                 <form asp-page-handler="Delete" method="post" asp-route-id="@position.Id"
                                   onclick="return confirm('Are you sure you want to delete position @position.Name?')">
-                                    <div class="button delete">
-                                        <button type="submit">Delete</button>
-                                    </div>
+                                    <button class="btn btn-delete" type="submit">Delete</button>
                                 </form>
                             </div>
                         </td>

@@ -1,5 +1,5 @@
 ﻿@page
-@model SchoolManagement.Web.Pages.Positions.AddModel
+@model AddModel
 @{
 }
 
@@ -14,17 +14,20 @@
     <form class="form" method="post">
         <table>
             <tr>
-                <td>Job title: </td>
                 <td>
-                    <input type="text" name="name"/>
+                    <label for="name">
+                        Job title: 
+                    </label>
+                </td>
+                <td>
+                    <input type="text" name="name" id="name" required />
                 </td>
             </tr>
         </table>
+        <div class="error">@Model.ErrorMessage</div>
         <div class="btns">
-            <input class="button add" type="submit" value="Add position" />
-            <div class="button cancel">
-                <a asp-page="List">Cancel</a>
-            </div>
+            <input type="submit" value="Add position" class="btn btn-save btn-lg" />
+            <a asp-page="AllPositions" class="btn btn-cancel btn-lg">Cancel</a>
         </div>
     </form>
 </div>
