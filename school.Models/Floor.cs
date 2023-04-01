@@ -6,7 +6,7 @@ public class Floor : BaseEntity
 {
     public int Number { get; set; }
     public ICollection<Room> Rooms { get; set; } = new HashSet<Room>();
-    public School School { get; set; }
+    public School School { get; set; } = null!; 
     public int SchoolId { get; set; }
 
     public Floor()
