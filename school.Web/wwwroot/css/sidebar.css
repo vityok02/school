@@ -1,4 +1,5 @@
 ﻿.sidenav {
+    height: 100%;
     float: left;
     border-right: solid #ccc 1px;
     display: block;
