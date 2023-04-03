@@ -7,35 +7,25 @@
 
 @section styles {
     <link rel="stylesheet" href="~/css/list.css">
+    
 }
 
-<partial name="Sidebar" />
+
 
 <div class="wrapper">
     <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
-        <ul>
-            <li>
-                <label asp-for="FilterByRoomNumber">
-                    Number:
-                    <input asp-for="FilterByRoomNumber" />
-                </label>
-            </li>
-            <li>
-                <label asp-for="FilterByFloorNumber">
-                    Floor: 
-                    <input asp-for="FilterByFloorNumber" />
-                </label>
-            </li>
-            <li>
-                <input class="btn btn-success btn-sm" type="submit" value="Search" />
-            </li>
-            <li>
-                <a asp-page="List" class="btn btn-secondary btn-sm">Back to full list</a>
-            </li>
-            <li>
-                <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
-            </li>
-        </ul>
+        <div class="form-group">
+            <label asp-for="FilterByRoomNumber">
+                Number:
+                <input asp-for="FilterByRoomNumber" />
+            </label>
+            <label asp-for="FilterByFloorNumber">
+                Floor: 
+                <input asp-for="FilterByFloorNumber" />
+            </label>
+            <div>
+                <partial name="filterButtons" />
+            </div>
             <div>
                 Type: 
                 @foreach (var type in RoomTypeExt.RoomTypes)
@@ -52,6 +42,7 @@
                     </label>
                 }
             </div>
+        </div>
         <input type="hidden" asp-for="OrderBy" />
     </form>
     @if (!Model.Rooms.Any())

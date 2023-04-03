@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/css/list.css" />
 }
 
-<partial name="Sidebar" />
+
 
 <div class="wrapper">
     <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
@@ -41,9 +41,6 @@
             </li>
             <li>
                 <a class="btn btn-secondary btn-sm" asp-page="/Employees/Add">Add</a>
-            </li>
-            <li>
-                <a class="btn btn-secondary btn-sm" asp-page="/Positions/SchoolPositions">Positions</a>
             </li>
         </ul>
     </form>

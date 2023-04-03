@@ -21,21 +21,27 @@
     <link rel="stylesheet" href="~/css/list.css" />
 }
 
-<partial name="Sidebar" />
+
 <div class="wrapper">
     <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
-        <div class="content">
-            <label asp-for="FilterByParam">
-                Enter the params: 
-                <input asp-for="FilterByParam" />
-            </label>
-            <input type="hidden" asp-for="OrderBy" />
-            <input class="filter-btn" type="submit" value="Search" />
-            <div class="filter-btn">
-                <a asp-page="/Schools/List">Back to full list</a>
-            </div>
-            <div class="filter-btn add"><a asp-page="Add">Add</a></div>
-        </div>
+        <ul>
+            <li>
+                <label asp-for="FilterByParam">
+                    Filter: 
+                    <input asp-for="FilterByParam" placeholder="Name/City/Street" />
+                </label>
+            </li>
+            <li>
+                <input type="submit" value="Search" class="btn btn-success btn-sm" />
+            </li>
+            <li>
+                <a asp-page="/Schools/List" class="btn btn-secondary btn-sm">Back to full list</a>
+            </li>
+            <li>
+                <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
+            </li>
+        </ul>
+        <input type="hidden" asp-for="OrderBy" />
     </form>
     @if (!Model.Schools.Any())
     {
