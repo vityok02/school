@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="~/css/edit.css" />
 }
 
-<partial name="Sidebar" />
+
 
 <div class="wrapper">
     <form method="post" class="edit">
@@ -24,15 +24,15 @@
                     <label asp-for="Room.Number">Number</label>
                 </td>
                 <td>
-                        <input asp-for="Room.Number" required/>
+                    <input asp-for="Room.Number" required/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label asp-for="Room.Floor.Id">Floor</label>
+                    <label asp-for="Room.FloorId">Floor</label>
                 </td>
                 <td>
-                    <select asp-for="Room!.Floor.Id" asp-items="floors" required>
+                    <select asp-for="Room!.FloorId" asp-items="floors" required>
                     </select>
                 </td>
             </tr>
