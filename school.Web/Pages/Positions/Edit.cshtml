@@ -1,13 +1,21 @@
-﻿@page "/positions/{id}/edit"
+﻿@page "/positions/all/{id}/edit"
 @using SchoolManagement.Web.Pages.Employees
 @model EditModel
-@{
+
+@section styles
+{
+    <link rel="stylesheet" href="~/css/edit.css" />
 }
 
 <div class="wrapper">
     <form method="post" class="edit">
-        <div>Name: </div>
-        <input type="text" name="name" />
-        <input type="submit" name="Save" />
+        <label for="name">
+            Job title: 
+            <input type="text" name="name" id="name" />
+        </label>
+        <div class="btns">
+            <input type="submit" name="Save" class="btn btn-save btn-lg"/>
+            <a asp-page="/Positions/AllPositions" class="btn btn-cancel btn-lg">Cancel</a>
+        </div>
     </form>
 </div>
