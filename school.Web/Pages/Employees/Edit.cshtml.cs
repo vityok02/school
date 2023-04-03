@@ -55,7 +55,14 @@ public class EditModel : BasePageModel
         var employee = _employeeRepository.GetEmployee(id);
         if (employee is null)
         {
-            return OnGet(id);
+            ModelState.AddModelError("", "Employee not found");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            Employee = employee;
+            Positions = _positionRepository.GetSchoolPositions(schoolId);
+            return Page();
         }
 
         employee.UpdateInfo(firstName, lastName, age);
