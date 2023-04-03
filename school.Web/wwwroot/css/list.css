@@ -1,4 +1,5 @@
 ﻿.wrapper {
+    margin-inline: auto;
     width: 80%;
     float: right;
 }
@@ -89,6 +90,7 @@ table body {
 }
 
 .filter {
+    display: inline-block;
     margin-block: 10px;
     margin-left: 20px;
 }
@@ -106,6 +108,9 @@ table body {
         max-width: 100px;
     }
 
+    .filter div {
+        display: inline-block;
+    }
     .filter ul {
         padding: 0px;
     }
