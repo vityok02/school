@@ -1,47 +1,66 @@
 ﻿@page "/employees/add"
-@model EmployeeFormModel
+@model AddModel
+@{
+    ViewData["Title"] = "Add employee";
+}
 
-<link rel="stylesheet" href="~/css/add.css" />
+@section styles
+{
+    <link rel="stylesheet" href="~/css/add.css" />
+}
 
-<partial name="Sidebar" />
+
 
 <div class="wrapper">
     <form method="post" class="form">
         <table>
             <tr>
-                <td>First name</td>
                 <td>
-                    <input class="static" type="text" maxlength="30" required name="firstName"/>
+                    <label for="firstName">
+                        First name
+                    </label>
+                </td>
+                <td>
+                    <input class="static" type="text" maxlength="30" required name="firstName" id="firstName"/>
                 </td>
             </tr>
             <tr>
-                <td>Last Name</td>
                 <td>
-                    <input type="text" maxlength="30" required name="lastName"/>
+                    <label for="lastName">
+                        Last Name
+                    </label>
+                </td>
+                <td>
+                    <input type="text" maxlength="30" required name="lastName" id="lastName"/>
                 </td>
             </tr>
             <tr>
-                <td>Age</td>
                 <td>
-                    <input type="number" required name="age" min="18" max="65"/>
+                    <label for="age">
+                        Age
+                    </label>
+                </td>
+                <td>
+                    <input type="number" required name="age" min="18" max="65" id="age"/>
                 </td>
             </tr>
             <tr>
                 <td>Type</td>
                 <td>
-                    <select name="type">
-                        <option value="Teacher">Teacher</option>
-                        <option value="Director">Director</option>
-                    </select>
+                    @foreach(var position in Model.Positions)
+                    {
+                        <input type="checkbox" name="positions" value="@position.Id" class="btn-check" id="@position.Id">
+                        <label for="@position.Id" class="btn btn-outline-secondary">
+                            @position.Name
+                        </label>
+                    }
                 </td>
             </tr>
         </table>
         <div class="error">@Model.ErrorMessage</div>
         <div class="btns">
-            <input class="button add" type="submit" value="Add employee" />
-            <div class="button cancel">
-                 <a asp-page="List">Cancel</a>
-            </div>
+            <input class="btn btn-save btn-lg" type="submit" value="Add employee" />
+            <a class="btn btn-cancel btn-lg" asp-page="List">Cancel</a>
         </div>
     </form>
 </div>

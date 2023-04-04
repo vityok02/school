@@ -24,5 +24,11 @@ public class EmployeeConfig : IEntityTypeConfiguration<Employee>
 
         builder.Property(t => t.Age)
             .IsRequired();
+
+        builder.HasOne(t => t.School)
+            .WithMany(t => t.Employees);
+
+        builder.HasMany(t => t.Positions)
+        .WithMany(t => t.Employees);
     }
 }

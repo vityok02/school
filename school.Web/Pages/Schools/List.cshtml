@@ -5,28 +5,43 @@
 
     if (Model.IsError)
     {
-        <script>alert('No school selected, please select a school');</script>
+    <script>alert('No school selected, please select a school');</script>
     }
     if (!Model.IsFirst)
     {
-        <partial name="Sidebar" />
+    <script>
+            var element = document.getElementById("choose);
+            element.classList.add("choose-active");
+    </script>
     }
 }
 
-<link rel="stylesheet" href="~/css/list.css" />
+@section styles
+{
+    <link rel="stylesheet" href="~/css/list.css" />
+}
+
 
 <div class="wrapper">
-    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
-        <div class="filter">
-            <label>Enter the params: </label>
-            <input asp-for="FilterByParam" />
-            <input type="hidden" asp-for="OrderBy" />
-            <input class="search" type="submit" value="Search" />
-            <div class="back">
-                <a asp-page="/Schools/List">Back to full list</a>
-            </div>
-            <div class="add"><a asp-page="Add">Add</a></div>
-        </div>
+    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
+        <ul>
+            <li>
+                <label asp-for="FilterByParam">
+                    Filter: 
+                    <input asp-for="FilterByParam" placeholder="Name/City/Street" />
+                </label>
+            </li>
+            <li>
+                <input type="submit" value="Search" class="btn btn-success btn-sm" />
+            </li>
+            <li>
+                <a asp-page="/Schools/List" class="btn btn-secondary btn-sm">Back to full list</a>
+            </li>
+            <li>
+                <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
+            </li>
+        </ul>
+        <input type="hidden" asp-for="OrderBy" />
     </form>
     @if (!Model.Schools.Any())
     {
@@ -55,27 +70,27 @@
                         <td>@school.Name</td>
                         <td>
                             <div class="city">
-                                @Model.Addresses.Where(a => a.Id == school.AddressId).SingleOrDefault()!.City
+                                @school.Address.City
                             </div>
                         </td>
                         <td>
                             <div class="street">
-                                @Model.Addresses.Where(a => a.Id == school.AddressId).SingleOrDefault()!.Street
-                            </div>
-                        </td>
-                        <td>
-                            <div class="button choose">
-                                <a asp-page="/Schools/List">Choose</a>
+                                @school.Address.Street
                             </div>
                         </td>
                         <td>
                             <div class="btns">
-                                <div class="button details">
-                                    <a asp-page="Details" asp-route-id="@school.Id">Details</a>
+                                <form method="post">
+                                    <div>
+                                        <button class="btn btn-choose" asp-route-id="@school.Id" asp-page-handler="SetSchool">Choose</button>
+                                    </div>
+                                </form>
+                                <div>
+                                    <a class="btn btn-details" asp-page="Details" asp-route-id="@school.Id">Details</a>
                                 </div>
-                                <form class="button delete" asp-page-handler="Delete" method="post" asp-route-id="@school.Id"
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@school.Id"
                                 onclick="return confirm('Are you sure you want to delete school @school.Name?')">
-                                    <input type="submit" value="Delete" />
+                                    <button class="btn btn-delete" type="submit">Delete</button>
                                 </form>
                             </div>
                         </td>

@@ -7,7 +7,6 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolListModel : BasePageModel
 {
-    private readonly IRepository<Address> _addressRepository;
     private readonly IRepository<Employee> _employeeRepository;
 
     public IEnumerable<Address> Addresses { get; set; } = null!;
@@ -21,25 +20,32 @@ public class SchoolListModel : BasePageModel
     public Dictionary<string, string> CityParams { get; set; } = null!;
     public Dictionary<string, string> StreetParams { get; set; } = null!;
 
-    public SchoolListModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository, IRepository<Employee> empRepository)
+    public SchoolListModel(ISchoolRepository schoolRepository, IRepository<Employee> empRepository)
         : base(schoolRepository)
     {
-        _addressRepository = addressRepository;
         _employeeRepository = empRepository;
     }
 
     public IActionResult OnGet(string orderBy, string filterByParam)
     {
-        OrderBy = orderBy;
+        //for (int i = 0; i < 10; i++)
+        //{
+        //    var school = new School()
+        //    {
+        //        Name = i.ToString(),
+        //        Address = new Address(i.ToString(), i.ToString(), i.ToString(), 0),
+        //        OpeningDate = DateTime.Now
+        //    };
+        //    SchoolRepository.Add(school);
+        //}
+        OrderBy = orderBy;  
         NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
         CitySort = orderBy == "city" ? "city_desc" : "city";
         StreetSort = orderBy == "street" ? "street_desc" : "street";
 
         FilterByParam = filterByParam;
 
-        Schools = SchoolRepository.GetAll(FilterBy(FilterByParam), Sort(orderBy));
-
-        Addresses = _addressRepository.GetAll();
+        Schools = SchoolRepository.GetSchools(FilterBy(FilterByParam), Sort(orderBy));
 
         var filterParams = GetFilters();
 
@@ -116,6 +122,17 @@ public class SchoolListModel : BasePageModel
         return Page();
     }
 
+    public IActionResult OnPostSetSchool(int id)
+    {
+        if (id == 0)
+        {
+            return RedirectToPage("List");
+        }
+
+        SelectSchool(id);
+        return RedirectToPage();
+    }
+
     public IActionResult OnPostDelete(int id)
     {
         var school = SchoolRepository.Get(id);
@@ -124,11 +141,11 @@ public class SchoolListModel : BasePageModel
             return RedirectToPage("List");
         }
 
-        var employees = _employeeRepository.GetAll(e => e.SchoolId == id);
-        foreach (var emp in employees)
-        {
-            school.Employees.Clear();
-        }
+        //var employees = _employeeRepository.GetAll(e => e.SchoolId == id);
+        //foreach (var emp in employees)
+        //{
+        //    school.Employees.Clear();
+        //}
 
         SchoolRepository.Delete(school);
         return RedirectToPage("List");

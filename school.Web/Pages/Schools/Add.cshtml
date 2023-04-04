@@ -1,8 +1,12 @@
 ﻿@page "/schools/add"
 @model SchoolFormModel
-<link rel="stylesheet" href="~/css/add.css"/>
 
-<partial name="Sidebar" />
+@section styles
+    {
+    <link rel="stylesheet" href="~/css/add.css" />
+}
+
+
 
 <div class="wrapper">
     <form method="post" class="form">

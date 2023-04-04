@@ -2,24 +2,21 @@
 }
 
 .wrapper {
-    width: 100%;
+    width: 80%;
+    float: right;
 }
 
 .edit {
-    position: relative;
-    margin-top: 2%;
-    margin-inline: auto;
-    padding-top: 20px;
-    padding-bottom: 10px;
-    padding-inline: 20px;
-    height: auto;
     width: max-content;
-    background-color: #F1F6FF;
+    vertical-align: middle;
+    padding: 20px;
+    font-size: 28px;
+    border-radius: 10px 10px 0 0;
     border-top: 10px solid #009879;
     border-bottom: 5px solid #009879;
-    border-radius: 10px 10px 0 0;
-    vertical-align: middle;
-    font-size: 28px;
+    margin-inline: auto;
+    height: auto;
+    background-color: #F1F6FF;
     -webkit-box-shadow: 1px 1px 10px 0px rgba(135,135,135,1);
     -moz-box-shadow: 1px 1px 10px 0px rgba(135,135,135,1);
     box-shadow: 1px 1px 10px 0px rgba(135,135,135,1);
@@ -43,83 +40,27 @@ table td {
     }
 
 .btns {
-    margin-top: 20px;
-    width: 100%;
-    position: relative;
     display: flex;
+    width: 100%;
     justify-content: center;
-    margin-right: auto;
-    margin-left: auto;
+    margin-top: 10px;
 }
 
-.button {
-    width: 150px;
-    height: 50px;
-    border-radius: 10px;
+.btns .btn {
+    margin-inline: 5px;
 }
 
-.save {
-    margin-right: 5px;
-    border: none;
-    background-color: #009879;
-    color: white;
+.btn-save {
+    background: #198754;
 }
 
-.save:hover {
-    background-color: #008066;
+.btn-cancel {
+    background: #6c757d;
 }
-
-.cancel {
-    margin-left: 5px;
-    background-color: lightslategray;
-}
-
-.cancel:hover {
-    background-color: gray;
-}
-
-    .cancel a {
-        height: 100%;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        text-decoration: none;
-        display: flex;
-    }
 
 .error {
     display: block;
     outline: none;
     color: red;
     font-size: 18px;
-}
-
-@media (max-height: 600px) {
-    .button {
-        height: 40px;
-        width: 140px;
-    }
-
-    .edit {
-        font-size: 24px;
-    }
-
-    .tab tr {
-        height: 50px;
-    }
-}
-
-@media (max-height: 500px) {
-    .button {
-        height: 35px;
-        width: 120px;
-    }
-
-    .edit {
-        font-size: 20px;
-    }
-
-    .tab tr {
-        height: auto;
-    }
 }

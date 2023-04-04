@@ -4,51 +4,43 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class EmployeeFormModel : BasePageModel
+public class AddModel : BasePageModel
 {
-    private readonly IRepository<Employee> _employeeRepository;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IPositionRepository _positionRepository;
 
-    public EmployeeFormModel(IRepository<School> schoolRepository, IRepository<Employee> employeeRepository)
+    public IEnumerable<Position> Positions { get; set; } = null!;
+
+    public AddModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
+        _positionRepository = positionRepository;
     }
 
-    public IActionResult OnPost(string firstName, string lastName, int age, string type)
+    public IActionResult OnGet()
+    {
+        var schoolId = GetSchoolId();
+        if(schoolId == -1)
+        {
+            return RedirectToSchoolList();
+        }
+        var school = SchoolRepository.Get(schoolId);
+        if(school is null)
+        {
+            return RedirectToSchoolList();
+        }
+
+        Positions = _positionRepository.GetSchoolPositions(schoolId);
+        return Page();
+    }
+
+    public IActionResult OnPost(string firstName, string lastName, int age, int[] positions)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
         {
             return RedirectToSchoolList();
-        }
-
-        var employees = _employeeRepository
-            .GetAll(e => e.SchoolId == schoolId);
-
-        if (employees.Any(e => e.FirstName == firstName 
-            && e.LastName == lastName
-            && e.Age == age))
-        {
-            ErrorMessage = "Such employee already exists";
-            return Page();
-        }
-
-        Employee? employee = null;
-
-        if (type == "Director")
-        {
-            if (employees.Any(e => e.Job == "Director"))
-            {
-                ErrorMessage = "Director already exist";
-                return Page();
-            }
-
-            employee = new Director(firstName, lastName, age);
-        }
-
-        if (type == "Teacher")
-        {
-            employee = new Teacher(firstName, lastName, age);
         }
 
         var school = SchoolRepository.Get(schoolId);
@@ -57,7 +49,25 @@ public class EmployeeFormModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        employee!.School = school!;
+        var employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId);
+
+        if (employees.Any(s => s.FirstName == firstName
+                && s.LastName == lastName
+                && s.Age == age))
+        {
+            Message = "Such employee already exists";
+            return RedirectToPage("Add");
+        }
+
+        var employee = new Employee(firstName, lastName, age)
+        {
+            School = school
+        };
+
+        foreach(var positionId in positions)
+        {
+            employee.Positions.Add(_positionRepository.Get(positionId)!);
+        }
 
         _employeeRepository.Add(employee);
         return RedirectToPage("List");

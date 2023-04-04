@@ -22,7 +22,7 @@ public class ListModel : BasePageModel
     public Dictionary<string, string> RoomTypeParams { get; private set; } = null!;
     public Dictionary<string, string> FloorNumberParams { get; private set; } = null!;
 
-    public ListModel(IRepository<School> schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+    public ListModel(ISchoolRepository schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
         : base(schoolRepository)
     {
         _roomRepository = roomRepository;

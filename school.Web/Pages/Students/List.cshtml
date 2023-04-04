@@ -4,26 +4,42 @@
     ViewData["Title"] = "Students";
 }
 
-<link rel="stylesheet" href="~/css/list.css" />
+@section styles
+{
+    <link rel="stylesheet" href="~/css/list.css" />
+}
 
-<partial name="Sidebar" />
+
 
 <div class="wrapper">
-    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
-        <div class="filter">
-            <label>Name: </label>
-            <input asp-for="FilterByName" />
-            <label>Age: </label>
-            <input asp-for="FilterByAge"/>
-            <label>Group: </label>
-            <input class="group" asp-for="FilterByGroup" />
-            <input type="hidden" asp-for="OrderBy" />
-            <input class="search" type="submit" value="Search" />
-            <div class="back">
-                <a asp-page="/Students/List">Back to full list</a>
-            </div>
-            <div class="add"><a asp-page="Add">Add</a></div>
-        </div>
+    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
+        <ul>
+            <li>
+                <label asp-for="FilterByName">Name: 
+                    <input asp-for="FilterByName" maxlength="50" />
+                </label>
+            </li>
+            <li>
+                <label asp-for="FilterByAge">Age: 
+                    <input asp-for="FilterByAge" min="5" max="18"/>
+                </label>
+            </li>
+            <li>
+                <label asp-for="FilterByGroup">Group: 
+                    <input asp-for="FilterByGroup" class="group" maxlength="50" />
+                </label>
+            </li>
+            <li>
+                <input type="submit" value="Search" class="btn btn-success btn-sm" />
+            </li>
+            <li>
+                <a asp-page="/Students/List" class="btn btn-secondary btn-sm">Back to full list</a>
+            </li>
+            <li>
+                <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
+            </li>
+        </ul>
+        <input type="hidden" asp-for="OrderBy" />
     </form>
     @if (!Model.Students!.Any())
     {

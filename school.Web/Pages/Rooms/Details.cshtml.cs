@@ -12,7 +12,7 @@ public class DetailsModel : BasePageModel
     public Room? Room { get; private set; }
     public Floor? Floor { get; private set; }
 
-    public DetailsModel(IRepository<School> schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+    public DetailsModel(ISchoolRepository schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
         :base(schoolRepository)
     {
         _roomRepository = roomRepository;

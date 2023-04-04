@@ -1,0 +1,69 @@
+﻿@page "/positions/all"
+@using SchoolManagement.Web.Pages.Positions
+@model AllPositionsModel
+
+@section styles
+{
+    <link rel="stylesheet" href="~/css/list.css" />
+}
+
+
+
+<div class="wrapper">
+    <form method="get" asp-page="List" class="filter">
+        <ul>
+            <li>
+                <label asp-for="Filter">
+                    Name:
+                    <input asp-for="Filter" />
+                </label>
+            </li>
+            <li>
+                <input type="submit" class="btn btn-success btn-sm" value="Search" />
+            </li>
+            <li>
+                <a asp-page="/Positions/List" class="btn btn-secondary btn-sm">Back to full list</a>
+            </li>
+            <li>
+                <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
+            </li>
+        </ul>
+        <input type="hidden" asp-for="OrderBy" />
+    </form>
+    @if(!Model.Positions.Any())
+    {
+        <div class="empty">List of positions is empty</div>
+    }
+    else
+    {
+        <table class="tab">
+            <thead>
+                <tr>
+                    <th>
+                        <a asp-route-orderBy="@Model.NameSort" asp-route-filter="@Model.Filter">
+                            Name
+                        </a>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var position in Model.Positions)
+                {
+                    <tr>
+                        <td>@position.Name</td>
+                        <td>
+                            <div class="btns">
+                                <a class="btn btn-details" asp-page="Edit" asp-route-id="@position.Id">Edit</a>
+                                <form asp-page-handler="Delete" method="post" asp-route-id="@position.Id"
+                                  onclick="return confirm('Are you sure you want to delete position @position.Name?')">
+                                    <button class="btn btn-delete" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

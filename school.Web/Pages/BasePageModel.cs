@@ -7,7 +7,7 @@ namespace SchoolManagement.Web.Pages;
 
 public abstract class BasePageModel : PageModel
 {
-    protected IRepository<School> SchoolRepository { get; }
+    protected ISchoolRepository SchoolRepository { get; }
 
     public string SelectedSchoolName { get; set; } = null!;
     public IEnumerable<School> Schools { get; set; } = null!;
@@ -24,7 +24,7 @@ public abstract class BasePageModel : PageModel
     public IDictionary<string, string> LastNameParams { get; set; } = null!;
     public IDictionary<string, string> AgeParams { get; set; } = null!;
 
-    protected BasePageModel(IRepository<School> schoolRepository)
+    protected BasePageModel(ISchoolRepository schoolRepository)
     {
         SchoolRepository = schoolRepository;
     }
@@ -40,6 +40,9 @@ public abstract class BasePageModel : PageModel
     public string GetSelectedSchoolName()
     {
         var sId = GetSchoolId();
+
+        SetSchoolId(sId);
+
         var school = SchoolRepository.Get(sId);
         if(school is null)
         {
@@ -60,10 +63,8 @@ public abstract class BasePageModel : PageModel
         return RedirectToPage("/Schools/List", "error");
     }
 
-    public IActionResult SelectSchool(int selectedSchool)
+    public void SelectSchool(int selectedSchoolId)
     {
-        SetSchoolId(selectedSchool);
-
-        return Redirect("/Schools/" + selectedSchool);
+        SetSchoolId(selectedSchoolId);
     }
 }

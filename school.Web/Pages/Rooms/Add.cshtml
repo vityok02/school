@@ -1,25 +1,35 @@
 ﻿@page "/rooms/add"
 @using SchoolManagement.Models;
 @model RoomFormModel
+@{
+    ViewData["Title"] = "Add room";
+}
 
-<link rel="stylesheet" href="~/css/add.css"/>
+@section styles
+{
+    <link rel="stylesheet" href="~/css/add.css" />
+}
 
-<partial name="Sidebar" />
+
 
 <div class="wrapper">
     <form method="post" class="form">
-        <table align="center">
+        <table>
             <tr>
-                <td>Number: </td>
                 <td>
-                    <input type="number" required name="roomNumber"/>
+                    <label for="roomNumber">Number</label>
+                </td>
+                <td>
+                    <input type="number" name="roomNumber" id="roomNumber" required/>
                 </td>
             </tr>
             <tr>
-                <td>Floor: </td>
                 <td>
-                    <select name="floorNumber" required>
-                        @foreach (var floor in RoomFormModel.Floors!)
+                    <label for="floorNumber">Floor</label>
+                </td>
+                <td>
+                    <select name="floorNumber" id="floorNumber" required>
+                        @foreach (var floor in Model.Floors!)
                         {
                             <option value="@floor.Number">@floor.Number</option>
                         }
@@ -27,25 +37,24 @@
                 </td>
             </tr>
             <tr>
-                <td>Type: </td>
                 <td>
-                    <details>
-                        @foreach (var type in RoomTypeExt.RoomTypes)
-                        {
-                            <input name="roomTypes[]" type="checkbox" value="@type.Key" />
+                    Type
+                </td>
+                <td>
+                    @foreach (var type in RoomTypeExt.RoomTypes)
+                    {
+                        <input name="roomTypes[]" type="checkbox" value="@type.Key" class="btn-check" id="@type.Key" />
+                        <label for="@type.Key" class="btn btn-outline-secondary">
                             @type.Value
-                            <br />
-                        }
-                    </details>
+                        </label>
+                    }
                 </td>
             </tr>
         </table>
         <div class="error">@Model.ErrorMessage</div>
         <div class="btns">
-            <input class="button add" type="submit" value="Add room" />
-            <div class="button cancel">
-                <a asp-page="List">Cancel</a>
-            </div>
+            <input class="btn btn-save btn-lg" type="submit" value="Add room" />
+            <a class="btn btn-cancel btn-lg" asp-page="List">Cancel</a>
         </div>
     </form>
 </div>

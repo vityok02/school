@@ -16,3 +16,7 @@
 .roomType {
     display: inline-block;
 }
+
+.filter .type{
+    padding: 2px 4px;
+}

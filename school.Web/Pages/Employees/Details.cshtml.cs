@@ -11,7 +11,7 @@ public class DetailsModel : BasePageModel
 
     public Employee? Employee { get; private set; }
 
-    public DetailsModel(IRepository<School> schoolRepository, IRepository<Employee> employeeRepository)
+    public DetailsModel(ISchoolRepository schoolRepository, IRepository<Employee> employeeRepository)
         : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;

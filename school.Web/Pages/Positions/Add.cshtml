@@ -1,0 +1,33 @@
+﻿@page "/positions/all/add"
+@model AddModel
+@{
+}
+
+@section styles
+    {
+        <link rel="stylesheet" href="~/css/add.css" />
+}
+
+
+
+<div class="wrapper">
+    <form class="form" method="post">
+        <table>
+            <tr>
+                <td>
+                    <label for="name">
+                        Job title: 
+                    </label>
+                </td>
+                <td>
+                    <input type="text" name="name" id="name" required />
+                </td>
+            </tr>
+        </table>
+        <div class="error">@Model.ErrorMessage</div>
+        <div class="btns">
+            <input type="submit" value="Add position" class="btn btn-save btn-lg" />
+            <a asp-page="AllPositions" class="btn btn-cancel btn-lg">Cancel</a>
+        </div>
+    </form>
+</div>

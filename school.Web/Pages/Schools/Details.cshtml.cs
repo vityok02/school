@@ -12,7 +12,7 @@ public class SchoolModel : BasePageModel
     public School? School { get; private set; }
     public Address? Address { get; private set; }
 
-    public SchoolModel(IRepository<School> schoolRepository, IRepository<Address> addressRepository)
+    public SchoolModel(ISchoolRepository schoolRepository, IRepository<Address> addressRepository)
         :base(schoolRepository)
     {
         _addressRepository = addressRepository;

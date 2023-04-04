@@ -11,7 +11,7 @@ public class FloorListModel : BasePageModel
 
     public IEnumerable<Floor> Floors { get; private set; } = null!;
 
-    public FloorListModel(IRepository<School> schoolRepository, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
+    public FloorListModel(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
         : base(schoolRepository)
     {
         _floorRepository = floorRepository;

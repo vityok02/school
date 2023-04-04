@@ -6,15 +6,14 @@ namespace SchoolManagement.Data;
 
 public class AppDbContext : DbContext
 {
-    public School CurrentSchool { get; set; }
-    public DbSet<Address> Addresses { get; set; }
-    public DbSet<School> Schools { get; set; }
-    public DbSet<Floor> Floors { get; set; }
-    public DbSet<Room> Rooms { get; set; }
-    public DbSet<Teacher> Teachers { get; set; }
-    public DbSet<Employee> Employees { get; set; }
-    public DbSet<Director> Directors { get; set; }
-    public DbSet<Student> Students { get; set; }
+    public School CurrentSchool { get; set; } = null!;
+    public DbSet<Address> Addresses { get; set; } = null!;
+    public DbSet<School> Schools { get; set; } = null!;
+    public DbSet<Floor> Floors { get; set; } = null!;
+    public DbSet<Room> Rooms { get; set; } = null!;
+    public DbSet<Employee> Employees { get; set; } = null!;
+    public DbSet<Position> Positions { get; set; } = null!;
+    public DbSet<Student> Students { get; set; } = null!;
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -29,7 +28,6 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new RoomConfig());
         modelBuilder.ApplyConfiguration(new StudentConfig());
         modelBuilder.ApplyConfiguration(new EmployeeConfig());
-        modelBuilder.ApplyConfiguration(new DirectorConfig());
-        modelBuilder.ApplyConfiguration(new TeacherConfig());
+        modelBuilder.ApplyConfiguration(new PositionConfig());
     }
 }

@@ -14,7 +14,7 @@ public class ListModel : BasePageModel
     public string FilterByGroup { get; set; } = null!;
     public IDictionary<string, string> GroupParams { get; set; } = null!;
 
-    public ListModel(IRepository<School> schoolRepository, IRepository<Student> studentRepository)
+    public ListModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         : base(schoolRepository)
     {
         _studentRepository = studentRepository;

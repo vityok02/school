@@ -10,10 +10,10 @@ public class EditModel : BasePageModel
     private readonly IRepository<Floor> _floorRepository;
 
     [BindProperty]
-    public Room? Room { get; set; }
-    public IEnumerable<Floor>? Floors { get; set; }
+    public Room Room { get; set; } = default!;
+    public IEnumerable<Floor> Floors { get; set; } = default!;
 
-    public EditModel(IRepository<School> schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+    public EditModel(ISchoolRepository schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
         : base(schoolRepository)
     {
         _roomRepository = roomRepository;
@@ -28,18 +28,20 @@ public class EditModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        Room = _roomRepository.Get(id);
-        if (Room is null)
+        var room = _roomRepository.Get(id);
+        if (room is null)
         {
             return RedirectToPage("List");
         }
+
+        Room = room;
 
         Floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
         return Page();
     }
     public IActionResult OnPost(Room room, RoomType[] roomTypes)
     {
-        var floor = _floorRepository.Get(room.Floor.Id);
+        var floor = _floorRepository.Get(room.FloorId);
         if (floor is null)
         {
             return RedirectToPage("List");

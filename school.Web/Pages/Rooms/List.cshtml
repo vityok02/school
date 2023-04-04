@@ -1,50 +1,49 @@
 ﻿@page "/rooms"
 @model ListModel
 @using SchoolManagement.Models;
-
 @{
     ViewData["Title"] = "Rooms";
 }
 
 @section styles {
     <link rel="stylesheet" href="~/css/list.css">
+    
 }
 
-<partial name="Sidebar" />
+
 
 <div class="wrapper">
-    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams">
-        <div class="filter">
-            <label for="@(nameof(Model.FilterByRoomNumber))">
+    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
+        <div class="form-group">
+            <label asp-for="FilterByRoomNumber">
                 Number:
                 <input asp-for="FilterByRoomNumber" />
             </label>
-            @*<input asp-for="FilterByRoomTypes" />*@
-            <label>Type: </label>
-            @*<details class="roomType">*@
-
-            @*</details>*@
-            <label>Floor: </label>
-            <input asp-for="FilterByFloorNumber" />
-            <input type="hidden" asp-for="OrderBy" />
+            <label asp-for="FilterByFloorNumber">
+                Floor: 
+                <input asp-for="FilterByFloorNumber" />
+            </label>
             <div>
+                <partial name="filterButtons" />
+            </div>
+            <div>
+                Type: 
                 @foreach (var type in RoomTypeExt.RoomTypes)
                 {
-                    <label for="filterByRoomType">
-                        <input name="filterByRoomType"
-                            type="checkbox"
-                            value="@type.Key"
-                            checked="@Model.FilterByRoomType.HasFlag((RoomType)type.Key)" />
+                    <input name="filterByRoomType"
+                        class="btn-check"
+                        autocomplete="off"
+                        id="@type.Key"
+                        type="checkbox"
+                        value="@type.Key"
+                        checked="@Model.FilterByRoomType.HasFlag((RoomType)type.Key)" />
+                    <label for="@type.Key" class="btn btn-outline-secondary btn-sm type">
                         @type.Value
                     </label>
                 }
             </div>
-            <input class="search" type="submit" value="Search" />
-            <div class="back">
-                <a asp-page="List">Back to full list</a>
-            </div>
-            <div class="add"><a asp-page="Add">Add</a></div>
         </div>
+        <input type="hidden" asp-for="OrderBy" />
     </form>
     @if (!Model.Rooms.Any())
     {
@@ -81,12 +80,10 @@
                     <td class="floor-column">@room.Floor.Number</td>
                     <td>
                         <div class="btns">
-                            <div class="details">
-                                <a href="rooms/@room.Id/edit">Edit</a>
-                            </div>
-                            <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@room.Id"
-                          onclick="return confirm('Are you sure you want to delete room @room.Number?')">
-                                <input type="submit" value="Delete" />
+                            <a class="btn btn-edit" href="rooms/@room.Id/edit">Edit</a>
+                            <form asp-page-handler="Delete" method="post" asp-route-id="@room.Id"
+                            onclick="return confirm('Are you sure you want to delete room @room.Number?')">
+                                <button class="btn btn-delete" type="submit">Delete</button>
                             </form>
                         </div>
                     </td>

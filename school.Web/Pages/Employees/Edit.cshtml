@@ -1,39 +1,70 @@
 ﻿@page "/employees/{id}/edit"
 @model EditModel
 
-<link rel="stylesheet" href="~/css/edit.css" />
-
-<partial name="Sidebar" />
+@section styles
+    {
+    <link rel="stylesheet" href="~/css/edit.css" />
+}
 
 <div class="wrapper">
     <form method="post" class="edit">
+        <div asp-validation-summary="All" />
         <table>
             <tr>
-                <td>Name: </td>
                 <td>
-                    <input type="text" value="@Model.Employee!.FirstName" name="firstName" />
+                    <label for="firstName">First name</label>
+                </td>
+                <td>
+                    <input asp-for="Employee.FirstName" />
+                    <span asp-validation-for="Employee.FirstName" class="error" />
                 </td>
             </tr>
             <tr>
-                <td>Surname: </td>
                 <td>
-                    <input value="@Model.Employee.LastName" name="lastName"/>
+                    <label for="lastName">Last name</label>
+                </td>
+                <td>
+                    <input asp-for="Employee.LastName" />
+                    <span asp-validation-for="Employee.LastName" class="error" />
                 </td>
             </tr>
             <tr>
-                <td>Age: </td>
                 <td>
-                    <input type="number" value="@Model.Employee.Age" min="18" max="65" name="age"/>
+                    <label for="age">Age</label>
+                </td>
+                <td>
+                    <input asp-for="Employee.Age" type="number" />
+                    <span asp-validation-for="Employee.Age" class="error" />
                 </td>
             </tr>
+            @if (Model.Employee is not null)
+            {
+                <tr>
+                    <td>Position: </td>
+                    <td>
+                        @foreach (var position in Model.Positions)
+                        {
+                            if (Model.Employee!.Positions.Any(p => p.Id == position.Id))
+                            {
+                                <input type="checkbox" name="positions" id="@position.Id" value="@position.Id" class="btn-check" checked />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="positions" id="@position.Id" value="@position.Id" class="btn-check" />
+                            }
+                            <label for="@position.Id" class="btn btn-outline-secondary">
+                                @position.Name
+                            </label>
+                        }
+                    </td>
+                </tr>
+            }
         </table>
         <div class="error">@Model.ErrorMessage</div>
         <input type="hidden" asp-for="Employee!.Id" />
         <div class="btns">
-            <input class="button save" type="submit" value="Save" />
-            <div class="button cancel">
-                <a asp-page="List">Cancel</a>
-            </div>
+            <input class="btn btn-save btn-lg" type="submit" value="Save" />
+            <a class="btn btn-cancel btn-lg" asp-page="List">Cancel</a>
         </div>
     </form>
 </div>

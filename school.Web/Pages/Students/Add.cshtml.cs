@@ -8,7 +8,7 @@ public class StudentFormModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
-    public StudentFormModel(IRepository<School> schoolRepository, IRepository<Student> studentRepository)
+    public StudentFormModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         :base(schoolRepository)
     {
         _studentRepository = studentRepository;
