@@ -43,7 +43,7 @@
         </ul>
         <input type="hidden" asp-for="OrderBy" />
     </form>
-    @if (!Model.Schools.Any())
+    @if (!Model.SchoolItems.Any())
     {
         <div class="empty">List of schools if empty</div>
     }
@@ -64,7 +64,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var school in Model.Schools)
+                @foreach (var school in Model.SchoolItems)
                 {
                     <tr>
                         <td>@school.Name</td>

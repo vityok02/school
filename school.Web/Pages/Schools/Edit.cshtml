@@ -2,49 +2,81 @@
 @model EditModel
 
 @section styles
-    {
-        <link rel="styleshee t" href="~/css/edit.css" />
+{
+    <link rel="styleshee t" href="~/css/edit.css" />
 }
-
-
 
 <div class="wrapper">
     <form method="post" class="edit">
         <table class="tab">
             <tr>
-                <td>Name: </td>
-                <td><input asp-for="School!.Name" /></td>
+                <td>
+                    <label asp-for="School.Name">
+                        Name:
+                    </label>
+                </td>
+                <td>
+                    <input asp-for="School.Name" required />
+                </td>
             </tr>
             <tr>
-                <td>Country: </td>
-                <td><input asp-for="Address!.Country" /></td>
+                <td>
+                    <label asp-for="School.Country">
+                        Country:
+                    </label>
+                </td>
+                <td>
+                    <input asp-for="School.Country" required />
+                </td>
             </tr>
             <tr>
-                <td>City/town: </td>
-                <td><input asp-for="Address!.City" /></td>
+                <td>
+                    <label asp-for="School.City">
+                        City/town:
+                    </label>
+                </td>
+                <td>
+                    <input asp-for="School.City" required />
+                </td>
             </tr>
             <tr>
-                <td>Street: </td>
-                <td><input asp-for="Address!.Street" /></td>
+                <td>
+                    <label asp-for="School.Street">
+                        Street:
+                    </label>
+                </td>
+                <td>
+                    <input asp-for="School.Street" required />
+                </td>
             </tr>
             <tr>
-                <td>Postal code: </td>
-                <td><input asp-for="Address!.PostalCode" /></td>
+                <td>
+                    <label asp-for="School.PostalCode">
+                        Postal code:
+                    </label>
+                </td>
+                <td>
+                    <input asp-for="School.PostalCode" required />
+                </td>
             </tr>
             <tr>
-                <td>Opening date: </td>
-                <td><input type="date" value="@Model.School!.OpeningDate.ToShortDateString()" asp-for="School!.OpeningDate" /></td>
+                <td>
+                    <label asp-for="School.OpeningDate">
+                        Opening date:
+                    </label>
+                </td>
+                <td>
+                    <input asp-for="School.OpeningDate" required />
+                </td>
             </tr>
         </table>
         <div>@Model.ErrorMessage</div>
-        <input type="hidden" asp-for="Address!.Id" />
         <input type="hidden" asp-for="School!.Id" />
         <div class="btns">
-            <input class="button save" type="submit" value="Save" />
-            <div class="button cancel">
+            <button type="submit" class="btn btn-save">Save</button>
+            <div class="btn btn-cancel">
                 <a asp-route-id="@Model.School!.Id" asp-page="Details">Cancel</a>
             </div>
-            <div class="error">@Model.ErrorMessage</div>
         </div>
     </form>
 </div>

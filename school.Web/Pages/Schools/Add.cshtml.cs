@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using SchoolManagement.Models;
-using SchoolManagement.Models.Dto;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;

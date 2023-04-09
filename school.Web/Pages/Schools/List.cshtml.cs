@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
-using SchoolManagement.Models.Dto;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
@@ -8,6 +7,7 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolListModel : BasePageModel
 {
+    public IEnumerable<SchoolItemDto> SchoolItems { get; set; }
     public IEnumerable<Address> Addresses { get; set; } = null!;
     public bool IsError { get; set; } = false;
     public bool IsFirst { get; set; } = false;
@@ -35,7 +35,7 @@ public class SchoolListModel : BasePageModel
 
         IEnumerable<School> schools = SchoolRepository.GetSchools(FilterBy(FilterByParam), Sort(orderBy));
 
-        Schools = schools.Select(s => s.ToSchoolDto()).ToArray();
+        SchoolItems = schools.Select(s => s.ToSchoolItemDto()).ToArray();
 
         var filterParams = GetFilters();
 
