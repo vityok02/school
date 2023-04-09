@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using SchoolManagement.Models;
+using SchoolManagement.Models.Dto;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolFormModel : BasePageModel
 {
+    [BindProperty]
+    public School School { get; set; } = default!;
     public string Name { get; set; } = "";
     public Address Address { get; set; } = new Address();
     public DateTime OpeningDate { get; set; }
@@ -15,23 +19,32 @@ public class SchoolFormModel : BasePageModel
     {
     }
 
-    public IActionResult OnPost(string name, Address address, DateTime openingDate)
+    public IActionResult OnPost()
     {
         var schools = SchoolRepository.GetAll();
-        if (schools.Any(s => s.Name == name))
+
+        if (schools.Any(s => s.Name == School.Name))
         {
             ErrorMessage = "School with this name already exists";
-            Name = name;
-            Address = address;
-            OpeningDate = openingDate;
+            Name = School.Name;
+            Address = School.Address;
+            OpeningDate = School.OpeningDate;
 
             return Page();
         }
 
-        School school = new(name, address, openingDate);
+        var school = new School
+        {
+            Name = School.Name,
+            Address = School.Address,
+            OpeningDate = OpeningDate,
+        };
 
-        SchoolRepository.Add(school);
+        SchoolDto schoolDto = school.ToSchoolDto();
 
-        return RedirectToPage("List");
+        //SchoolRepository.Add(schoolDto);
+
+        return Page();
+        //return RedirectToPage("List");
     }
 }

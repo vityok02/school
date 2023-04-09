@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
+using SchoolManagement.Models.Dto;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
@@ -7,8 +8,6 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolListModel : BasePageModel
 {
-    private readonly IRepository<Employee> _employeeRepository;
-
     public IEnumerable<Address> Addresses { get; set; } = null!;
     public bool IsError { get; set; } = false;
     public bool IsFirst { get; set; } = false;
@@ -20,24 +19,13 @@ public class SchoolListModel : BasePageModel
     public Dictionary<string, string> CityParams { get; set; } = null!;
     public Dictionary<string, string> StreetParams { get; set; } = null!;
 
-    public SchoolListModel(ISchoolRepository schoolRepository, IRepository<Employee> empRepository)
+    public SchoolListModel(ISchoolRepository schoolRepository)
         : base(schoolRepository)
     {
-        _employeeRepository = empRepository;
     }
 
     public IActionResult OnGet(string orderBy, string filterByParam)
     {
-        //for (int i = 0; i < 10; i++)
-        //{
-        //    var school = new School()
-        //    {
-        //        Name = i.ToString(),
-        //        Address = new Address(i.ToString(), i.ToString(), i.ToString(), 0),
-        //        OpeningDate = DateTime.Now
-        //    };
-        //    SchoolRepository.Add(school);
-        //}
         OrderBy = orderBy;  
         NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
         CitySort = orderBy == "city" ? "city_desc" : "city";
@@ -45,7 +33,9 @@ public class SchoolListModel : BasePageModel
 
         FilterByParam = filterByParam;
 
-        Schools = SchoolRepository.GetSchools(FilterBy(FilterByParam), Sort(orderBy));
+        IEnumerable<School> schools = SchoolRepository.GetSchools(FilterBy(FilterByParam), Sort(orderBy));
+
+        Schools = schools.Select(s => s.ToSchoolDto()).ToArray();
 
         var filterParams = GetFilters();
 
