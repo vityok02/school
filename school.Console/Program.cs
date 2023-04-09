@@ -297,11 +297,11 @@ void AddEmployee()
 
         if (type == "T")
         {
-            employee = new Teacher(firstName, lastName, age);
+            //employee = new Teacher(firstName, lastName, age);
         }
         else if (type == "D")
         {
-            employee = new Director(firstName, lastName, age);
+            //employee = new Director(firstName, lastName, age);
         }
         else
         {
