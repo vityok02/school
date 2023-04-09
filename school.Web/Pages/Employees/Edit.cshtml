@@ -15,8 +15,8 @@
                     <label for="firstName">First name</label>
                 </td>
                 <td>
-                    <input asp-for="Employee.FirstName" />
-                    <span asp-validation-for="Employee.FirstName" class="error" />
+                    <input asp-for="EmployeeDto.FirstName" />
+                    <span asp-validation-for="EmployeeDto.FirstName" class="error" />
                 </td>
             </tr>
             <tr>
@@ -24,8 +24,8 @@
                     <label for="lastName">Last name</label>
                 </td>
                 <td>
-                    <input asp-for="Employee.LastName" />
-                    <span asp-validation-for="Employee.LastName" class="error" />
+                    <input asp-for="EmployeeDto.LastName" />
+                    <span asp-validation-for="EmployeeDto.LastName" class="error" />
                 </td>
             </tr>
             <tr>
@@ -33,18 +33,18 @@
                     <label for="age">Age</label>
                 </td>
                 <td>
-                    <input asp-for="Employee.Age" type="number" />
-                    <span asp-validation-for="Employee.Age" class="error" />
+                    <input asp-for="EmployeeDto.Age" type="number" />
+                    <span asp-validation-for="EmployeeDto.Age" class="error" />
                 </td>
             </tr>
-            @if (Model.Employee is not null)
+            @if (Model.EmployeeDto is not null)
             {
                 <tr>
                     <td>Position: </td>
                     <td>
-                        @foreach (var position in Model.Positions)
+                        @foreach (var position in Model.PositionsDto)
                         {
-                            if (Model.Employee!.Positions.Any(p => p.Id == position.Id))
+                            if (Model.EmployeeDto!.Positions.Any(p => p.Id == position.Id))
                             {
                                 <input type="checkbox" name="positions" id="@position.Id" value="@position.Id" class="btn-check" checked />
                             }
@@ -61,7 +61,7 @@
             }
         </table>
         <div class="error">@Model.ErrorMessage</div>
-        <input type="hidden" asp-for="Employee!.Id" />
+        <input type="hidden" asp-for="EmployeeDto!.Id" />
         <div class="btns">
             <input class="btn btn-save btn-lg" type="submit" value="Save" />
             <a class="btn btn-cancel btn-lg" asp-page="List">Cancel</a>

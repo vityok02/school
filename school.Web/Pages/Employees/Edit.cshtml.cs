@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
@@ -9,8 +10,8 @@ public class EditModel : BasePageModel
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
 
-    public Employee? Employee { get; set; } = null!;
-    public IEnumerable<Position>? Positions { get; set; } = null!;
+    public EmployeeDto EmployeeDto { get; set; } = default!;
+    public ICollection<PositionDto>? PositionsDto { get; set; } = default!;
 
     public EditModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
@@ -21,9 +22,9 @@ public class EditModel : BasePageModel
 
     public IActionResult OnGet(int id)
     {
-        Employee = _employeeRepository.GetEmployee(id);
+        var employee = _employeeRepository.GetEmployee(id);
 
-        if (Employee is null)
+        if (employee is null)
         {
             return RedirectToPage("List");
         }
@@ -34,17 +35,16 @@ public class EditModel : BasePageModel
             RedirectToSchoolList();
         }
 
-        Positions = _positionRepository.GetSchoolPositions(schoolId);
+        EmployeeDto = employee.ToEmployeeDto();
+
+        var positions = _positionRepository.GetSchoolPositions(schoolId);
+
+        PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
 
         return Page();
     }
 
-    public void OnGetEmptyPositions(int id)
-    {
-
-    }
-
-    public IActionResult OnPost(int id, string firstName, string lastName, int age, int[] positions)
+    public IActionResult OnPost(int id, EmployeeDto employeeDto, PositionDto positionDto)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -53,26 +53,28 @@ public class EditModel : BasePageModel
         }
 
         var employee = _employeeRepository.GetEmployee(id);
+
         if (employee is null)
         {
-            ModelState.AddModelError("", "Employee not found");
+            ModelState.AddModelError("", "EmployeeDto not found");
         }
+
 
         if (!ModelState.IsValid)
         {
-            Employee = employee;
-            Positions = _positionRepository.GetSchoolPositions(schoolId);
+            employee!.UpdateInfo(employeeDto.FirstName, employeeDto.LastLame, employee.Age);
+            var positions = _positionRepository.GetSchoolPositions(schoolId);
+            PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
+
             return Page();
         }
 
-        employee.UpdateInfo(firstName, lastName, age);
-
-        employee.Positions.Clear();
+        employee!.Positions.Clear();
         _employeeRepository.SaveChanges();
 
-        foreach(var position in positions)
+        foreach(var position in PositionsDto)
         {
-            employee.Positions.Add(_positionRepository.Get(position)!);
+            ;
         }
 
         if(!employee.Positions.Any())

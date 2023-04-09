@@ -44,7 +44,7 @@
             </li>
         </ul>
     </form>
-    @if (!Model.Employees.Any())
+    @if (!Model.EmployeeItems.Any())
     {
         <div class="empty">List of employees is empty</div>
     }
@@ -77,7 +77,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var emp in Model.Employees)
+                @foreach (var emp in Model.EmployeeItems)
                 {
                     <tr>
                         <td class="first-columns">@emp.FirstName</td>
