@@ -11,71 +11,71 @@
         <table class="tab">
             <tr>
                 <td>
-                    <label asp-for="School.Name">
+                    <label asp-for="SchooDto.Name">
                         Name:
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.Name" required />
+                    <input asp-for="SchooDto.Name" required />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label asp-for="School.Country">
+                    <label asp-for="SchooDto.Country">
                         Country:
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.Country" required />
+                    <input asp-for="SchooDto.Country" required />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label asp-for="School.City">
+                    <label asp-for="SchooDto.City">
                         City/town:
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.City" required />
+                    <input asp-for="SchooDto.City" required />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label asp-for="School.Street">
+                    <label asp-for="SchooDto.Street">
                         Street:
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.Street" required />
+                    <input asp-for="SchooDto.Street" required />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label asp-for="School.PostalCode">
+                    <label asp-for="SchooDto.PostalCode">
                         Postal code:
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.PostalCode" required />
+                    <input asp-for="SchooDto.PostalCode" required />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label asp-for="School.OpeningDate">
+                    <label asp-for="SchooDto.OpeningDate">
                         Opening date:
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.OpeningDate" required />
+                    <input asp-for="SchooDto.OpeningDate" required />
                 </td>
             </tr>
         </table>
         <div>@Model.ErrorMessage</div>
-        <input type="hidden" asp-for="School!.Id" />
+        <input type="hidden" asp-for="SchooDto!.Id" />
         <div class="btns">
             <button type="submit" class="btn btn-save">Save</button>
             <div class="btn btn-cancel">
-                <a asp-route-id="@Model.School!.Id" asp-page="Details">Cancel</a>
+                <a asp-route-id="@Model.SchooDto!.Id" asp-page="Details">Cancel</a>
             </div>
         </div>
     </form>

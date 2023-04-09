@@ -5,30 +5,29 @@
     {
         <link rel="stylesheet"  href="~/css/details.css" />
 }
-
 <div class="wrapper">
     <div class="details">
         <table>
             <tr>
                 <td>Name: </td>
-                <td>@Model.Employee!.FirstName</td>
+                <td>@Model.EmployeeDto!.FirstName</td>
             </tr>
             <tr>
                 <td>Surname: </td>
-                <td>@Model.Employee!.LastName</td>
+                <td>@Model.EmployeeDto!.LastLame</td>
             </tr>
             <tr>
                 <td>Age: </td>
-                <td>@Model.Employee!.Age</td>
+                <td>@Model.EmployeeDto!.Age</td>
             </tr>
             <tr>
                 <td>Type: </td>
-                <td>@Model.Employee.Position</td>
+                <td>@Model.EmployeeDto</td>
             </tr>
         </table>
         <div class="btns">
             <div class="button edit">
-                <a asp-page="Edit" asp-route-id="@Model.Employee.Id">Edit</a>
+                <a asp-page="Edit" asp-route-id="@Model.EmployeeDto.Id">Edit</a>
             </div>
             <div class="button cancel">
                 <a asp-page="List">Cancel</a>
@@ -36,4 +35,4 @@
         </div>
     </div>
 </div>
-<div><a asp-page="Edit" asp-route-id="@Model.Employee.Id">Edit</a></div>
+<div><a asp-page="Edit" asp-route-id="@Model.EmployeeDto.Id">Edit</a></div>

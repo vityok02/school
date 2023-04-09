@@ -2,7 +2,7 @@
 @model SchoolFormModel
 
 @section styles
-    {
+{
     <link rel="stylesheet" href="~/css/add.css" />
 }
 
@@ -11,76 +11,69 @@
         <table>
             <tr>
                 <td>
-                    <label asp-for="School.Name">
+                    <label asp-for="SchoolDto.Name">
                         Name: 
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.Name" required />
+                    <input asp-for="SchoolDto.Name" required />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label asp-for="School.Address.Country">
+                    <label asp-for="SchoolDto.Country">
                         Country:
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.Address.Country" required />
+                    <input asp-for="SchoolDto.Country" required />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label asp-for="School.Address.City">
+                    <label asp-for="SchoolDto.City">
                         City/town:
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.Address.City" required />
+                    <input asp-for="SchoolDto.City" required />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label asp-for="School.Address.Street">
+                    <label asp-for="SchoolDto.Street">
                         Street:
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.Address.Street" required />
+                    <input asp-for="SchoolDto.Street" required />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label asp-for="School.Address.PostalCode">
+                    <label asp-for="SchoolDto.PostalCode">
                         Postal code:
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.Address.PostalCode" required />
+                    <input asp-for="SchoolDto.PostalCode" required />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label asp-for="School.OpeningDate">
+                    <label asp-for="SchoolDto.OpeningDate">
                         Opening date:
                     </label>
                 </td>
                 <td>
-                    <input asp-for="School.OpeningDate" required />
+                    <input asp-for="SchoolDto.OpeningDate" type="datetime" required />
                 </td>
             </tr>
         </table>
+        <div class="error">@Model.ErrorMessage</div>
         <div class="btns">
-            <input class="btn btn-primary" type="submit" value="Add school" />
-            <a asp-page="List" class="btn btn-cancel">Cancel</a>
+            <button type="submit" class="btn btn-save btn-lg">Add school</button>
+            <a asp-page="List" class="btn btn-cancel btn-lg">Cancel</a>
         </div>
     </form>
 </div>
-
-                        <script>
-            $(document).ready(function() {
-                $.getJSON("data.json", function(json) {
-                    $("#json").text(JSON.stringify(json));
-                });
-            });
-        </script>

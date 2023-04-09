@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -9,7 +8,7 @@ public class DetailsModel : BasePageModel
 {
     private readonly IRepository<Employee> _employeeRepository;
 
-    public Employee? Employee { get; private set; }
+    public EmployeeDto? EmployeeDto { get; private set; }
 
     public DetailsModel(ISchoolRepository schoolRepository, IRepository<Employee> employeeRepository)
         : base(schoolRepository)
@@ -19,8 +18,9 @@ public class DetailsModel : BasePageModel
 
     public IActionResult OnGet(int id)
     {
-        Employee = _employeeRepository.Get(id);
+        var employee = _employeeRepository.Get(id);
+        EmployeeDto = employee!.ToEmployeeDto();
 
-        return Employee is null ? RedirectToPage("List") : Page();
+        return EmployeeDto is null ? RedirectToPage("List") : Page();
     }
 }

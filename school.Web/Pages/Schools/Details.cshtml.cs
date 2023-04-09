@@ -5,7 +5,7 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolModel : BasePageModel
 {
-    public SchoolDto School { get; private set; } = default!;
+    public SchoolDto SchoolDto { get; private set; } = default!;
 
     public SchoolModel(ISchoolRepository schoolRepository)
         :base(schoolRepository)
@@ -21,9 +21,9 @@ public class SchoolModel : BasePageModel
             return RedirectToPage("List");
         }
 
-        School = school.ToSchoolDto();
+        SchoolDto = school.ToSchoolDto();
 
-        SelectedSchoolName = School!.Name;
+        SelectedSchoolName = SchoolDto!.Name;
 
         return Page();
     }

@@ -6,43 +6,41 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolFormModel : BasePageModel
 {
-    [BindProperty]
-    public School School { get; set; } = default!;
-    public string Name { get; set; } = "";
-    public Address Address { get; set; } = new Address();
-    public DateTime OpeningDate { get; set; }
+    public SchoolDto SchoolDto { get; private set; } = default!;
 
     public SchoolFormModel(ISchoolRepository schoolRepository)
         : base(schoolRepository)
     {
     }
 
-    public IActionResult OnPost()
+    public IActionResult OnPost(SchoolDto schoolDto)
     {
         var schools = SchoolRepository.GetAll();
 
-        if (schools.Any(s => s.Name == School.Name))
+        if (schools.Any(s => s.Name == schoolDto.Name))
         {
-            ErrorMessage = "School with this name already exists";
-            Name = School.Name;
-            Address = School.Address;
-            OpeningDate = School.OpeningDate;
+            ErrorMessage = "SchoolDto with this name already exists";
 
             return Page();
         }
 
-        var school = new School
+        var address = new Address()
         {
-            Name = School.Name,
-            Address = School.Address,
-            OpeningDate = OpeningDate,
+            Country = schoolDto.Country,
+            City = schoolDto.City,
+            Street = schoolDto.Street,
+            PostalCode = schoolDto.PostalCode,
         };
 
-        SchoolDto schoolDto = school.ToSchoolDto();
+        var school = new School()
+        {
+            Name = schoolDto.Name,
+            Address = address,
+            OpeningDate = schoolDto.OpeningDate.ToDateTime(TimeOnly.MinValue),
+        };
 
-        //SchoolRepository.Add(schoolDto);
+        SchoolRepository.Add(school);
 
-        return Page();
-        //return RedirectToPage("List");
+        return RedirectToPage("List");
     }
 }

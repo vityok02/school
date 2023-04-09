@@ -9,10 +9,10 @@ public class ListModel : BasePageModel
 {
     private readonly IEmployeeRepository _employeeRepository;
 
-    public IEnumerable<Employee> Employees { get; set; } = null!;
-    public string PositionSort { get; set; } = null!;
-    public string FilterByPosition { get; set; } = null!;
-    public IDictionary<string, string> PositionParams { get; set; } = null!;
+    public IEnumerable<EmployeeItemDto> EmployeeItems { get; set; } = default!;
+    public string PositionSort { get; set; } = default!;
+    public string FilterByPosition { get; set; } = default!;
+    public IDictionary<string, string> PositionParams { get; set; } = default!;
 
     public ListModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository)
         : base(schoolRepository)
@@ -37,8 +37,10 @@ public class ListModel : BasePageModel
         FilterByAge= filterByAge;
         FilterByPosition = filterByPosition;
 
-        Employees = _employeeRepository.GetSchoolEmployees(FilterBy(FilterByName, FilterByAge, FilterByPosition),
+        var employees = _employeeRepository.GetSchoolEmployees(FilterBy(FilterByName, FilterByAge, FilterByPosition),
             Sort(orderBy), schoolId);
+
+        EmployeeItems = employees.Select(s => s.ToEmployeeItemDto()).ToArray();
 
         var filterParams = GetFilters();
 

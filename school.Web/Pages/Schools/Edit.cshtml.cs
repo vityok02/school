@@ -5,7 +5,7 @@ namespace SchoolManagement.Web.Pages.Schools
 {
     public class EditModel : BasePageModel
     {
-        public SchoolDto? School { get; private set; }
+        public SchoolDto SchooDto { get; private set; } = default!;
 
         public EditModel(ISchoolRepository schoolRepository)
             :base(schoolRepository)
@@ -20,7 +20,7 @@ namespace SchoolManagement.Web.Pages.Schools
                 return RedirectToPage("List");
             }
 
-            School = school.ToSchoolDto();
+            SchooDto = school.ToSchoolDto();
 
             return Page();
         }
