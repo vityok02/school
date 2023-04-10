@@ -41,7 +41,7 @@ namespace SchoolManagement.Web.Pages.Schools
             school.OpeningDate = schoolDto.OpeningDate.ToDateTime(TimeOnly.MinValue);
 
             SchoolRepository.Update(school);
-            return Redirect($"/schools/{id}");
+            return RedirectToPage("Details");
         }
     }
 }
