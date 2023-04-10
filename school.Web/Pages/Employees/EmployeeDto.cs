@@ -7,5 +7,5 @@ namespace SchoolManagement.Web.Pages.Employees
         string FirstName,
         string LastLame,
         int Age,
-        IEnumerable<string> Positions);
+        IEnumerable<Position> Positions);
 }

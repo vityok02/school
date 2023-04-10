@@ -11,7 +11,7 @@ public static class EmployeeExtensions
             employee.FirstName,
             employee.LastName,
             employee.Age,
-            employee.Positions.Select(p => p.Name));
+            employee.Positions);
     }
     public static EmployeeItemDto ToEmployeeItemDto(this Employee employee)
     {

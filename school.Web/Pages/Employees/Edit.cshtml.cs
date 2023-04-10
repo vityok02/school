@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
-using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
@@ -10,8 +8,9 @@ public class EditModel : BasePageModel
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
 
-    public EmployeeDto EmployeeDto { get; set; } = default!;
-    public ICollection<PositionDto>? PositionsDto { get; set; } = default!;
+    public EmployeeDto EmployeeDto { get; private set; } = default!;
+    [BindProperty]
+    public IEnumerable<PositionDto>? PositionsDto { get; private set; } = default!;
 
     public EditModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
@@ -23,7 +22,6 @@ public class EditModel : BasePageModel
     public IActionResult OnGet(int id)
     {
         var employee = _employeeRepository.GetEmployee(id);
-
         if (employee is null)
         {
             return RedirectToPage("List");
@@ -38,13 +36,12 @@ public class EditModel : BasePageModel
         EmployeeDto = employee.ToEmployeeDto();
 
         var positions = _positionRepository.GetSchoolPositions(schoolId);
-
         PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
 
         return Page();
     }
 
-    public IActionResult OnPost(int id, EmployeeDto employeeDto, PositionDto positionDto)
+    public IActionResult OnPost(int id, EmployeeDto employeeDto, int[] positionsDto)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -52,35 +49,37 @@ public class EditModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var employee = _employeeRepository.GetEmployee(id);
+        var employee = _employeeRepository.Get(id);
 
         if (employee is null)
         {
             ModelState.AddModelError("", "EmployeeDto not found");
+            return RedirectToPage("List");
         }
 
+        //if (!ModelState.IsValid)
+        //{
+        //    return Page();
 
-        if (!ModelState.IsValid)
+        //    var positions = _positionRepository.GetSchoolPositions(schoolId);
+        //    PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
+        //}
+
+        employee!.UpdateInfo(employeeDto.FirstName, employeeDto.LastLame, employee.Age);
+
+        foreach(var p in positionsDto)
         {
-            employee!.UpdateInfo(employeeDto.FirstName, employeeDto.LastLame, employee.Age);
+            employee!.Positions.Add(_positionRepository.Get(p)!);
+        }
+
+        if(!employee!.Positions.Any())
+        {
+            EmployeeDto = employee.ToEmployeeDto();
+
             var positions = _positionRepository.GetSchoolPositions(schoolId);
             PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
 
             return Page();
-        }
-
-        employee!.Positions.Clear();
-        _employeeRepository.SaveChanges();
-
-        foreach(var position in PositionsDto)
-        {
-            ;
-        }
-
-        if(!employee.Positions.Any())
-        {
-            return OnGet(id);
-            //display message
         }
 
         _employeeRepository.Update(employee);
