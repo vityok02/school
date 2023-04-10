@@ -45,9 +45,9 @@
             <tr>
                 <td>Type</td>
                 <td>
-                    @foreach(var position in Model.Positions)
+                    @foreach(var position in Model.PositionsDto)
                     {
-                        <input type="checkbox" name="positions" value="@position.Id" class="btn-check" id="@position.Id">
+                        <input type="checkbox" name="positionsId" value="@position.Id" class="btn-check" id="@position.Id">
                         <label for="@position.Id" class="btn btn-outline-secondary">
                             @position.Name
                         </label>
@@ -57,8 +57,8 @@
         </table>
         <div class="error">@Model.ErrorMessage</div>
         <div class="btns">
-            <input class="btn btn-save btn-lg" type="submit" value="Add employee" />
-            <a class="btn btn-cancel btn-lg" asp-page="List">Cancel</a>
+            <button type="submit" class="btn btn-save btn-lg">Add employee</button>
+            <a asp-page="List" class="btn btn-cancel btn-lg">Cancel</a>
         </div>
     </form>
 </div>

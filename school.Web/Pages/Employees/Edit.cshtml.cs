@@ -41,7 +41,7 @@ public class EditModel : BasePageModel
         return Page();
     }
 
-    public IActionResult OnPost(int id, EmployeeDto employeeDto, int[] positionsDto)
+    public IActionResult OnPost(int id, EmployeeDto employeeDto, int[] positionsId)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -49,7 +49,7 @@ public class EditModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var employee = _employeeRepository.Get(id);
+        var employee = _employeeRepository.GetEmployee(id);
 
         if (employee is null)
         {
@@ -65,24 +65,34 @@ public class EditModel : BasePageModel
         //    PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
         //}
 
-        employee!.UpdateInfo(employeeDto.FirstName, employeeDto.LastLame, employee.Age);
+        employee!.UpdateInfo(employeeDto.FirstName, employeeDto.LastName, employee.Age);
 
-        foreach(var p in positionsDto)
+        employee.Positions.Clear();
+        _employeeRepository.SaveChanges();
+
+        foreach(var p in positionsId)
         {
             employee!.Positions.Add(_positionRepository.Get(p)!);
         }
 
         if(!employee!.Positions.Any())
         {
-            EmployeeDto = employee.ToEmployeeDto();
-
-            var positions = _positionRepository.GetSchoolPositions(schoolId);
-            PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
+            var data = GetData();
 
             return Page();
         }
 
         _employeeRepository.Update(employee);
         return RedirectToPage("List");
+
+        (EmployeeDto, IEnumerable<PositionDto>) GetData()
+        {
+            EmployeeDto = employee!.ToEmployeeDto();
+
+            var positions = _positionRepository.GetSchoolPositions(schoolId);
+            PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
+            return (EmployeeDto, PositionsDto);
+        }
     }
+
 }

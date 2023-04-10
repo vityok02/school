@@ -38,7 +38,7 @@ public class AddModel : BasePageModel
         return Page();
     }
 
-    public IActionResult OnPost(string firstName, string lastName, int age, int[] positions)
+    public IActionResult OnPost(EmployeeDto employeeDto, int[] positionsId)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -54,20 +54,20 @@ public class AddModel : BasePageModel
 
         var employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId);
 
-        if (employees.Any(s => s.FirstName == firstName
-                && s.LastName == lastName
-                && s.Age == age))
+        if (employees.Any(s => s.FirstName == employeeDto.FirstName
+                && s.LastName == employeeDto.LastName
+                && s.Age == employeeDto.Age))
         {
-            Message = "Such employee already exists";
-            return RedirectToPage("Add");
+            ErrorMessage = "Such employee already exists";
+            return Page();
         }
 
-        var employee = new Employee(firstName, lastName, age)
+        var employee = new Employee(employeeDto.FirstName, employeeDto.LastName, employeeDto.Age)
         {
             School = school
         };
 
-        foreach(var positionId in positions)
+        foreach(var positionId in positionsId)
         {
             employee.Positions.Add(_positionRepository.Get(positionId)!);
         }

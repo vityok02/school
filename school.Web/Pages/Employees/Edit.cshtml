@@ -23,13 +23,13 @@
             </tr>
             <tr>
                 <td>
-                    <label asp-for="EmployeeDto.LastLame">
+                    <label asp-for="EmployeeDto.LastName">
                         Last name
                     </label>
                 </td>
                 <td>
-                    <input asp-for="EmployeeDto.LastLame" />
-                    <span asp-validation-for="EmployeeDto.LastLame" class="error" />
+                    <input asp-for="EmployeeDto.LastName" />
+                    <span asp-validation-for="EmployeeDto.LastName" class="error" />
                 </td>
             </tr>
             <tr>
@@ -43,8 +43,6 @@
                     <span asp-validation-for="EmployeeDto.Age" class="error" />
                 </td>
             </tr>
-@*            @if (Model.EmployeeDto is not null)
-            {*@
                 <tr>
                     <td>Position: </td>
                     <td>
@@ -52,11 +50,11 @@
                         {
                             if (Model.EmployeeDto.Positions.Any(p => p.Id == position.Id))
                             {
-                                <input type="checkbox" name="positionsDto" id="@position.Id" value="@position.Id" class="btn-check" checked/>
+                                <input type="checkbox" name="positionsId" id="@position.Id" value="@position.Id" class="btn-check" checked/>
                             }
                             else
                             {
-                                <input type="checkbox" name="positionsDto" id="@position.Id" value="@position.Id" class="btn-check" />
+                                <input type="checkbox" name="positionsId" id="@position.Id" value="@position.Id" class="btn-check" />
                             }
                             <label for="@position.Id" class="btn btn-outline-secondary">
                                 @position.Name
