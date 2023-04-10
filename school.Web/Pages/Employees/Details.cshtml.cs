@@ -8,7 +8,7 @@ public class DetailsModel : BasePageModel
 {
     private readonly IRepository<Employee> _employeeRepository;
 
-    public EmployeeDto? EmployeeDto { get; private set; }
+    public EmployeeDto EmployeeDto { get; private set; } = default!;
 
     public DetailsModel(ISchoolRepository schoolRepository, IRepository<Employee> employeeRepository)
         : base(schoolRepository)
