@@ -9,10 +9,10 @@ public class ListModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
-    public IEnumerable<Student> Students { get; set; } = null!;
-    public string GroupSort { get; set; } = null!;
-    public string FilterByGroup { get; set; } = null!;
-    public IDictionary<string, string> GroupParams { get; set; } = null!;
+    public IEnumerable<StudentDto>? StudentsDto { get; private set; } = default!;
+    public string GroupSort { get; private set; } = default!;
+    public string FilterByGroup { get; private set; } = default!;
+    public IDictionary<string, string> GroupParams { get; private set; } = default!;
 
     public ListModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         : base(schoolRepository)
@@ -38,10 +38,11 @@ public class ListModel : BasePageModel
         FilterByGroup = filterByGroup;
         FilterByAge = filterByAge;
 
-        Students = _studentRepository.GetAll(FilterBy(FilterByName, FilterByAge, FilterByGroup, schoolId),
+        var students = _studentRepository.GetAll(FilterBy(FilterByName, FilterByAge, FilterByGroup, schoolId),
             Sort(orderBy));
+        StudentsDto = students.Select(s => s.ToStudentDto()).ToArray();
 
-        if(!Students.Any())
+        if(!StudentsDto.Any())
         {
             Message = "Not found";
         }

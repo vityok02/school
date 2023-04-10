@@ -9,7 +9,8 @@ public class AddModel : BasePageModel
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
 
-    public IEnumerable<Position> Positions { get; set; } = null!;
+    public EmployeeDto EmployeeDto { get; set; } = default!;
+    public IEnumerable<PositionDto> PositionsDto { get; set; } = null!;
 
     public AddModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
@@ -31,7 +32,9 @@ public class AddModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        Positions = _positionRepository.GetSchoolPositions(schoolId);
+        var positions = _positionRepository.GetSchoolPositions(schoolId);
+        PositionsDto = positions.Select(s => s.ToPositionDto()).ToArray();
+
         return Page();
     }
 

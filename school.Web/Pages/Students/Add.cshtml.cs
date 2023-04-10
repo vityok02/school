@@ -8,6 +8,8 @@ public class StudentFormModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
+    public StudentDto StudentDto { get; set; }
+
     public StudentFormModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         :base(schoolRepository)
     {
