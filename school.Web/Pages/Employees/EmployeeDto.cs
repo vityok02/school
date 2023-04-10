@@ -5,7 +5,7 @@ namespace SchoolManagement.Web.Pages.Employees
     public record EmployeeDto(
         int Id,
         string FirstName,
-        string LastLame,
+        string LastName,
         int Age,
         IEnumerable<Position> Positions);
 }
