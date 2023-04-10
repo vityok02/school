@@ -4,11 +4,11 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class SchoolFormModel : BasePageModel
+public class Add : BasePageModel
 {
     public SchoolDto SchoolDto { get; private set; } = default!;
 
-    public SchoolFormModel(ISchoolRepository schoolRepository)
+    public Add(ISchoolRepository schoolRepository)
         : base(schoolRepository)
     {
     }
