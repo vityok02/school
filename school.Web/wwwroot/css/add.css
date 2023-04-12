@@ -1,4 +1,5 @@
 ﻿body {
+    font-size: 18px;
 }
 
 .wrapper {
@@ -10,7 +11,7 @@
     width: max-content;
     vertical-align: middle;
     padding: 20px;
-    font-size: 28px;
+    font-size: 24px;
     border-radius: 10px 10px 0 0;
     border-top: 10px solid #009879;
     border-bottom: 5px solid #009879;
