@@ -37,6 +37,12 @@ public class ListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
+        var school = SchoolRepository.Get(schoolId);
+        if (school is null)
+        {
+            return RedirectToSchoolList();
+        }
+
         OrderBy = orderBy;
         RoomNumberSort = orderBy == "roomNumber" ? "roomNumber_desc" : "roomNumber";
         RoomTypeSort = orderBy == "roomType" ? "roomType_desc" : "roomType";

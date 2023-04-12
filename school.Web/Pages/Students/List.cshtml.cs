@@ -28,6 +28,12 @@ public class ListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
+        var school = SchoolRepository.Get(schoolId);
+        if (school is null)
+        {
+            return RedirectToSchoolList();
+        }
+
         OrderBy = orderBy;
         FirstNameSort = String.IsNullOrEmpty(orderBy) ? "firstName_desc" : "";
         LastNameSort = orderBy == "lastName" ? "lastName_desc" : "lastName";
