@@ -9,7 +9,7 @@ public class RoomFormModel : BasePageModel
     private readonly IRepository<Floor> _floorRepository;
     private readonly IRepository<Room> _roomRepository;
 
-    public IEnumerable<Floor>? Floors { get; set; } = null!;
+    public IEnumerable<Floor>? Floors { get; set; } = default!;
 
 
     public RoomFormModel(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)

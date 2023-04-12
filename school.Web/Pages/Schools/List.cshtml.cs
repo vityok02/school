@@ -7,17 +7,17 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolListModel : BasePageModel
 {
-    public IEnumerable<SchoolItemDto> SchoolItems { get; set; }
-    public IEnumerable<Address> Addresses { get; set; } = null!;
-    public bool IsError { get; set; } = false;
-    public bool IsFirst { get; set; } = false;
-    public string NameSort { get; set; } = null!;
-    public string CitySort { get; set; } = null!;
-    public string StreetSort { get; set; } = null!;
-    public string FilterByParam { get; set; } = null!;
-    public Dictionary<string, string> NameParams { get; set; } = null!;
-    public Dictionary<string, string> CityParams { get; set; } = null!;
-    public Dictionary<string, string> StreetParams { get; set; } = null!;
+    public IEnumerable<SchoolItemDto> SchoolItems { get; private set; } = null!;
+    public IEnumerable<Address> Addresses { get; private set; } = null!;
+    public bool IsError { get; private set; } = false;
+    public bool IsFirst { get; private set; } = false;
+    public string NameSort { get; private set; } = null!;
+    public string CitySort { get; private set; } = null!;
+    public string StreetSort { get; private set; } = null!;
+    public string FilterByParam { get; private set; } = null!;
+    public Dictionary<string, string> NameParams { get; private set; } = null!;
+    public Dictionary<string, string> CityParams { get; private set; } = null!;
+    public Dictionary<string, string> StreetParams { get; private set; } = null!;
 
     public SchoolListModel(ISchoolRepository schoolRepository)
         : base(schoolRepository)
@@ -130,12 +130,6 @@ public class SchoolListModel : BasePageModel
         {
             return RedirectToPage("List");
         }
-
-        //var employees = _employeeRepository.GetAll(e => e.SchoolId == id);
-        //foreach (var emp in employees)
-        //{
-        //    school.Employees.Clear();
-        //}
 
         SchoolRepository.Delete(school);
         return RedirectToPage("List");
