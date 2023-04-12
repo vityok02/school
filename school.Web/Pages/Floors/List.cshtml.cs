@@ -26,6 +26,12 @@ public class FloorListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
+        var school = SchoolRepository.Get(schoolId);
+        if(school is null)
+        {
+            return RedirectToSchoolList();
+        }
+
         Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
         return Page();
     }
