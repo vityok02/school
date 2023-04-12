@@ -15,19 +15,15 @@
         <table>
             <tr>
                 <td>
-                    <label for="name">
+                    <label asp-for="PositionDto!.Name">
                         Job title: 
                     </label>
                 </td>
                 <td>
-                    <input type="text" name="name" id="name" required />
+                    <input asp-for="PositionDto!.Name" />
                 </td>
             </tr>
         </table>
-        <div class="error">@Model.ErrorMessage</div>
-        <div class="btns">
-            <input type="submit" value="Add position" class="btn btn-save btn-lg" />
-            <a asp-page="AllPositions" class="btn btn-cancel btn-lg">Cancel</a>
-        </div>
+        <partial name="FormButtons" />
     </form>
 </div>

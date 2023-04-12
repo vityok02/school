@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
-using System.Reflection.Metadata.Ecma335;
+using SchoolManagement.Web.Pages.Employees;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
@@ -9,19 +9,17 @@ public class AddModel : BasePageModel
 {
     public IRepository<Position> _positionRepository;
 
+    public PositionDto? PositionDto { get; private set; } = null!;
+
     public AddModel(ISchoolRepository schoolRepository, IRepository<Position> positionRepository)
         : base(schoolRepository)
     {
         _positionRepository = positionRepository;
     }
 
-    public void OnGet()
+    public IActionResult OnPost(PositionDto positionDto) 
     {
-    }
-
-    public IActionResult OnPost(string name) 
-    {
-        if (name is null)
+        if (positionDto.Name is null)
         {
             ErrorMessage = "Enter the job title";
             return Page();
@@ -33,14 +31,14 @@ public class AddModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        Position position = new(name);
-
         var positions = _positionRepository.GetAll();
-        if(positions.Any(p => p.Name == name))
+        if(positions.Any(p => p.Name == positionDto.Name))
         {
             ErrorMessage = "Such position already exists";
             return Page();
         }
+
+        Position position = new(positionDto.Name);
 
         _positionRepository.Add(position);
         return RedirectToPage("AllPositions");
