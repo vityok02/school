@@ -1,8 +1,9 @@
 ﻿using SchoolManagement.Models;
+using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public static class PositionExtension
+public static class PositionExtensions
 {
     public static PositionDto ToPositionDto(this Position position)
     {

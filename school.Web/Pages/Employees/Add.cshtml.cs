@@ -38,7 +38,7 @@ public class AddModel : BasePageModel
         return Page();
     }
 
-    public IActionResult OnPost(EmployeeDto employeeDto, int[] positionsId)
+    public IActionResult OnPost(AddingEmployeeDto employeeDto, int[] positionsId)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -58,6 +58,7 @@ public class AddModel : BasePageModel
                 && s.LastName == employeeDto.LastName
                 && s.Age == employeeDto.Age))
         {
+            //PositionsDto = _positionRepository.GetAll().ToArray();
             ErrorMessage = "Such employee already exists";
             return Page();
         }
@@ -74,5 +75,6 @@ public class AddModel : BasePageModel
 
         _employeeRepository.Add(employee);
         return RedirectToPage("List");
+
     }
 }
