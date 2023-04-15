@@ -5,7 +5,7 @@ namespace SchoolManagement.Web.Pages.Schools
 {
     public class EditModel : BasePageModel
     {
-        public SchoolDto SchooDto { get; private set; } = default!;
+        public SchoolDto SchoolDto { get; private set; } = default!;
 
         public EditModel(ISchoolRepository schoolRepository)
             :base(schoolRepository)
@@ -20,14 +20,14 @@ namespace SchoolManagement.Web.Pages.Schools
                 return RedirectToPage("List");
             }
 
-            SchooDto = school.ToSchoolDto();
+            SchoolDto = school.ToSchoolDto();
 
             return Page();
         }
 
-        public IActionResult OnPost(int id, SchoolDto schoolDto)
+        public IActionResult OnPost(SchoolDto schoolDto)
         {
-            var school = SchoolRepository.GetSchool(id);
+            var school = SchoolRepository.GetSchool(schoolDto.Id);
             if (school is null)
             {
                 return RedirectToPage("List");
@@ -41,7 +41,7 @@ namespace SchoolManagement.Web.Pages.Schools
             school.OpeningDate = schoolDto.OpeningDate.ToDateTime(TimeOnly.MinValue);
 
             SchoolRepository.Update(school);
-            return RedirectToPage("Details");
+            return RedirectToPage("Details", new { id = schoolDto.Id});
         }
     }
 }

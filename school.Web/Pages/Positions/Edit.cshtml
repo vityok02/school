@@ -1,6 +1,5 @@
 ﻿@page "/positions/all/{id}/edit"
-@using SchoolManagement.Web.Pages.Employees
-@model EditModel
+@model SchoolManagement.Web.Pages.Positions.EditModel;
 
 @section styles
 {
@@ -9,10 +8,11 @@
 
 <div class="wrapper">
     <form method="post" class="edit">
-        <label for="name">
+        <label asp-for="PositionDto.Name">
             Job title: 
-            <input type="text" name="name" id="name" />
+            <input asp-for="PositionDto.Name" />
         </label>
+        <input type="hidden" asp-for="PositionDto.Id" />
         <div class="btns">
             <input type="submit" name="Save" class="btn btn-save btn-lg"/>
             <a asp-page="/Positions/AllPositions" class="btn btn-cancel btn-lg">Cancel</a>

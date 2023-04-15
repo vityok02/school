@@ -41,7 +41,7 @@ public class EditModel : BasePageModel
         return Page();
     }
 
-    public IActionResult OnPost(int id, EmployeeDto employeeDto, int[] positionsId)
+    public IActionResult OnPost(EmployeeDto employeeDto, int[] positionsId)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -49,7 +49,7 @@ public class EditModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var employee = _employeeRepository.GetEmployee(id);
+        var employee = _employeeRepository.GetEmployee(employeeDto.Id);
 
         if (employee is null)
         {
