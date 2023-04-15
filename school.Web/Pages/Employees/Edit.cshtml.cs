@@ -9,7 +9,6 @@ public class EditModel : BasePageModel
     private readonly IPositionRepository _positionRepository;
 
     public EmployeeDto EmployeeDto { get; private set; } = default!;
-    [BindProperty]
     public IEnumerable<PositionDto>? PositionsDto { get; private set; } = default!;
 
     public EditModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)

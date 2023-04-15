@@ -50,11 +50,11 @@
                         {
                             if (Model.EmployeeDto.Positions.Any(p => p.Id == position.Id))
                             {
-                                <input type="checkbox" name="positionsId" id="@position.Id" value="@position.Id" class="btn-check" checked/>
+                                <input type="checkbox" name="checkedPositionsId" id="@position.Id" value="@position.Id" class="btn-check" checked />
                             }
                             else
                             {
-                                <input type="checkbox" name="positionsId" id="@position.Id" value="@position.Id" class="btn-check" />
+                                <input type="checkbox" name="checkedPositionsId" id="@position.Id" value="@position.Id" class="btn-check" />
                             }
                             <label for="@position.Id" class="btn btn-outline-secondary">
                                 @position.Name
