@@ -9,7 +9,7 @@ public class AddModel : BasePageModel
 {
     public IRepository<Position> _positionRepository;
 
-    public PositionDto? PositionDto { get; private set; } = null!;
+    public AddingPositionDto? PositionDto { get; private set; } = null!;
 
     public AddModel(ISchoolRepository schoolRepository, IRepository<Position> positionRepository)
         : base(schoolRepository)
@@ -17,7 +17,7 @@ public class AddModel : BasePageModel
         _positionRepository = positionRepository;
     }
 
-    public IActionResult OnPost(PositionDto positionDto) 
+    public IActionResult OnPost(AddingPositionDto positionDto) 
     {
         if (positionDto.Name is null)
         {
