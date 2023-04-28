@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
@@ -9,7 +10,7 @@ public class AddModel : BasePageModel
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
 
-    public AddingEmployeeDto EmployeeDto { get; private set; } = default!;
+    public AddEmployeeDto EmployeeDto { get; private set; } = default!;
     public IEnumerable<PositionDto>? PositionsDto { get; private set; } = default!;
     public IEnumerable<int> CheckedPositionsId { get; private set; } = default!;
 
@@ -39,7 +40,7 @@ public class AddModel : BasePageModel
         return Page();
     }
 
-    public IActionResult OnPost(AddingEmployeeDto employeeDto, int[] checkedPositionsId)
+    public IActionResult OnPost(AddEmployeeDto employeeDto, int[] checkedPositionsId)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)

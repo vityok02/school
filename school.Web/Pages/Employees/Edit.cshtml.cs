@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models.Interfaces;
+using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
@@ -11,7 +12,10 @@ public class EditModel : BasePageModel
     public EmployeeDto EmployeeDto { get; private set; } = default!;
     public IEnumerable<PositionDto>? PositionsDto { get; private set; } = default!;
 
-    public EditModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
+    public EditModel(
+        ISchoolRepository schoolRepository,
+        IEmployeeRepository employeeRepository,
+        IPositionRepository positionRepository)
         : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
@@ -20,16 +24,16 @@ public class EditModel : BasePageModel
 
     public IActionResult OnGet(int id)
     {
-        var employee = _employeeRepository.GetEmployee(id);
-        if (employee is null)
-        {
-            return RedirectToPage("List");
-        }
-
         var schoolId = GetSchoolId();
         if(schoolId == -1)
         {
             RedirectToSchoolList();
+        }
+
+        var employee = _employeeRepository.GetEmployee(id);
+        if (employee is null)
+        {
+            return RedirectToPage("List");
         }
 
         EmployeeDto = employee.ToEmployeeDto();
@@ -40,7 +44,7 @@ public class EditModel : BasePageModel
         return Page();
     }
 
-    public IActionResult OnPost(EmployeeDto employeeDto, int[] positionsId)
+    public IActionResult OnPost(EditEmployeeDto employeeDto, int[] checkedPositionsId)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -67,9 +71,9 @@ public class EditModel : BasePageModel
         employee!.UpdateInfo(employeeDto.FirstName, employeeDto.LastName, employee.Age);
 
         employee.Positions.Clear();
-        _employeeRepository.SaveChanges();
+        //_employeeRepository.SaveChanges();
 
-        foreach(var p in positionsId)
+        foreach(var p in checkedPositionsId)
         {
             employee!.Positions.Add(_positionRepository.Get(p)!);
         }
