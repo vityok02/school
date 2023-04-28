@@ -5,14 +5,7 @@
 
     if (Model.IsError)
     {
-    <script>alert('No school selected, please select a school');</script>
-    }
-    if (!Model.IsFirst)
-    {
-    <script>
-            var element = document.getElementById("choose);
-            element.classList.add("choose-active");
-    </script>
+        <script>alert('No school selected, please select a school');</script>
     }
 }
 
@@ -88,7 +81,6 @@
                                 <div>
                                     <a class="btn btn-details" asp-page="Details" asp-route-id="@school.Id">Details</a>
                                 </div>
-                                <partial name="FormButtons" data="true" view-data="ViewData">
                                 <form method="post" asp-page-handler="Delete" asp-route-id="@school.Id"
                                 onclick="return confirm('Are you sure you want to delete school @school.Name?')">
                                     <button class="btn btn-delete" type="submit">Delete</button>

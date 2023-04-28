@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Models;
 using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
@@ -10,10 +9,10 @@ public class SchoolPositionsModel : BasePageModel
 {
     private readonly IPositionRepository _positionRepository;
 
-    public IEnumerable<Position> SchoolPositions { get; set; } = null!;
+    public IEnumerable<PositionDto> AllPositions { get; set; } = null!;
+    public IEnumerable<PositionDto> SchoolPositions { get; set; } = null!;
     public string Filter { get; set; } = null!;
     public string NameSort { get; private set; } = null!;
-    public IEnumerable<Position> AllPositions { get; set; } = null!;
 
     public SchoolPositionsModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
@@ -40,8 +39,10 @@ public class SchoolPositionsModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        AllPositions = _positionRepository.GetUnSelectedPositions(schoolId);
-        SchoolPositions = _positionRepository.GetSchoolPositions(schoolId);
+        var allPositions = _positionRepository.GetUnSelectedPositions(schoolId);
+        AllPositions = allPositions.Select(s => s.ToPositionDto()).ToArray();
+        var schoolPositions = _positionRepository.GetSchoolPositions(schoolId);
+        SchoolPositions = schoolPositions.Select(s => s.ToPositionDto()).ToArray();
 
         return Page();
     }

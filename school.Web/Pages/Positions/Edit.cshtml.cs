@@ -9,7 +9,7 @@ public class EditModel : BasePageModel
 {
     private readonly IPositionRepository _positionRepository;
 
-    public PositionDto? PositionDto { get; set; } = null!;
+    public PositionDto? PositionDto { get; private set; } = null!;
 
     public EditModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
         : base(schoolRepository)

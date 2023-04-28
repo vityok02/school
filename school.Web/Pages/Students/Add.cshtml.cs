@@ -8,7 +8,7 @@ public class StudentFormModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
-    public StudentDto StudentDto { get; private set; } = default!;
+    public AddStudentDto? StudentDto { get; private set; } = null!;
 
     public StudentFormModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         :base(schoolRepository)
@@ -16,7 +16,7 @@ public class StudentFormModel : BasePageModel
         _studentRepository = studentRepository;
     }
 
-    public IActionResult OnPost(StudentDto studentDto)
+    public IActionResult OnPost(AddStudentDto studentDto)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)

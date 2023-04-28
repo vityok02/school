@@ -6,20 +6,20 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class Add : BasePageModel
 {
-    public SchoolDto SchoolDto { get; private set; } = default!;
+    public AddSchoolDto SchoolDto { get; private set; } = default!;
 
     public Add(ISchoolRepository schoolRepository)
         : base(schoolRepository)
     {
     }
 
-    public IActionResult OnPost(SchoolDto schoolDto)
+    public IActionResult OnPost(AddSchoolDto schoolDto)
     {
         var schools = SchoolRepository.GetAll();
 
         if (schools.Any(s => s.Name == schoolDto.Name))
         {
-            ErrorMessage = "SchoolDto with this name already exists";
+            ErrorMessage = "School with this name already exists";
 
             return Page();
         }

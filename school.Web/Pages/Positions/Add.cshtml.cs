@@ -9,7 +9,7 @@ public class AddModel : BasePageModel
 {
     public IRepository<Position> _positionRepository;
 
-    public AddingPositionDto? PositionDto { get; private set; } = null!;
+    public string? Name { get; private set; } = null!;
 
     public AddModel(ISchoolRepository schoolRepository, IRepository<Position> positionRepository)
         : base(schoolRepository)
@@ -17,9 +17,9 @@ public class AddModel : BasePageModel
         _positionRepository = positionRepository;
     }
 
-    public IActionResult OnPost(AddingPositionDto positionDto) 
+    public IActionResult OnPost(string name) 
     {
-        if (positionDto.Name is null)
+        if (name is null)
         {
             ErrorMessage = "Enter the job title";
             return Page();
@@ -32,13 +32,13 @@ public class AddModel : BasePageModel
         }
 
         var positions = _positionRepository.GetAll();
-        if(positions.Any(p => p.Name == positionDto.Name))
+        if(positions.Any(p => p.Name == name))
         {
             ErrorMessage = "Such position already exists";
             return Page();
         }
 
-        Position position = new(positionDto.Name);
+        Position position = new(name);
 
         _positionRepository.Add(position);
         return RedirectToPage("AllPositions");

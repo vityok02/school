@@ -8,7 +8,7 @@ public class EditModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
-    public StudentDto StudentDto { get; set; } = default!;
+    public StudentDto? StudentDto { get; set; } = null!;
 
     public EditModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         :base(schoolRepository)
@@ -29,7 +29,7 @@ public class EditModel : BasePageModel
         return Page();
     }
 
-    public IActionResult OnPost(int id, StudentDto studentDto)
+    public IActionResult OnPost(StudentDto studentDto)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -42,13 +42,13 @@ public class EditModel : BasePageModel
         if ((students.Where(s => s.FirstName == studentDto.FirstName
             && s.LastName == studentDto.LastName
             && s.Age == studentDto.Age
-            && s.Id != id).Any()))
+            && s.Id != studentDto.Id).Any()))
         {
             ErrorMessage = "Such student already exists";
             return Page();
         }
 
-        var student = _studentRepository.Get(id);
+        var student = _studentRepository.Get(studentDto.Id);
 
         student!.UpdateInfo(studentDto.FirstName, studentDto.LastName, studentDto.Age, studentDto.Group);
 

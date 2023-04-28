@@ -11,31 +11,31 @@
 <div class="wrapper">
     <form method="post" class="edit">
         <div class="form-group">
-            <label asp-for="StudentDto.FirstName">
+            <label asp-for="StudentDto!.FirstName">
                 First name
-                <input asp-for="StudentDto.FirstName" class="form-control" />
+                <input asp-for="StudentDto!.FirstName" class="form-control" />
             </label>
         </div>
         <div class="form-group">
-            <label asp-for="StudentDto.LastName">
+            <label asp-for="StudentDto!.LastName">
                 Last name
-                <input asp-for="StudentDto.LastName" class="form-control" />
+                <input asp-for="StudentDto!.LastName" class="form-control" />
             </label>
         </div>
         <div class="form-group">
-            <label asp-for="StudentDto.Age">
+            <label asp-for="StudentDto!.Age">
                 Age
-                <input asp-for="StudentDto.Age" class="form-control" />
+                <input asp-for="StudentDto!.Age" class="form-control" />
             </label>
         </div>
         <div class="form-group">
-            <label asp-for="StudentDto.Group">
+            <label asp-for="StudentDto!.Group">
                 Group
-                <input asp-for="StudentDto.Group" class="form-control" />
+                <input asp-for="StudentDto!.Group" class="form-control" />
             </label>
         </div>
-        <div class="error">@Model.ErrorMessage</div>
         <input type="hidden" asp-for="StudentDto!.Id" />
+        <div class="error">@Model.ErrorMessage</div>
         <partial name="FormButtons" />
     </form>
 </div>

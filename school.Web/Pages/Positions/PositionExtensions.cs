@@ -1,7 +1,6 @@
 ﻿using SchoolManagement.Models;
-using SchoolManagement.Web.Pages.Positions;
 
-namespace SchoolManagement.Web.Pages.Employees;
+namespace SchoolManagement.Web.Pages.Positions;
 
 public static class PositionExtensions
 {

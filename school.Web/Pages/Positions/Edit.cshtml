@@ -8,11 +8,11 @@
 
 <div class="wrapper">
     <form method="post" class="edit">
-        <label asp-for="PositionDto.Name">
+        <label asp-for="PositionDto!.Name">
             Job title: 
-            <input asp-for="PositionDto.Name" />
+            <input asp-for="PositionDto!.Name" />
         </label>
-        <input type="hidden" asp-for="PositionDto.Id" />
+        <input type="hidden" asp-for="PositionDto!.Id" />
         <div class="btns">
             <input type="submit" name="Save" class="btn btn-save btn-lg"/>
             <a asp-page="/Positions/AllPositions" class="btn btn-cancel btn-lg">Cancel</a>
