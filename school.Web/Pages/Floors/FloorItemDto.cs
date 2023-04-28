@@ -1,5 +1,3 @@
-﻿using SchoolManagement.Web.Pages.Rooms;
+﻿namespace SchoolManagement.Web.Pages.Floors;
 
-namespace SchoolManagement.Web.Pages.Floors;
-
-public record FloorItemDto(int Id, int Number, Dictionary<int, string> rooms);
+public record FloorItemDto(int Id, int Number, IEnumerable<FloorRoomDto> Rooms);

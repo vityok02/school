@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SchoolManagement.Web.Pages.Floors;
 
@@ -32,6 +34,8 @@ public class FloorListModel : BasePageModel
 
         var floors = _floorRepository.GetFloors(schoolId);
         FloorsDto = floors.Select(f => f.ToFloorItemDto()).ToArray();
+        string json = JsonSerializer.Serialize(FloorsDto);
+        Response.WriteAsJsonAsync(FloorsDto);
         return Page();
     }
 
