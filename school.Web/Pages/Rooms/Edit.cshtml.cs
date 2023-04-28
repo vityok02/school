@@ -7,13 +7,12 @@ namespace SchoolManagement.Web.Pages.Rooms;
 public class EditModel : BasePageModel
 {
     private readonly IRepository<Room> _roomRepository;
-    private readonly IRepository<Floor> _floorRepository;
+    private readonly IFloorRepository _floorRepository;
 
-    [BindProperty]
     public Room Room { get; set; } = default!;
     public IEnumerable<Floor> Floors { get; set; } = default!;
 
-    public EditModel(ISchoolRepository schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+    public EditModel(ISchoolRepository schoolRepository, IRepository<Room> roomRepository, IFloorRepository floorRepository)
         : base(schoolRepository)
     {
         _roomRepository = roomRepository;
@@ -34,7 +33,7 @@ public class EditModel : BasePageModel
             return RedirectToPage("List");
         }
 
-        Room = room;
+        //Room = room;
 
         Floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
         return Page();
@@ -47,7 +46,7 @@ public class EditModel : BasePageModel
             return RedirectToPage("List");
         }
 
-        Room!.Floor = floor;
+        //Room!.Floor = floor;
 
         RoomType roomType = RoomHelper.GetRoomType(roomTypes);
         foreach (var rt in roomTypes)
@@ -55,9 +54,9 @@ public class EditModel : BasePageModel
             roomType |= rt;
         }
 
-        Room.Type = roomType;
+        //Room.Type = roomType;
 
-        _roomRepository.Update(Room!);
+        //_roomRepository.Update(Room!);
         return RedirectToPage("List");
     }
 }

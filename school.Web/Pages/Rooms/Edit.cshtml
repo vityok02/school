@@ -2,6 +2,8 @@
 @using SchoolManagement.Models;
 @model EditModel
 @{
+    ViewData["Title"] = "Edit room";
+
     var floors = Model.Floors!.Select(f => new SelectListItem
     {
         Value = f.Id.ToString(),
@@ -13,8 +15,6 @@
 {
     <link rel="stylesheet" href="~/css/edit.css" />
 }
-
-
 
 <div class="wrapper">
     <form method="post" class="edit">
@@ -51,7 +51,7 @@
                 </td>
             </tr>
         </table>
-        <input type="hidden" asp-for="Room!.Id" />
+        @*<input type="hidden" asp-for="Room!.Id" />*@
         <div class="error">@Model.ErrorMessage</div>
         <div class="btns">
             <input class="btn btn-save btn-lg" type="submit" value="Save" />

@@ -1,22 +1,20 @@
 ﻿@page "/floors/{id}"
 @model DetailsModel
 
-
-
 @{
-    if(Model.Floor!.Number < 0)
+    if(Model.FloorDto!.Number < 0)
     {
-        <p>Basement level @(-Model.Floor!.Number)</p>
+        <p>Basement level @(-Model.FloorDto!.Number)</p>
     }
     else
     {
-        <p>Floor @Model.Floor!.Number</p>
+        <p>Floor @Model.FloorDto.Number</p>
     }
 }
-<p>Rooms count: @Model.Rooms!.Count()</p>
+<p>Rooms count: @Model.FloorDto.Rooms.Count()</p>
 
 <table>
-    @foreach (var room in Model.Rooms!)
+    @foreach (var room in Model.FloorDto.Rooms)
     {
         <tr>
             <td>Room @room.Number</td>

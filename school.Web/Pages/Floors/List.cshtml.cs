@@ -6,16 +6,14 @@ namespace SchoolManagement.Web.Pages.Floors;
 
 public class FloorListModel : BasePageModel
 {
-    private readonly IRepository<Floor> _floorRepository;
-    private readonly IRepository<Room> _roomRepository;
+    private readonly IFloorRepository _floorRepository;
 
-    public IEnumerable<Floor> Floors { get; private set; } = null!;
+    public IEnumerable<FloorItemDto> FloorsDto { get; private set; } = null!;
 
-    public FloorListModel(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
+    public FloorListModel(ISchoolRepository schoolRepository, IFloorRepository floorRepository)
         : base(schoolRepository)
     {
         _floorRepository = floorRepository;
-        _roomRepository = roomRepository;
     }
 
     public IActionResult OnGet()
@@ -32,65 +30,66 @@ public class FloorListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
+        var floors = _floorRepository.GetFloors(schoolId);
+        FloorsDto = floors.Select(f => f.ToFloorItemDto()).ToArray();
         return Page();
     }
 
-    public IActionResult OnPostAddFloor()
-    {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
-        {
-            return RedirectToSchoolList();
-        }
+    //public IActionResult OnPostAddFloor()
+    //{
+    //    var schoolId = GetSchoolId();
+    //    if (schoolId == -1)
+    //    {
+    //        return RedirectToSchoolList();
+    //    }
 
-        Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
+    //    FloorsDto = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
 
-        var school = SchoolRepository.Get(schoolId);
-        int number;
+    //    var school = SchoolRepository.Get(schoolId);
+    //    int number;
 
-        if (!Floors!.Any() || Floors!.Last().Number < 0)
-        {
-            number = 0;
-        }
-        else
-        {
-            number = Floors!.Last().Number;
-        }
+    //    if (!FloorsDto!.Any() || FloorsDto!.Last().Number < 0)
+    //    {
+    //        number = 0;
+    //    }
+    //    else
+    //    {
+    //        number = FloorsDto!.Last().Number;
+    //    }
 
-        Floor floor = new(number + 1)
-        {
-            School = school!
-        };
+    //    Floor floor = new(number + 1)
+    //    {
+    //        School = school!
+    //    };
 
-        _floorRepository!.Add(floor);
-        return RedirectToPage("List");
-    }
-    public IActionResult OnPostAddBasement()
-    {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
-        {
-            return RedirectToSchoolList();
-        }
+    //    _floorRepository!.Add(floor);
+    //    return RedirectToPage("List");
+    //}
+    //public IActionResult OnPostAddBasement()
+    //{
+    //    var schoolId = GetSchoolId();
+    //    if (schoolId == -1)
+    //    {
+    //        return RedirectToSchoolList();
+    //    }
 
-        Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
+    //    Floors = _floorRepository!.GetAll(f => f.SchoolId == schoolId);
 
-        var school = SchoolRepository.Get(schoolId);
-        int number;
+    //    var school = SchoolRepository.Get(schoolId);
+    //    int number;
 
-        if (!Floors!.Any() || Floors!.First().Number >= 0)
-            number = 0;
-        else
-            number = Floors!.First().Number;
+    //    if (!Floors!.Any() || Floors!.First().Number >= 0)
+    //        number = 0;
+    //    else
+    //        number = Floors!.First().Number;
 
-        Floor floor = new(number - 1);
+    //    Floor floor = new(number - 1);
 
-        floor.School = school!;
+    //    floor.School = school!;
 
-        _floorRepository!.Add(floor);
-        return RedirectToPage("List");
-    }
+    //    _floorRepository!.Add(floor);
+    //    return RedirectToPage("List");
+    //}
 
     public IActionResult OnPostDelete(int id)
     {
@@ -103,10 +102,5 @@ public class FloorListModel : BasePageModel
 
         _floorRepository.Delete(floor!);
         return RedirectToPage("List");
-    }
-
-    public IEnumerable<Room> GetRooms(Floor floor)
-    {
-        return _roomRepository.GetAll(r => r.Floor.Id == floor.Id);
     }
 }

@@ -4,13 +4,13 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Floors;
 
-public class FloorFormModel : BasePageModel
+public class AddModel : BasePageModel
 {
     private readonly IRepository<Floor> _floorRepository;
 
-    public int PossibleNumber { get; set; }
+    public int FloorNumber { get; private set; }
 
-    public FloorFormModel(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository)
+    public AddModel(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository)
         :base(schoolRepository)
     {
         _floorRepository = floorRepository;
@@ -27,17 +27,17 @@ public class FloorFormModel : BasePageModel
         var floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
         if (!floors.Any())
         {
-            PossibleNumber = 1;
+            FloorNumber = 1;
         }
         else
         {
-            PossibleNumber = floors.Last().Number + 1;
+            FloorNumber = floors.Last().Number + 1;
         }
 
         return Page();
     }
 
-    public IActionResult OnPost(int number, string type)
+    public IActionResult OnPost(int floorNumber, string type)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -55,16 +55,16 @@ public class FloorFormModel : BasePageModel
 
         if (type == "basement")
         {
-            number = -number;
+            floorNumber = -floorNumber;
         }
 
-        if(floors.Any(f => f.Number == number))
+        if(floors.Any(f => f.Number == floorNumber))
         {
             ErrorMessage = "Such floor already exists";
             return Page();
         }
 
-        Floor floor = new(number)
+        Floor floor = new(floorNumber)
         {
             School = school
         };

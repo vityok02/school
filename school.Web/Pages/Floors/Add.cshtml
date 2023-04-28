@@ -1,7 +1,14 @@
 ﻿@page "/floors/add"
-@model FloorFormModel
+@model AddModel
 
-<link rel="stylesheet" href="~/css/add.css" />
+@{
+    ViewData["Title"] = "Add floor";
+}
+
+@section styles
+{
+    <link rel="stylesheet" href="~/css/add.css" />
+}
 
 
 
@@ -18,18 +25,16 @@
                 </td>
             </tr>
             <tr>
-                <td>Number: </td>
                 <td>
-                    <input type="number" value="@Model.PossibleNumber" name="number"/>
+                    <label asp-for="FloorNumber">
+                        Number: 
+                    </label>
+                </td>
+                <td>
+                    <input asp-for="FloorNumber"/>
                 </td>
             </tr>
         </table>
-        <div class="error">@Model.ErrorMessage</div>
-        <div class="btns">
-            <input class="button add" type="submit" value="Add floor"/>
-            <div class="button cancel">
-                <a asp-page="List">Cancel</a>
-            </div>
-        </div>
+        <partial name="FormButtons" />
     </form>
 </div>
