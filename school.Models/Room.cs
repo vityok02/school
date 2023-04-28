@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace SchoolManagement.Models;
+﻿namespace SchoolManagement.Models;
 
 public class Room : BaseEntity
 {
