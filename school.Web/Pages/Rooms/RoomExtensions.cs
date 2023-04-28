@@ -4,9 +4,18 @@ namespace SchoolManagement.Web.Pages.Rooms;
 
 public static class RoomExtensions
 {
-    public static RoomDto ToRoomDto(this Room room)
+    public static RoomItemDto ToRoomItemDto(this Room room)
     {
-        return new RoomDto(
+        return new RoomItemDto(
+            room.Id,
+            room.Number,
+            (int)room.Type,
+            room.Floor.Number);
+    }
+
+    public static EditRoomDto ToRoomDto(this Room room)
+    {
+        return new EditRoomDto(
             room.Id,
             room.Number,
             ((int)room.Type));

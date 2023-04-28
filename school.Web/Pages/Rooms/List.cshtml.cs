@@ -10,8 +10,8 @@ public class ListModel : BasePageModel
     private readonly IRepository<Room> _roomRepository;
     private readonly IRepository<Floor> _floorRepository;
 
-    public IEnumerable<Room> Rooms { get; private set; } = null!;
-    public IEnumerable<Floor> Floors { get; private set; } = null!;
+    public IEnumerable<RoomItemDto> RoomDtos { get; private set; } = null!;
+    public int FloorNumber { get; private set; } = null!;
     public string RoomNumberSort { get; set; } = null!;
     public string RoomTypeSort { get; set; } = null!;
     public string FloorNumberSort { get; set; } = null!;
@@ -52,10 +52,12 @@ public class ListModel : BasePageModel
         FilterByRoomType = RoomHelper.GetRoomType(filterByRoomType);
         FilterByFloorNumber = filterByFloorNumber;
 
-        Rooms = _roomRepository.GetAll(FilterBy(FilterByRoomNumber, FilterByRoomType, FilterByFloorNumber, schoolId), 
+        var rooms = _roomRepository.GetAll(FilterBy(FilterByRoomNumber, FilterByRoomType, FilterByFloorNumber, schoolId), 
             Sort(orderBy));
 
-        Floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+        RoomDtos = rooms.Select(r => r.ToRoomItemDto()).ToArray();
+
+        //FloorNumber = _floorRepository.GetAll(f => f. == schoolId);
 
         var filterParams = GetFilters();
 

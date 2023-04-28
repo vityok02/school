@@ -11,7 +11,7 @@ public class AddModel : BasePageModel
     private readonly IRepository<Room> _roomRepository;
 
     public IEnumerable<FloorDto>? FloorsDto { get; private set; } = default!;
-    public AddRoomDto RoomDto { get; set; }
+    public AddRoomDto RoomDto { get; set; } = default!;
 
     public AddModel(ISchoolRepository schoolRepository, IFloorRepository floorRepository, IRepository<Room> roomRepository)
         :base(schoolRepository)
