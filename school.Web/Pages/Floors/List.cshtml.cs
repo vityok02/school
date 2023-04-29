@@ -34,8 +34,7 @@ public class FloorListModel : BasePageModel
 
         var floors = _floorRepository.GetFloors(schoolId);
         FloorsDto = floors.Select(f => f.ToFloorItemDto()).ToArray();
-        string json = JsonSerializer.Serialize(FloorsDto);
-        Response.WriteAsJsonAsync(FloorsDto);
+
         return Page();
     }
 
