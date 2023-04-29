@@ -9,16 +9,16 @@ public static class RoomExtensions
         return new RoomItemDto(
             room.Id,
             room.Number,
-            (int)room.Type,
+            room.Type.ToString(),
             room.Floor.Number);
     }
 
-    public static EditRoomDto ToRoomDto(this Room room)
+    public static EditRoomDto ToEditRoomDto(this Room room)
     {
         return new EditRoomDto(
             room.Id,
             room.Number,
-            ((int)room.Type));
+            room.FloorId);
     }
 
     public static FloorDto ToFloorDto(this Floor floor)

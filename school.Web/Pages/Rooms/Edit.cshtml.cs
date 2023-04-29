@@ -6,13 +6,14 @@ namespace SchoolManagement.Web.Pages.Rooms;
 
 public class EditModel : BasePageModel
 {
-    private readonly IRepository<Room> _roomRepository;
+    private readonly IRoomRepository _roomRepository;
     private readonly IFloorRepository _floorRepository;
 
-    public Room Room { get; set; } = default!;
-    public IEnumerable<Floor> Floors { get; set; } = default!;
+    public EditRoomDto RoomDto { get; private set; } = default!;
+    public RoomType CheckedTypes { get; private set; }
+    public IEnumerable<FloorDto> FloorDtos { get; private set; } = default!;
 
-    public EditModel(ISchoolRepository schoolRepository, IRepository<Room> roomRepository, IFloorRepository floorRepository)
+    public EditModel(ISchoolRepository schoolRepository, IRoomRepository roomRepository, IFloorRepository floorRepository)
         : base(schoolRepository)
     {
         _roomRepository = roomRepository;
@@ -33,20 +34,29 @@ public class EditModel : BasePageModel
             return RedirectToPage("List");
         }
 
-        //Room = room;
+        CheckedTypes = room.Type;
 
-        Floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+        RoomDto = room.ToEditRoomDto();
+
+        var floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+        FloorDtos = floors.Select(f => f.ToFloorDto()).ToArray();
+
         return Page();
     }
-    public IActionResult OnPost(Room room, RoomType[] roomTypes)
+    public IActionResult OnPost(EditRoomDto roomDto, RoomType[] roomTypes)
     {
-        var floor = _floorRepository.Get(room.FloorId);
+        var room = _roomRepository.Get(roomDto.Id);
+        room!.Number = roomDto.Number;
+
+        var floor = _floorRepository.Get(roomDto.FloorId);
         if (floor is null)
         {
             return RedirectToPage("List");
         }
 
-        //Room!.Floor = floor;
+        room.FloorId = roomDto.FloorId;
+
+        room!.Floor = floor;
 
         RoomType roomType = RoomHelper.GetRoomType(roomTypes);
         foreach (var rt in roomTypes)
@@ -54,9 +64,9 @@ public class EditModel : BasePageModel
             roomType |= rt;
         }
 
-        //Room.Type = roomType;
+        room.Type = roomType;
 
-        //_roomRepository.Update(Room!);
+        _roomRepository.Update(room!);
         return RedirectToPage("List");
     }
 }

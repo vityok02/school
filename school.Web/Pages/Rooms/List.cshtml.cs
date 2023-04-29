@@ -7,11 +7,10 @@ namespace SchoolManagement.Web.Pages.Rooms;
 
 public class ListModel : BasePageModel
 {
-    private readonly IRepository<Room> _roomRepository;
-    private readonly IRepository<Floor> _floorRepository;
+    private readonly IRoomRepository _roomRepository;
 
     public IEnumerable<RoomItemDto> RoomDtos { get; private set; } = null!;
-    public int FloorNumber { get; private set; } = null!;
+    public int FloorNumber { get; private set; }
     public string RoomNumberSort { get; set; } = null!;
     public string RoomTypeSort { get; set; } = null!;
     public string FloorNumberSort { get; set; } = null!;
@@ -22,11 +21,10 @@ public class ListModel : BasePageModel
     public Dictionary<string, string> RoomTypeParams { get; private set; } = null!;
     public Dictionary<string, string> FloorNumberParams { get; private set; } = null!;
 
-    public ListModel(ISchoolRepository schoolRepository, IRepository<Room> roomRepository, IRepository<Floor> floorRepository)
+    public ListModel(ISchoolRepository schoolRepository, IRoomRepository roomRepository)
         : base(schoolRepository)
     {
         _roomRepository = roomRepository;
-        _floorRepository = floorRepository;
     }
 
     public IActionResult OnGet(string orderBy, int filterByRoomNumber, RoomType[] filterByRoomType, int filterByFloorNumber)
@@ -52,8 +50,8 @@ public class ListModel : BasePageModel
         FilterByRoomType = RoomHelper.GetRoomType(filterByRoomType);
         FilterByFloorNumber = filterByFloorNumber;
 
-        var rooms = _roomRepository.GetAll(FilterBy(FilterByRoomNumber, FilterByRoomType, FilterByFloorNumber, schoolId), 
-            Sort(orderBy));
+        var rooms = _roomRepository.GetRooms(FilterBy(FilterByRoomNumber, FilterByRoomType, FilterByFloorNumber), 
+            Sort(orderBy), schoolId);
 
         RoomDtos = rooms.Select(r => r.ToRoomItemDto()).ToArray();
 
@@ -83,10 +81,9 @@ public class ListModel : BasePageModel
 
         return Page();
 
-        static Expression<Func<Room, bool>> FilterBy(int filterByRoomNumber, RoomType filterByRoomTypes, int filterByFloorNumber, int schoolId)
+        static Expression<Func<Room, bool>> FilterBy(int filterByRoomNumber, RoomType filterByRoomTypes, int filterByFloorNumber)
         {
-            return r => r.Floor.SchoolId == schoolId
-                && (filterByRoomNumber == 0 || r.Number.ToString().Contains(filterByRoomNumber.ToString()))
+            return r => (filterByRoomNumber == 0 || r.Number.ToString().Contains(filterByRoomNumber.ToString()))
                 && (filterByRoomTypes == 0 || r.Type.HasFlag(filterByRoomTypes))
                 && (filterByFloorNumber == 0 || r.Floor.Number == filterByFloorNumber);
         }
