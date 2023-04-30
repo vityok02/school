@@ -1,43 +1,47 @@
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools
 {
     public class EditModel : BasePageModel
     {
-        private readonly IRepository<Address> _addressRepository;
+        public SchoolDto SchoolDto { get; private set; } = default!;
 
-        [BindProperty]
-        public School? School { get; set; }
-
-        [BindProperty]
-        public Address? Address { get; set; }
-
-        public EditModel(ISchoolRepository schoolRepository, IRepository<Address> addressRepository)
+        public EditModel(ISchoolRepository schoolRepository)
             :base(schoolRepository)
         {
-            _addressRepository = addressRepository;
         }
 
         public IActionResult OnGet(int id)
         {
-            School = SchoolRepository.Get(id);
-            if (School is null)
+            var school = SchoolRepository.GetSchool(id);
+            if (school is null)
             {
                 return RedirectToPage("List");
             }
 
-            Address = _addressRepository.Get(School?.Id ?? 0);
+            SchoolDto = school.ToSchoolDto();
+
             return Page();
         }
 
-        public IActionResult OnPost(Address address, int id)
+        public IActionResult OnPost(SchoolDto schoolDto)
         {
-            School!.Address = address;
+            var school = SchoolRepository.GetSchool(schoolDto.Id);
+            if (school is null)
+            {
+                return RedirectToPage("List");
+            }
 
-            SchoolRepository.Update(School!);
-            return Redirect($"/schools/{id}");
+            school.Name = schoolDto.Name;
+            school.Address.Country = schoolDto.Country;
+            school.Address.City = schoolDto.City;
+            school.Address.Street = schoolDto.Street;
+            school.Address.PostalCode = schoolDto.PostalCode;
+            school.OpeningDate = schoolDto.OpeningDate.ToDateTime(TimeOnly.MinValue);
+
+            SchoolRepository.Update(school);
+            return RedirectToPage("Details", new { id = schoolDto.Id});
         }
     }
 }

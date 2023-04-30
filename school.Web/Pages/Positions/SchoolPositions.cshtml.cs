@@ -9,10 +9,10 @@ public class SchoolPositionsModel : BasePageModel
 {
     private readonly IPositionRepository _positionRepository;
 
-    public IEnumerable<Position> SchoolPositions { get; set; } = null!;
+    public IEnumerable<PositionDto> AllPositions { get; set; } = null!;
+    public IEnumerable<PositionDto> SchoolPositions { get; set; } = null!;
     public string Filter { get; set; } = null!;
     public string NameSort { get; private set; } = null!;
-    public IEnumerable<Position> AllPositions { get; set; } = null!;
 
     public SchoolPositionsModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
@@ -20,7 +20,7 @@ public class SchoolPositionsModel : BasePageModel
         _positionRepository = positionRepository;
     }
 
-    public void OnGet(string orderBy, string filter)
+    public IActionResult OnGet(string orderBy, string filter)
     {
         NameSort = string.IsNullOrEmpty(orderBy) ? "name_desc" : "";
 
@@ -36,11 +36,15 @@ public class SchoolPositionsModel : BasePageModel
 
         if (school is null)
         {
-            RedirectToSchoolList();
+            return RedirectToSchoolList();
         }
 
-        AllPositions = _positionRepository.GetUnSelectedPositions(schoolId);
-        SchoolPositions = _positionRepository.GetSchoolPositions(schoolId);
+        var allPositions = _positionRepository.GetUnSelectedPositions(schoolId);
+        AllPositions = allPositions.Select(s => s.ToPositionDto()).ToArray();
+        var schoolPositions = _positionRepository.GetSchoolPositions(schoolId);
+        SchoolPositions = schoolPositions.Select(s => s.ToPositionDto()).ToArray();
+
+        return Page();
     }
 
     public Expression<Func<Position, bool>> FilterBy(string filter)

@@ -7,37 +7,25 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolListModel : BasePageModel
 {
-    private readonly IRepository<Employee> _employeeRepository;
+    public IEnumerable<SchoolItemDto> SchoolItems { get; private set; } = null!;
+    public IEnumerable<Address> Addresses { get; private set; } = null!;
+    public bool IsError { get; private set; } = false;
+    public bool IsFirst { get; private set; } = false;
+    public string NameSort { get; private set; } = null!;
+    public string CitySort { get; private set; } = null!;
+    public string StreetSort { get; private set; } = null!;
+    public string FilterByParam { get; private set; } = null!;
+    public Dictionary<string, string> NameParams { get; private set; } = null!;
+    public Dictionary<string, string> CityParams { get; private set; } = null!;
+    public Dictionary<string, string> StreetParams { get; private set; } = null!;
 
-    public IEnumerable<Address> Addresses { get; set; } = null!;
-    public bool IsError { get; set; } = false;
-    public bool IsFirst { get; set; } = false;
-    public string NameSort { get; set; } = null!;
-    public string CitySort { get; set; } = null!;
-    public string StreetSort { get; set; } = null!;
-    public string FilterByParam { get; set; } = null!;
-    public Dictionary<string, string> NameParams { get; set; } = null!;
-    public Dictionary<string, string> CityParams { get; set; } = null!;
-    public Dictionary<string, string> StreetParams { get; set; } = null!;
-
-    public SchoolListModel(ISchoolRepository schoolRepository, IRepository<Employee> empRepository)
+    public SchoolListModel(ISchoolRepository schoolRepository)
         : base(schoolRepository)
     {
-        _employeeRepository = empRepository;
     }
 
     public IActionResult OnGet(string orderBy, string filterByParam)
     {
-        //for (int i = 0; i < 10; i++)
-        //{
-        //    var school = new School()
-        //    {
-        //        Name = i.ToString(),
-        //        Address = new Address(i.ToString(), i.ToString(), i.ToString(), 0),
-        //        OpeningDate = DateTime.Now
-        //    };
-        //    SchoolRepository.Add(school);
-        //}
         OrderBy = orderBy;  
         NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
         CitySort = orderBy == "city" ? "city_desc" : "city";
@@ -45,7 +33,9 @@ public class SchoolListModel : BasePageModel
 
         FilterByParam = filterByParam;
 
-        Schools = SchoolRepository.GetSchools(FilterBy(FilterByParam), Sort(orderBy));
+        IEnumerable<School> schools = SchoolRepository.GetSchools(FilterBy(FilterByParam), Sort(orderBy));
+
+        SchoolItems = schools.Select(s => s.ToSchoolItemDto()).ToArray();
 
         var filterParams = GetFilters();
 
@@ -140,12 +130,6 @@ public class SchoolListModel : BasePageModel
         {
             return RedirectToPage("List");
         }
-
-        //var employees = _employeeRepository.GetAll(e => e.SchoolId == id);
-        //foreach (var emp in employees)
-        //{
-        //    school.Employees.Clear();
-        //}
 
         SchoolRepository.Delete(school);
         return RedirectToPage("List");

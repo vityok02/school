@@ -10,39 +10,32 @@
 
 <div class="wrapper">
     <form method="post" class="edit">
-        <table>
-            <tr>
-                <td>Name: </td>
-                <td>
-                    <input type="text" value="@Model.Student!.FirstName" name="firstName" />
-                </td>
-            </tr>
-            <tr>
-                <td>Surname: </td>
-                <td>
-                    <input value="@Model.Student.LastName" name="lastName"/>
-                </td>
-            </tr>
-            <tr>
-                <td>Age: </td>
-                <td>
-                    <input value="@Model.Student.Age" min="5" max="18" name="age"/>
-                </td>
-            </tr>
-            <tr>
-                <td>Group: </td>
-                <td>
-                    <input value="@Model.Student.Group" name="group" />
-                </td>
-            </tr>
-        </table>
-        <div class="error">@Model.ErrorMessage</div>
-        <input type="hidden" asp-for="Student!.Id" />
-        <div class="btns">
-            <input class="button save" type="submit" value="Save" />
-            <div class="button cancel">
-                <a asp-page="List">Cancel</a>
-            </div>
+        <div class="form-group">
+            <label asp-for="StudentDto!.FirstName">
+                First name
+                <input asp-for="StudentDto!.FirstName" class="form-control" />
+            </label>
         </div>
+        <div class="form-group">
+            <label asp-for="StudentDto!.LastName">
+                Last name
+                <input asp-for="StudentDto!.LastName" class="form-control" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label asp-for="StudentDto!.Age">
+                Age
+                <input asp-for="StudentDto!.Age" class="form-control" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label asp-for="StudentDto!.Group">
+                Group
+                <input asp-for="StudentDto!.Group" class="form-control" />
+            </label>
+        </div>
+        <input type="hidden" asp-for="StudentDto!.Id" />
+        <div class="error">@Model.ErrorMessage</div>
+        <partial name="FormButtons" />
     </form>
 </div>

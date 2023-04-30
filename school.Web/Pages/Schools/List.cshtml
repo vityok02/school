@@ -5,14 +5,7 @@
 
     if (Model.IsError)
     {
-    <script>alert('No school selected, please select a school');</script>
-    }
-    if (!Model.IsFirst)
-    {
-    <script>
-            var element = document.getElementById("choose);
-            element.classList.add("choose-active");
-    </script>
+        <script>alert('No school selected, please select a school');</script>
     }
 }
 
@@ -43,7 +36,7 @@
         </ul>
         <input type="hidden" asp-for="OrderBy" />
     </form>
-    @if (!Model.Schools.Any())
+    @if (!Model.SchoolItems.Any())
     {
         <div class="empty">List of schools if empty</div>
     }
@@ -64,18 +57,18 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var school in Model.Schools)
+                @foreach (var school in Model.SchoolItems)
                 {
                     <tr>
                         <td>@school.Name</td>
                         <td>
                             <div class="city">
-                                @school.Address.City
+                                @school.City
                             </div>
                         </td>
                         <td>
                             <div class="street">
-                                @school.Address.Street
+                                @school.Street
                             </div>
                         </td>
                         <td>

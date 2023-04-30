@@ -1,18 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using SchoolManagement.Web.Pages.Floors;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
-public class RoomFormModel : BasePageModel
+public class AddModel : BasePageModel
 {
-    private readonly IRepository<Floor> _floorRepository;
+    private readonly IFloorRepository _floorRepository;
     private readonly IRepository<Room> _roomRepository;
 
-    public IEnumerable<Floor>? Floors { get; set; } = null!;
+    public IEnumerable<FloorDto>? FloorsDto { get; private set; } = default!;
+    public AddRoomDto RoomDto { get; set; } = default!;
 
-
-    public RoomFormModel(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository, IRepository<Room> roomRepository)
+    public AddModel(ISchoolRepository schoolRepository, IFloorRepository floorRepository, IRepository<Room> roomRepository)
         :base(schoolRepository)
     {
         _floorRepository = floorRepository;
@@ -27,11 +28,13 @@ public class RoomFormModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        Floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+        var floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+        FloorsDto = floors.Select(f => f.ToFloorDto()).ToArray();
+
         return Page();
     }
 
-    public IActionResult OnPost(int roomNumber, int floorNumber, RoomType[] roomTypes)
+    public IActionResult OnPost(AddRoomDto roomDto, RoomType[] roomTypes)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -40,13 +43,13 @@ public class RoomFormModel : BasePageModel
         }
 
         var rooms = _roomRepository.GetAll(r => r.Floor.SchoolId == schoolId);
-        if (rooms.Any(r => r.Number == roomNumber))
+        if (rooms.Any(r => r.Number == roomDto.Number))
         {
             ErrorMessage = "A room with this number already exists";
             return OnGet();
         }
 
-        var floor = _floorRepository.GetAll(f => f.SchoolId == schoolId && f.Number == floorNumber).SingleOrDefault();
+        var floor = _floorRepository.Get(roomDto.FloorId);
 
         RoomType roomType = RoomHelper.GetRoomType(roomTypes);
 
@@ -56,7 +59,7 @@ public class RoomFormModel : BasePageModel
             return OnGet();
         }
 
-        _roomRepository.Add(new Room(roomNumber, roomType, floor!));
+        _roomRepository.Add(new Room(roomDto.Number, roomType, floor!));
         return RedirectToPage("List");
     }
 }

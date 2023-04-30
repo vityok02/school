@@ -1,6 +1,6 @@
 ﻿@page "/rooms/add"
 @using SchoolManagement.Models;
-@model RoomFormModel
+@model AddModel
 @{
     ViewData["Title"] = "Add room";
 }
@@ -10,28 +10,26 @@
     <link rel="stylesheet" href="~/css/add.css" />
 }
 
-
-
 <div class="wrapper">
     <form method="post" class="form">
         <table>
             <tr>
                 <td>
-                    <label for="roomNumber">Number</label>
+                    <label asp-for="RoomDto.Number">Number</label>
                 </td>
                 <td>
-                    <input type="number" name="roomNumber" id="roomNumber" required/>
+                    <input asp-for="RoomDto.Number" required/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label for="floorNumber">Floor</label>
+                    <label asp-for="FloorsDto">Floor</label>
                 </td>
                 <td>
-                    <select name="floorNumber" id="floorNumber" required>
-                        @foreach (var floor in Model.Floors!)
+                    <select asp-for="RoomDto.FloorId" required>
+                        @foreach (var floor in Model.FloorsDto!)
                         {
-                            <option value="@floor.Number">@floor.Number</option>
+                            <option value="@floor.Id">@floor.Number</option>
                         }
                     </select>
                 </td>
@@ -51,10 +49,6 @@
                 </td>
             </tr>
         </table>
-        <div class="error">@Model.ErrorMessage</div>
-        <div class="btns">
-            <input class="btn btn-save btn-lg" type="submit" value="Add room" />
-            <a class="btn btn-cancel btn-lg" asp-page="List">Cancel</a>
-        </div>
+        <partial name="FormButtons" />
     </form>
 </div>

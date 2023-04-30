@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
@@ -9,7 +10,9 @@ public class AddModel : BasePageModel
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
 
-    public IEnumerable<Position> Positions { get; set; } = null!;
+    public AddEmployeeDto EmployeeDto { get; private set; } = default!;
+    public IEnumerable<PositionDto>? PositionsDto { get; private set; } = default!;
+    public IEnumerable<int> CheckedPositionsId { get; private set; } = default!;
 
     public AddModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
@@ -31,11 +34,13 @@ public class AddModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        Positions = _positionRepository.GetSchoolPositions(schoolId);
+        var positions = _positionRepository.GetSchoolPositions(schoolId);
+        PositionsDto = positions.Select(s => s.ToPositionDto()).ToArray();
+
         return Page();
     }
 
-    public IActionResult OnPost(string firstName, string lastName, int age, int[] positions)
+    public IActionResult OnPost(AddEmployeeDto employeeDto, int[] checkedPositionsId)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -49,27 +54,30 @@ public class AddModel : BasePageModel
             return RedirectToSchoolList();
         }
 
+        IEnumerable<Position> employeePositions = _positionRepository.GetAll(s => checkedPositionsId.Contains(s.Id)).ToArray();
+
         var employees = _employeeRepository.GetAll(e => e.SchoolId == schoolId);
 
-        if (employees.Any(s => s.FirstName == firstName
-                && s.LastName == lastName
-                && s.Age == age))
+        if (employees.Any(s => s.FirstName == employeeDto.FirstName
+                && s.LastName == employeeDto.LastName
+                && s.Age == employeeDto.Age))
         {
-            Message = "Such employee already exists";
-            return RedirectToPage("Add");
+            var positions = _positionRepository.GetSchoolPositions(schoolId);
+            PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
+            CheckedPositionsId = checkedPositionsId;
+
+            ErrorMessage = "Such employee already exists";
+            return Page();
         }
 
-        var employee = new Employee(firstName, lastName, age)
+        var employee = new Employee(employeeDto.FirstName, employeeDto.LastName, employeeDto.Age)
         {
-            School = school
+            School = school,
+            Positions = (ICollection<Position>)employeePositions,
         };
-
-        foreach(var positionId in positions)
-        {
-            employee.Positions.Add(_positionRepository.Get(positionId)!);
-        }
 
         _employeeRepository.Add(employee);
         return RedirectToPage("List");
+
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using SchoolManagement.Web.Pages.Schools;
 
 namespace SchoolManagement.Web.Pages;
 
@@ -10,7 +11,7 @@ public abstract class BasePageModel : PageModel
     protected ISchoolRepository SchoolRepository { get; }
 
     public string SelectedSchoolName { get; set; } = null!;
-    public IEnumerable<School> Schools { get; set; } = null!;
+    public IEnumerable<SchoolDto> Schools { get; set; } = null!;
     public string ErrorMessage { get; set; } = null!;
     public string Message { get; set; } = null!;
     public string OrderBy { get; set; } = null!;

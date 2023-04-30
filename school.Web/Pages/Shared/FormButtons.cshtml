@@ -1,0 +1,9 @@
+﻿@{
+    var p = Url.PageLink();
+}
+
+<div class="error">@Model.ErrorMessage</div>
+<div class="btns">
+    <button type="submit" class="btn btn-save btn-lg">Save</button>
+    <a asp-page="List" class="btn btn-cancel btn-lg">Cancel</a>
+</div>

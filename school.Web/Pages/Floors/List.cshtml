@@ -1,28 +1,28 @@
 ﻿@page "/floors"
 @model FloorListModel
 
-<link rel="stylesheet" href="~/css/floorList.css"/>
-
-
+@section styles
+{
+    <link rel="stylesheet" href="~/css/floorList.css"/>
+}
 
 <div class="wrapper">
     <a class="btn btn-sm btn-primary" asp-page="Add">Add</a>
-    @if (!Model.Floors.Any())
+    @if (!Model.FloorsDto.Any())
     {
         <div class="empty">List of floors is empty</div>
     }
     else
     {
         <div class="list">
-            @foreach(var floor in Model.Floors)
+            @foreach(var floor in Model.FloorsDto)
             {
                 <details>
                     <summary>
                         <div class="name">
                             @if (floor.Number < 1)
                             {
-                                floor.Number = -floor.Number;
-                                @:Basement level @floor.Number
+                                @:Basement level @Math.Abs(floor.Number)
                             }
                             else
                             {
@@ -33,10 +33,10 @@
                         onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
                             <input type="submit" value="Delete" />
                         </form>
-                        <div class="count">Rooms count @Model.GetRooms(floor).Count()</div>
+                        <div class="count">Rooms count @floor.Rooms.Count()</div>
                         </summary>
                     <div class="content">
-                        @foreach(var room in Model.GetRooms(floor))
+                        @foreach(var room in floor.Rooms)
                         {
                             <div class="border-bottom">
                                 <div>Room @room.Number</div>

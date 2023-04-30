@@ -2,47 +2,42 @@
 @model SchoolModel
 
 @section styles
-    {
+{
     <link rel="stylesheet" href="~/css/details.css" />
+    <link rel="styleshee t" href="~/css/edit.css" />
 }
-
-
 
 <div class="wrapper">
     <div class="details">
         <table class="tab"> 
             <tr>
                 <td>Name: </td>
-                <td>@Model.School!.Name</td>
+                <td>@Model.SchoolDto.Name</td>
             </tr>
             <tr>
                 <td>Country: </td>
-                <td>@Model.Address!.Country</td>
+                <td>@Model.SchoolDto.Country</td>
             </tr>
             <tr>
                 <td>City/town: </td>
-                <td>@Model.Address.City</td>
+                <td>@Model.SchoolDto.City</td>
             </tr>
             <tr>
                 <td>Street: </td>
-                <td>@Model.Address.Street</td>
+                <td>@Model.SchoolDto.Street</td>
             </tr>
             <tr>
                 <td>Postal code: </td>
-                <td>@Model.Address.PostalCode</td>
+                <td>@Model.SchoolDto.PostalCode</td>
             </tr>
             <tr>
                 <td>Opening date: </td>
-                <td>@Model.School.OpeningDate.ToShortDateString()</td>
+                <td>@Model.SchoolDto.OpeningDate</td>
             </tr>
         </table>
         <div class="btns">
-            <div class="button edit">
-                <a asp-page="Edit" asp-route-id="@Model.School.Id">Edit</a>
-            </div>
-            <div class="button cancel">
-                <a asp-page="List">Cancel</a>
-            </div>
+            <a asp-page="Edit" asp-route-id="@Model.SchoolDto.Id" class="btn btn-edit">Edit</a>
+            <a asp-page="List" class="btn btn-cancel">Cancel</a>
         </div>
     </div>
 </div>

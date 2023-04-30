@@ -10,8 +10,6 @@
     
 }
 
-
-
 <div class="wrapper">
     <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
         <div class="form-group">
@@ -45,7 +43,7 @@
         </div>
         <input type="hidden" asp-for="OrderBy" />
     </form>
-    @if (!Model.Rooms.Any())
+    @if (!Model.RoomDtos.Any())
     {
         <div class="empty">List of rooms is empty</div>
     }
@@ -72,12 +70,12 @@
                     <th></th>
                 </tr>
             </thead>
-            @foreach (var room in Model.Rooms!)
+            @foreach (var room in Model.RoomDtos!)
             {
                 <tr>
                     <td class="first-column">@room.Number</td>
-                    <td class="second-column">@room.Type</td>
-                    <td class="floor-column">@room.Floor.Number</td>
+                    <td class="second-column">@room.Types</td>
+                    <td class="floor-column">@room.FloorNumber</td>
                     <td>
                         <div class="btns">
                             <a class="btn btn-edit" href="rooms/@room.Id/edit">Edit</a>

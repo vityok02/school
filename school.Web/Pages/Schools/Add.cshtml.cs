@@ -4,31 +4,40 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class SchoolFormModel : BasePageModel
+public class Add : BasePageModel
 {
-    public string Name { get; set; } = "";
-    public Address Address { get; set; } = new Address();
-    public DateTime OpeningDate { get; set; }
+    public AddSchoolDto SchoolDto { get; private set; } = default!;
 
-    public SchoolFormModel(ISchoolRepository schoolRepository)
+    public Add(ISchoolRepository schoolRepository)
         : base(schoolRepository)
     {
     }
 
-    public IActionResult OnPost(string name, Address address, DateTime openingDate)
+    public IActionResult OnPost(AddSchoolDto schoolDto)
     {
         var schools = SchoolRepository.GetAll();
-        if (schools.Any(s => s.Name == name))
+
+        if (schools.Any(s => s.Name == schoolDto.Name))
         {
             ErrorMessage = "School with this name already exists";
-            Name = name;
-            Address = address;
-            OpeningDate = openingDate;
 
             return Page();
         }
 
-        School school = new(name, address, openingDate);
+        var address = new Address()
+        {
+            Country = schoolDto.Country,
+            City = schoolDto.City,
+            Street = schoolDto.Street,
+            PostalCode = schoolDto.PostalCode,
+        };
+
+        var school = new School()
+        {
+            Name = schoolDto.Name,
+            Address = address,
+            OpeningDate = schoolDto.OpeningDate.ToDateTime(TimeOnly.MinValue),
+        };
 
         SchoolRepository.Add(school);
 

@@ -8,7 +8,7 @@ public class EditModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
-    public Student? Student { get; set; }
+    public StudentDto? StudentDto { get; set; } = null!;
 
     public EditModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         :base(schoolRepository)
@@ -18,11 +18,18 @@ public class EditModel : BasePageModel
 
     public IActionResult OnGet(int id)
     {
-        Student = _studentRepository.Get(id);
-        return Student is null ? RedirectToPage("List") : Page();
+        var student = _studentRepository.Get(id);
+        if (student is null)
+        {
+            return RedirectToPage("List");
+        }
+
+        StudentDto = student.ToStudentDto();
+
+        return Page();
     }
 
-    public IActionResult OnPost(int id, string firstName, string lastName, int age, string group)
+    public IActionResult OnPost(StudentDto studentDto)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -31,16 +38,19 @@ public class EditModel : BasePageModel
         }
 
         var students = _studentRepository.GetAll(s => s.SchoolId == schoolId);
-        if (students.Where(s => s.FirstName == firstName
-            && s.LastName == lastName
-            && s.Age == age).Count() > 1)
+
+        if ((students.Where(s => s.FirstName == studentDto.FirstName
+            && s.LastName == studentDto.LastName
+            && s.Age == studentDto.Age
+            && s.Id != studentDto.Id).Any()))
         {
             ErrorMessage = "Such student already exists";
+            return Page();
         }
 
-        var student = _studentRepository.Get(id);
+        var student = _studentRepository.Get(studentDto.Id);
 
-        student!.UpdateInfo(firstName, lastName, age, group);
+        student!.UpdateInfo(studentDto.FirstName, studentDto.LastName, studentDto.Age, studentDto.Group);
 
         _studentRepository.Update(student);
         return RedirectToPage("List");

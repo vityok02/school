@@ -15,6 +15,11 @@ public class SchoolRepository : Repository<School>, ISchoolRepository
         _dbContext = dbContext;
     }
 
+    public School GetSchool(int id)
+    {
+        return _dbContext.Schools.Where(s => s.Id == id).Include(s => s.Address).SingleOrDefault()!;
+    }
+
     public IEnumerable<School> GetSchools(Expression<Func<School, bool>> predicate,
         Func<IQueryable<School>, IOrderedQueryable<School>> orderBy = null!)
     {

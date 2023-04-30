@@ -4,8 +4,8 @@
 }
 
 @section styles
-    {
-        <link rel="stylesheet" href="~/css/add.css" />
+{
+    <link rel="stylesheet" href="~/css/add.css" />
 }
 
 
@@ -15,18 +15,18 @@
         <table>
             <tr>
                 <td>
-                    <label for="name">
+                    <label asp-for="Name">
                         Job title: 
                     </label>
                 </td>
                 <td>
-                    <input type="text" name="name" id="name" required />
+                    <input asp-for="Name" />
                 </td>
             </tr>
         </table>
         <div class="error">@Model.ErrorMessage</div>
         <div class="btns">
-            <input type="submit" value="Add position" class="btn btn-save btn-lg" />
+            <button type="submit" class="btn btn-save btn-lg">Add position</button>
             <a asp-page="AllPositions" class="btn btn-cancel btn-lg">Cancel</a>
         </div>
     </form>

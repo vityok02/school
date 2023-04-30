@@ -30,7 +30,7 @@
                 </label>
             </li>
             <li>
-                <input type="submit" value="Search" class="btn btn-success btn-sm" />
+                <button type="submit" class="btn btn-success btn-sm">Search</button>
             </li>
             <li>
                 <a asp-page="/Students/List" class="btn btn-secondary btn-sm">Back to full list</a>
@@ -41,7 +41,7 @@
         </ul>
         <input type="hidden" asp-for="OrderBy" />
     </form>
-    @if (!Model.Students!.Any())
+    @if (!Model.StudentsDto!.Any())
     {
         <div class="empty">@Model.Message</div>
     }
@@ -74,7 +74,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var student in Model.Students!)
+                @foreach (var student in Model.StudentsDto!)
                 {
                     <tr>
                         <td class="first-columns">@student.FirstName</td>
@@ -83,12 +83,10 @@
                         <td class="group-column">@student.Group</td>
                         <td>
                             <div class="btns">
-                                <div class="details">
-                                    <a href="students/@student.Id/edit">Edit</a>
-                                </div>
+                                <a asp-page="Edit" asp-route-id="@student.Id" class="btn btn-edit">Edit</a>
                                 <form class="delete" asp-page-handler="Delete" method="post" asp-route-id="@student.Id"
-                              onclick="return confirm('Are you sure you want to delete student @student.FirstName @student.LastName?')">
-                                    <input type="submit" value="Delete" />
+                                onclick="return confirm('Are you sure you want to delete student @student.FirstName @student.LastName?')">
+                                    <button type="submit" class="btn btn-delete">Delete</button>
                                 </form>
                             </div>
                         </td>

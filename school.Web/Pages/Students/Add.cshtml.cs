@@ -8,13 +8,15 @@ public class StudentFormModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
+    public AddStudentDto? StudentDto { get; private set; } = null!;
+
     public StudentFormModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         :base(schoolRepository)
     {
         _studentRepository = studentRepository;
     }
 
-    public IActionResult OnPost(string firstName, string lastName, int age, string group)
+    public IActionResult OnPost(AddStudentDto studentDto)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -24,9 +26,9 @@ public class StudentFormModel : BasePageModel
 
         var students = _studentRepository
             .GetAll(s => s.SchoolId == schoolId 
-            && s.FirstName == firstName
-            && s.LastName == lastName
-            && s.Age == age);
+            && s.FirstName == studentDto.FirstName
+            && s.LastName == studentDto.LastName
+            && s.Age == studentDto.Age);
 
         if (students.Any())
         {
@@ -40,7 +42,7 @@ public class StudentFormModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        Student student = new(firstName, lastName, age, group)
+        Student student = new(studentDto.FirstName, studentDto.LastName, studentDto.Age, studentDto.Group)
         {
             School = school!
         };
