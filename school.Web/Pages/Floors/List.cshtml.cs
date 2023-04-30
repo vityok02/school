@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace SchoolManagement.Web.Pages.Floors;
 
@@ -18,7 +15,7 @@ public class FloorListModel : BasePageModel
         _floorRepository = floorRepository;
     }
 
-    public IActionResult OnGet()
+    public async Task<IActionResult> OnGet()
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -26,13 +23,13 @@ public class FloorListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(schoolId);
         if(school is null)
         {
             return RedirectToSchoolList();
         }
 
-        var floors = _floorRepository.GetFloors(schoolId);
+        var floors = await _floorRepository.GetFloorsAsync(schoolId);
         FloorsDto = floors.Select(f => f.ToFloorItemDto()).ToArray();
 
         return Page();
@@ -94,16 +91,16 @@ public class FloorListModel : BasePageModel
     //    return RedirectToPage("List");
     //}
 
-    public IActionResult OnPostDelete(int id)
+    public async Task<IActionResult> OnPostDelete(int id)
     {
-        var floor = _floorRepository!.Get(id);
+        var floor = await _floorRepository!.GetAsync(id);
 
         if (floor is null)
         {
             return RedirectToPage("List");
         }
 
-        _floorRepository.Delete(floor!);
+        await _floorRepository.DeleteAsync(floor!);
         return RedirectToPage("List");
     }
 }

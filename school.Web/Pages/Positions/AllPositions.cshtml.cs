@@ -11,6 +11,7 @@ public class AllPositionsModel : BasePageModel
 
     public string Filter { get; set; } = null!;
     public string NameSort { get; private set; } = null!;
+    public bool HasPositions => Positions?.Any() ?? false;
     public IEnumerable<Position> Positions { get; set; } = null!;
 
     public AllPositionsModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
@@ -19,13 +20,13 @@ public class AllPositionsModel : BasePageModel
         _positionRepository = positionRepository;
     }
 
-    public void OnGet(string orderBy, string filter)
+    public async Task OnGetAsync(string orderBy, string filter)
     {
         NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
 
         Filter = filter;
 
-        Positions = _positionRepository.GetAll(FilterBy(filter), Sort(orderBy));
+        Positions = await _positionRepository.GetAllAsync(FilterBy(filter), Sort(orderBy));
     }
 
     public Expression<Func<Position, bool>> FilterBy(string filter)
@@ -42,15 +43,15 @@ public class AllPositionsModel : BasePageModel
         return p => p.OrderBy(p => p.Name);
     }
 
-    public IActionResult OnPostDelete(int id)
+    public async Task<IActionResult> OnPostDelete(int id)
     {
-        var position = _positionRepository.Get(id);
+        var position = await _positionRepository.GetAsync(id);
         if (position is null)
         {
             return RedirectToPage("AllPositions");
         }
 
-        _positionRepository.Delete(position);
+        await _positionRepository.DeleteAsync(position);
 
         return RedirectToPage("AllPositions");
     }

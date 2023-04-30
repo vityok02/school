@@ -20,7 +20,7 @@ public class ListModel : BasePageModel
         _studentRepository = studentRepository;
     }
 
-    public IActionResult OnGet(string orderBy, string filterByName, int filterByAge, string filterByGroup)
+    public async Task<IActionResult> OnGet(string orderBy, string filterByName, int filterByAge, string filterByGroup)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -28,7 +28,7 @@ public class ListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(schoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
@@ -44,7 +44,7 @@ public class ListModel : BasePageModel
         FilterByGroup = filterByGroup;
         FilterByAge = filterByAge;
 
-        var students = _studentRepository.GetAll(FilterBy(FilterByName, FilterByAge, FilterByGroup, schoolId),
+        var students = await _studentRepository.GetAllAsync(FilterBy(FilterByName, FilterByAge, FilterByGroup, schoolId),
             Sort(orderBy));
         StudentsDto = students.Select(s => s.ToStudentDto()).ToArray();
 
@@ -107,15 +107,15 @@ public class ListModel : BasePageModel
     }
 
 
-    public IActionResult OnPostDelete(int id)
+    public async Task<IActionResult> OnPostDelete(int id)
     {
-        var student = _studentRepository.Get(id);
+        var student = await _studentRepository.GetAsync(id);
         if (student is null)
         {
             return RedirectToPage("List");
         }
 
-        _studentRepository.Delete(student);
+        await _studentRepository.DeleteAsync(student);
         return RedirectToPage("List");
     }
 

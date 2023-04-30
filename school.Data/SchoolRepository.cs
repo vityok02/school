@@ -15,9 +15,14 @@ public class SchoolRepository : Repository<School>, ISchoolRepository
         _dbContext = dbContext;
     }
 
-    public School GetSchool(int id)
+    public async Task<School> GetSchoolAsync(int id)
     {
-        return _dbContext.Schools.Where(s => s.Id == id).Include(s => s.Address).SingleOrDefault()!;
+        var schools = await _dbContext
+            .Schools
+            .Where(s => s.Id == id)
+            .Include(s => s.Address)
+            .SingleOrDefaultAsync();
+        return schools!;
     }
 
     public IEnumerable<School> GetSchools(Expression<Func<School, bool>> predicate,

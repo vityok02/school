@@ -20,7 +20,7 @@ public class ListModel : BasePageModel
         _employeeRepository = employeeRepository;
     }
 
-    public IActionResult OnGet(string orderBy, string filterByName, int filterByAge, string filterByPosition)
+    public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -28,7 +28,7 @@ public class ListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(schoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
@@ -43,7 +43,7 @@ public class ListModel : BasePageModel
         FilterByAge= filterByAge;
         FilterByPosition = filterByPosition;
 
-        var employees = _employeeRepository.GetSchoolEmployees(FilterBy(FilterByName, FilterByAge, FilterByPosition),
+        var employees = await _employeeRepository.GetSchoolEmployeesAsync(FilterBy(FilterByName, FilterByAge, FilterByPosition),
             Sort(orderBy), schoolId);
 
         EmployeeItems = employees.Select(s => s.ToEmployeeItemDto()).ToArray();
@@ -120,15 +120,15 @@ public class ListModel : BasePageModel
         return filterParams;
     }
 
-    public IActionResult OnPostDelete(int id)
+    public async Task<IActionResult> OnPostDelete(int id)
     {
-        var employee = _employeeRepository.Get(id);
+        var employee = await _employeeRepository.GetAsync(id);
         if (employee is null)
         {
             return RedirectToPage("List");
         }
         
-        _employeeRepository.Delete(employee!);
+        await _employeeRepository.DeleteAsync(employee!);
 
         return RedirectToPage("List");
     }

@@ -16,7 +16,7 @@ public class AddModel : BasePageModel
         _floorRepository = floorRepository;
     }
 
-    public IActionResult OnGet()
+    public async Task<IActionResult> OnGetAsync()
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -24,7 +24,7 @@ public class AddModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == schoolId);
         if (!floors.Any())
         {
             FloorNumber = 1;
@@ -37,7 +37,7 @@ public class AddModel : BasePageModel
         return Page();
     }
 
-    public IActionResult OnPost(int floorNumber, string type)
+    public async Task<IActionResult> OnPost(int floorNumber, string type)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -45,13 +45,13 @@ public class AddModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(schoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
         }
 
-        var floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == schoolId);
 
         if (type == "basement")
         {
@@ -69,7 +69,7 @@ public class AddModel : BasePageModel
             School = school
         };
 
-        _floorRepository.Add(floor);
+        await _floorRepository.AddAsync(floor);
         return RedirectToPage("List");
     }
 }

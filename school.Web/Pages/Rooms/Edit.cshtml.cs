@@ -20,7 +20,7 @@ public class EditModel : BasePageModel
         _floorRepository = floorRepository;
     }
 
-    public IActionResult OnGet(int id)
+    public async Task<IActionResult> OnGetAsync(int id)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -28,7 +28,7 @@ public class EditModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var room = _roomRepository.Get(id);
+        var room = await _roomRepository.GetAsync(id);
         if (room is null)
         {
             return RedirectToPage("List");
@@ -38,17 +38,17 @@ public class EditModel : BasePageModel
 
         RoomDto = room.ToEditRoomDto();
 
-        var floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == schoolId);
         FloorDtos = floors.Select(f => f.ToFloorDto()).ToArray();
 
         return Page();
     }
-    public IActionResult OnPost(EditRoomDto roomDto, RoomType[] roomTypes)
+    public async Task<IActionResult> OnPostAsync(EditRoomDto roomDto, RoomType[] roomTypes)
     {
-        var room = _roomRepository.Get(roomDto.Id);
+        var room = await _roomRepository.GetAsync(roomDto.Id);
         room!.Number = roomDto.Number;
 
-        var floor = _floorRepository.Get(roomDto.FloorId);
+        var floor = await _floorRepository.GetAsync(roomDto.FloorId);
         if (floor is null)
         {
             return RedirectToPage("List");
@@ -66,7 +66,7 @@ public class EditModel : BasePageModel
 
         room.Type = roomType;
 
-        _roomRepository.Update(room!);
+        await _roomRepository.UpdateAsync(room!);
         return RedirectToPage("List");
     }
 }

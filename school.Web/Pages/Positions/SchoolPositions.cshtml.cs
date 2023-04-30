@@ -20,7 +20,7 @@ public class SchoolPositionsModel : BasePageModel
         _positionRepository = positionRepository;
     }
 
-    public IActionResult OnGet(string orderBy, string filter)
+    public async Task<IActionResult> OnGetAsync(string orderBy, string filter)
     {
         NameSort = string.IsNullOrEmpty(orderBy) ? "name_desc" : "";
 
@@ -32,16 +32,16 @@ public class SchoolPositionsModel : BasePageModel
             RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(schoolId);
 
         if (school is null)
         {
             return RedirectToSchoolList();
         }
 
-        var allPositions = _positionRepository.GetUnSelectedPositions(schoolId);
+        var allPositions = await _positionRepository.GetUnSelectedPositionsAsync(schoolId);
         AllPositions = allPositions.Select(s => s.ToPositionDto()).ToArray();
-        var schoolPositions = _positionRepository.GetSchoolPositions(schoolId);
+        var schoolPositions = await _positionRepository.GetSchoolPositionsAsync(schoolId);
         SchoolPositions = schoolPositions.Select(s => s.ToPositionDto()).ToArray();
 
         return Page();
@@ -61,7 +61,7 @@ public class SchoolPositionsModel : BasePageModel
         return p => p.OrderBy(p => p.Name);
     }
 
-    public IActionResult OnPostDelete(int id)
+    public async Task<IActionResult> OnPostDelete(int id)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -69,13 +69,13 @@ public class SchoolPositionsModel : BasePageModel
             RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(schoolId);
         if (school is null)
         {
             RedirectToSchoolList();
         }
 
-        var position = _positionRepository.GetPosition(id);
+        var position = await _positionRepository.GetPositionAsync(id);
 
         if (position is null)
         {
@@ -85,12 +85,12 @@ public class SchoolPositionsModel : BasePageModel
         position.Schools.Remove(school!);
         position.Employees.Clear();
 
-        _positionRepository.SaveChanges();
+        await _positionRepository.SaveChangesAsync();
 
         return RedirectToPage("SchoolPositions");
     }
 
-    public IActionResult OnPostAdd(int id)
+    public async Task<IActionResult> OnPostAdd(int id)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -98,14 +98,14 @@ public class SchoolPositionsModel : BasePageModel
             RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(schoolId);
 
         if (school is null)
         {
             RedirectToSchoolList();
         }
 
-        var position = _positionRepository.GetPosition(id);
+        var position = await _positionRepository.GetPositionAsync(id);
 
         if (position.Schools.Any(p => p.Id == schoolId))
         {
@@ -114,7 +114,7 @@ public class SchoolPositionsModel : BasePageModel
 
         position!.Schools.Add(school!);
 
-        _positionRepository.Update(position);
+        await _positionRepository.UpdateAsync(position);
 
         return RedirectToPage("SchoolPositions");
     }

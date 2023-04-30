@@ -14,20 +14,22 @@ public class FloorRepository : Repository<Floor>, IFloorRepository
         _dbContext = dbContext;
     }
 
-    public Floor? GetFloor(int id)
+    public async Task<Floor> GetFloorAsync(int id)
     {
-        return _dbContext
+        var floor = await _dbContext
             .Floors
             .Where(f => f.Id == id)
             .Include(f => f.Rooms)
-            .SingleOrDefault();
+            .SingleOrDefaultAsync();
+
+        return floor!;
     }
 
-    public IEnumerable<Floor> GetFloors(int schoolId)
+    public async Task<IEnumerable<Floor>> GetFloorsAsync(int schoolId)
     {
-        return _dbContext
+        return await _dbContext
             .Floors
             .Where(f => f.SchoolId == schoolId)
-            .Include(f => f.Rooms).ToArray();
+            .Include(f => f.Rooms).ToArrayAsync();
     }
 }

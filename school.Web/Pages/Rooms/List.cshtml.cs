@@ -27,7 +27,7 @@ public class ListModel : BasePageModel
         _roomRepository = roomRepository;
     }
 
-    public IActionResult OnGet(string orderBy, int filterByRoomNumber, RoomType[] filterByRoomType, int filterByFloorNumber)
+    public async Task<IActionResult> OnGetAsync(string orderBy, int filterByRoomNumber, RoomType[] filterByRoomType, int filterByFloorNumber)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -35,7 +35,7 @@ public class ListModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(schoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
@@ -54,8 +54,6 @@ public class ListModel : BasePageModel
             Sort(orderBy), schoolId);
 
         RoomDtos = rooms.Select(r => r.ToRoomItemDto()).ToArray();
-
-        //FloorNumber = _floorRepository.GetAll(f => f. == schoolId);
 
         var filterParams = GetFilters();
 
@@ -124,15 +122,15 @@ public class ListModel : BasePageModel
         return filterParams;
     }
 
-    public IActionResult OnPostDelete(int id)
+    public async Task<IActionResult> OnPostDelete(int id)
     {
-        var room = _roomRepository.Get(id);
+        var room = await _roomRepository.GetAsync(id);
         if (room is null)
         {
             return RedirectToPage("List");
         }
 
-        _roomRepository.Delete(room);
+        await _roomRepository.DeleteAsync(room);
         return RedirectToPage("List");
     }
 }

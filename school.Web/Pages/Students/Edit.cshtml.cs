@@ -16,9 +16,9 @@ public class EditModel : BasePageModel
         _studentRepository = studentRepository;
     }
 
-    public IActionResult OnGet(int id)
+    public async Task<IActionResult> OnGetAsync(int id)
     {
-        var student = _studentRepository.Get(id);
+        var student = await _studentRepository.GetAsync(id);
         if (student is null)
         {
             return RedirectToPage("List");
@@ -29,7 +29,7 @@ public class EditModel : BasePageModel
         return Page();
     }
 
-    public IActionResult OnPost(StudentDto studentDto)
+    public async Task<IActionResult> OnPostAsync(StudentDto studentDto)
     {
         var schoolId = GetSchoolId();
         if (schoolId == -1)
@@ -37,7 +37,7 @@ public class EditModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var students = _studentRepository.GetAll(s => s.SchoolId == schoolId);
+        var students = await _studentRepository.GetAllAsync(s => s.SchoolId == schoolId);
 
         if ((students.Where(s => s.FirstName == studentDto.FirstName
             && s.LastName == studentDto.LastName
@@ -48,11 +48,11 @@ public class EditModel : BasePageModel
             return Page();
         }
 
-        var student = _studentRepository.Get(studentDto.Id);
+        var student = await _studentRepository.GetAsync(studentDto.Id);
 
         student!.UpdateInfo(studentDto.FirstName, studentDto.LastName, studentDto.Age, studentDto.Group);
 
-        _studentRepository.Update(student);
+        await _studentRepository.UpdateAsync(student);
         return RedirectToPage("List");
     }
 }

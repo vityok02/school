@@ -2,7 +2,8 @@
 
 public interface IPositionRepository : IRepository<Position>
 {
-    public IEnumerable<Position> GetSchoolPositions(int schoolId);
-    public IEnumerable<Position> GetUnSelectedPositions(int schoolId);
-    public Position GetPosition(int positionId);
+    Task<IEnumerable<Position>> GetSchoolPositionsAsync(int schoolId);
+    Task<IEnumerable<Position>> GetUnSelectedPositionsAsync(int schoolId);
+    Task<Position> GetPositionAsync(int positionId);
+    Task<IEnumerable<Position>> GetEmployeePositions(int[] checkedPositionsId);
 }

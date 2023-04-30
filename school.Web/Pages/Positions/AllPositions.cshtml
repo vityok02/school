@@ -3,7 +3,7 @@
 @model AllPositionsModel
 
 @section styles
-{
+    {
     <link rel="stylesheet" href="~/css/list.css" />
 }
 
@@ -28,7 +28,7 @@
         </ul>
         <input type="hidden" asp-for="OrderBy" />
     </form>
-    @if(!Model.Positions.Any())
+    @if (!Model.HasPositions)
     {
         <div class="empty">List of positions is empty</div>
     }
@@ -46,7 +46,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach(var position in Model.Positions)
+                @foreach (var position in Model.Positions)
                 {
                     <tr>
                         <td>@position.Name</td>
@@ -54,7 +54,7 @@
                             <div class="btns">
                                 <a class="btn btn-details" asp-page="Edit" asp-route-id="@position.Id">Edit</a>
                                 <form asp-page-handler="Delete" method="post" asp-route-id="@position.Id"
-                                  onclick="return confirm('Are you sure you want to delete position @position.Name?')">
+                              onclick="return confirm('Are you sure you want to delete position @position.Name?')">
                                     <button class="btn btn-delete" type="submit">Delete</button>
                                 </form>
                             </div>

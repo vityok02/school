@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
-using SchoolManagement.Web.Pages.Employees;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
@@ -17,7 +16,7 @@ public class AddModel : BasePageModel
         _positionRepository = positionRepository;
     }
 
-    public IActionResult OnPost(string name) 
+    public async Task<IActionResult> OnPostAsync(string name) 
     {
         if (name is null)
         {
@@ -31,7 +30,7 @@ public class AddModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var positions = _positionRepository.GetAll();
+        var positions = await _positionRepository.GetAllAsync();
         if(positions.Any(p => p.Name == name))
         {
             ErrorMessage = "Such position already exists";
@@ -40,7 +39,7 @@ public class AddModel : BasePageModel
 
         Position position = new(name);
 
-        _positionRepository.Add(position);
+        await _positionRepository.AddAsync(position);
         return RedirectToPage("AllPositions");
     }
 }
