@@ -1,8 +1,13 @@
-﻿namespace SchoolManagement.Models.Interfaces;
+﻿using System.Linq.Expressions;
+
+namespace SchoolManagement.Models.Interfaces;
 
 public interface IPositionRepository : IRepository<Position>
 {
-    public IEnumerable<Position> GetSchoolPositions(int schoolId);
-    public IEnumerable<Position> GetUnSelectedPositions(int schoolId);
-    public Position GetPosition(int positionId);
+    Task<IEnumerable<Position>> GetSchoolPositionsAsync(int schoolId, Expression<Func<Position, bool>>? predicate = null,
+        Func<IQueryable<Position>, IOrderedQueryable<Position>>? orderBy = null);
+    Task<IEnumerable<Position>> GetUnSelectedPositionsAsync(int schoolId, Expression<Func<Position, bool>>? predicate = null,
+        Func<IQueryable<Position>, IOrderedQueryable<Position>>? orderBy = null);
+    Task<Position> GetPositionAsync(int positionId);
+    Task<IEnumerable<Position>> GetEmployeePositions(int[] checkedPositionsId);
 }

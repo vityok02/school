@@ -33,7 +33,7 @@ public class SchoolListModel : BasePageModel
 
         FilterByParam = filterByParam;
 
-        IEnumerable<School> schools = SchoolRepository.GetSchools(FilterBy(FilterByParam), Sort(orderBy));
+        var schools = SchoolRepository.GetSchools(FilterBy(FilterByParam), Sort(orderBy));
 
         SchoolItems = schools.Select(s => s.ToSchoolItemDto()).ToArray();
 
@@ -97,10 +97,10 @@ public class SchoolListModel : BasePageModel
         OnGet(orderBy, filterBy);
     }
 
-    public IActionResult OnGetSelectSchool(int id, string orderBy, string filterBy)
+    public async Task<IActionResult> OnGetSelectSchool(int id, string orderBy, string filterBy)
     {
         OnGet(orderBy, filterBy);
-        var school = SchoolRepository.Get(id);
+        var school = await SchoolRepository.GetAsync(id);
         if(school is null)
         {
             IsError = true;
@@ -123,15 +123,15 @@ public class SchoolListModel : BasePageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostDelete(int id)
+    public async Task<IActionResult> OnPostDelete(int id)
     {
-        var school = SchoolRepository.Get(id);
+        var school = await SchoolRepository.GetAsync(id);
         if (school is null)
         {
             return RedirectToPage("List");
         }
 
-        SchoolRepository.Delete(school);
+        await SchoolRepository.DeleteAsync(school);
         return RedirectToPage("List");
     }
     private IDictionary<string, string> GetFilters()

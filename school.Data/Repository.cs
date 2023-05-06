@@ -1,4 +1,5 @@
-﻿using SchoolManagement.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
@@ -13,61 +14,48 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         _dbContext = dbContext;
     }
 
-    public void Add(TEntity entity)
+    public async Task AddAsync(TEntity entity)
     {
-        _dbContext.Set<TEntity>().Add(entity);
-        _dbContext.SaveChanges();
+        await _dbContext.Set<TEntity>().AddAsync(entity);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void Update(TEntity entity)
+    public async Task UpdateAsync(TEntity entity)
     {
         _dbContext.Update(entity);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public void Delete(TEntity entity)
+    public async Task DeleteAsync(TEntity entity)
     {
         _dbContext.Remove(entity);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
-    public TEntity? Get(int id)
+    public async Task<TEntity?> GetAsync(int id)
     {
-        return _dbContext.Set<TEntity>().Find(id);
+        return await _dbContext.Set<TEntity>().FindAsync(id);
     }
 
-    public IEnumerable<TEntity> GetAll()
-    {
-        return _dbContext.Set<TEntity>().ToArray();
-    }
-
-    public IEnumerable<TEntity> GetAll(Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null!)
+    public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
     {
         IQueryable<TEntity> entities = _dbContext.Set<TEntity>();
+        if (predicate is not null)
+        {
+            entities = entities.Where(predicate);
+        }
 
         if (orderBy is not null)
         {
             entities = orderBy(entities);
         }
 
-        return entities.ToArray();
+        return await entities.ToArrayAsync();
     }
 
-    public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null!)
+    public async Task SaveChangesAsync()
     {
-        var entities = _dbContext.Set<TEntity>().Where(predicate);
-        
-        if (orderBy is not null)
-        {
-            entities = orderBy(entities);
-        }    
-
-        return entities.ToArray();
-    }
-
-    public void SaveChanges()
-    {
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 }

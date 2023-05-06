@@ -4,6 +4,6 @@ namespace SchoolManagement.Models.Interfaces;
 
 public interface IEmployeeRepository : IRepository<Employee>
 {
-    Employee GetEmployee(int id);
-    IEnumerable<Employee> GetSchoolEmployees(Expression<Func<Employee, bool>> predicate, Func<IQueryable<Employee>, IOrderedQueryable<Employee>> orderBy = null!, int schoolId = 0);
+    Task<Employee> GetEmployeeAsync(int id);
+    Task<IEnumerable<Employee>> GetSchoolEmployeesAsync(Expression<Func<Employee, bool>> predicate, Func<IQueryable<Employee>, IOrderedQueryable<Employee>> orderBy = null!, int schoolId = 0);
 }

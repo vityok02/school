@@ -11,8 +11,10 @@ public class SchoolPositionsModel : BasePageModel
 
     public IEnumerable<PositionDto> AllPositions { get; set; } = null!;
     public IEnumerable<PositionDto> SchoolPositions { get; set; } = null!;
-    public string Filter { get; set; } = null!;
-    public string NameSort { get; private set; } = null!;
+    public string AllPositionsFilter { get; set; } = null!;
+    public string SchoolPositionsFilter { get; set; } = null!;
+    public string AllPositionsSort { get; private set; } = null!;
+    public string SchoolPositionsSort { get; private set; } = null!;
 
     public SchoolPositionsModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
@@ -20,62 +22,51 @@ public class SchoolPositionsModel : BasePageModel
         _positionRepository = positionRepository;
     }
 
-    public IActionResult OnGet(string orderBy, string filter)
+    public async Task<IActionResult> OnGetAsync(string schoolPositionsOrderBy, string allPositionsOrderBy, string allPositionsFilter, string schoolPositionsFilter)
     {
-        NameSort = string.IsNullOrEmpty(orderBy) ? "name_desc" : "";
+        AllPositionsSort = string.IsNullOrEmpty(allPositionsOrderBy) ? "name_desc" : "";
+        SchoolPositionsSort = string.IsNullOrEmpty(schoolPositionsOrderBy) ? "name_desc" : "";
 
-        Filter = filter;
+        AllPositionsFilter = allPositionsFilter;
+        SchoolPositionsFilter = schoolPositionsFilter;
 
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
 
         if (school is null)
         {
             return RedirectToSchoolList();
         }
 
-        var allPositions = _positionRepository.GetUnSelectedPositions(schoolId);
+        var allPositions = await _positionRepository.GetUnSelectedPositionsAsync(SelectedSchoolId, FilterBy(this.AllPositionsFilter),
+            Sort(allPositionsOrderBy));
         AllPositions = allPositions.Select(s => s.ToPositionDto()).ToArray();
-        var schoolPositions = _positionRepository.GetSchoolPositions(schoolId);
+
+        var schoolPositions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId, FilterBy(SchoolPositionsFilter),
+            Sort(schoolPositionsOrderBy));
         SchoolPositions = schoolPositions.Select(s => s.ToPositionDto()).ToArray();
 
         return Page();
     }
 
-    public Expression<Func<Position, bool>> FilterBy(string filter)
+    public async Task<IActionResult> OnPostDelete(int id)
     {
-        return p => string.IsNullOrEmpty(filter) || p.Name.Contains(filter);
-    }
-
-    private Func<IQueryable<Position>, IOrderedQueryable<Position>> Sort(string orderBy)
-    {
-        if (orderBy == "name_desc")
-        {
-            return p => p.OrderByDescending(p => p.Name);
-        }
-        return p => p.OrderBy(p => p.Name);
-    }
-
-    public IActionResult OnPostDelete(int id)
-    {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
         if (school is null)
         {
             RedirectToSchoolList();
         }
 
-        var position = _positionRepository.GetPosition(id);
+        var position = await _positionRepository.GetPositionAsync(id);
 
         if (position is null)
         {
@@ -85,37 +76,50 @@ public class SchoolPositionsModel : BasePageModel
         position.Schools.Remove(school!);
         position.Employees.Clear();
 
-        _positionRepository.SaveChanges();
+        await _positionRepository.SaveChangesAsync();
 
         return RedirectToPage("SchoolPositions");
     }
 
-    public IActionResult OnPostAdd(int id)
+    public async Task<IActionResult> OnPostAdd(int id)
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
 
         if (school is null)
         {
             RedirectToSchoolList();
         }
 
-        var position = _positionRepository.GetPosition(id);
+        var position = await _positionRepository.GetPositionAsync(id);
 
-        if (position.Schools.Any(p => p.Id == schoolId))
+        if (position.Schools.Any(p => p.Id == SelectedSchoolId))
         {
             RedirectToPage("SchoolPositions");
         }
 
         position!.Schools.Add(school!);
 
-        _positionRepository.Update(position);
+        await _positionRepository.UpdateAsync(position);
 
         return RedirectToPage("SchoolPositions");
+    }
+
+    private static Func<IQueryable<Position>, IOrderedQueryable<Position>> Sort(string orderBy)
+    {
+        if (orderBy == "name_desc")
+        {
+            return p => p.OrderByDescending(p => p.Name);
+        }
+        return p => p.OrderBy(p => p.Name);
+    }
+
+    private Expression<Func<Position, bool>> FilterBy(string filter)
+    {
+        return p => string.IsNullOrEmpty(filter) || p.Name.Contains(filter);
     }
 }

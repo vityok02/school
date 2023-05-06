@@ -4,18 +4,18 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class Add : BasePageModel
+public class AddModel : BasePageModel
 {
-    public AddSchoolDto SchoolDto { get; private set; } = default!;
+    public AddSchoolDto SchoolDto { get; private set; } = null!;
 
-    public Add(ISchoolRepository schoolRepository)
+    public AddModel(ISchoolRepository schoolRepository)
         : base(schoolRepository)
     {
     }
 
-    public IActionResult OnPost(AddSchoolDto schoolDto)
+    public async Task<IActionResult> OnPostAsync(AddSchoolDto schoolDto)
     {
-        var schools = SchoolRepository.GetAll();
+        var schools = await SchoolRepository.GetAllAsync();
 
         if (schools.Any(s => s.Name == schoolDto.Name))
         {
@@ -24,7 +24,7 @@ public class Add : BasePageModel
             return Page();
         }
 
-        var address = new Address()
+        Address address = new()
         {
             Country = schoolDto.Country,
             City = schoolDto.City,
@@ -39,7 +39,7 @@ public class Add : BasePageModel
             OpeningDate = schoolDto.OpeningDate.ToDateTime(TimeOnly.MinValue),
         };
 
-        SchoolRepository.Add(school);
+        await SchoolRepository.AddAsync(school);
 
         return RedirectToPage("List");
     }

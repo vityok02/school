@@ -2,6 +2,6 @@
 
 public interface IFloorRepository : IRepository<Floor>
 {
-    public Floor? GetFloor(int id);
-    public IEnumerable<Floor> GetFloors(int schoolId);
+    Task<Floor> GetFloorAsync(int id);
+    Task<IEnumerable<Floor>> GetSchoolFloorsAsync(int schoolId);
 }

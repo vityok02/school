@@ -1,10 +1,12 @@
 ﻿@page "/schools/{id}"
 @model SchoolModel
-
+@{
+    ViewData["Title"] = $"School {Model.SchoolDto.Name}";
+}
 @section styles
 {
-    <link rel="stylesheet" href="~/css/details.css" />
-    <link rel="styleshee t" href="~/css/edit.css" />
+    <link rel="stylesheet" href="~/css/details.css" asp-append-version="true" />
+    <link rel="styleshee t" href="~/css/edit.css" asp-append-version="true" />
 }
 
 <div class="wrapper">

@@ -1,9 +1,11 @@
 ﻿@page "/schools/add"
-@model Add
-
+@model AddModel
+@{
+    ViewData["Title"] = "Add school";
+}
 @section styles
 {
-    <link rel="stylesheet" href="~/css/add.css" />
+    <link rel="stylesheet" href="~/css/add.css" asp-append-version="true" />
 }
 
 <div class="wrapper">

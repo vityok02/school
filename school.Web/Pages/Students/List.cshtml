@@ -3,42 +3,23 @@
 @{
     ViewData["Title"] = "Students";
 }
-
 @section styles
 {
     <link rel="stylesheet" href="~/css/list.css" />
 }
 
-
-
 <div class="wrapper">
     <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
-        <ul>
-            <li>
-                <label asp-for="FilterByName">Name: 
-                    <input asp-for="FilterByName" maxlength="50" />
-                </label>
-            </li>
-            <li>
-                <label asp-for="FilterByAge">Age: 
-                    <input asp-for="FilterByAge" min="5" max="18"/>
-                </label>
-            </li>
-            <li>
-                <label asp-for="FilterByGroup">Group: 
-                    <input asp-for="FilterByGroup" class="group" maxlength="50" />
-                </label>
-            </li>
-            <li>
-                <button type="submit" class="btn btn-success btn-sm">Search</button>
-            </li>
-            <li>
-                <a asp-page="/Students/List" class="btn btn-secondary btn-sm">Back to full list</a>
-            </li>
-            <li>
-                <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
-            </li>
-        </ul>
+        <label asp-for="FilterByName" class="cell">Name: 
+            <input asp-for="FilterByName" maxlength="50" />
+        </label>
+        <label asp-for="FilterByAge" class="cell">Age: 
+            <input asp-for="FilterByAge" value="none" min="5" max="18"/>
+        </label>
+        <label asp-for="FilterByGroup" class="cell">Group: 
+            <input asp-for="FilterByGroup" class="group" maxlength="50" />
+        </label>
+        <partial name="FilterButtons" />
         <input type="hidden" asp-for="OrderBy" />
     </form>
     @if (!Model.StudentsDto!.Any())

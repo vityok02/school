@@ -1,12 +1,12 @@
 ﻿@page "/students/add"
 @model StudentFormModel
-
+@{
+    ViewData["Title"] = "Add student";
+}
 @section styles
 {
     <link rel="stylesheet" href="~/css/add.css" />
 }
-
-
 
 <div class="wrapper">
     <form method="post" class="form">
@@ -34,7 +34,6 @@
                 <input asp-for="StudentDto!.Group" class="form-control" />
             </label>
         </div>
-        <div class="error">@Model.ErrorMessage</div>
         <partial name="FormButtons" />
     </form>
 </div>

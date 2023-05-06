@@ -12,11 +12,3 @@
     text-align: center;
     margin-inline: auto;
 }
-
-.roomType {
-    display: inline-block;
-}
-
-.filter .type{
-    padding: 2px 4px;
-}

@@ -4,10 +4,9 @@
 @{
     ViewData["Title"] = "Add room";
 }
-
 @section styles
 {
-    <link rel="stylesheet" href="~/css/add.css" />
+    <link rel="stylesheet" href="~/css/add.css" asp-append-version="true" />
 }
 
 <div class="wrapper">
@@ -23,11 +22,11 @@
             </tr>
             <tr>
                 <td>
-                    <label asp-for="FloorsDto">Floor</label>
+                    <label asp-for="FloorDtos">Floor</label>
                 </td>
                 <td>
                     <select asp-for="RoomDto.FloorId" required>
-                        @foreach (var floor in Model.FloorsDto!)
+                        @foreach (var floor in Model.FloorDtos!)
                         {
                             <option value="@floor.Id">@floor.Number</option>
                         }

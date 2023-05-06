@@ -160,13 +160,13 @@ void ShowInfo()
         
 }
 
-void SelectSchool()
+async Task SelectSchool()
 {
     logger.LogInfo("--------------------");
 
     var schoolRepository = new Repository<School>(dbContext);
 
-    var schools = schoolRepository.GetAll();
+    var schools = await schoolRepository.GetAllAsync();
 
     while (true)
     {
@@ -175,7 +175,7 @@ void SelectSchool()
             logger.LogInfo($"{school.Id}: {school.Name}");
         }
         var lastIndex = schools.Count() + 1;
-        logger.LogInfo($"{lastIndex}: Add School");
+        logger.LogInfo($"{lastIndex}: AddAsync School");
         logger.LogInfo("--------------------");
         var schoolId = GetIntValueFromConsole("Choose school: ");
 
@@ -210,7 +210,7 @@ void AddSchool()
     var openingDate = GetDateFromConsole("Enter school opening date: ").ToString();
 
     School school = new(name, address, DateTime.Parse(openingDate));
-    schoolRepository.Add(school);
+    schoolRepository.AddAsync(school);
     dbContext.CurrentSchool = school;
 
     logger.LogSuccess($"School {school.Name} successfully added");
@@ -289,38 +289,38 @@ void AddEmployee()
     var lastName = GetValueFromConsole("Enter employee last name: ");
     var age = GetIntValueFromConsole("Enter employee age: ");
 
-    while (true)
-    {
-        var type = GetValueFromConsole("If director enter (d), if teacher enter (t): ").ToUpperInvariant();
+    //while (true)
+    //{
+    //    //var type = GetValueFromConsole("If director enter (d), if teacher enter (t): ").ToUpperInvariant();
 
-        Employee? employee = null;
+    //    //Employee? employee = null;
 
-        if (type == "T")
-        {
-            //employee = new Teacher(firstName, lastName, age);
-        }
-        else if (type == "D")
-        {
-            //employee = new Director(firstName, lastName, age);
-        }
-        else
-        {
-            logger.LogError("Wrong employee type");
-            continue;
-        }
+    //    //if (type == "T")
+    //    //{
+    //    //    employee = new Teacher(firstName, lastName, age);
+    //    //}
+    //    //else if (type == "D")
+    //    //{
+    //    //    employee = new Director(firstName, lastName, age);
+    //    //}
+    //    else
+    //    {
+    //        logger.LogError("Wrong employee type");
+    //        continue;
+    //    }
 
-        var (valid, error) = currentSchool!.AddEmployee(employee);
-        if (!valid)
-        {
-            logger.LogError(error!);
-            continue;
-        }
+    //    //var (valid, error) = currentSchool!.AddEmployee(employee);
+    //    //if (!valid)
+    //    //{
+    //    //    logger.LogError(error!);
+    //    //    continue;
+    //    //}
 
-        dbContext.SaveChanges();
+    //    dbContext.SaveChanges();
 
-        logger.LogSuccess($"Employee {firstName} {lastName} successfully added");
-        break;
-    }
+    //    logger.LogSuccess($"Employee {firstName} {lastName} successfully added");
+    //    break;
+    //}
 
     logger.LogInfo();
 }

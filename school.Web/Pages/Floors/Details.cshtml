@@ -1,7 +1,8 @@
 ﻿@page "/floors/{id}"
 @model DetailsModel
-
 @{
+    ViewData["Title"] = "Floor details";
+
     if(Model.FloorDto!.Number < 0)
     {
         <p>Basement level @(-Model.FloorDto!.Number)</p>
@@ -11,6 +12,7 @@
         <p>Floor @Model.FloorDto.Number</p>
     }
 }
+
 <p>Rooms count: @Model.FloorDto.Rooms.Count()</p>
 
 <table>

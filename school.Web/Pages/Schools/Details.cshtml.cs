@@ -8,22 +8,19 @@ public class SchoolModel : BasePageModel
     public SchoolDto SchoolDto { get; private set; } = default!;
 
     public SchoolModel(ISchoolRepository schoolRepository)
-        :base(schoolRepository)
+        : base(schoolRepository)
     {
     }
 
-    public IActionResult OnGet(int id)
+    public async Task<IActionResult> OnGetAsync(int id)
     {
-        var school = SchoolRepository.GetSchool(id);
-
+        var school = await SchoolRepository.GetSchoolAsync(id);
         if (school is null)
         {
             return RedirectToPage("List");
         }
 
         SchoolDto = school.ToSchoolDto();
-
-        SelectedSchoolName = SchoolDto!.Name;
 
         return Page();
     }

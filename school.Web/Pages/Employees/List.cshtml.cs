@@ -20,15 +20,14 @@ public class ListModel : BasePageModel
         _employeeRepository = employeeRepository;
     }
 
-    public IActionResult OnGet(string orderBy, string filterByName, int filterByAge, string filterByPosition)
+    public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition)
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
@@ -43,8 +42,8 @@ public class ListModel : BasePageModel
         FilterByAge= filterByAge;
         FilterByPosition = filterByPosition;
 
-        var employees = _employeeRepository.GetSchoolEmployees(FilterBy(FilterByName, FilterByAge, FilterByPosition),
-            Sort(orderBy), schoolId);
+        var employees = await _employeeRepository.GetSchoolEmployeesAsync(FilterBy(FilterByName, FilterByAge, FilterByPosition),
+            Sort(orderBy), SelectedSchoolId);
 
         EmployeeItems = employees.Select(s => s.ToEmployeeItemDto()).ToArray();
 
@@ -73,7 +72,6 @@ public class ListModel : BasePageModel
         {
             { nameof(orderBy), PositionSort }
         };
-        return Page();
 
         static Expression<Func<Employee, bool>> FilterBy(string filterByName, int filterByAge, string filterByPosition)
         {
@@ -96,6 +94,8 @@ public class ListModel : BasePageModel
                 _ => e => e.OrderBy(e => e.FirstName),
             };
         }
+
+        return Page();
     }
 
     private IDictionary<string, string> GetFilters()
@@ -120,15 +120,15 @@ public class ListModel : BasePageModel
         return filterParams;
     }
 
-    public IActionResult OnPostDelete(int id)
+    public async Task<IActionResult> OnPostDelete(int id)
     {
-        var employee = _employeeRepository.Get(id);
+        var employee = await _employeeRepository.GetAsync(id);
         if (employee is null)
         {
             return RedirectToPage("List");
         }
         
-        _employeeRepository.Delete(employee!);
+        await _employeeRepository.DeleteAsync(employee!);
 
         return RedirectToPage("List");
     }

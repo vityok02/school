@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
-using SchoolManagement.Web.Pages.Schools;
 
 namespace SchoolManagement.Web.Pages;
 
@@ -10,8 +10,9 @@ public abstract class BasePageModel : PageModel
 {
     protected ISchoolRepository SchoolRepository { get; }
 
+    public int SelectedSchoolId { get; set; }
     public string SelectedSchoolName { get; set; } = null!;
-    public IEnumerable<SchoolDto> Schools { get; set; } = null!;
+    public IEnumerable<School> Schools { get; set; } = null!;
     public string ErrorMessage { get; set; } = null!;
     public string Message { get; set; } = null!;
     public string OrderBy { get; set; } = null!;
@@ -30,21 +31,36 @@ public abstract class BasePageModel : PageModel
         SchoolRepository = schoolRepository;
     }
 
-    protected int GetSchoolId()
+    public override async Task OnPageHandlerExecutionAsync(
+        PageHandlerExecutingContext context,
+        PageHandlerExecutionDelegate next)
+    {
+        Schools = await GetSchoolsAsync();
+        SelectedSchoolName = await GetSelectedSchoolNameAsync();
+        SelectedSchoolId = GetSchoolId();
+
+        await next.Invoke();
+    }
+
+    private int GetSchoolId()
     {
         var sId = HttpContext.Request.Cookies["SchoolId"];
         return int.TryParse(sId, out int schoolId) ? schoolId : -1;
     }
-    
-    public IEnumerable<School> GetSchools() => SchoolRepository.GetAll().OrderBy(s => s.Name);
 
-    public string GetSelectedSchoolName()
+    private async Task<IEnumerable<School>> GetSchoolsAsync()
+    {
+        var schools = await SchoolRepository.GetAllAsync();
+        return schools.OrderBy(s => s.Name);
+    }
+
+    private async Task<string> GetSelectedSchoolNameAsync()
     {
         var sId = GetSchoolId();
 
         SetSchoolId(sId);
 
-        var school = SchoolRepository.Get(sId);
+        var school = await SchoolRepository.GetAsync(sId);
         if(school is null)
         {
             return "Not selected";

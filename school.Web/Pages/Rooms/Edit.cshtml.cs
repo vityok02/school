@@ -20,15 +20,14 @@ public class EditModel : BasePageModel
         _floorRepository = floorRepository;
     }
 
-    public IActionResult OnGet(int id)
+    public async Task<IActionResult> OnGetAsync(int id)
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
-        var room = _roomRepository.Get(id);
+        var room = await _roomRepository.GetAsync(id);
         if (room is null)
         {
             return RedirectToPage("List");
@@ -38,24 +37,38 @@ public class EditModel : BasePageModel
 
         RoomDto = room.ToEditRoomDto();
 
-        var floors = _floorRepository.GetAll(f => f.SchoolId == schoolId);
+        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == SelectedSchoolId);
         FloorDtos = floors.Select(f => f.ToFloorDto()).ToArray();
 
         return Page();
     }
-    public IActionResult OnPost(EditRoomDto roomDto, RoomType[] roomTypes)
+    public async Task<IActionResult> OnPostAsync(EditRoomDto roomDto, RoomType[] roomTypes)
     {
-        var room = _roomRepository.Get(roomDto.Id);
-        room!.Number = roomDto.Number;
+        var room = await _roomRepository.GetAsync(roomDto.Id);
+        var floor = await _floorRepository.GetAsync(roomDto.FloorId);
 
-        var floor = _floorRepository.Get(roomDto.FloorId);
-        if (floor is null)
+        if(room is null || floor is null)
         {
             return RedirectToPage("List");
         }
 
-        room.FloorId = roomDto.FloorId;
+        var rooms = await _roomRepository.GetRoomsAsync(SelectedSchoolId);
+        if(rooms.Any(r => r.Number == roomDto.Number
+            && r.Id != roomDto.Id))
+        {
+            FloorDtos = await GetFloorDtosAsync();
+            ErrorMessage = "Such room already exists";
+            return Page();
+        }
 
+        if(!roomTypes.Any())
+        {
+            FloorDtos = await GetFloorDtosAsync();
+            ErrorMessage = "Please select a room type";
+            return Page();
+        }
+
+        room!.Number = roomDto.Number;
         room!.Floor = floor;
 
         RoomType roomType = RoomHelper.GetRoomType(roomTypes);
@@ -66,7 +79,13 @@ public class EditModel : BasePageModel
 
         room.Type = roomType;
 
-        _roomRepository.Update(room!);
+        await _roomRepository.UpdateAsync(room!);
         return RedirectToPage("List");
+    }
+    
+    private async Task<IEnumerable<FloorDto>> GetFloorDtosAsync()
+    {
+        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == SelectedSchoolId);
+        return floors.Select(f => f.ToFloorDto()).ToArray();
     }
 }

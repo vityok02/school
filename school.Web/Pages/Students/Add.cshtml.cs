@@ -16,16 +16,15 @@ public class StudentFormModel : BasePageModel
         _studentRepository = studentRepository;
     }
 
-    public IActionResult OnPost(AddStudentDto studentDto)
+    public async Task<IActionResult> OnPostAsync(AddStudentDto studentDto)
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
-        var students = _studentRepository
-            .GetAll(s => s.SchoolId == schoolId 
+        var students = await _studentRepository
+            .GetAllAsync(s => s.SchoolId == SelectedSchoolId
             && s.FirstName == studentDto.FirstName
             && s.LastName == studentDto.LastName
             && s.Age == studentDto.Age);
@@ -36,7 +35,7 @@ public class StudentFormModel : BasePageModel
             return Page();
         }
 
-        var school = SchoolRepository.Get(schoolId);
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
@@ -47,7 +46,7 @@ public class StudentFormModel : BasePageModel
             School = school!
         };
 
-        _studentRepository.Add(student);
+        await _studentRepository.AddAsync(student);
         return RedirectToPage("List");
     }
 }

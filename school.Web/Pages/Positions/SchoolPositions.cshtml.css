@@ -2,7 +2,7 @@
 }
 
 .wrapper {
-    
+    padding-inline: 0;
 }
 
 .filter-btn .add {
@@ -11,6 +11,7 @@
 
 .tables {
     width: 50%;
+    padding-inline: 20px;
     display: inline-block;
 }
 
