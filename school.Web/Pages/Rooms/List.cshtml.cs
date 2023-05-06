@@ -29,20 +29,19 @@ public class ListModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync(string orderBy, int filterByRoomNumber, RoomType[] filterByRoomType, int filterByFloorNumber)
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
-        var school = await SchoolRepository.GetAsync(schoolId);
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
         }
 
         OrderBy = orderBy;
-        RoomNumberSort = orderBy == "roomNumber" ? "roomNumber_desc" : "roomNumber";
+        RoomNumberSort = String.IsNullOrEmpty(orderBy) ? "roomNumber_desc" : "";
         RoomTypeSort = orderBy == "roomType" ? "roomType_desc" : "roomType";
         FloorNumberSort = orderBy == "floorNumber" ? "floorNumber_desc" : "floorNumber";
 
@@ -50,8 +49,8 @@ public class ListModel : BasePageModel
         FilterByRoomType = RoomHelper.GetRoomType(filterByRoomType);
         FilterByFloorNumber = filterByFloorNumber;
 
-        var rooms = _roomRepository.GetRooms(FilterBy(FilterByRoomNumber, FilterByRoomType, FilterByFloorNumber), 
-            Sort(orderBy), schoolId);
+        var rooms = await _roomRepository.GetRoomsWithFloorsAsync(FilterBy(FilterByRoomNumber, FilterByRoomType, FilterByFloorNumber), 
+            Sort(orderBy), SelectedSchoolId);
 
         RoomDtos = rooms.Select(r => r.ToRoomItemDto()).ToArray();
 

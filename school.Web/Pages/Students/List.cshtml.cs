@@ -22,13 +22,12 @@ public class ListModel : BasePageModel
 
     public async Task<IActionResult> OnGet(string orderBy, string filterByName, int filterByAge, string filterByGroup)
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
-        var school = await SchoolRepository.GetAsync(schoolId);
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
@@ -44,7 +43,7 @@ public class ListModel : BasePageModel
         FilterByGroup = filterByGroup;
         FilterByAge = filterByAge;
 
-        var students = await _studentRepository.GetAllAsync(FilterBy(FilterByName, FilterByAge, FilterByGroup, schoolId),
+        var students = await _studentRepository.GetAllAsync(FilterBy(FilterByName, FilterByAge, FilterByGroup, SelectedSchoolId),
             Sort(orderBy));
         StudentsDto = students.Select(s => s.ToStudentDto()).ToArray();
 
@@ -85,7 +84,8 @@ public class ListModel : BasePageModel
         static Expression<Func<Student, bool>> FilterBy(string filterByName, int filterByAge, string filterByGroup, int schoolId)
         {
             return student => student.SchoolId == schoolId
-                && (string.IsNullOrEmpty(filterByName) || student.FirstName.Contains(filterByName))
+                && (string.IsNullOrEmpty(filterByName) || student.FirstName.Contains(filterByName)
+                || string.IsNullOrEmpty(filterByName) || student.LastName.Contains(filterByName))
                 && (string.IsNullOrEmpty(filterByGroup) || student.Group.Contains(filterByGroup))
                 && (filterByAge == 0 || student.Age == filterByAge);
         }

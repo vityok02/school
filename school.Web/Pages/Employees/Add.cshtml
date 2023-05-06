@@ -3,10 +3,9 @@
 @{
     ViewData["Title"] = "Add employee";
 }
-
 @section styles
 {
-    <link rel="stylesheet" href="~/css/add.css" />
+    <link rel="stylesheet" href="~/css/add.css" asp-append-version="true" asp-append-version="true"/>  
 }
 
 <div class="wrapper">
@@ -47,7 +46,7 @@
                 <td>
                     @foreach(var position in Model.PositionsDto!)
                     {
-                        if(Model.CheckedPositionsId.Contains(position.Id))
+                        if(Model.CheckedPositionsId is not null && Model.CheckedPositionsId!.Contains(position.Id))
                         {
                             <input type="checkbox" name="checkedPositionsId" value="@position.Id" class="btn-check" id="@position.Id" checked />
                         }

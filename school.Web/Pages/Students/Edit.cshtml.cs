@@ -8,7 +8,7 @@ public class EditModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
-    public StudentDto? StudentDto { get; set; } = null!;
+    public StudentDto StudentDto { get; set; } = default!;
 
     public EditModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         :base(schoolRepository)
@@ -31,18 +31,17 @@ public class EditModel : BasePageModel
 
     public async Task<IActionResult> OnPostAsync(StudentDto studentDto)
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
-        var students = await _studentRepository.GetAllAsync(s => s.SchoolId == schoolId);
+        var students = await _studentRepository.GetAllAsync(s => s.SchoolId == SelectedSchoolId);
 
-        if ((students.Where(s => s.FirstName == studentDto.FirstName
+        if ((students.Any(s => s.FirstName == studentDto.FirstName
             && s.LastName == studentDto.LastName
             && s.Age == studentDto.Age
-            && s.Id != studentDto.Id).Any()))
+            && s.Id != studentDto.Id)))
         {
             ErrorMessage = "Such student already exists";
             return Page();

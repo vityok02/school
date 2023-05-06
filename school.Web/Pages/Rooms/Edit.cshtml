@@ -13,7 +13,7 @@
 
 @section styles
 {
-    <link rel="stylesheet" href="~/css/edit.css" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
 }
 
 <div class="wrapper">
@@ -52,10 +52,6 @@
             </tr>
         </table>
         <input type="hidden" asp-for="RoomDto.Id" />
-        <div class="error">@Model.ErrorMessage</div>
-        <div class="btns">
-            <input class="btn btn-save btn-lg" type="submit" value="Save" />
-            <a class="btn btn-cancel btn-lg" asp-page="List">Cancel</a>
-        </div>
+        <partial name="FormButtons" />
     </form>
 </div>

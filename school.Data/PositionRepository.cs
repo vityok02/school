@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace SchoolManagement.Data;
 
@@ -14,20 +16,42 @@ public class PositionRepository : Repository<Position>, IPositionRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Position>> GetSchoolPositionsAsync(int schoolId)
+    public async Task<IEnumerable<Position>> GetSchoolPositionsAsync(int schoolId, Expression<Func<Position, bool>>? predicate = null,
+        Func<IQueryable<Position>, IOrderedQueryable<Position>>? orderBy = null)
     {
-        return await _dbContext
-            .Positions
-            .Where(p => p.Schools.Any(s => s.Id == schoolId))
-            .ToArrayAsync(); ;
+        IQueryable<Position> positions = _dbContext
+            .Set<Position>()
+            .Where(p => p.Schools.Any(s => s.Id == schoolId));
+
+        if (predicate is not null)
+        {
+            positions = positions.Where(predicate);
+        }
+
+        if (orderBy is not null)
+        {
+            positions = orderBy(positions);
+        }
+        return await positions.ToArrayAsync();
     }
 
-    public async Task<IEnumerable<Position>> GetUnSelectedPositionsAsync(int schoolId)
+    public async Task<IEnumerable<Position>> GetUnSelectedPositionsAsync(int schoolId, Expression<Func<Position, bool>>? predicate = null,
+        Func<IQueryable<Position>, IOrderedQueryable<Position>>? orderBy = null)
     {
-        return await _dbContext
-            .Positions
-            .Where(p => p.Schools.All(s => s.Id != schoolId))
-            .ToArrayAsync();
+        IQueryable<Position> positions = _dbContext
+            .Set<Position>()
+            .Where(p => p.Schools.All(s => s.Id != schoolId));
+
+        if (predicate is not null)
+        {
+            positions = positions.Where(predicate);
+        }
+
+        if (orderBy is not null)
+        {
+            positions = orderBy(positions);
+        }
+        return await positions.ToArrayAsync();
     }
 
     public async Task<Position> GetPositionAsync(int positionId)

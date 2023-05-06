@@ -3,13 +3,13 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Floors;
 
-public class FloorListModel : BasePageModel
+public class ListModel : BasePageModel
 {
     private readonly IFloorRepository _floorRepository;
 
     public IEnumerable<FloorItemDto> FloorsDto { get; private set; } = null!;
 
-    public FloorListModel(ISchoolRepository schoolRepository, IFloorRepository floorRepository)
+    public ListModel(ISchoolRepository schoolRepository, IFloorRepository floorRepository)
         : base(schoolRepository)
     {
         _floorRepository = floorRepository;
@@ -17,19 +17,18 @@ public class FloorListModel : BasePageModel
 
     public async Task<IActionResult> OnGet()
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
-        var school = await SchoolRepository.GetAsync(schoolId);
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
         if(school is null)
         {
             return RedirectToSchoolList();
         }
 
-        var floors = await _floorRepository.GetFloorsAsync(schoolId);
+        var floors = await _floorRepository.GetSchoolFloorsAsync(SelectedSchoolId);
         FloorsDto = floors.Select(f => f.ToFloorItemDto()).ToArray();
 
         return Page();

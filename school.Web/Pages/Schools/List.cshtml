@@ -11,29 +11,16 @@
 
 @section styles
 {
-    <link rel="stylesheet" href="~/css/list.css" />
+    <link rel="stylesheet" href="~/css/list.css" asp-append-version="true" />
 }
-
 
 <div class="wrapper">
     <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
-        <ul>
-            <li>
-                <label asp-for="FilterByParam">
-                    Filter: 
-                    <input asp-for="FilterByParam" placeholder="Name/City/Street" />
-                </label>
-            </li>
-            <li>
-                <input type="submit" value="Search" class="btn btn-success btn-sm" />
-            </li>
-            <li>
-                <a asp-page="/Schools/List" class="btn btn-secondary btn-sm">Back to full list</a>
-            </li>
-            <li>
-                <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
-            </li>
-        </ul>
+        <label asp-for="FilterByParam" class="cell">
+            Filter: 
+            <input asp-for="FilterByParam" placeholder="Name/City/Street" />
+        </label>
+        <partial name="FilterButtons" />
         <input type="hidden" asp-for="OrderBy" />
     </form>
     @if (!Model.SchoolItems.Any())

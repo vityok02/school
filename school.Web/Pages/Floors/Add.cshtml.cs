@@ -18,13 +18,12 @@ public class AddModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
-        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == schoolId);
+        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == SelectedSchoolId);
         if (!floors.Any())
         {
             FloorNumber = 1;
@@ -37,21 +36,20 @@ public class AddModel : BasePageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPost(int floorNumber, string type)
+    public async Task<IActionResult> OnPostAsync(int floorNumber, string type)
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
-        var school = await SchoolRepository.GetAsync(schoolId);
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
         }
 
-        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == schoolId);
+        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == SelectedSchoolId);
 
         if (type == "basement")
         {

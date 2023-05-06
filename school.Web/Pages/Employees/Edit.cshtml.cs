@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Web.Pages.Positions;
 
@@ -11,7 +10,8 @@ public class EditModel : BasePageModel
     private readonly IPositionRepository _positionRepository;
 
     public EmployeeDto EmployeeDto { get; private set; } = default!;
-    public IEnumerable<PositionDto>? PositionsDto { get; private set; } = default!;
+    [BindProperty]
+    public IEnumerable<PositionDto>? PositionsDto { get; set; } = default!;
 
     public EditModel(
         ISchoolRepository schoolRepository,
@@ -25,8 +25,7 @@ public class EditModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        var schoolId = GetSchoolId();
-        if(schoolId == -1)
+        if(SelectedSchoolId == -1)
         {
             RedirectToSchoolList();
         }
@@ -39,7 +38,7 @@ public class EditModel : BasePageModel
 
         EmployeeDto = employee.ToEmployeeDto();
 
-        var positions = await _positionRepository.GetSchoolPositionsAsync(schoolId);
+        var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
         PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
 
         return Page();
@@ -47,8 +46,7 @@ public class EditModel : BasePageModel
 
     public async Task<IActionResult> OnPostAsync(EditEmployeeDto employeeDto, int[] checkedPositionsId)
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
@@ -61,15 +59,22 @@ public class EditModel : BasePageModel
             return RedirectToPage("List");
         }
 
-        //if (!ModelState.IsValid)
-        //{
-        //    return Page();
+        var employees = await _employeeRepository.GetAllAsync(e => e.SchoolId == SelectedSchoolId);
 
-        //    var positions = _positionRepository.GetSchoolPositions(schoolId);
-        //    PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
-        //}
+        if (employees
+            .Any(e => e.FirstName == employeeDto.FirstName
+                && e.LastName == employeeDto.LastName
+                && e.Age == employeeDto.Age
+                && e.Id != employee.Id))
+        {
+            await FillDataForPage();
 
-        employee!.UpdateInfo(employeeDto.FirstName, employeeDto.LastName, employee.Age);
+            ErrorMessage = "Such employee already exists";
+
+            return Page();
+        }
+
+        employee!.UpdateInfo(employeeDto.FirstName, employeeDto.LastName, employeeDto.Age);
 
         employee.Positions.Clear();
 
@@ -81,22 +86,21 @@ public class EditModel : BasePageModel
 
         if(!employee!.Positions.Any())
         {
-            var data = GetDataAsync();
+            await FillDataForPage();
 
+            ErrorMessage = "Please select a position";
             return Page();
         }
 
         await _employeeRepository.UpdateAsync(employee);
         return RedirectToPage("List");
 
-        async Task<(EmployeeDto, IEnumerable<PositionDto>)> GetDataAsync()
+        async Task FillDataForPage()
         {
             EmployeeDto = employee!.ToEmployeeDto();
 
-            var positions = await _positionRepository.GetSchoolPositionsAsync(schoolId);
+            var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
             PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
-            return (EmployeeDto, PositionsDto);
         }
     }
-
 }

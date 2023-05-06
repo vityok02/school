@@ -4,6 +4,7 @@ namespace SchoolManagement.Models.Interfaces;
 
 public interface IRoomRepository : IRepository<Room>
 {
-    IEnumerable<Room> GetRooms(Expression<Func<Room, bool>> predicate,
+    Task<IEnumerable<Room>> GetRoomsWithFloorsAsync(Expression<Func<Room, bool>>? predicate = null,
     Func<IQueryable<Room>, IOrderedQueryable<Room>> orderBy = null!, int schoolId = 0);
+    Task<IEnumerable<Room>> GetRoomsAsync(int schoolId);
 }

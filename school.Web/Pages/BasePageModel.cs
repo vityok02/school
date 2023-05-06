@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
-using SchoolManagement.Web.Pages.Schools;
-using System.Reflection.Metadata;
 
 namespace SchoolManagement.Web.Pages;
 
@@ -14,7 +12,7 @@ public abstract class BasePageModel : PageModel
 
     public int SelectedSchoolId { get; set; }
     public string SelectedSchoolName { get; set; } = null!;
-    public IEnumerable<SchoolDto> Schools { get; set; } = null!;
+    public IEnumerable<School> Schools { get; set; } = null!;
     public string ErrorMessage { get; set; } = null!;
     public string Message { get; set; } = null!;
     public string OrderBy { get; set; } = null!;
@@ -41,7 +39,7 @@ public abstract class BasePageModel : PageModel
         SelectedSchoolName = await GetSelectedSchoolNameAsync();
         SelectedSchoolId = GetSchoolId();
 
-        return base.OnPageHandlerExecutionAsync(context, next);
+        await next.Invoke();
     }
 
     private int GetSchoolId()

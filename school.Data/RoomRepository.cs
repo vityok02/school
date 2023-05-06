@@ -14,19 +14,31 @@ public class RoomRepository : Repository<Room>, IRoomRepository
         _dbContext = dbContext;
     }
 
-    public IEnumerable<Room> GetRooms(Expression<Func<Room, bool>> predicate,
+    public async Task<IEnumerable<Room>> GetRoomsWithFloorsAsync(Expression<Func<Room, bool>>? predicate = null,
     Func<IQueryable<Room>, IOrderedQueryable<Room>> orderBy = null!, int schoolId = 0)
     {
         var rooms = _dbContext.Rooms
             .Where(r => r.Floor.SchoolId == schoolId)
             .Include(r => r.Floor)
-            .Where(predicate);
+            .Where(predicate!);
+
+        var a = rooms.ToArray();
 
         if (orderBy is not null)
         {
             rooms = orderBy(rooms);
         }
 
-        return rooms.ToArray();
+        return await rooms.ToArrayAsync();
+    }
+
+    public async Task<IEnumerable<Room>> GetRoomsAsync(int schoolId)
+    {
+        var rooms = _dbContext
+            .Rooms
+            .Where(r => r.Floor.SchoolId == schoolId)
+            .ToArrayAsync();
+
+        return await rooms;
     }
 }

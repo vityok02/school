@@ -25,7 +25,7 @@ public class FloorRepository : Repository<Floor>, IFloorRepository
         return floor!;
     }
 
-    public async Task<IEnumerable<Floor>> GetFloorsAsync(int schoolId)
+    public async Task<IEnumerable<Floor>> GetSchoolFloorsAsync(int schoolId)
     {
         return await _dbContext
             .Floors

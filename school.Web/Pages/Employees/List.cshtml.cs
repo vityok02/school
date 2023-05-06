@@ -22,13 +22,12 @@ public class ListModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition)
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
-        var school = await SchoolRepository.GetAsync(schoolId);
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
@@ -44,7 +43,7 @@ public class ListModel : BasePageModel
         FilterByPosition = filterByPosition;
 
         var employees = await _employeeRepository.GetSchoolEmployeesAsync(FilterBy(FilterByName, FilterByAge, FilterByPosition),
-            Sort(orderBy), schoolId);
+            Sort(orderBy), SelectedSchoolId);
 
         EmployeeItems = employees.Select(s => s.ToEmployeeItemDto()).ToArray();
 
@@ -73,7 +72,6 @@ public class ListModel : BasePageModel
         {
             { nameof(orderBy), PositionSort }
         };
-        return Page();
 
         static Expression<Func<Employee, bool>> FilterBy(string filterByName, int filterByAge, string filterByPosition)
         {
@@ -96,6 +94,8 @@ public class ListModel : BasePageModel
                 _ => e => e.OrderBy(e => e.FirstName),
             };
         }
+
+        return Page();
     }
 
     private IDictionary<string, string> GetFilters()

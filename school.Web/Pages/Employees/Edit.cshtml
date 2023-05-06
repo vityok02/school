@@ -1,9 +1,11 @@
 ﻿@page "/employees/{id}/edit"
 @model EditModel
-
+@{
+    ViewData["Title"] = $"Edit employee {Model.EmployeeDto.FirstName} {Model.EmployeeDto.LastName}";
+}
 @section styles
 {
-    <link rel="stylesheet" href="~/css/edit.css" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
 }
 
 <div class="wrapper">

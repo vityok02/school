@@ -14,7 +14,7 @@ public class EditModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        var school = await SchoolRepository.GetAsync(id);
+        var school = await SchoolRepository.GetSchoolAsync(id);
         if (school is null)
         {
             return RedirectToPage("List");
@@ -31,6 +31,16 @@ public class EditModel : BasePageModel
         if (school is null)
         {
             return RedirectToPage("List");
+        }
+
+        if (Schools.Any(s => s.Name == schoolDto.Name
+            && s.Id != school.Id))
+        {
+            SchoolDto = schoolDto;
+
+            ErrorMessage = "Such school already exists";
+
+            return Page();
         }
 
         school.Name = schoolDto.Name;

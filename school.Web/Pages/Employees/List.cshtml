@@ -3,46 +3,27 @@
 @{
     ViewData["Title"] = "Employees";
 }
-
 @section styles
 {
-    <link rel="stylesheet" href="~/css/list.css" />
+    <link rel="stylesheet" href="~/css/list.css" asp-append-version="true" />
 }
-
-
 
 <div class="wrapper">
     <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
-        <ul>
-            <li>
-                <label asp-for="FilterByName">
-                    Name: 
-                    <input asp-for="FilterByName" />
-                </label>
-            </li>
-            <li>
-                <label asp-for="FilterByAge">
-                    Age: 
-                    <input asp-for="FilterByAge" />
-                </label>
-            </li>
-            <li>
-                <label asp-for="FilterByPosition">
-                    Position:
-                    <input asp-for="FilterByPosition" />
-                </label>
-                <input type="hidden" asp-for="OrderBy" />
-            </li>
-            <li>
-                <input class="btn btn-success btn-sm" type="submit" value="Search" />
-            </li>
-            <li>
-                <a class="btn btn-secondary btn-sm" asp-page="/Employees/List">Back to full list</a>
-            </li>
-            <li>
-                <a class="btn btn-secondary btn-sm" asp-page="/Employees/Add">Add</a>
-            </li>
-        </ul>
+        <label asp-for="FilterByName" class="cell">
+            Name: 
+            <input asp-for="FilterByName" />
+        </label>
+        <label asp-for="FilterByAge" class="cell">
+            Age: 
+            <input asp-for="FilterByAge" value="hidden" />
+        </label>
+        <label asp-for="FilterByPosition" class="cell">
+            Position:
+            <input asp-for="FilterByPosition" />
+        </label>
+        <input type="hidden" asp-for="OrderBy" />
+        <partial name="filterButtons" />
     </form>
     @if (!Model.EmployeeItems.Any())
     {

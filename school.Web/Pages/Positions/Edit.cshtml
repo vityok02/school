@@ -1,9 +1,11 @@
 ﻿@page "/positions/all/{id}/edit"
 @model SchoolManagement.Web.Pages.Positions.EditModel;
-
+@{
+    ViewData["Title"] = $"Edit position {Model.PositionDto!.Name}";
+}
 @section styles
 {
-    <link rel="stylesheet" href="~/css/edit.css" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
 }
 
 <div class="wrapper">
@@ -13,6 +15,7 @@
             <input asp-for="PositionDto!.Name" />
         </label>
         <input type="hidden" asp-for="PositionDto!.Id" />
+        <div class="error">@Model.ErrorMessage</div>
         <div class="btns">
             <input type="submit" name="Save" class="btn btn-save btn-lg"/>
             <a asp-page="/Positions/AllPositions" class="btn btn-cancel btn-lg">Cancel</a>

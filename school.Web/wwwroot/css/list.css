@@ -1,6 +1,7 @@
 ﻿.wrapper {
     margin-inline: auto;
     width: 80%;
+    padding-inline: 20px;
     float: right;
 }
 
@@ -8,13 +9,6 @@ table {
     height: 100%;
     display: block;
     border-radius: 5px;
-    overflow: auto;
-    margin-inline: 20px;
-    margin-bottom: 80px;
-}
-
-table body {
-    overflow: auto;
 }
 
     table tr {
@@ -90,9 +84,12 @@ table body {
 }
 
 .filter {
-    display: inline-block;
-    margin-block: 10px;
-    margin-left: 20px;
+    margin-block: 5px;
+    display: flex;
+}
+
+.cell {
+    margin-right: 5px
 }
 
     .filter-btn:hover {
@@ -108,9 +105,6 @@ table body {
         max-width: 100px;
     }
 
-    .filter div {
-        display: inline-block;
-    }
     .filter ul {
         padding: 0px;
     }

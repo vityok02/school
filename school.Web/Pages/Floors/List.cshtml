@@ -1,9 +1,11 @@
 ﻿@page "/floors"
-@model FloorListModel
-
+@model ListModel
+@{
+    ViewData["Title"] = "Floors";
+}
 @section styles
 {
-    <link rel="stylesheet" href="~/css/floorList.css"/>
+    <link rel="stylesheet" href="~/css/list.css" asp-append-version="true"/>
 }
 
 <div class="wrapper">

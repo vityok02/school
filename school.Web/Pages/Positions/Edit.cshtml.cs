@@ -36,6 +36,15 @@ public class EditModel : BasePageModel
             return RedirectToPage("AllPositions");
         }
 
+        var positions = await _positionRepository.GetAllAsync();
+
+        if (positions.Any(p => p.Name == positionDto.Name 
+            && p.Id != positionDto.Id))
+        {
+            ErrorMessage = "Such position already exists";
+            return Page();
+        }
+
         position.Name = positionDto.Name;
 
         await _positionRepository.UpdateAsync(position);

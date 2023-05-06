@@ -14,7 +14,7 @@ public class SchoolModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        var school = await SchoolRepository.GetAsync(id);
+        var school = await SchoolRepository.GetSchoolAsync(id);
         if (school is null)
         {
             return RedirectToPage("List");

@@ -23,7 +23,6 @@ public class AddModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        //var schoolId = GetSchoolId();
         if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
@@ -62,11 +61,16 @@ public class AddModel : BasePageModel
                 && s.LastName == employeeDto.LastName
                 && s.Age == employeeDto.Age))
         {
-            var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
-            PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
-            CheckedPositionsId = checkedPositionsId;
+            await FillDataForPage();
 
             ErrorMessage = "Such employee already exists";
+            return Page();
+        }
+        if(!checkedPositionsId.Any())
+        {
+            await FillDataForPage();
+
+            ErrorMessage = "Please select a position";
             return Page();
         }
 
@@ -79,5 +83,11 @@ public class AddModel : BasePageModel
         await _employeeRepository.AddAsync(employee);
         return RedirectToPage("List");
 
+        async Task FillDataForPage()
+        {
+            var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
+            PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
+            CheckedPositionsId = checkedPositionsId;
+        }
     }
 }

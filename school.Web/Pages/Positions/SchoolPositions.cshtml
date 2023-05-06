@@ -1,33 +1,24 @@
 ﻿@page "/positions/school"
 @using SchoolManagement.Web.Pages.Positions
 @model SchoolPositionsModel
-
+@{
+    ViewData["Title"] = "Positions";
+}
 @section styles
 {
-    <link rel="stylesheet" href="~/css/list.css" />
+    <link rel="stylesheet" href="~/css/list.css" asp-append-version="true" />
 }
 
 <div class="wrapper">
     <div class="d-flex justify-content-center">
         <div class="tables">
             <form method="get" asp-page="List" class="filter">
-                <ul>
-                    <li>
-                        <label asp-for="Filter">
-                            Name:
-                            <input asp-for="Filter" />
-                        </label>
-                    </li>
-                    <li>
-                        <input type="submit" class="btn btn-success btn-sm" value="Search" />
-                    </li>
-                    <li>
-                        <a asp-page="/Positions/List" class="btn btn-secondary btn-sm">Back to full list</a>
-                    </li>
-                    <li>
-                        <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
-                    </li>
-                </ul>
+                <label asp-for="SchoolPositionsFilter" class="cell">
+                    Name:
+                    <input asp-for="SchoolPositionsFilter" />
+                </label>
+                <input type="submit" value="Search" class="btn btn-success btn-sm cell" />
+                <a asp-page="SchoolPositions" class="btn btn-secondary btn-sm cell">Back to full list</a>
                 <input type="hidden" asp-for="OrderBy" />
             </form>
             @if (!Model.SchoolPositions.Any())
@@ -40,7 +31,7 @@
                     <thead>
                         <tr>
                             <th>
-                                <a asp-route-orderBy="@Model.NameSort" asp-route-filter="@Model.Filter">
+                                <a asp-route-schoolPositionsOrderBy="@Model.SchoolPositionsSort" asp-route-filter="@Model.SchoolPositionsFilter">
                                     Name
                                 </a>
                             </th>
@@ -68,23 +59,12 @@
         </div>
         <div class="tables">
             <form method="get" asp-page="List" class="filter">
-                <ul>
-                    <li>
-                        <label asp-for="Filter">
-                            Name:
-                            <input asp-for="Filter" />
-                        </label>
-                    </li>
-                    <li>
-                        <input type="submit" class="btn btn-success btn-sm" value="Search" />
-                    </li>
-                    <li>
-                        <a asp-page="/Positions/List" class="btn btn-secondary btn-sm">Back to full list</a>
-                    </li>
-                    <li>
-                        <a asp-page="Add" class="btn btn-secondary btn-sm">Add</a>
-                    </li>
-                </ul>
+                <label asp-for="AllPositionsFilter" class="cell">
+                    Name:
+                    <input asp-for="AllPositionsFilter" />
+                </label>
+                <input type="submit" value="Search" class="btn btn-success btn-sm cell" />
+                <a asp-page="/Positions/List" class="btn btn-secondary btn-sm cell">Back to full list</a>
                 <input type="hidden" asp-for="OrderBy" />
             </form>
             @if (!Model.AllPositions.Any())
@@ -97,7 +77,7 @@
                     <thead>
                         <tr>
                             <th>
-                                <a asp-route-orderBy="@Model.NameSort" asp-route-filter="@Model.Filter">
+                                <a asp-route-allPositionsOrderBy="@Model.AllPositionsSort" asp-route-filter="@Model.AllPositionsFilter">
                                     Name
                                 </a>
                             </th>

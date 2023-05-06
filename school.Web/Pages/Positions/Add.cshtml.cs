@@ -24,8 +24,7 @@ public class AddModel : BasePageModel
             return Page();
         }
 
-        var schoolId = GetSchoolId();
-        if(schoolId == -1)
+        if(SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }

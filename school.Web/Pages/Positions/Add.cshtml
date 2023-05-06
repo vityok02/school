@@ -1,14 +1,12 @@
 ﻿@page "/positions/all/add"
 @model AddModel
 @{
+    ViewData["Title"] = "Add position";
 }
-
 @section styles
 {
-    <link rel="stylesheet" href="~/css/add.css" />
+    <link rel="stylesheet" href="~/css/add.css" asp-append-version="true" />
 }
-
-
 
 <div class="wrapper">
     <form class="form" method="post">

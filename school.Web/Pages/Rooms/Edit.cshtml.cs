@@ -22,8 +22,7 @@ public class EditModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        var schoolId = GetSchoolId();
-        if (schoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
@@ -38,7 +37,7 @@ public class EditModel : BasePageModel
 
         RoomDto = room.ToEditRoomDto();
 
-        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == schoolId);
+        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == SelectedSchoolId);
         FloorDtos = floors.Select(f => f.ToFloorDto()).ToArray();
 
         return Page();
@@ -46,16 +45,30 @@ public class EditModel : BasePageModel
     public async Task<IActionResult> OnPostAsync(EditRoomDto roomDto, RoomType[] roomTypes)
     {
         var room = await _roomRepository.GetAsync(roomDto.Id);
-        room!.Number = roomDto.Number;
-
         var floor = await _floorRepository.GetAsync(roomDto.FloorId);
-        if (floor is null)
+
+        if(room is null || floor is null)
         {
             return RedirectToPage("List");
         }
 
-        room.FloorId = roomDto.FloorId;
+        var rooms = await _roomRepository.GetRoomsAsync(SelectedSchoolId);
+        if(rooms.Any(r => r.Number == roomDto.Number
+            && r.Id != roomDto.Id))
+        {
+            FloorDtos = await GetFloorDtosAsync();
+            ErrorMessage = "Such room already exists";
+            return Page();
+        }
 
+        if(!roomTypes.Any())
+        {
+            FloorDtos = await GetFloorDtosAsync();
+            ErrorMessage = "Please select a room type";
+            return Page();
+        }
+
+        room!.Number = roomDto.Number;
         room!.Floor = floor;
 
         RoomType roomType = RoomHelper.GetRoomType(roomTypes);
@@ -68,5 +81,11 @@ public class EditModel : BasePageModel
 
         await _roomRepository.UpdateAsync(room!);
         return RedirectToPage("List");
+    }
+    
+    private async Task<IEnumerable<FloorDto>> GetFloorDtosAsync()
+    {
+        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == SelectedSchoolId);
+        return floors.Select(f => f.ToFloorDto()).ToArray();
     }
 }
