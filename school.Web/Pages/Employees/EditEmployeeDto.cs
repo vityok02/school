@@ -1,3 +1,5 @@
-﻿namespace SchoolManagement.Web.Pages.Employees;
+﻿using SchoolManagement.Models;
 
-public record EditEmployeeDto (int Id, string FirstName, string LastName, int Age);
+namespace SchoolManagement.Web.Pages.Employees;
+
+public record EditEmployeeDto (int Id, string FirstName, string LastName, int Age, IEnumerable<Position> Positions);

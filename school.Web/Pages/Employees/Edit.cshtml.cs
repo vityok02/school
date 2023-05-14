@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Web.Pages.Positions;
@@ -8,9 +9,9 @@ public class EditModel : BasePageModel
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
+    private readonly IValidator<EmployeeDto> _validator;
 
-    public EmployeeDto EmployeeDto { get; private set; } = default!;
-    [BindProperty]
+    public EditEmployeeDto EmployeeDto { get; private set; } = default!;
     public IEnumerable<PositionDto>? PositionsDto { get; set; } = default!;
 
     public EditModel(
@@ -36,7 +37,7 @@ public class EditModel : BasePageModel
             return RedirectToPage("List");
         }
 
-        EmployeeDto = employee.ToEmployeeDto();
+        EmployeeDto = employee.ToEditEmployeeDto();
 
         var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
         PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
@@ -97,7 +98,7 @@ public class EditModel : BasePageModel
 
         async Task FillDataForPage()
         {
-            EmployeeDto = employee!.ToEmployeeDto();
+            EmployeeDto = employee!.ToEditEmployeeDto();
 
             var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
             PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();

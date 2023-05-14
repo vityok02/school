@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
@@ -9,16 +10,18 @@ public class AddModel : BasePageModel
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
+    private IValidator<EmployeeDto> _validator;
 
     public AddEmployeeDto EmployeeDto { get; private set; } = default!;
     public IEnumerable<PositionDto>? PositionsDto { get; private set; } = default!;
     public IEnumerable<int> CheckedPositionsId { get; private set; } = default!;
 
-    public AddModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
+    public AddModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository, IValidator<EmployeeDto> validator)
         : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
         _positionRepository = positionRepository;
+        _validator = validator;
     }
 
     public async Task<IActionResult> OnGetAsync()
@@ -42,6 +45,16 @@ public class AddModel : BasePageModel
 
     public async Task<IActionResult> OnPostAsync(AddEmployeeDto employeeDto, int[] checkedPositionsId)
     {
+        var validationResult = await _validator.ValidateAsync(employeeDto.ToEmployeeDto());
+
+        if(!validationResult.IsValid)
+        {
+            validationResult.AddToModelState(this.ModelState);
+
+            await FillDataForPage();
+
+            return Page();
+        }
         if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
