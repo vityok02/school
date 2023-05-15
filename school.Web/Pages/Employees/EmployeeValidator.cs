@@ -2,7 +2,8 @@
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class EmployeeValidator : AbstractValidator<EmployeeDto>
+public class EmployeeValidator
+    : AbstractValidator<IEmployeeDto>
 {
     public EmployeeValidator()
     {

@@ -1,3 +1,4 @@
 ﻿namespace SchoolManagement.Web.Pages.Employees;
 
-public record AddEmployeeDto(string FirstName, string LastName, int Age);
+public record AddEmployeeDto(string FirstName, string LastName, int Age)
+    : IEmployeeDto;

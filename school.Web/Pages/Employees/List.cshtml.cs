@@ -9,7 +9,7 @@ public class ListModel : BasePageModel
 {
     private readonly IEmployeeRepository _employeeRepository;
 
-    public IEnumerable<EmployeeItemDto> EmployeeItems { get; set; } = default!;
+    public IEnumerable<EmployeeDto> EmployeeItems { get; set; } = default!;
     public string PositionSort { get; set; } = default!;
     public string FilterByPosition { get; set; } = default!;
     public IDictionary<string, string> PositionParams { get; set; } = default!;
@@ -45,7 +45,7 @@ public class ListModel : BasePageModel
         var employees = await _employeeRepository.GetSchoolEmployeesAsync(FilterBy(FilterByName, FilterByAge, FilterByPosition),
             Sort(orderBy), SelectedSchoolId);
 
-        EmployeeItems = employees.Select(s => s.ToEmployeeItemDto()).ToArray();
+        EmployeeItems = employees.Select(s => s.ToEmployeeDto()).ToArray();
 
         var filterParams = GetFilters();
 

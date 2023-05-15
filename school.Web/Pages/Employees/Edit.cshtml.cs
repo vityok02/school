@@ -5,24 +5,17 @@ using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class EditModel : BasePageModel
+public class EditModel : BaseEmployeeModel
 {
-    private readonly IEmployeeRepository _employeeRepository;
-    private readonly IPositionRepository _positionRepository;
-    private readonly IValidator<EmployeeDto> _validator;
-
     public EditEmployeeDto EmployeeDto { get; private set; } = default!;
-    public IEnumerable<PositionDto>? PositionsDto { get; set; } = default!;
 
     public EditModel(
         ISchoolRepository schoolRepository,
         IEmployeeRepository employeeRepository,
-        IPositionRepository positionRepository)
-        : base(schoolRepository)
-    {
-        _employeeRepository = employeeRepository;
-        _positionRepository = positionRepository;
-    }
+        IPositionRepository positionRepository,
+        IValidator<IEmployeeDto> validator)
+        : base(schoolRepository, employeeRepository, positionRepository, validator) 
+    { }
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
@@ -40,19 +33,30 @@ public class EditModel : BasePageModel
         EmployeeDto = employee.ToEditEmployeeDto();
 
         var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
-        PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
+        PositionDtos = positions.Select(p => p.ToPositionDto()).ToArray();
 
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync(EditEmployeeDto employeeDto, int[] checkedPositionsId)
     {
+        var validationResult = await _validator.ValidateAsync(employeeDto);
+
+        var employee = await _employeeRepository.GetEmployeeAsync(employeeDto.Id);
+
+        if (!validationResult.IsValid)
+        {
+            validationResult.AddToModelState(ModelState, nameof(EmployeeDto));
+
+            await FillDataForPage();
+
+            return Page();
+        }
+
         if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
-
-        var employee = await _employeeRepository.GetEmployeeAsync(employeeDto.Id);
 
         if (employee is null)
         {
@@ -89,7 +93,7 @@ public class EditModel : BasePageModel
         {
             await FillDataForPage();
 
-            ErrorMessage = "Please select a position";
+            NotSelectedMessage = "Please select a position";
             return Page();
         }
 
@@ -101,7 +105,7 @@ public class EditModel : BasePageModel
             EmployeeDto = employee!.ToEditEmployeeDto();
 
             var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
-            PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
+            PositionDtos = positions.Select(p => p.ToPositionDto()).ToArray();
         }
     }
 }

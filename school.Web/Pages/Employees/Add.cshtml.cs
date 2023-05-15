@@ -3,21 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Web.Pages.Positions;
+using SchoolManagement.Web.Pages;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class AddModel : BasePageModel
+public class AddModel : BaseEmployeeModel
 {
-    private readonly IEmployeeRepository _employeeRepository;
-    private readonly IPositionRepository _positionRepository;
-    private IValidator<EmployeeDto> _validator;
-
     public AddEmployeeDto EmployeeDto { get; private set; } = default!;
-    public IEnumerable<PositionDto>? PositionsDto { get; private set; } = default!;
     public IEnumerable<int> CheckedPositionsId { get; private set; } = default!;
 
-    public AddModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository, IPositionRepository positionRepository, IValidator<EmployeeDto> validator)
-        : base(schoolRepository)
+    public AddModel(
+        ISchoolRepository schoolRepository,
+        IEmployeeRepository employeeRepository,
+        IPositionRepository positionRepository,
+        IValidator<IEmployeeDto> validator)
+        : base(schoolRepository, employeeRepository, positionRepository, validator)
     {
         _employeeRepository = employeeRepository;
         _positionRepository = positionRepository;
@@ -38,23 +38,24 @@ public class AddModel : BasePageModel
         }
 
         var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
-        PositionsDto = positions.Select(s => s.ToPositionDto()).ToArray();
+        PositionDtos = positions.Select(s => s.ToPositionDto()).ToArray();
 
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync(AddEmployeeDto employeeDto, int[] checkedPositionsId)
     {
-        var validationResult = await _validator.ValidateAsync(employeeDto.ToEmployeeDto());
+        var validationResult = await _validator.ValidateAsync(employeeDto);
 
-        if(!validationResult.IsValid)
+        if (!validationResult.IsValid)
         {
-            validationResult.AddToModelState(this.ModelState);
+            validationResult.AddToModelState(ModelState, nameof(EmployeeDto));
 
             await FillDataForPage();
 
             return Page();
         }
+
         if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
@@ -79,11 +80,11 @@ public class AddModel : BasePageModel
             ErrorMessage = "Such employee already exists";
             return Page();
         }
-        if(!checkedPositionsId.Any())
+        if (!checkedPositionsId.Any())
         {
             await FillDataForPage();
 
-            ErrorMessage = "Please select a position";
+            NotSelectedMessage = "Please select a position";
             return Page();
         }
 
@@ -99,7 +100,7 @@ public class AddModel : BasePageModel
         async Task FillDataForPage()
         {
             var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
-            PositionsDto = positions.Select(p => p.ToPositionDto()).ToArray();
+            PositionDtos = positions.Select(p => p.ToPositionDto()).ToArray();
             CheckedPositionsId = checkedPositionsId;
         }
     }
