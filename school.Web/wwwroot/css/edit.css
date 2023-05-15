@@ -59,7 +59,6 @@ table td {
 }
 
 .error {
-    text-align: center;
     display: block;
     outline: none;
     color: red;
