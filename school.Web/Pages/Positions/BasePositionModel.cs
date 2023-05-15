@@ -1,0 +1,21 @@
+﻿using FluentValidation;
+using SchoolManagement.Models.Interfaces;
+
+namespace SchoolManagement.Web.Pages.Positions
+{
+    public class BasePositionModel : BasePageModel
+    {
+        protected readonly IPositionRepository _positionRepository;
+        protected readonly IValidator<PositionDto> _validator;
+
+        public BasePositionModel(
+            ISchoolRepository schoolRepository,
+            IPositionRepository positionRepository,
+            IValidator<PositionDto> validator)
+            : base(schoolRepository)
+        {
+            _positionRepository = positionRepository;
+            _validator = validator;
+        }
+    }
+}
