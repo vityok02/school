@@ -5,7 +5,7 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class EditModel : BasePositionModel
+public class EditModel : BasePositionPageModel
 {
     public PositionDto PositionDto { get; private set; } = default!;
 

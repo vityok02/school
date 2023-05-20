@@ -7,7 +7,7 @@ using SchoolManagement.Web.Pages;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class AddModel : BaseEmployeeModel
+public class AddModel : BaseEmployeePageModel
 {
     public AddEmployeeDto EmployeeDto { get; private set; } = default!;
     public IEnumerable<int> CheckedPositionsId { get; private set; } = default!;
@@ -61,6 +61,20 @@ public class AddModel : BaseEmployeeModel
             return RedirectToSchoolList();
         }
 
+        var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
+
+        foreach (var positionId in checkedPositionsId) 
+        {
+            if(!positions.Any(p => p.Id == positionId))
+            {
+                await FillDataForPage();
+
+                InValidPositionMessage = "Such position doesn't exist";
+
+                return Page();
+            }
+        }
+
         var school = await SchoolRepository.GetAsync(SelectedSchoolId);
         if (school is null)
         {
@@ -68,7 +82,6 @@ public class AddModel : BaseEmployeeModel
         }
 
         var employeePositions = await _positionRepository.GetEmployeePositions(checkedPositionsId);
-
         var employees = await _employeeRepository.GetAllAsync(e => e.SchoolId == SelectedSchoolId);
 
         if (employees.Any(s => s.FirstName == employeeDto.FirstName
@@ -78,13 +91,16 @@ public class AddModel : BaseEmployeeModel
             await FillDataForPage();
 
             ErrorMessage = "Such employee already exists";
+
             return Page();
         }
+
         if (!checkedPositionsId.Any())
         {
             await FillDataForPage();
 
-            NotSelectedMessage = "Please select a position";
+            InValidPositionMessage = "Please select a position";
+
             return Page();
         }
 

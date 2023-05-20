@@ -3,12 +3,12 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Positions
 {
-    public class BasePositionModel : BasePageModel
+    public class BasePositionPageModel : BasePageModel
     {
         protected readonly IPositionRepository _positionRepository;
         protected readonly IValidator<PositionDto> _validator;
 
-        public BasePositionModel(
+        public BasePositionPageModel(
             ISchoolRepository schoolRepository,
             IPositionRepository positionRepository,
             IValidator<PositionDto> validator)

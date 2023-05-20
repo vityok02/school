@@ -9,6 +9,7 @@ public class AddModel : BasePageModel
     private readonly IRepository<Floor> _floorRepository;
 
     public int FloorNumber { get; private set; }
+    public string InValidMessage { get; private set; } = "";
 
     public AddModel(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository)
         :base(schoolRepository)
@@ -36,8 +37,14 @@ public class AddModel : BasePageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync(int floorNumber, string type)
+    public async Task<IActionResult> OnPostAsync(int floorNumber, bool isBasement)
     {
+        if (floorNumber <= 0)
+        {
+            InValidMessage = "'Number' must be greater than '0'";
+            return Page();
+        }
+
         if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
@@ -49,12 +56,12 @@ public class AddModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == SelectedSchoolId);
-
-        if (type == "basement")
+        if (isBasement == true)
         {
             floorNumber = -floorNumber;
         }
+
+        var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == SelectedSchoolId);
 
         if(floors.Any(f => f.Number == floorNumber))
         {

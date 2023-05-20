@@ -5,7 +5,7 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class AddModel : BasePositionModel
+public class AddModel : BasePositionPageModel
 {
     public string? Name { get; private set; } = null!;
 

@@ -2,7 +2,7 @@
 
 namespace SchoolManagement.Web.Pages.Floors;
 
-public static class FloorExtension
+public static class FloorExtensions
 {
     public static FloorItemDto ToFloorItemDto(this Floor floor)
     {

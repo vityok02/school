@@ -12,6 +12,53 @@
 <div class="wrapper">
     <div class="d-flex justify-content-center">
         <div class="tables">
+            <h2>Select positions</h2>
+            <form method="get" asp-page="List" class="filter">
+                <label asp-for="AllPositionsFilter" class="cell">
+                    Name:
+                    <input asp-for="AllPositionsFilter" />
+                </label>
+                <input type="submit" value="Search" class="btn btn-success btn-sm cell" />
+                <a asp-page="/Positions/List" class="btn btn-secondary btn-sm cell">Back to full list</a>
+                <input type="hidden" asp-for="OrderBy" />
+            </form>
+            @if (!Model.AllPositions.Any())
+            {
+                <div class="empty">List of positions is empty</div>
+            }
+            else
+            {
+                <table class="tab">
+                    <thead>
+                        <tr>
+                            <th>
+                                <a asp-route-allPositionsOrderBy="@Model.AllPositionsSort" asp-route-filter="@Model.AllPositionsFilter">
+                                    Name
+                                </a>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var position in Model.AllPositions)
+                    {
+                        <tr>
+                            <td>@position.Name</td>
+                            <td>
+                                <form asp-page-handler="Add" method="post" asp-route-id="@position.Id">
+                                    <div class="btns">
+                                        <button class="btn btn-details" type="submit">Add</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <div class="tables">
+            <h2>Your positions</h2>
             <form method="get" asp-page="List" class="filter">
                 <label asp-for="SchoolPositionsFilter" class="cell">
                     Name:
@@ -50,51 +97,6 @@
                                         <button class="btn btn-delete" type="submit">Delete</button>
                                     </form>
                                 </div>
-                            </td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            }
-        </div>
-        <div class="tables">
-            <form method="get" asp-page="List" class="filter">
-                <label asp-for="AllPositionsFilter" class="cell">
-                    Name:
-                    <input asp-for="AllPositionsFilter" />
-                </label>
-                <input type="submit" value="Search" class="btn btn-success btn-sm cell" />
-                <a asp-page="/Positions/List" class="btn btn-secondary btn-sm cell">Back to full list</a>
-                <input type="hidden" asp-for="OrderBy" />
-            </form>
-            @if (!Model.AllPositions.Any())
-            {
-                <div class="empty">List of positions is empty</div>
-            }
-            else
-            {
-                <table class="tab">
-                    <thead>
-                        <tr>
-                            <th>
-                                <a asp-route-allPositionsOrderBy="@Model.AllPositionsSort" asp-route-filter="@Model.AllPositionsFilter">
-                                    Name
-                                </a>
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var position in Model.AllPositions)
-                    {
-                        <tr>
-                            <td>@position.Name</td>
-                            <td>
-                                <form asp-page-handler="Add" method="post" asp-route-id="@position.Id">
-                                    <div class="btns">
-                                        <button class="btn btn-details" type="submit">Add</button>
-                                    </div>
-                                </form>
                             </td>
                         </tr>
                     }

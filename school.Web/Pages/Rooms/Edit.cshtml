@@ -17,11 +17,13 @@
 }
 
 <div class="wrapper">
+    <div asp-validation-summary="ModelOnly"></div>
     <form method="post" class="edit">
         <table>
             <tr>
                 <td>
                     <label asp-for="RoomDto.Number">Number</label>
+                    <span asp-validation-for="RoomDto.Number"></span>
                 </td>
                 <td>
                     <input asp-for="RoomDto.Number" required/>

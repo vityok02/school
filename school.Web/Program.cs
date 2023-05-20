@@ -18,8 +18,7 @@ builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
 builder.Services.AddScoped<IFloorRepository, FloorRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-builder.Services.AddValidatorsFromAssemblyContaining<EmployeeValidator>();
-
+builder.Services.AddScoped<IValidator, FluentValidationModelValidator>
 // Add services to the container.
 builder.Services.AddRazorPages()
     .AddViewOptions(options =>

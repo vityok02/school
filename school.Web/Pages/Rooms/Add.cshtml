@@ -10,6 +10,7 @@
 }
 
 <div class="wrapper">
+    <div asp-validation-summary="ModelOnly"></div>
     <form method="post" class="form">
         <table>
             <tr>
@@ -18,11 +19,13 @@
                 </td>
                 <td>
                     <input asp-for="RoomDto.Number" required/>
+                    <span asp-validation-for="RoomDto.Number" class="error"></span>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label asp-for="FloorDtos">Floor</label>
+                    <div class="error">@Model.NotFoundMessage</div>
                 </td>
                 <td>
                     <select asp-for="RoomDto.FloorId" required>
@@ -40,7 +43,7 @@
                 <td>
                     @foreach (var type in RoomTypeExt.RoomTypes)
                     {
-                        <input name="roomTypes[]" type="checkbox" value="@type.Key" class="btn-check" id="@type.Key" />
+                        <input name="roomTypes" type="checkbox" value="@type.Key" class="btn-check" id="@type.Key" />
                         <label for="@type.Key" class="btn btn-outline-secondary">
                             @type.Value
                         </label>

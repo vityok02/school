@@ -1,6 +1,4 @@
-﻿using FluentValidation.Results;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using SchoolManagement.Models;
+﻿using SchoolManagement.Models;
 
 namespace SchoolManagement.Web.Pages.Employees;
 

@@ -1,20 +1,20 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Students;
 
-public class EditModel : BasePageModel
+public class EditModel : BaseStudentPageModel
 {
-    private readonly IRepository<Student> _studentRepository;
+    public StudentDto StudentDto { get; private set; } = default!;
 
-    public StudentDto StudentDto { get; set; } = default!;
-
-    public EditModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
-        :base(schoolRepository)
-    {
-        _studentRepository = studentRepository;
-    }
+    public EditModel(
+        ISchoolRepository schoolRepository,
+        IRepository<Student> studentRepository,
+        IValidator<IStudentDto> validator)
+        : base(schoolRepository, studentRepository, validator)
+    { }
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
@@ -31,6 +31,17 @@ public class EditModel : BasePageModel
 
     public async Task<IActionResult> OnPostAsync(StudentDto studentDto)
     {
+        var validationResult = await _validator.ValidateAsync(studentDto);
+
+        if (!validationResult.IsValid)
+        {
+            validationResult.AddToModelState(ModelState, nameof(StudentDto));
+
+            StudentDto = studentDto;
+
+            return Page();
+        }
+
         if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
@@ -38,12 +49,15 @@ public class EditModel : BasePageModel
 
         var students = await _studentRepository.GetAllAsync(s => s.SchoolId == SelectedSchoolId);
 
-        if ((students.Any(s => s.FirstName == studentDto.FirstName
+        if (students.Any(s => s.FirstName == studentDto.FirstName
             && s.LastName == studentDto.LastName
             && s.Age == studentDto.Age
-            && s.Id != studentDto.Id)))
+            && s.Id != studentDto.Id))
         {
+            StudentDto = studentDto;
+
             ErrorMessage = "Such student already exists";
+
             return Page();
         }
 

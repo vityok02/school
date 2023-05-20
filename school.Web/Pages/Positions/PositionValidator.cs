@@ -6,6 +6,6 @@ public class PositionValidator : AbstractValidator<PositionDto>
 {
     public PositionValidator()
     {
-        RuleFor(p => p.Name).NotEmpty().MaximumLength(5);
+        RuleFor(p => p.Name).NotEmpty().Length(1, 100);
     }
 }

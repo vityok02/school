@@ -2,7 +2,7 @@
 
 public interface IEmployeeDto
 {
-    int Age { get; init; }
-    string FirstName { get; init; }
-    string LastName { get; init; }
+    int Age { get; }
+    string FirstName { get; }
+    string LastName { get; }
 }

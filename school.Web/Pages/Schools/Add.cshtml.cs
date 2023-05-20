@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
@@ -7,14 +8,27 @@ namespace SchoolManagement.Web.Pages.Schools;
 public class AddModel : BasePageModel
 {
     public AddSchoolDto SchoolDto { get; private set; } = null!;
+    private readonly IValidator<ISchoolDto> _validator;
 
-    public AddModel(ISchoolRepository schoolRepository)
+    public AddModel(
+        ISchoolRepository schoolRepository, 
+        IValidator<ISchoolDto> validator)
         : base(schoolRepository)
     {
+        _validator = validator;
     }
 
     public async Task<IActionResult> OnPostAsync(AddSchoolDto schoolDto)
     {
+        var validationResult = await _validator.ValidateAsync(schoolDto);
+
+        if (!validationResult.IsValid) 
+        {
+            validationResult.AddToModelState(ModelState, nameof(SchoolDto));
+
+            return Page();
+        }
+
         var schools = await SchoolRepository.GetAllAsync();
 
         if (schools.Any(s => s.Name == schoolDto.Name))
@@ -36,7 +50,7 @@ public class AddModel : BasePageModel
         {
             Name = schoolDto.Name,
             Address = address,
-            OpeningDate = schoolDto.OpeningDate.ToDateTime(TimeOnly.MinValue),
+            OpeningDate = schoolDto.OpeningDate
         };
 
         await SchoolRepository.AddAsync(school);

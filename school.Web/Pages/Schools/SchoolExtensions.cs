@@ -8,12 +8,12 @@ public static class SchoolExtensions
     {
         return new SchoolDto(
             school.Id,
-            school.Name, 
-            school.Address.Country, 
-            school.Address.City, 
-            school.Address.Street, 
-            school.Address.PostalCode, 
-            DateOnly.FromDateTime(school.OpeningDate));
+            school.Name,
+            school.Address.Country,
+            school.Address.City,
+            school.Address.Street,
+            school.Address.PostalCode,
+            school.OpeningDate);
     }
 
     public static SchoolItemDto ToSchoolItemDto(this School school)

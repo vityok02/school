@@ -46,8 +46,15 @@ public class ListModel : BasePageModel
         FloorNumberSort = orderBy == "floorNumber" ? "floorNumber_desc" : "floorNumber";
 
         FilterByRoomNumber = filterByRoomNumber;
-        FilterByRoomType = RoomHelper.GetRoomType(filterByRoomType);
         FilterByFloorNumber = filterByFloorNumber;
+
+        RoomType roomType = 0;
+        foreach (var rt in filterByRoomType)
+        {
+            roomType |= rt;
+        }
+
+        FilterByRoomType = roomType;
 
         var rooms = await _roomRepository.GetRoomsWithFloorsAsync(FilterBy(FilterByRoomNumber, FilterByRoomType, FilterByFloorNumber), 
             Sort(orderBy), SelectedSchoolId);

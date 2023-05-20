@@ -5,7 +5,7 @@ using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class EditModel : BaseEmployeeModel
+public class EditModel : BaseEmployeePageModel
 {
     public EditEmployeeDto EmployeeDto { get; private set; } = default!;
 
@@ -41,7 +41,6 @@ public class EditModel : BaseEmployeeModel
     public async Task<IActionResult> OnPostAsync(EditEmployeeDto employeeDto, int[] checkedPositionsId)
     {
         var validationResult = await _validator.ValidateAsync(employeeDto);
-
         var employee = await _employeeRepository.GetEmployeeAsync(employeeDto.Id);
 
         if (!validationResult.IsValid)
@@ -61,6 +60,7 @@ public class EditModel : BaseEmployeeModel
         if (employee is null)
         {
             ModelState.AddModelError("", "EmployeeDto not found");
+
             return RedirectToPage("List");
         }
 
@@ -79,6 +79,20 @@ public class EditModel : BaseEmployeeModel
             return Page();
         }
 
+        var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
+
+        foreach (var positionId in checkedPositionsId)
+        {
+            if (!positions.Any(p => p.Id == positionId))
+            {
+                await FillDataForPage();
+
+                InValidPositionMessage = "Such position doesn't exist";
+
+                return Page();
+            }
+        }
+
         employee!.UpdateInfo(employeeDto.FirstName, employeeDto.LastName, employeeDto.Age);
 
         employee.Positions.Clear();
@@ -93,7 +107,8 @@ public class EditModel : BaseEmployeeModel
         {
             await FillDataForPage();
 
-            NotSelectedMessage = "Please select a position";
+            InValidPositionMessage = "Please select a position";
+
             return Page();
         }
 
