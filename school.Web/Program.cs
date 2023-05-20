@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
 using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Web.Pages.Employees;
+using SchoolManagement.Web.Pages.Rooms;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,7 @@ builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
 builder.Services.AddScoped<IFloorRepository, FloorRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-builder.Services.AddScoped<IValidator, FluentValidationModelValidator>
+builder.Services.AddValidatorsFromAssemblyContaining<EmployeeValidator>();
 // Add services to the container.
 builder.Services.AddRazorPages()
     .AddViewOptions(options =>
