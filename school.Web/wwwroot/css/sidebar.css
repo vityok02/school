@@ -29,19 +29,3 @@ a {
     color: white;
     background: linear-gradient(90deg, rgba(79,100,108,1) 0%, rgba(79,100,108,0) 100%);
 }
-
-@media screen and (max-width: 900px) {
-    .sidenav {
-        display: none;
-    }
-}
-
-@media screen and (max-height: 450px) {
-    .sidenav {
-        padding-top: 15px;
-    }
-
-        .sidenav a {
-            font-size: 18px;
-        }
-}
