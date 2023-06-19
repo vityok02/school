@@ -97,7 +97,7 @@ void ShowInfo()
     {
         var currentSchool = dbContext.Schools
         .Include(s => s.Floors)
-        .Include(s => s.Rooms)
+        //.Include(s => s.Rooms)
         .Include(s => s.Employees)
         .Include(s => s.Students)
         .Include(s => s.Address)

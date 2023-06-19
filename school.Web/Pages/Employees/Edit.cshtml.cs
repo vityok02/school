@@ -14,12 +14,12 @@ public class EditModel : BaseEmployeePageModel
         IEmployeeRepository employeeRepository,
         IPositionRepository positionRepository,
         IValidator<IEmployeeDto> validator)
-        : base(schoolRepository, employeeRepository, positionRepository, validator) 
+        : base(schoolRepository, employeeRepository, positionRepository, validator)
     { }
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        if(SelectedSchoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             RedirectToSchoolList();
         }
@@ -97,13 +97,13 @@ public class EditModel : BaseEmployeePageModel
 
         employee.Positions.Clear();
 
-        foreach(var p in checkedPositionsId)
+        foreach (var p in checkedPositionsId)
         {
             var position = await _positionRepository.GetAsync(p);
             employee!.Positions.Add(position!);
         }
 
-        if(!employee!.Positions.Any())
+        if (!employee!.Positions.Any())
         {
             await FillDataForPage();
 

@@ -12,8 +12,6 @@ public class School : BaseEntity
     public ICollection<Position> Positions { get; set; } = new HashSet<Position>();
     public ICollection<Student> Students { get; set; } = new HashSet<Student>();
     public ICollection<Floor> Floors { get; set; } = new HashSet<Floor>();
-    public IEnumerable<Room> Rooms => Floors.SelectMany(f => f.Rooms).ToList();
-
     public School()
     {
     }
