@@ -1,23 +1,22 @@
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
-public class AddModel : BasePageModel
+public class AddModel : BaseRoomPageModel
 {
-    private readonly IFloorRepository _floorRepository;
-    private readonly IRepository<Room> _roomRepository;
-
-    public IEnumerable<FloorDto>? FloorDtos { get; set; } = default!;
     public AddRoomDto RoomDto { get; set; } = default!;
 
-    public AddModel(ISchoolRepository schoolRepository, IFloorRepository floorRepository, IRepository<Room> roomRepository)
-        :base(schoolRepository)
-    {
-        _floorRepository = floorRepository;
-        _roomRepository = roomRepository;
-    }
+    public AddModel(
+        ISchoolRepository schoolRepository,
+        IFloorRepository floorRepository,
+        IRoomRepository roomRepository,
+        IValidator<IRoomDto> validator)
+        : base(schoolRepository, floorRepository, roomRepository, validator)
+    { }
 
     public async Task<IActionResult> OnGetAsync()
     {
@@ -34,15 +33,35 @@ public class AddModel : BasePageModel
 
     public async Task<IActionResult> OnPostAsync(AddRoomDto roomDto, RoomType[] roomTypes)
     {
+        var validationResult = await _validator.ValidateAsync(roomDto);
+        var floors = await GetFloorsAsync();
+
+        if (!validationResult.IsValid)
+        {
+            validationResult.AddToModelState(ModelState, nameof(RoomDto));
+
+            FloorDtos = floors;
+
+            return Page();
+        }
+
         if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
+        var f = floors.Select(f => f.Id);
+        if (!floors.Any(f => f.Id == roomDto.FloorId))
+        {
+            FloorDtos = floors;
+
+            NotFoundMessage = "Such floor doesn't exist";
+        }
+
         var rooms = await _roomRepository.GetAllAsync(r => r.Floor.SchoolId == SelectedSchoolId);
         if (rooms.Any(r => r.Number == roomDto.Number))
         {
-            FloorDtos = await GetFloorsAsync();
+            FloorDtos = floors;
 
             ErrorMessage = "A room with this number already exists";
 
@@ -51,7 +70,7 @@ public class AddModel : BasePageModel
 
         if (!roomTypes.Any())
         {
-            FloorDtos = await GetFloorsAsync();
+            FloorDtos = floors;
 
             ErrorMessage = "Please select a room type";
 
@@ -60,15 +79,10 @@ public class AddModel : BasePageModel
 
         var floor = await _floorRepository.GetAsync(roomDto.FloorId);
 
-        RoomType roomType = RoomHelper.GetRoomType(roomTypes);
+        RoomType roomType = GetRoomType(roomTypes);
 
         await _roomRepository.AddAsync(new Room(roomDto.Number, roomType, floor!));
-        return RedirectToPage("List");
-    }
 
-    private async Task<IEnumerable<FloorDto>> GetFloorsAsync()
-    {
-        var floors = await _floorRepository.GetSchoolFloorsAsync(SelectedSchoolId);
-        return floors.Select(f => f.ToFloorDto()).ToArray();
+        return RedirectToPage("List");
     }
 }

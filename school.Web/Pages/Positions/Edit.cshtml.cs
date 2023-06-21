@@ -1,19 +1,20 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Matching;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class EditModel : BasePageModel
+public class EditModel : BasePositionPageModel
 {
-    private readonly IPositionRepository _positionRepository;
+    public PositionDto PositionDto { get; private set; } = default!;
 
-    public PositionDto? PositionDto { get; private set; } = null!;
-
-    public EditModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
-        : base(schoolRepository)
-    {
-        _positionRepository = positionRepository;
-    }
+    public EditModel(
+        ISchoolRepository schoolRepository, 
+        IPositionRepository positionRepository,
+        IValidator<PositionDto> validator)
+        : base(schoolRepository, positionRepository, validator)
+    { }
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
@@ -29,7 +30,17 @@ public class EditModel : BasePageModel
     }
 
     public async Task<IActionResult> OnPostAsync(PositionDto positionDto)
-    { 
+    {
+        var validationResult = await _validator.ValidateAsync(positionDto);
+        if(!validationResult.IsValid) 
+        {
+            validationResult.AddToModelState(ModelState, nameof(PositionDto));
+
+            PositionDto = positionDto;
+
+            return Page();
+        }
+
         var position = await _positionRepository.GetAsync(positionDto.Id);
         if (position == null)
         {
@@ -42,6 +53,9 @@ public class EditModel : BasePageModel
             && p.Id != positionDto.Id))
         {
             ErrorMessage = "Such position already exists";
+
+            PositionDto = positionDto;
+
             return Page();
         }
 

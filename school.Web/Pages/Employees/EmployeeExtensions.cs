@@ -4,21 +4,22 @@ namespace SchoolManagement.Web.Pages.Employees;
 
 public static class EmployeeExtensions
 {
-    public static EmployeeDto ToEmployeeDto(this Employee employee)
+    public static EditEmployeeDto ToEditEmployeeDto(this Employee employee)
     {
-        return new EmployeeDto(
+        return new EditEmployeeDto(
             employee.Id,
             employee.FirstName,
             employee.LastName,
             employee.Age,
             employee.Positions);
     }
-    public static EmployeeItemDto ToEmployeeItemDto(this Employee employee)
+
+    public static EmployeeDto ToEmployeeDto(this Employee employee)
     {
         var position = employee.Positions.FirstOrDefault()?.Name;
         position ??= "None";
 
-        return new EmployeeItemDto(
+        return new EmployeeDto(
             employee.Id,
             employee.FirstName,
             employee.LastName,

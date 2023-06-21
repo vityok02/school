@@ -1,35 +1,43 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Students;
 
-public class StudentFormModel : BasePageModel
+public class AddModel : BaseStudentPageModel
 {
-    private readonly IRepository<Student> _studentRepository;
+    public AddStudentDto StudentDto { get; private set; } = default!;
 
-    public AddStudentDto? StudentDto { get; private set; } = null!;
-
-    public StudentFormModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
-        :base(schoolRepository)
-    {
-        _studentRepository = studentRepository;
-    }
+    public AddModel(
+        ISchoolRepository schoolRepository, 
+        IRepository<Student> studentRepository,
+        IValidator<IStudentDto> validator)
+        : base(schoolRepository, studentRepository, validator)
+    { }
 
     public async Task<IActionResult> OnPostAsync(AddStudentDto studentDto)
     {
+        var validationResult = await _validator.ValidateAsync(studentDto);
+
+        if(!validationResult.IsValid) 
+        {
+            validationResult.AddToModelState(ModelState, nameof(StudentDto));
+
+            return Page();
+        }
+
         if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
-        var students = await _studentRepository
-            .GetAllAsync(s => s.SchoolId == SelectedSchoolId
-            && s.FirstName == studentDto.FirstName
-            && s.LastName == studentDto.LastName
-            && s.Age == studentDto.Age);
+        var students = await _studentRepository.GetAllAsync(s => s.SchoolId == SelectedSchoolId);
 
-        if (students.Any())
+        if (students.Any(
+            s => s.FirstName == studentDto.FirstName
+            && s.LastName == studentDto.LastName
+            && s.Age == studentDto.Age))
         {
             ErrorMessage = "Such student already exist";
             return Page();

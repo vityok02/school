@@ -5,10 +5,11 @@
 }
 @section styles
 {
-    <link rel="stylesheet" href="~/css/add.css" asp-append-version="true" asp-append-version="true"/>  
+    <link rel="stylesheet" href="~/css/add.css" asp-append-version="true" />  
 }
 
 <div class="wrapper">
+    <div asp-validation-summary="ModelOnly"></div>
     <form method="post" class="form">
         <table>
             <tr>
@@ -19,6 +20,7 @@
                 </td>
                 <td>
                     <input asp-for="EmployeeDto.FirstName" required />
+                    <span asp-validation-for="EmployeeDto.FirstName" class="error"></span>
                 </td>
             </tr>
             <tr>
@@ -29,6 +31,7 @@
                 </td>
                 <td>
                     <input asp-for="EmployeeDto.LastName" required />
+                    <span asp-validation-for="EmployeeDto.LastName" class="error"></span>
                 </td>
             </tr>
             <tr>
@@ -39,12 +42,13 @@
                 </td>
                 <td>
                     <input asp-for="EmployeeDto.Age" required/>
+                    <span asp-validation-for="EmployeeDto.Age" class="error"></span>
                 </td>
             </tr>
             <tr>
                 <td>Type</td>
                 <td>
-                    @foreach(var position in Model.PositionsDto!)
+                    @foreach(var position in Model.PositionDtos!)
                     {
                         if(Model.CheckedPositionsId is not null && Model.CheckedPositionsId!.Contains(position.Id))
                         {
@@ -58,6 +62,7 @@
                             @position.Name
                         </label>
                     }
+                    <div class="error">@Model.InValidPositionMessage</div>
                 </td>
             </tr>
         </table>

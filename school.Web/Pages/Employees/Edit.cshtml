@@ -9,8 +9,8 @@
 }
 
 <div class="wrapper">
+    <div asp-validation-summary="ModelOnly" />
     <form method="post" class="edit">
-        <div asp-validation-summary="All" />
         <table>
             <tr>
                 <td>
@@ -20,7 +20,7 @@
                 </td>
                 <td>
                     <input asp-for="EmployeeDto.FirstName" />
-                    <span asp-validation-for="EmployeeDto.FirstName" class="error" />
+                    <span asp-validation-for="EmployeeDto.FirstName" class="error"></span>
                 </td>
             </tr>
             <tr>
@@ -31,7 +31,7 @@
                 </td>
                 <td>
                     <input asp-for="EmployeeDto.LastName" />
-                    <span asp-validation-for="EmployeeDto.LastName" class="error" />
+                    <span asp-validation-for="EmployeeDto.LastName" class="error"></span>
                 </td>
             </tr>
             <tr>
@@ -42,28 +42,29 @@
                 </td>
                 <td>
                     <input asp-for="EmployeeDto.Age" type="number" />
-                    <span asp-validation-for="EmployeeDto.Age" class="error" />
+                    <span asp-validation-for="EmployeeDto.Age" class="error"></span>
                 </td>
             </tr>
-                <tr>
-                    <td>Position: </td>
-                    <td>
-                        @foreach (var position in Model.PositionsDto!)
+            <tr>
+                <td>Position: </td>
+                <td>
+                    @foreach (var position in Model.PositionDtos!)
+                    {
+                        if (Model.EmployeeDto.Positions.Any(p => p.Id == position.Id))
                         {
-                            if (Model.EmployeeDto.Positions.Any(p => p.Id == position.Id))
-                            {
-                                <input type="checkbox" name="checkedPositionsId" id="@position.Id" value="@position.Id" class="btn-check" checked />
-                            }
-                            else
-                            {
-                                <input type="checkbox" name="checkedPositionsId" id="@position.Id" value="@position.Id" class="btn-check" />
-                            }
-                            <label for="@position.Id" class="btn btn-outline-secondary">
-                                @position.Name
-                            </label>
+                            <input type="checkbox" name="checkedPositionsId" id="@position.Id" value="@position.Id" class="btn-check" checked />
                         }
-                    </td>
-                </tr>
+                        else
+                        {
+                            <input type="checkbox" name="checkedPositionsId" id="@position.Id" value="@position.Id" class="btn-check" />
+                        }
+                        <label for="@position.Id" class="btn btn-outline-secondary">
+                            @position.Name
+                        </label>
+                    }
+                    <div class="error">@Model.InValidPositionMessage</div>
+                </td>
+            </tr>
         </table>
         <div class="error">@Model.ErrorMessage</div>
         <input type="hidden" asp-for="EmployeeDto!.Id" />

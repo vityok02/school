@@ -1,26 +1,30 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class AddModel : BasePageModel
+public class AddModel : BasePositionPageModel
 {
-    public IRepository<Position> _positionRepository;
-
     public string? Name { get; private set; } = null!;
 
-    public AddModel(ISchoolRepository schoolRepository, IRepository<Position> positionRepository)
-        : base(schoolRepository)
-    {
-        _positionRepository = positionRepository;
-    }
+    public AddModel(
+        ISchoolRepository schoolRepository,
+        IPositionRepository positionRepository,
+        IValidator<PositionDto> validator)
+        : base(schoolRepository, positionRepository, validator)
+    { }
 
     public async Task<IActionResult> OnPostAsync(string name) 
     {
-        if (name is null)
+        PositionDto positionDto = new(0, name);
+
+        var validationResult = await _validator.ValidateAsync(positionDto);
+        if (!validationResult.IsValid) 
         {
-            ErrorMessage = "Enter the job title";
+            validationResult.AddToModelState(ModelState);
+
             return Page();
         }
 

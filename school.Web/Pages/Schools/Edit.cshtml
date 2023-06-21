@@ -9,16 +9,18 @@
 }
 
 <div class="wrapper">
-    <form method="post" class="edit">
-        <table class="tab">
+    <div asp-validation-summary="ModelOnly"></div>
+    <form method="post" class="form">
+        <table>
             <tr>
                 <td>
                     <label asp-for="SchoolDto.Name">
-                        Name:
+                        Name: 
                     </label>
                 </td>
                 <td>
                     <input asp-for="SchoolDto.Name" required />
+                    <span asp-validation-for="SchoolDto.Name" class="error"></span>
                 </td>
             </tr>
             <tr>
@@ -29,6 +31,7 @@
                 </td>
                 <td>
                     <input asp-for="SchoolDto.Country" required />
+                    <span asp-validation-for="SchoolDto.Country" class="error"></span>
                 </td>
             </tr>
             <tr>
@@ -39,6 +42,7 @@
                 </td>
                 <td>
                     <input asp-for="SchoolDto.City" required />
+                    <span asp-validation-for="SchoolDto.City" class="error"></span>
                 </td>
             </tr>
             <tr>
@@ -49,6 +53,7 @@
                 </td>
                 <td>
                     <input asp-for="SchoolDto.Street" required />
+                    <span asp-validation-for="SchoolDto.Street" class="error"></span>
                 </td>
             </tr>
             <tr>
@@ -59,6 +64,7 @@
                 </td>
                 <td>
                     <input asp-for="SchoolDto.PostalCode" required />
+                    <span asp-validation-for="SchoolDto.PostalCode" class="error"></span>
                 </td>
             </tr>
             <tr>
@@ -68,7 +74,8 @@
                     </label>
                 </td>
                 <td>
-                    <input asp-for="SchoolDto.OpeningDate" required />
+                    <input type="date" asp-for="SchoolDto.OpeningDate" required />
+                    <span asp-validation-for="SchoolDto.OpeningDate" class="error"></span>
                 </td>
             </tr>
         </table>

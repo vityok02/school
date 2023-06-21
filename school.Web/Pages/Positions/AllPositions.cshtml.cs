@@ -11,8 +11,8 @@ public class AllPositionsModel : BasePageModel
 
     public string Filter { get; set; } = null!;
     public string NameSort { get; private set; } = null!;
-    public bool HasPositions => Positions?.Any() ?? false;
-    public IEnumerable<Position> Positions { get; set; } = null!;
+    public bool HasPositions => PositionDtos?.Any() ?? false;
+    public IEnumerable<PositionDto> PositionDtos { get; set; } = null!;
 
     public AllPositionsModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
         :base(schoolRepository)
@@ -26,7 +26,8 @@ public class AllPositionsModel : BasePageModel
 
         Filter = filter;
 
-        Positions = await _positionRepository.GetAllAsync(FilterBy(filter), Sort(orderBy));
+        var positions = await _positionRepository.GetAllAsync(FilterBy(filter), Sort(orderBy));
+        PositionDtos = positions.Select(p => p.ToPositionDto()).ToArray();
     }
 
     public Expression<Func<Position, bool>> FilterBy(string filter)

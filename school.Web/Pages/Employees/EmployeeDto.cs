@@ -1,11 +1,3 @@
-﻿using SchoolManagement.Models;
+﻿namespace SchoolManagement.Web.Pages.Employees;
 
-namespace SchoolManagement.Web.Pages.Employees
-{
-    public record EmployeeDto(
-        int Id,
-        string FirstName,
-        string LastName,
-        int Age,
-        IEnumerable<Position> Positions);
-}
+public record EmployeeDto(int Id, string FirstName, string LastName, int Age, string Position);
