@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SchoolManagement.Models;
 
 namespace SchoolManagement.Data;
+
 public class SchoolConfig : IEntityTypeConfiguration<School>
 {
     public void Configure(EntityTypeBuilder<School> builder)
