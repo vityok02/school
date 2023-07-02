@@ -17,12 +17,12 @@ public class SchoolRepository : Repository<School>, ISchoolRepository
 
     public async Task<School> GetSchoolAsync(int id)
     {
-        var schools = await _dbContext
+        var school = await _dbContext
             .Schools
             .Where(s => s.Id == id)
             .Include(s => s.Address)
             .SingleOrDefaultAsync();
-        return schools!;
+        return school!;
     }
 
     public IEnumerable<School> GetSchools(Expression<Func<School, bool>> predicate,
