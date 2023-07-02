@@ -17,7 +17,7 @@ public class BaseRoomPageModel : BasePageModel
         ISchoolRepository schoolRepository,
         IFloorRepository floorRepository,
         IRoomRepository roomRepository,
-        IValidator<IRoomDto> validator)
+        IValidator<IRoomDto> validator = null!)
         : base(schoolRepository)
     {
         _floorRepository = floorRepository;
@@ -40,5 +40,11 @@ public class BaseRoomPageModel : BasePageModel
         }
 
         return roomType;
+    }
+
+    protected async Task<bool> HasFloor()
+    {
+        var floors = await _floorRepository.GetSchoolFloorsAsync(SelectedSchoolId);
+        return floors.Any();
     }
 }

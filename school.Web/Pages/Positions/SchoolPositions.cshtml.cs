@@ -30,14 +30,7 @@ public class SchoolPositionsModel : BasePageModel
         AllPositionsFilter = allPositionsFilter;
         SchoolPositionsFilter = schoolPositionsFilter;
 
-        if (SelectedSchoolId == -1)
-        {
-            RedirectToSchoolList();
-        }
-
-        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
-
-        if (school is null)
+        if (!HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }

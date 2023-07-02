@@ -19,7 +19,7 @@ public class AddModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        if (SelectedSchoolId == -1)
+        if (!HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }

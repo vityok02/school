@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Web.Pages.Positions;
 
@@ -16,11 +17,23 @@ namespace SchoolManagement.Web.Pages.Employees
             ISchoolRepository schoolRepository,
             IEmployeeRepository employeeRepository,
             IPositionRepository positionRepository,
-            IValidator<IEmployeeDto> validator) : base(schoolRepository)
+            IValidator<IEmployeeDto> validator = null!) : base(schoolRepository)
         {
             _employeeRepository = employeeRepository;
             _positionRepository = positionRepository;
             _validator = validator;
+        }
+
+        protected async Task<bool> HasSchoolPositions()
+        {
+            var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
+
+            return positions.Any();
+        }
+
+        protected IActionResult RedirectToPositionList()
+        {
+            return RedirectToPage("/Positions/SchoolPositions", "error");
         }
     }
 }

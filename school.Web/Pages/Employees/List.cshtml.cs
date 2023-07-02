@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
@@ -5,32 +6,36 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class ListModel : BasePageModel
+public class ListModel : BaseEmployeePageModel
 {
-    private readonly IEmployeeRepository _employeeRepository;
 
     public IEnumerable<EmployeeDto> EmployeeItems { get; set; } = default!;
     public string PositionSort { get; set; } = default!;
     public string FilterByPosition { get; set; } = default!;
     public IDictionary<string, string> PositionParams { get; set; } = default!;
 
-    public ListModel(ISchoolRepository schoolRepository, IEmployeeRepository employeeRepository)
-        : base(schoolRepository)
+    public ListModel(
+        ISchoolRepository schoolRepository,
+        IEmployeeRepository employeeRepository,
+        IPositionRepository positionRepository,
+        IValidator<IEmployeeDto> validator)
+        : base(schoolRepository, employeeRepository, positionRepository, validator)
     {
         _employeeRepository = employeeRepository;
+        _positionRepository = positionRepository;
+        _validator = validator;
     }
 
     public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition)
     {
-        if (SelectedSchoolId == -1)
+        if (!HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }
 
-        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
-        if (school is null)
+        if (!await HasSchoolPositions())
         {
-            return RedirectToSchoolList();
+            return RedirectToPositionList();
         }
 
         FirstNameSort = String.IsNullOrEmpty(orderBy) ? "firstName_desc" : "";

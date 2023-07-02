@@ -84,4 +84,22 @@ public abstract class BasePageModel : PageModel
     {
         SetSchoolId(selectedSchoolId);
     }
+
+    public bool HasSelectedSchool()
+    {
+        bool result = true;
+
+        if (SelectedSchoolId <= 0)
+        {
+            result = false;
+        }
+
+        var school = SchoolRepository.GetSchoolAsync(SelectedSchoolId);
+        if (school is null)
+        {
+            result = false;
+        }
+
+        return result;
+    }
 }

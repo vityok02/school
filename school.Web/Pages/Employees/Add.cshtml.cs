@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Web.Pages.Positions;
-using SchoolManagement.Web.Pages;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
@@ -26,15 +25,14 @@ public class AddModel : BaseEmployeePageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        if (SelectedSchoolId == -1)
+        if (!HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }
 
-        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
-        if (school is null)
+        if (!await HasSchoolPositions())
         {
-            return RedirectToSchoolList();
+            return RedirectToPositionList();
         }
 
         var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
@@ -61,6 +59,12 @@ public class AddModel : BaseEmployeePageModel
             return RedirectToSchoolList();
         }
 
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
+        if (school is null)
+        {
+            return RedirectToSchoolList();
+        }
+
         var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
 
         foreach (var positionId in checkedPositionsId) 
@@ -73,12 +77,6 @@ public class AddModel : BaseEmployeePageModel
 
                 return Page();
             }
-        }
-
-        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
-        if (school is null)
-        {
-            return RedirectToSchoolList();
         }
 
         var employeePositions = await _positionRepository.GetEmployeePositions(checkedPositionsId);

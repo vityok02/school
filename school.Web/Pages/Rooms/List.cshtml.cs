@@ -1,14 +1,14 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
-public class ListModel : BasePageModel
+public class ListModel : BaseRoomPageModel
 {
-    private readonly IRoomRepository _roomRepository;
-
     public IEnumerable<RoomItemDto> RoomDtos { get; private set; } = null!;
     public int FloorNumber { get; private set; }
     public string RoomNumberSort { get; set; } = null!;
@@ -21,23 +21,21 @@ public class ListModel : BasePageModel
     public Dictionary<string, string> RoomTypeParams { get; private set; } = null!;
     public Dictionary<string, string> FloorNumberParams { get; private set; } = null!;
 
-    public ListModel(ISchoolRepository schoolRepository, IRoomRepository roomRepository)
-        : base(schoolRepository)
+    public ListModel(ISchoolRepository schoolRepository, IFloorRepository floorRepository, IRoomRepository roomRepository)
+        : base(schoolRepository, floorRepository, roomRepository)
     {
-        _roomRepository = roomRepository;
     }
 
     public async Task<IActionResult> OnGetAsync(string orderBy, int filterByRoomNumber, RoomType[] filterByRoomType, int filterByFloorNumber)
     {
-        if (SelectedSchoolId == -1)
+        if (!HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }
 
-        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
-        if (school is null)
+        if (!await HasFloor())
         {
-            return RedirectToSchoolList();
+            //return RedirectToFloorList();
         }
 
         OrderBy = orderBy;
