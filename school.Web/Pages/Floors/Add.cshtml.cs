@@ -10,6 +10,7 @@ public class AddModel : BasePageModel
 
     public int FloorNumber { get; private set; }
     public string InValidMessage { get; private set; } = "";
+    public bool IsError { get; private set; } = false;
 
     public AddModel(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository)
         :base(schoolRepository)
@@ -17,11 +18,16 @@ public class AddModel : BasePageModel
         _floorRepository = floorRepository;
     }
 
-    public async Task<IActionResult> OnGetAsync()
+    public async Task<IActionResult> OnGetAsync(bool? error = false)
     {
         if (!HasSelectedSchool())
         {
             return RedirectToSchoolList();
+        }
+
+        if(error == true)
+        {
+            IsError = true;
         }
 
         var floors = await _floorRepository.GetAllAsync(f => f.SchoolId == SelectedSchoolId);

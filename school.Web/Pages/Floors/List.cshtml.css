@@ -60,24 +60,11 @@ details {
     border-bottom: 1px solid white;
 }
 
-.btn-delete input[type=submit] {
-    position: absolute;
-    right: 250px;
-    top: 15px;
-    background-color: red;
-    height: 50px;
-    width: 120px;
-    margin-left: 5px;
-    border: 0;
-    border-radius: 10px;
+.btn {
+    font-size: 18px;
+    margin-inline: 5px;
     color: white;
-    font-size: 20px;
-    text-decoration: none;
 }
-
-    .btn-delete input[type=submit]:hover {
-        background-color: #B40000;
-    }
 
 details[open] summary ~ * {
     animation: open 0.3s ease-in-out;

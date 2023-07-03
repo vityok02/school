@@ -35,7 +35,7 @@ public class ListModel : BaseRoomPageModel
 
         if (!await HasFloor())
         {
-            //return RedirectToFloorList();
+            return RedirectToFloorList();
         }
 
         OrderBy = orderBy;

@@ -57,9 +57,15 @@ table {
         color: white;
     }
 
-    table .btns {
-        display: flex;
-    }
+.btns {
+    display: flex;
+}
+
+.btn-add {
+    font-size: 18px;
+    margin-inline: 5px;
+    color: white;
+}
 
 .btn-details {
     background: #0c5778;
@@ -75,6 +81,10 @@ table {
 
 .btn-delete {
     background: #780018;
+}
+
+.btn-add {
+    background: #0c5778;
 }
 
 .empty {

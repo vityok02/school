@@ -5,7 +5,7 @@
 }
 @section styles
 {
-    <link rel="stylesheet" href="~/css/list.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/list.css" asp-append-version="true" />
 }
 
 <div class="wrapper">
@@ -31,10 +31,13 @@
                                 @:Floor @floor.Number
                             }
                         </div>
-                        <form class="btn-delete" asp-page-handler="Delete" method="post" asp-route-id="@floor.Id"
-                        onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
-                            <input type="submit" value="Delete" />
-                        </form>
+                        <div class="btns">
+                            <form asp-page-handler="Delete" method="post" asp-route-id="@floor.Id"
+                            onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
+                                <button class="btn btn-delete" type="submit">Delete</button>
+                            </form>
+                            <a class="btn btn-add" asp-page="/Rooms/Add">Add room</a>
+                        </div>
                         <div class="count">Rooms count @floor.Rooms.Count()</div>
                         </summary>
                     <div class="content">

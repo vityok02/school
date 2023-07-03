@@ -35,12 +35,11 @@ public class PositionRepository : Repository<Position>, IPositionRepository
         return await positions.ToArrayAsync();
     }
 
-    public async Task<IEnumerable<Position>> GetUnSelectedPositionsAsync(int schoolId, Expression<Func<Position, bool>>? predicate = null,
+    public async Task<IEnumerable<Position>> GetAllPositions(int schoolId, Expression<Func<Position, bool>>? predicate = null,
         Func<IQueryable<Position>, IOrderedQueryable<Position>>? orderBy = null)
     {
         IQueryable<Position> positions = _dbContext
-            .Set<Position>()
-            .Where(p => p.Schools.All(s => s.Id != schoolId));
+            .Set<Position>();
 
         if (predicate is not null)
         {

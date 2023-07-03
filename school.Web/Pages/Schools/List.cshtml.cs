@@ -24,8 +24,13 @@ public class SchoolListModel : BasePageModel
     {
     }
 
-    public IActionResult OnGet(string orderBy, string filterByParam)
+    public IActionResult OnGet(string orderBy, string filterByParam, bool error = false)
     {
+        if (error == true)
+        {
+            OnError();
+        }
+
         OrderBy = orderBy;  
         NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
         CitySort = orderBy == "city" ? "city_desc" : "city";
@@ -83,6 +88,10 @@ public class SchoolListModel : BasePageModel
         }
     }
 
+    public void OnError()
+    {
+
+    }
 
     public void OnGetFirstTime(string orderBy, string filterBy)
     {
@@ -99,17 +108,19 @@ public class SchoolListModel : BasePageModel
 
     public async Task<IActionResult> OnGetSelectSchool(int id, string orderBy, string filterBy)
     {
-        OnGet(orderBy, filterBy);
         var school = await SchoolRepository.GetAsync(id);
         if(school is null)
         {
             IsError = true;
+            return OnGet(orderBy, filterBy);
         }
 
         SelectedSchoolName = school!.Name;
+        SelectedSchoolId = id;
 
         SetSchoolId(school!.Id);
-        return Page();
+        //OnGet(orderBy, filterBy);
+        return OnGet(orderBy, filterBy);
     }
 
     public IActionResult OnPostSetSchool(int id)

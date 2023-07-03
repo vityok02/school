@@ -94,7 +94,7 @@ public abstract class BasePageModel : PageModel
             result = false;
         }
 
-        var school = SchoolRepository.GetSchoolAsync(SelectedSchoolId);
+        var school = SchoolRepository.GetAsync(SelectedSchoolId);
         if (school is null)
         {
             result = false;

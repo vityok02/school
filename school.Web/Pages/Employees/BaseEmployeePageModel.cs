@@ -11,8 +11,8 @@ namespace SchoolManagement.Web.Pages.Employees
         protected IPositionRepository _positionRepository;
         protected IValidator<IEmployeeDto> _validator;
 
-        public IEnumerable<PositionDto> PositionDtos { get; set; } = default!;
-        public string InValidPositionMessage { get; set; } = "";
+        public IEnumerable<PositionDto> PositionDtos { get; protected set; } = default!;
+        public string InValidPositionMessage { get; protected set; } = "";
         protected BaseEmployeePageModel(
             ISchoolRepository schoolRepository,
             IEmployeeRepository employeeRepository,

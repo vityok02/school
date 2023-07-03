@@ -14,21 +14,3 @@
     padding-inline: 20px;
     display: inline-block;
 }
-
-.add button {
-    background-color: blue;
-    height: 40px;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-size: 20px;
-    text-decoration: none;
-}
-
-.add button:hover {
-    background-color: darkblue;
-}
-
-.add button {
-    margin: 0;
-}

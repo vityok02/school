@@ -35,7 +35,7 @@ public class SchoolPositionsModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var allPositions = await _positionRepository.GetUnSelectedPositionsAsync(SelectedSchoolId, FilterBy(this.AllPositionsFilter),
+        var allPositions = await _positionRepository.GetAllPositions(SelectedSchoolId, FilterBy(this.AllPositionsFilter),
             Sort(allPositionsOrderBy));
         AllPositions = allPositions.Select(s => s.ToPositionDto()).ToArray();
 

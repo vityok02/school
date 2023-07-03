@@ -37,6 +37,7 @@
                                 </a>
                             </th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,9 +46,15 @@
                         <tr>
                             <td>@position.Name</td>
                             <td>
+                                @if(Model.SchoolPositions.Any(p => p.Id == position.Id))
+                                {
+                                    @:Selected 
+                                }
+                            </td>
+                            <td>
                                 <form asp-page-handler="Add" method="post" asp-route-id="@position.Id">
                                     <div class="btns">
-                                        <button class="btn btn-details" type="submit">Add</button>
+                                        <button class="btn btn-add" type="submit">Add</button>
                                     </div>
                                 </form>
                             </td>

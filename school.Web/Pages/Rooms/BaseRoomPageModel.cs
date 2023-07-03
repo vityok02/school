@@ -1,6 +1,7 @@
 ﻿using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
@@ -46,5 +47,10 @@ public class BaseRoomPageModel : BasePageModel
     {
         var floors = await _floorRepository.GetSchoolFloorsAsync(SelectedSchoolId);
         return floors.Any();
+    }
+
+    protected IActionResult RedirectToFloorList()
+    {
+        return RedirectToPage("/Floors/Add", new {error = true});
     }
 }

@@ -59,6 +59,12 @@
                             </div>
                         </td>
                         <td>
+                            @if(school.Id == Model.SelectedSchoolId)
+                            {
+                                @:Selected
+                            }
+                        </td>
+                        <td>
                             <div class="btns">
                                 <form method="post">
                                     <div>
