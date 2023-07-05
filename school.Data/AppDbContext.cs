@@ -15,6 +15,10 @@ public class AppDbContext : DbContext
     public DbSet<Position> Positions { get; set; } = null!;
     public DbSet<Student> Students { get; set; } = null!;
 
+    public AppDbContext()
+    {
+    }
+
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
