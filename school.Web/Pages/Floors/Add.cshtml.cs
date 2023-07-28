@@ -20,7 +20,7 @@ public class AddModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync(bool? error = false)
     {
-        if (!HasSelectedSchool())
+        if (!await HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }

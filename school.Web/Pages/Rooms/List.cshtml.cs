@@ -28,7 +28,7 @@ public class ListModel : BaseRoomPageModel
 
     public async Task<IActionResult> OnGetAsync(string orderBy, int filterByRoomNumber, RoomType[] filterByRoomType, int filterByFloorNumber)
     {
-        if (!HasSelectedSchool())
+        if (!await HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }

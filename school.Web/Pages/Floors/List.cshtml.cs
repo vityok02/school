@@ -17,9 +17,9 @@ public class ListModel : BasePageModel
         _floorRepository = floorRepository;
     }
 
-    public async Task<IActionResult> OnGet(bool? error = null!)
+    public async Task<IActionResult> OnGet()
     {
-        if (!HasSelectedSchool())
+        if (!await HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }

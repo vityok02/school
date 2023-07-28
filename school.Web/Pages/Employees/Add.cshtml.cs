@@ -25,7 +25,7 @@ public class AddModel : BaseEmployeePageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        if (!HasSelectedSchool())
+        if (!await HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }

@@ -28,7 +28,7 @@ public class ListModel : BaseEmployeePageModel
 
     public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition)
     {
-        if (!HasSelectedSchool())
+        if (!await HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }

@@ -85,7 +85,7 @@ public abstract class BasePageModel : PageModel
         SetSchoolId(selectedSchoolId);
     }
 
-    public bool HasSelectedSchool()
+    public async Task<bool> HasSelectedSchool()
     {
         bool result = true;
 
@@ -94,7 +94,7 @@ public abstract class BasePageModel : PageModel
             result = false;
         }
 
-        var school = SchoolRepository.GetAsync(SelectedSchoolId);
+        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
         if (school is null)
         {
             result = false;

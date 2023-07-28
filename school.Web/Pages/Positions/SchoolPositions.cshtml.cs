@@ -30,7 +30,7 @@ public class SchoolPositionsModel : BasePageModel
         AllPositionsFilter = allPositionsFilter;
         SchoolPositionsFilter = schoolPositionsFilter;
 
-        if (!HasSelectedSchool())
+        if (!await HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }
