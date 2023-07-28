@@ -38,14 +38,16 @@ var services = scope.ServiceProvider;
 
 try
 {
-    var context = services.GetRequiredService<AppDbContext>();
+    using var context = services.GetRequiredService<AppDbContext>();
+
     context.Database.EnsureCreated();
     context.Database.Migrate();
+    await DataSeeder.SeedData(context);
 }
 catch (Exception ex)
 {
     var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "Database didn't created");
+    logger.LogError(ex, "Database was not created");
 }
 
 // Configure the HTTP request pipeline.
