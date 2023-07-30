@@ -8,7 +8,6 @@ public class DataSeeder
     {
         await SeedSchools(dbContext);
         await SeedPositions(dbContext);
-        await SeedFloors(dbContext);
 
         await dbContext.SaveChangesAsync();
     }
@@ -50,17 +49,5 @@ public class DataSeeder
         };
 
         await dbContext.Positions.AddRangeAsync(positions);
-    }
-
-    private static async Task SeedFloors(AppDbContext dbContext)
-    {
-        if(dbContext.Floors.Any())
-        {
-            return;
-        }
-
-        var floor = new Floor(1);
-
-        await dbContext.Floors.AddAsync(floor);
     }
 }
