@@ -51,6 +51,6 @@ public class BaseRoomPageModel : BasePageModel
 
     protected IActionResult RedirectToFloorList()
     {
-        return RedirectToPage("/Floors/Add", new {error = true});
+        return RedirectToPage("/Floors/Add", new {isError = true});
     }
 }
