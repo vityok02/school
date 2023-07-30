@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models.Interfaces;
 
@@ -9,7 +8,6 @@ public class ListModel : BasePageModel
     private readonly IFloorRepository _floorRepository;
 
     public IEnumerable<FloorItemDto> FloorsDto { get; private set; } = default!;
-    public bool IsError { get; set;  } = false;
 
     public ListModel(ISchoolRepository schoolRepository, IFloorRepository floorRepository)
         : base(schoolRepository)
@@ -27,12 +25,6 @@ public class ListModel : BasePageModel
         var floors = await _floorRepository.GetSchoolFloorsAsync(SelectedSchoolId);
         FloorsDto = floors.Select(f => f.ToFloorItemDto()).ToArray();
 
-        return Page();
-    }
-
-    public IActionResult OnGetError()
-    {
-        IsError = true;
         return Page();
     }
 

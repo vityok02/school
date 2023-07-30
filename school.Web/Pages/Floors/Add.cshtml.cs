@@ -18,14 +18,14 @@ public class AddModel : BasePageModel
         _floorRepository = floorRepository;
     }
 
-    public async Task<IActionResult> OnGetAsync(bool? error = false)
+    public async Task<IActionResult> OnGetAsync(bool? isError = false)
     {
         if (!await HasSelectedSchool())
         {
             return RedirectToSchoolList();
         }
 
-        if(error == true)
+        if(isError is true)
         {
             IsError = true;
         }
