@@ -25,7 +25,7 @@
         <input type="hidden" asp-for="OrderBy" />
         <partial name="filterButtons" />
     </form>
-    @if (!Model.EmployeeItems.Any())
+    @if (!Model.Items.Any())
     {
         <div class="empty">List of employees is empty</div>
     }
@@ -58,7 +58,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var emp in Model.EmployeeItems)
+                @foreach (var emp in Model.Items)
                 {
                     <tr>
                         <td class="first-columns">@emp.FirstName</td>

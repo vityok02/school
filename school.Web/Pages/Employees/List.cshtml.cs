@@ -8,25 +8,31 @@ namespace SchoolManagement.Web.Pages.Employees;
 
 public class ListModel : BaseEmployeePageModel
 {
+    private readonly IConfiguration _configuration;
 
     public IEnumerable<EmployeeDto> EmployeeItems { get; set; } = default!;
+    public PaginatedList<EmployeeDto> Items { get; set; }
     public string PositionSort { get; set; } = default!;
     public string FilterByPosition { get; set; } = default!;
     public IDictionary<string, string> PositionParams { get; set; } = default!;
+    public int PageSize => _configuration.GetValue("PageSize", 4);
+    public int PageIndex { get; private set; }
 
     public ListModel(
         ISchoolRepository schoolRepository,
         IEmployeeRepository employeeRepository,
         IPositionRepository positionRepository,
-        IValidator<IEmployeeDto> validator)
+        IValidator<IEmployeeDto> validator,
+        IConfiguration configuration)
         : base(schoolRepository, employeeRepository, positionRepository, validator)
     {
         _employeeRepository = employeeRepository;
         _positionRepository = positionRepository;
         _validator = validator;
+        _configuration = configuration;
     }
 
-    public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition)
+    public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition, int? pageIndex = null!)
     {
         if (!await HasSelectedSchool())
         {
@@ -78,29 +84,31 @@ public class ListModel : BaseEmployeePageModel
             { nameof(orderBy), PositionSort }
         };
 
-        static Expression<Func<Employee, bool>> FilterBy(string filterByName, int filterByAge, string filterByPosition)
-        {
-            return emp => (string.IsNullOrEmpty(filterByName) || emp.FirstName.Contains(filterByName))
-                && (string.IsNullOrEmpty(filterByPosition) || emp.Positions.Any(p => p.Name.Contains(filterByPosition)))
-                && (filterByAge == 0 || emp.Age == filterByAge);
-        }
-
-        static Func<IQueryable<Employee>, IOrderedQueryable<Employee>> Sort(string orderBy)
-        {
-            return orderBy switch
-            {
-                "firstName_desc" => e => e.OrderByDescending(e => e.FirstName),
-                "lastName" => e => e.OrderBy(e => e.LastName),
-                "lastName_desc" => e => e.OrderByDescending(e => e.LastName),
-                "age" => e => e.OrderBy(e => e.Age),
-                "age_desc" => e => e.OrderByDescending(e => e.Age),
-                "position" => e => e.OrderBy(e => e.Positions.FirstOrDefault()!.Name),
-                "position_desc" => e => e.OrderByDescending(e => e.Positions.FirstOrDefault()!.Name),
-                _ => e => e.OrderBy(e => e.FirstName),
-            };
-        }
+        Items = PaginatedList<EmployeeDto>.Create(EmployeeItems, PageIndex, PageSize);
 
         return Page();
+    }
+
+    private Expression<Func<Employee, bool>> FilterBy(string filterByName, int filterByAge, string filterByPosition)
+    {
+        return emp => (string.IsNullOrEmpty(filterByName) || emp.FirstName.Contains(filterByName))
+            && (string.IsNullOrEmpty(filterByPosition) || emp.Positions.Any(p => p.Name.Contains(filterByPosition)))
+            && (filterByAge == 0 || emp.Age == filterByAge);
+    }
+
+    private static Func<IQueryable<Employee>, IOrderedQueryable<Employee>> Sort(string orderBy)
+    {
+        return orderBy switch
+        {
+            "firstName_desc" => e => e.OrderByDescending(e => e.FirstName),
+            "lastName" => e => e.OrderBy(e => e.LastName),
+            "lastName_desc" => e => e.OrderByDescending(e => e.LastName),
+            "age" => e => e.OrderBy(e => e.Age),
+            "age_desc" => e => e.OrderByDescending(e => e.Age),
+            "position" => e => e.OrderBy(e => e.Positions.FirstOrDefault()!.Name),
+            "position_desc" => e => e.OrderByDescending(e => e.Positions.FirstOrDefault()!.Name),
+            _ => e => e.OrderBy(e => e.FirstName),
+        };
     }
 
     private IDictionary<string, string> GetFilters()
