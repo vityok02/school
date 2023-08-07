@@ -77,7 +77,7 @@ public abstract class BasePageModel : PageModel
 
     protected IActionResult RedirectToSchoolList()
     {
-        return RedirectToPage("/Schools/List", "error");
+        return RedirectToPage("/Schools/List");
     }
 
     public void SelectSchool(int selectedSchoolId)
@@ -85,7 +85,7 @@ public abstract class BasePageModel : PageModel
         SetSchoolId(selectedSchoolId);
     }
 
-    public async Task<bool> HasSelectedSchool()
+    public async Task<bool> HasSelectedSchoolAsync()
     {
         bool result = true;
 

@@ -1,6 +1,4 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
@@ -15,11 +13,12 @@ public class ListModel : BaseRoomPageModel
     public string RoomTypeSort { get; set; } = null!;
     public string FloorNumberSort { get; set; } = null!;
     public int FilterByRoomNumber { get; set; }
-    public RoomType FilterByRoomType { get; set; }
     public int FilterByFloorNumber { get; set; }
+    public RoomType FilterByRoomType { get; set; }
     public Dictionary<string, string> RoomNumberParams { get; private set; } = null!;
     public Dictionary<string, string> RoomTypeParams { get; private set; } = null!;
     public Dictionary<string, string> FloorNumberParams { get; private set; } = null!;
+    public new bool HasFloors { get; private set; } = true;
 
     public ListModel(ISchoolRepository schoolRepository, IFloorRepository floorRepository, IRoomRepository roomRepository)
         : base(schoolRepository, floorRepository, roomRepository)
@@ -28,14 +27,14 @@ public class ListModel : BaseRoomPageModel
 
     public async Task<IActionResult> OnGetAsync(string orderBy, int filterByRoomNumber, RoomType[] filterByRoomType, int filterByFloorNumber)
     {
-        if (!await HasSelectedSchool())
+        if (!await HasSelectedSchoolAsync())
         {
             return RedirectToSchoolList();
         }
 
-        if (!await HasFloor())
+        if (!await HasFloors())
         {
-            return RedirectToFloorList();
+            HasFloors = false;
         }
 
         OrderBy = orderBy;
@@ -82,26 +81,6 @@ public class ListModel : BaseRoomPageModel
         };
 
         return Page();
-
-        static Expression<Func<Room, bool>> FilterBy(int filterByRoomNumber, RoomType filterByRoomTypes, int filterByFloorNumber)
-        {
-            return r => (filterByRoomNumber == 0 || r.Number.ToString().Contains(filterByRoomNumber.ToString()))
-                && (filterByRoomTypes == 0 || r.Type.HasFlag(filterByRoomTypes))
-                && (filterByFloorNumber == 0 || r.Floor.Number == filterByFloorNumber);
-        }
-
-        static Func<IQueryable<Room>, IOrderedQueryable<Room>> Sort(string orderBy)
-        {
-            return orderBy switch
-            {
-                "roomNumber_desc" => r => r.OrderByDescending(r => r.Number),
-                "roomType" => r => r.OrderBy(r => r.Type),
-                "roomType_desc" => r => r.OrderByDescending(r => r.Type),
-                "floorNumber" => r => r.OrderBy(r => r.Floor.Number),
-                "floorNumber_desc" => r => r.OrderByDescending(r => r.Floor.Number),
-                _ => r => r.OrderBy(r => r.Number),
-            };
-        }
     }
 
     private IDictionary<string, string> GetFilters()
@@ -136,5 +115,25 @@ public class ListModel : BaseRoomPageModel
 
         await _roomRepository.DeleteAsync(room);
         return RedirectToPage("List");
+    }
+
+    private static Func<IQueryable<Room>, IOrderedQueryable<Room>> Sort(string orderBy)
+    {
+        return orderBy switch
+        {
+            "roomNumber_desc" => r => r.OrderByDescending(r => r.Number),
+            "roomType" => r => r.OrderBy(r => r.Type),
+            "roomType_desc" => r => r.OrderByDescending(r => r.Type),
+            "floorNumber" => r => r.OrderBy(r => r.Floor.Number),
+            "floorNumber_desc" => r => r.OrderByDescending(r => r.Floor.Number),
+            _ => r => r.OrderBy(r => r.Number),
+        };
+    }
+
+    private static Expression<Func<Room, bool>> FilterBy(int filterByRoomNumber, RoomType filterByRoomTypes, int filterByFloorNumber)
+    {
+        return r => (filterByRoomNumber == 0 || r.Number.ToString().Contains(filterByRoomNumber.ToString()))
+            && (filterByRoomTypes == 0 || r.Type.HasFlag(filterByRoomTypes))
+            && (filterByFloorNumber == 0 || r.Floor.Number == filterByFloorNumber);
     }
 }

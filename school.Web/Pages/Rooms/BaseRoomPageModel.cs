@@ -43,7 +43,7 @@ public class BaseRoomPageModel : BasePageModel
         return roomType;
     }
 
-    protected async Task<bool> HasFloor()
+    protected async Task<bool> HasFloors()
     {
         var floors = await _floorRepository.GetSchoolFloorsAsync(SelectedSchoolId);
         return floors.Any();

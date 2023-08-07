@@ -17,6 +17,7 @@ public class ListModel : BaseEmployeePageModel
     public IDictionary<string, string> PositionParams { get; set; } = default!;
     public int PageSize => _configuration.GetValue("PageSize", 4);
     public int PageIndex { get; private set; }
+    public bool HasPositions { get; private set; } = true;
 
     public ListModel(
         ISchoolRepository schoolRepository,
@@ -34,14 +35,14 @@ public class ListModel : BaseEmployeePageModel
 
     public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition, int? pageIndex = null!)
     {
-        if (!await HasSelectedSchool())
+        if (!await HasSelectedSchoolAsync())
         {
             return RedirectToSchoolList();
         }
 
         if (!await HasSchoolPositions())
         {
-            return RedirectToPositionList();
+            HasPositions = false;
         }
 
         FirstNameSort = String.IsNullOrEmpty(orderBy) ? "firstName_desc" : "";

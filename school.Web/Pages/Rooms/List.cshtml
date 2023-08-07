@@ -10,78 +10,88 @@
 }
 
 <div class="wrapper">
-    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
-        <label asp-for="FilterByRoomNumber" class="cell">
-            Number:
-            <input asp-for="FilterByRoomNumber" value="hidden" />
-        </label>
-        <label asp-for="FilterByFloorNumber" class="cell">
-            Floor: 
-            <input asp-for="FilterByFloorNumber" value="hidden" />
-        </label>
-        <input type="hidden" asp-for="OrderBy" />
-        <partial name="filterButtons" />
-        <div class="cell">
-            Type: 
-            @foreach (var type in RoomTypeExt.RoomTypes)
-            {
-                <input name="filterByRoomType"
-                    class="btn-check"
-                    autocomplete="off"
-                    id="@type.Key"
-                    type="checkbox"
-                    value="@type.Key"
-                    checked="@Model.FilterByRoomType.HasFlag((RoomType)type.Key)" />
-                <label for="@type.Key" class="btn btn-outline-secondary btn-sm type">
-                    @type.Value
-                </label>
-            }
-        </div>
-    </form>
-    @if (!Model.RoomDtos.Any())
+    @if(!Model.HasFloors)
     {
-        <div class="empty">List of rooms is empty</div>
+        <div>
+            There is no floor in the current school. Please add floor
+        </div>
+        <a asp-page="/Floors/Add">Add floor</a>
     }
     else
     {
-        <table>
-            <thead>
-                <tr>
-                    <th>
-                        <a asp-all-route-data="Model.RoomNumberParams">
-                            Number
-                        </a>
-                    </th>
-                    <th class="second-column">
-                        <a asp-all-route-data="Model.RoomTypeParams">
-                            Type
-                        </a>
-                    </th>
-                    <th class="floor-column">
-                        <a asp-all-route-data="Model.FloorNumberParams">
-                            Floor
-                        </a>
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            @foreach (var room in Model.RoomDtos!)
-            {
-                <tr>
-                    <td class="first-column">@room.Number</td>
-                    <td class="second-column">@room.Types</td>
-                    <td class="floor-column">@room.FloorNumber</td>
-                    <td>
-                        <div class="btns">
-                            <a class="btn btn-edit" href="rooms/@room.Id/edit">Edit</a>
-                            <form asp-page-handler="Delete" method="post" asp-route-id="@room.Id"
-                            onclick="return confirm('Are you sure you want to delete room @room.Number?')">
-                                <button class="btn btn-delete" type="submit">Delete</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </table>
+        <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
+            <label asp-for="FilterByRoomNumber" class="cell">
+                Number:
+                <input asp-for="FilterByRoomNumber" value="hidden" />
+            </label>
+            <label asp-for="FilterByFloorNumber" class="cell">
+                Floor: 
+                <input asp-for="FilterByFloorNumber" value="hidden" />
+            </label>
+            <input type="hidden" asp-for="OrderBy" />
+            <partial name="filterButtons" />
+            <div class="cell">
+                Type: 
+                @foreach (var type in RoomTypeExt.RoomTypes)
+                {
+                    <input name="filterByRoomType"
+                        class="btn-check"
+                        autocomplete="off"
+                        id="@type.Key"
+                        type="checkbox"
+                        value="@type.Key"
+                        checked="@Model.FilterByRoomType.HasFlag((RoomType)type.Key)" />
+                    <label for="@type.Key" class="btn btn-outline-secondary btn-sm type">
+                        @type.Value
+                    </label>
+                }
+            </div>
+        </form>
+        @if (!Model.RoomDtos.Any())
+        {
+            <div class="empty">List of rooms is empty</div>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <a asp-all-route-data="Model.RoomNumberParams">
+                                Number
+                            </a>
+                        </th>
+                        <th class="second-column">
+                            <a asp-all-route-data="Model.RoomTypeParams">
+                                Type
+                            </a>
+                        </th>
+                        <th class="floor-column">
+                            <a asp-all-route-data="Model.FloorNumberParams">
+                                Floor
+                            </a>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var room in Model.RoomDtos!)
+                {
+                    <tr>
+                        <td class="first-column">@room.Number</td>
+                        <td class="second-column">@room.Types</td>
+                        <td class="floor-column">@room.FloorNumber</td>
+                        <td>
+                            <div class="btns">
+                                <a class="btn btn-edit" href="rooms/@room.Id/edit">Edit</a>
+                                <form asp-page-handler="Delete" method="post" asp-route-id="@room.Id"
+                                onclick="return confirm('Are you sure you want to delete room @room.Number?')">
+                                    <button class="btn btn-delete" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
     }
 </div>

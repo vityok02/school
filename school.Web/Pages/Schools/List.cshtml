@@ -2,11 +2,6 @@
 @model SchoolListModel
 @{
     ViewData["Titile"] = "Schools";
-
-    if (Model.IsError)
-    {
-        <script>alert('No school selected, please select a school');</script>
-    }
 }
 
 @section styles

@@ -9,8 +9,6 @@ public class SchoolListModel : BasePageModel
 {
     public IEnumerable<SchoolItemDto> SchoolItems { get; private set; } = null!;
     public IEnumerable<Address> Addresses { get; private set; } = null!;
-    public bool IsError { get; private set; } = false;
-    public bool IsFirst { get; private set; } = false;
     public string NameSort { get; private set; } = null!;
     public string CitySort { get; private set; } = null!;
     public string StreetSort { get; private set; } = null!;
@@ -24,13 +22,8 @@ public class SchoolListModel : BasePageModel
     {
     }
 
-    public IActionResult OnGet(string orderBy, string filterByParam, bool error = false)
+    public IActionResult OnGet(string orderBy, string filterByParam)
     {
-        if (error == true)
-        {
-            OnError();
-        }
-
         OrderBy = orderBy;  
         NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
         CitySort = orderBy == "city" ? "city_desc" : "city";
@@ -88,39 +81,20 @@ public class SchoolListModel : BasePageModel
         }
     }
 
-    public void OnError()
-    {
-
-    }
-
-    public void OnGetFirstTime(string orderBy, string filterBy)
-    {
-        IsFirst = true;
-        OnGet(orderBy, filterBy);
-    }
-
-    public void OnGetError(string orderBy, string filterBy)
-    {
-        IsError = true;
-        IsFirst = true;
-        OnGet(orderBy, filterBy);
-    }
 
     public async Task<IActionResult> OnGetSelectSchool(int id, string orderBy, string filterBy)
     {
         var school = await SchoolRepository.GetAsync(id);
         if(school is null)
         {
-            IsError = true;
-            return OnGet(orderBy, filterBy);
+            return RedirectToPage("/Schools/List", new { orderBy = orderBy, filterBy = filterBy });
         }
 
         SelectedSchoolName = school!.Name;
         SelectedSchoolId = id;
 
         SetSchoolId(school!.Id);
-        //OnGet(orderBy, filterBy);
-        return OnGet(orderBy, filterBy);
+        return RedirectToPage("/Schools/List", new { orderBy = orderBy, filterBy = filterBy });
     }
 
     public IActionResult OnPostSetSchool(int id)

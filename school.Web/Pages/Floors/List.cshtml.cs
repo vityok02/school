@@ -17,7 +17,7 @@ public class ListModel : BasePageModel
 
     public async Task<IActionResult> OnGet()
     {
-        if (!await HasSelectedSchool())
+        if (!await HasSelectedSchoolAsync())
         {
             return RedirectToSchoolList();
         }
