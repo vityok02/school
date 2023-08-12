@@ -8,32 +8,26 @@ namespace SchoolManagement.Web.Pages.Employees;
 
 public class ListModel : BaseEmployeePageModel
 {
-    private readonly IConfiguration _configuration;
-
-    public IEnumerable<EmployeeDto> EmployeeItems { get; set; } = default!;
-    public PaginatedList<EmployeeDto> Items { get; set; }
-    public string PositionSort { get; set; } = default!;
-    public string FilterByPosition { get; set; } = default!;
-    public IDictionary<string, string> PositionParams { get; set; } = default!;
-    public int PageSize => _configuration.GetValue("PageSize", 4);
-    public int PageIndex { get; private set; }
+    public IEnumerable<EmployeeDto> EmployeeItems { get; private set; } = default!;
+    public PaginatedList<EmployeeDto> Items { get; private set; } = default!;
+    public string PositionSort { get; private set; } = default!;
+    public string FilterByPosition { get; private set; } = default!;
+    public IDictionary<string, string> PositionParams { get; private set; } = default!;
     public bool HasPositions { get; private set; } = true;
 
     public ListModel(
         ISchoolRepository schoolRepository,
         IEmployeeRepository employeeRepository,
         IPositionRepository positionRepository,
-        IValidator<IEmployeeDto> validator,
-        IConfiguration configuration)
+        IValidator<IEmployeeDto> validator)
         : base(schoolRepository, employeeRepository, positionRepository, validator)
     {
         _employeeRepository = employeeRepository;
         _positionRepository = positionRepository;
         _validator = validator;
-        _configuration = configuration;
     }
 
-    public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition, int? pageIndex = null!)
+    public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition, int? pageIndex)
     {
         if (!await HasSelectedSchoolAsync())
         {
@@ -54,8 +48,11 @@ public class ListModel : BaseEmployeePageModel
         FilterByAge= filterByAge;
         FilterByPosition = filterByPosition;
 
-        var employees = await _employeeRepository.GetSchoolEmployeesAsync(FilterBy(FilterByName, FilterByAge, FilterByPosition),
-            Sort(orderBy), SelectedSchoolId);
+        var employees = await _employeeRepository
+            .GetSchoolEmployeesAsync(
+                FilterBy(FilterByName, FilterByAge, FilterByPosition),
+                Sort(orderBy),
+                SelectedSchoolId);
 
         EmployeeItems = employees.Select(s => s.ToEmployeeDto()).ToArray();
 
@@ -85,7 +82,7 @@ public class ListModel : BaseEmployeePageModel
             { nameof(orderBy), PositionSort }
         };
 
-        Items = PaginatedList<EmployeeDto>.Create(EmployeeItems, PageIndex, PageSize);
+        Items = PaginatedList<EmployeeDto>.Create(EmployeeItems, PageIndex = pageIndex ?? 1);
 
         return Page();
     }

@@ -9,10 +9,11 @@ public class AllPositionsModel : BasePageModel
 {
     private readonly IPositionRepository _positionRepository;
 
-    public string Filter { get; set; } = null!;
+    public IEnumerable<PositionDto> PositionDtos { get; private set; } = null!;
+    public PaginatedList<PositionDto> Items { get; private set; } = default!;
+    public string Filter { get; private set; } = null!;
     public string NameSort { get; private set; } = null!;
-    public bool HasPositions => PositionDtos?.Any() ?? false;
-    public IEnumerable<PositionDto> PositionDtos { get; set; } = null!;
+    public bool HasPositions => Items.Any();
 
     public AllPositionsModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
         :base(schoolRepository)
@@ -20,7 +21,7 @@ public class AllPositionsModel : BasePageModel
         _positionRepository = positionRepository;
     }
 
-    public async Task OnGetAsync(string orderBy, string filter)
+    public async Task OnGetAsync(string orderBy, string filter, int? pageIndex)
     {
         NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
 
@@ -28,6 +29,8 @@ public class AllPositionsModel : BasePageModel
 
         var positions = await _positionRepository.GetAllAsync(FilterBy(filter), Sort(orderBy));
         PositionDtos = positions.Select(p => p.ToPositionDto()).ToArray();
+
+        Items = PaginatedList<PositionDto>.Create(PositionDtos, PageIndex = pageIndex ?? 1);
     }
 
     public Expression<Func<Position, bool>> FilterBy(string filter)

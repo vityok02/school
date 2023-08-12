@@ -7,33 +7,39 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolListModel : BasePageModel
 {
-    public IEnumerable<SchoolItemDto> SchoolItems { get; private set; } = null!;
-    public IEnumerable<Address> Addresses { get; private set; } = null!;
-    public string NameSort { get; private set; } = null!;
-    public string CitySort { get; private set; } = null!;
-    public string StreetSort { get; private set; } = null!;
-    public string FilterByParam { get; private set; } = null!;
-    public Dictionary<string, string> NameParams { get; private set; } = null!;
-    public Dictionary<string, string> CityParams { get; private set; } = null!;
-    public Dictionary<string, string> StreetParams { get; private set; } = null!;
+    public PaginatedList<SchoolItemDto> Items { get; private set; } = default!;
+    public IEnumerable<Address> Addresses { get; private set; } = default!;
+    public string NameSort { get; private set; } = default!;
+    public string CitySort { get; private set; } = default!;
+    public string StreetSort { get; private set; } = default!;
+    public string FilterByParam { get; private set; } = default!;
+    public Dictionary<string, string> NameParams { get; private set; } = default!;
+    public Dictionary<string, string> CityParams { get; private set; } = default!;
+    public Dictionary<string, string> StreetParams { get; private set; } = default!;
+    public bool HasSchools => Items.Any();
 
     public SchoolListModel(ISchoolRepository schoolRepository)
         : base(schoolRepository)
     {
     }
 
-    public IActionResult OnGet(string orderBy, string filterByParam)
+    public IActionResult OnGet(string orderBy, string filterByParam, int? pageIndex)
     {
         OrderBy = orderBy;  
-        NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
+        NameSort = string.IsNullOrEmpty(orderBy) ? "name_desc" : "";
         CitySort = orderBy == "city" ? "city_desc" : "city";
         StreetSort = orderBy == "street" ? "street_desc" : "street";
 
         FilterByParam = filterByParam;
 
-        var schools = SchoolRepository.GetSchools(FilterBy(FilterByParam), Sort(orderBy));
+        var schools = SchoolRepository
+            .GetSchools(
+                FilterBy(FilterByParam), 
+                Sort(orderBy))
+            .Select(s => s.ToSchoolItemDto())
+            .ToArray();
 
-        SchoolItems = schools.Select(s => s.ToSchoolItemDto()).ToArray();
+        Items = PaginatedList<SchoolItemDto>.Create(schools, PageIndex = pageIndex ?? 1);
 
         var filterParams = GetFilters();
 
@@ -81,23 +87,7 @@ public class SchoolListModel : BasePageModel
         }
     }
 
-
-    public async Task<IActionResult> OnGetSelectSchool(int id, string orderBy, string filterBy)
-    {
-        var school = await SchoolRepository.GetAsync(id);
-        if(school is null)
-        {
-            return RedirectToPage("/Schools/List", new { orderBy = orderBy, filterBy = filterBy });
-        }
-
-        SelectedSchoolName = school!.Name;
-        SelectedSchoolId = id;
-
-        SetSchoolId(school!.Id);
-        return RedirectToPage("/Schools/List", new { orderBy = orderBy, filterBy = filterBy });
-    }
-
-    public IActionResult OnPostSetSchool(int id)
+    public IActionResult OnPostSetSchool(int id, string filterByParam, string orderBy, int pageIndex)
     {
         if (id == 0)
         {
@@ -105,7 +95,7 @@ public class SchoolListModel : BasePageModel
         }
 
         SelectSchool(id);
-        return RedirectToPage();
+        return RedirectToPage("List");
     }
 
     public async Task<IActionResult> OnPostDelete(int id)

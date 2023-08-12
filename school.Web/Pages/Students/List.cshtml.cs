@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
@@ -10,9 +11,11 @@ public class ListModel : BasePageModel
     private readonly IRepository<Student> _studentRepository;
 
     public IEnumerable<StudentDto>? StudentsDto { get; private set; } = default!;
+    public PaginatedList<StudentDto> Items { get; private set; } = default!;
     public string GroupSort { get; private set; } = default!;
     public string FilterByGroup { get; private set; } = default!;
     public IDictionary<string, string> GroupParams { get; private set; } = default!;
+    public bool HasStudents => Items.Any();
 
     public ListModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         : base(schoolRepository)
@@ -20,7 +23,12 @@ public class ListModel : BasePageModel
         _studentRepository = studentRepository;
     }
 
-    public async Task<IActionResult> OnGet(string orderBy, string filterByName, int filterByAge, string filterByGroup)
+    public async Task<IActionResult> OnGet(
+        string orderBy,
+        string filterByName,
+        int filterByAge,
+        string filterByGroup,
+        int? pageIndex)
     {
         if (SelectedSchoolId == -1)
         {
@@ -46,6 +54,8 @@ public class ListModel : BasePageModel
         var students = await _studentRepository.GetAllAsync(FilterBy(FilterByName, FilterByAge, FilterByGroup, SelectedSchoolId),
             Sort(orderBy));
         StudentsDto = students.Select(s => s.ToStudentDto()).ToArray();
+
+        Items = PaginatedList<StudentDto>.Create(StudentsDto, PageIndex = pageIndex ?? 1);
 
         if(!StudentsDto.Any())
         {

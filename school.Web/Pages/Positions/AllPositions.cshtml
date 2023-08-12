@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var position in Model.PositionDtos)
+                @foreach (var position in Model.Items)
                 {
                     <tr>
                         <td>@position.Name</td>
@@ -53,5 +53,6 @@
                 }
             </tbody>
         </table>
+        <partial name="_Pagination"/>
     }
 </div>

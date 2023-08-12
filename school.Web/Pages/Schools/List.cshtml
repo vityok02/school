@@ -18,7 +18,7 @@
         <partial name="FilterButtons" />
         <input type="hidden" asp-for="OrderBy" />
     </form>
-    @if (!Model.SchoolItems.Any())
+    @if (!Model.HasSchools)
     {
         <div class="empty">List of schools if empty</div>
     }
@@ -39,7 +39,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var school in Model.SchoolItems)
+                @foreach (var school in Model.Items)
                 {
                     <tr>
                         <td>@school.Name</td>
@@ -79,5 +79,7 @@
                 }
             </tbody>
         </table>
+        <partial name="_Pagination" />
     }
+
 </div>
