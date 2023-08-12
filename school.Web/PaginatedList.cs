@@ -13,7 +13,7 @@ public class PaginatedList<T> : List<T>
         PageIndex = pageIndex;
         TotalPages = (int)Math.Ceiling(count / (double)PageSize);
 
-        this.AddRange(items);
+        AddRange(items);
     }
 
     public static PaginatedList<T> Create(IEnumerable<T> source, int pageIndex)
@@ -21,7 +21,9 @@ public class PaginatedList<T> : List<T>
         var count = source.Count();
         var items = source.Skip(
             (pageIndex - 1) * PageSize)
-            .Take(PageSize).ToList();
+            .Take(PageSize)
+            .ToList();
+
         return new PaginatedList<T>(items, count, pageIndex);
     }
 }
