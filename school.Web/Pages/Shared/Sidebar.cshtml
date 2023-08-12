@@ -5,10 +5,9 @@
     var currentPage = Accessor.HttpContext!.Request.Path.Value;
 }
 
-@if (await Model.HasSelectedSchoolAsync())
-{
-    <div class="sidenav">
-        <a class="@(currentPage!.StartsWith("/schools") ? "active" : "")" asp-page="/Schools/List" style="border-top: 1px solid black">Schools</a>
+<div class="sidenav">
+    <a class="@(currentPage!.StartsWith("/schools") ? "active" : "")" asp-page="/Schools/List" style="border-top: 1px solid black">Schools</a>
+    <div class="@(!await Model.HasSelectedSchoolAsync() ? "disable" : "")">
         <a class="@(currentPage.StartsWith("/floors") ? "active" : "")" asp-page="/Floors/List">Floors</a>
         <a class="@(currentPage.StartsWith("/rooms") ? "active" : "")" asp-page="/Rooms/List">Rooms</a>
         <a class="@(currentPage.StartsWith("/employees") ? "active" : "")" asp-page="/Employees/List">Employees</a>
@@ -16,10 +15,4 @@
         <a class="@(currentPage.StartsWith("/positions/school") ? "active" : "")" asp-page="/Positions/SchoolPositions">School Positions</a>
         <a class="@(currentPage.StartsWith("/students") ? "active" : "")" asp-page="/Students/List">Students</a>
     </div>
-}
-else
-{
-    <div class="sidenav">
-        <a class="@(currentPage!.StartsWith("/schools") ? "active" : "")" asp-page="/Schools/List">Schools</a>
-    </div>
-}
+</div>

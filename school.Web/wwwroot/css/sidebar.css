@@ -29,3 +29,8 @@ a {
     color: white;
     background: linear-gradient(90deg, rgba(79,100,108,1) 0%, rgba(79,100,108,0) 100%);
 }
+
+.disable {
+    opacity: 0.5;
+    pointer-events: none;
+}
