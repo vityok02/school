@@ -5,14 +5,14 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Floors;
 
-public class DetailsModel : BasePageModel
+public class FloorDetails : BasePageModel
 {
     private readonly IFloorRepository _floorRepository;
 
     public FloorItemDto? FloorDto { get; private set; }
 
-    public DetailsModel(ISchoolRepository schoolRepository, IRepository<Room> roomRepository, IFloorRepository floorRepository)
-        :base(schoolRepository)
+    public FloorDetails(ISchoolRepository schoolRepository, IFloorRepository floorRepository)
+        : base(schoolRepository)
     {
         _floorRepository = floorRepository;
     }
