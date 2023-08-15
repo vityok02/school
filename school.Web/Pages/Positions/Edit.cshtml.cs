@@ -11,10 +11,14 @@ public class EditPositionModel : BasePageModel
 
     public PositionDto PositionDto { get; private set; } = default!;
 
-    public EditPositionModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
-        : base(schoolRepository)
+    public EditPositionModel(
+        ISchoolRepository schoolRepository, 
+        IPositionRepository positionRepository, 
+        IValidator<PositionDto> validator)
+         : base(schoolRepository)
     {
         _positionRepository = positionRepository;
+        _validator = validator;
     }
 
     public async Task<IActionResult> OnGetAsync(int id)
