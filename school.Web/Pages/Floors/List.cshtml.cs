@@ -3,7 +3,7 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Floors;
 
-public class FloorsList : BasePageModel
+public class FloorsList : BaseListPageModel
 {
     private readonly IFloorRepository _floorRepository;
 

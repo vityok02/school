@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class SchoolPositionsListModel : BasePageModel
+public class SchoolPositionsListModel : BaseListPageModel
 {
     private readonly IPositionRepository _positionRepository;
 

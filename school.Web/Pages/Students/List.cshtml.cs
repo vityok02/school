@@ -5,13 +5,11 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Students;
 
-public class StudentsListModel : BasePageModel
+public class StudentsListModel : BaseListPageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
     public IEnumerable<StudentDto>? StudentsDto { get; private set; } = default!;
-    public PaginatedList<StudentDto> Items { get; private set; } = default!;
-    public string ListPageUrl => "/Students/List";
     public string GroupSort { get; private set; } = default!;
     public string FilterByGroup { get; private set; } = default!;
     public IDictionary<string, string> GroupParams { get; private set; } = default!;
@@ -55,7 +53,7 @@ public class StudentsListModel : BasePageModel
             Sort(orderBy));
         StudentsDto = students.Select(s => s.ToStudentDto()).ToArray();
 
-        Items = new PaginatedList<StudentDto>(StudentsDto, PageIndex = pageIndex ?? 1);
+        Items = new PaginatedList<object>(StudentsDto.Cast<object>(), PageIndex = pageIndex ?? 1);
 
         if(!StudentsDto.Any())
         {
