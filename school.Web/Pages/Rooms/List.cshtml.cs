@@ -72,7 +72,7 @@ public class ListModel : BaseRoomPageModel
 
         RoomDtos = rooms.Select(r => r.ToRoomItemDto()).ToArray();
 
-        Items = PaginatedList<RoomItemDto>.Create(RoomDtos, PageIndex = pageIndex ?? 1);
+        Items = new PaginatedList<RoomItemDto>(RoomDtos, PageIndex = pageIndex ?? 1);
 
         var filterParams = GetFilters();
 
