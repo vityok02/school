@@ -6,7 +6,7 @@ using SchoolManagement.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("localDb");
+var connectionString = builder.Configuration.GetConnectionString("localdb");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
