@@ -1,4 +1,4 @@
-﻿@model ListModel
+﻿@model EmployeesList
 
 <div class="wrapper">
     <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
@@ -50,7 +50,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var emp in Model.Items)
+                @foreach (EmployeeDto emp in Model.Items)
                 {
                     <tr>
                         <td class="first-columns">@emp.FirstName</td>
