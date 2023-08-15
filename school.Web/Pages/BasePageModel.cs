@@ -15,17 +15,6 @@ public abstract class BasePageModel : PageModel
     public IEnumerable<School> Schools { get; private set; } = null!;
     public string ErrorMessage { get; protected set; } = null!;
     public string Message { get; protected set; } = null!;
-    public string OrderBy { get; protected set; } = null!;
-    public string FirstNameSort { get; protected set; } = null!;
-    public string LastNameSort { get; protected set; } = null!;
-    public string AgeSort { get; protected set; } = null!;
-    public string FilterByName { get; protected set; } = null!;
-    public int FilterByAge { get; protected set; }
-    public IDictionary<string, string> FilterParams { get; protected set; } = null!;
-    public IDictionary<string, string> FirstNameParams { get; protected set; } = null!;
-    public IDictionary<string, string> LastNameParams { get; protected set; } = null!;
-    public IDictionary<string, string> AgeParams { get; protected set; } = null!;
-    public int PageIndex { get; protected set; }
 
     protected BasePageModel(ISchoolRepository schoolRepository)
     {
