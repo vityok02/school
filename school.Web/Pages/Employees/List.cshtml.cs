@@ -1,4 +1,3 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
@@ -6,38 +5,43 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class ListModel : BaseEmployeePageModel
+public class EmployeesList : BaseListPageModel
 {
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IPositionRepository _positionRepository;
+
     public IEnumerable<EmployeeDto> EmployeeItems { get; private set; } = default!;
-    public PaginatedList<EmployeeDto> Items { get; private set; } = default!;
+
+    public override string ListPageUrl => "/Employees/List";
+
     public string PositionSort { get; private set; } = default!;
     public string FilterByPosition { get; private set; } = default!;
     public IDictionary<string, string> PositionParams { get; private set; } = default!;
     public bool HasPositions { get; private set; } = true;
 
-    public ListModel(
+    public EmployeesList(
         ISchoolRepository schoolRepository,
         IEmployeeRepository employeeRepository,
-        IPositionRepository positionRepository,
-        IValidator<IEmployeeDto> validator)
-        : base(schoolRepository, employeeRepository, positionRepository, validator)
+        IPositionRepository positionRepository)
+        : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
         _positionRepository = positionRepository;
-        _validator = validator;
     }
 
-    public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition, int? pageIndex)
+    public async Task<IActionResult> OnGetAsync(
+        string orderBy,
+        string filterByName,
+        int filterByAge,
+        string filterByPosition,
+        int? pageIndex)
     {
         if (!await HasSelectedSchoolAsync())
         {
             return RedirectToSchoolList();
         }
 
-        if (!await HasSchoolPositions())
-        {
-            HasPositions = false;
-        }
+        HasPositions = await _positionRepository.HasSchoolPositions(SelectedSchoolId);
 
         FirstNameSort = String.IsNullOrEmpty(orderBy) ? "firstName_desc" : "";
         LastNameSort = orderBy == "lastName" ? "lastName_desc" : "lastName";
@@ -82,7 +86,7 @@ public class ListModel : BaseEmployeePageModel
             { nameof(orderBy), PositionSort }
         };
 
-        Items = PaginatedList<EmployeeDto>.Create(EmployeeItems, PageIndex = pageIndex ?? 1);
+        Items = new PaginatedList<object>(EmployeeItems.Cast<object>(), PageIndex = pageIndex ?? 1);
 
         return Page();
     }
