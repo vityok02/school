@@ -5,10 +5,13 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
-public class ListModel : BaseRoomPageModel
+public class ListModel : BaseListPageModel
 {
+    private readonly ISchoolRepository _schoolRepository;
+    private readonly IFloorRepository _floorRepository;
+    private readonly IRoomRepository _roomRepository;
+
     public IEnumerable<RoomItemDto> RoomDtos { get; private set; } = default!;
-    public PaginatedList<RoomItemDto> Items { get; private set; } = default!;
     public string RoomNumberSort { get; private set; } = default!;
     public string RoomTypeSort { get; private set; } = default!;
     public string FloorNumberSort { get; private set; } = default!;
@@ -21,12 +24,17 @@ public class ListModel : BaseRoomPageModel
     public bool HasRooms => Items.Any();
     public bool HasFloors { get; private set; } = true;
 
+    public override string ListPageUrl => "List";
+
     public ListModel(
         ISchoolRepository schoolRepository,
         IFloorRepository floorRepository,
         IRoomRepository roomRepository)
-        : base(schoolRepository, floorRepository, roomRepository)
+        : base(schoolRepository)
     {
+        _schoolRepository = schoolRepository;
+        _floorRepository = floorRepository;
+        _roomRepository = roomRepository;
     }
 
     public async Task<IActionResult> OnGetAsync(
@@ -41,7 +49,10 @@ public class ListModel : BaseRoomPageModel
             return RedirectToSchoolList();
         }
 
-        if (!await HasFloorsAsync())
+        var floors = await _floorRepository.GetSchoolFloorsAsync(SelectedSchoolId);
+        bool hasFloors = floors.Any();
+
+        if (!hasFloors)
         {
             HasFloors = false;
         }
@@ -72,7 +83,7 @@ public class ListModel : BaseRoomPageModel
 
         RoomDtos = rooms.Select(r => r.ToRoomItemDto()).ToArray();
 
-        Items = new PaginatedList<RoomItemDto>(RoomDtos, PageIndex = pageIndex ?? 1);
+        Items = new PaginatedList<object>(RoomDtos.Cast<object>(), PageIndex = pageIndex ?? 1);
 
         var filterParams = GetFilters();
 

@@ -25,7 +25,7 @@
             <tr>
                 <td>
                     <label asp-for="FloorDtos">Floor</label>
-                    <div class="error">@Model.NotFoundMessage</div>
+                    <div class="error">@ViewData["NotFoundMessage"]</div>
                 </td>
                 <td>
                     <select asp-for="RoomDto.FloorId" required>

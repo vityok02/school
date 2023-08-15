@@ -2,21 +2,30 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using static SchoolManagement.Web.Pages.Rooms.RoomHelper;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
-public class EditModel : BaseRoomPageModel
+public class EditModel : BasePageModel
 {
+    private readonly IFloorRepository _floorRepository;
+    private readonly IRoomRepository _roomRepository;
+    private readonly IValidator<IRoomDto> _validator;
+
     public EditRoomDto RoomDto { get; private set; } = default!;
     public RoomType CheckedTypes { get; private set; }
+    public IEnumerable<FloorDto>? FloorDtos { get; set; } = default!;
 
     public EditModel(
         ISchoolRepository schoolRepository,
         IFloorRepository floorRepository,
         IRoomRepository roomRepository,
         IValidator<IRoomDto> validator)
-        : base(schoolRepository, floorRepository, roomRepository, validator)
+        : base(schoolRepository)
     {
+        _floorRepository = floorRepository;
+        _roomRepository = roomRepository;
+        _validator = validator;
     }
 
     public async Task<IActionResult> OnGetAsync(int id)
@@ -44,7 +53,7 @@ public class EditModel : BaseRoomPageModel
     public async Task<IActionResult> OnPostAsync(EditRoomDto roomDto, RoomType[] roomTypes)
     {
         var validationResult = await _validator.ValidateAsync(roomDto);
-        var floors = await GetFloorsAsync();
+        var floors = await GetFloorsAsync(_floorRepository, SelectedSchoolId);
 
         if (!validationResult.IsValid)
         {
@@ -64,7 +73,7 @@ public class EditModel : BaseRoomPageModel
         {
             FloorDtos = floors;
 
-            NotFoundMessage = "Such floor doesn't exist";
+            ViewData["NotFoundMessage"] = "Such floor doesn't exist";
 
             return Page();
         }
@@ -82,7 +91,7 @@ public class EditModel : BaseRoomPageModel
         if(rooms.Any(r => r.Number == roomDto.Number
             && r.Id != roomDto.Id))
         {
-            FloorDtos = await GetFloorsAsync();
+            FloorDtos = await GetFloorsAsync(_floorRepository, SelectedSchoolId);
 
             ErrorMessage = "Such room already exists";
 
@@ -91,7 +100,7 @@ public class EditModel : BaseRoomPageModel
 
         if(!roomTypes.Any())
         {
-            FloorDtos = await GetFloorsAsync();
+            FloorDtos = await GetFloorsAsync(_floorRepository, SelectedSchoolId);
 
             ErrorMessage = "Please select a room type";
 
