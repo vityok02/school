@@ -11,9 +11,7 @@ public class EmployeesListModel : BaseListPageModel
     private readonly IPositionRepository _positionRepository;
 
     public IEnumerable<EmployeeDto> EmployeeItems { get; private set; } = default!;
-
     public override string ListPageUrl => "/Employees/List";
-
     public string PositionSort { get; private set; } = default!;
     public string FilterByPosition { get; private set; } = default!;
     public IDictionary<string, string> PositionParams { get; private set; } = default!;
