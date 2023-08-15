@@ -5,12 +5,12 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class AddModel : BasePageModel
+public class AddSchoolModel : BasePageModel
 {
     public AddSchoolDto SchoolDto { get; private set; } = null!;
     private readonly IValidator<ISchoolDto> _validator;
 
-    public AddModel(
+    public AddSchoolModel(
         ISchoolRepository schoolRepository, 
         IValidator<ISchoolDto> validator)
         : base(schoolRepository)

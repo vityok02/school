@@ -6,7 +6,7 @@ using static SchoolManagement.Web.Pages.Rooms.RoomHelper;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
-public class EditModel : BasePageModel
+public class EditRoomModel : BasePageModel
 {
     private readonly IFloorRepository _floorRepository;
     private readonly IRoomRepository _roomRepository;
@@ -16,7 +16,7 @@ public class EditModel : BasePageModel
     public RoomType CheckedTypes { get; private set; }
     public IEnumerable<FloorDto>? FloorDtos { get; set; } = default!;
 
-    public EditModel(
+    public EditRoomModel(
         ISchoolRepository schoolRepository,
         IFloorRepository floorRepository,
         IRoomRepository roomRepository,

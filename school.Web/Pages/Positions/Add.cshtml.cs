@@ -5,14 +5,14 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class AddModel : BasePageModel
+public class AddPositionModel : BasePageModel
 {
     private readonly IPositionRepository _positionRepository;
     private readonly IValidator<PositionDto> _validator;
 
     public string? Name { get; private set; } = null!;
 
-    public AddModel(
+    public AddPositionModel(
         ISchoolRepository schoolRepository,
         IPositionRepository positionRepository,
         IValidator<PositionDto> validator)

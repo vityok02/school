@@ -4,13 +4,13 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class EditModel : BasePageModel
+public class EditSchoolModel : BasePageModel
 {
     private readonly IValidator<ISchoolDto> _validator;
 
     public SchoolDto SchoolDto { get; private set; } = default!;
 
-    public EditModel(
+    public EditSchoolModel(
         ISchoolRepository schoolRepository, 
         IValidator<ISchoolDto> validator)
         : base(schoolRepository)

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class EmployeesList : BaseListPageModel
+public class EmployeesListModel : BaseListPageModel
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
@@ -19,7 +19,7 @@ public class EmployeesList : BaseListPageModel
     public IDictionary<string, string> PositionParams { get; private set; } = default!;
     public bool HasPositions { get; private set; } = true;
 
-    public EmployeesList(
+    public EmployeesListModel(
         ISchoolRepository schoolRepository,
         IEmployeeRepository employeeRepository,
         IPositionRepository positionRepository)

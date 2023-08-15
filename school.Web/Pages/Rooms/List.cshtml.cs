@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Rooms;
 
-public class ListModel : BaseListPageModel
+public class RoomsListModel : BaseListPageModel
 {
     private readonly ISchoolRepository _schoolRepository;
     private readonly IFloorRepository _floorRepository;
@@ -26,7 +26,7 @@ public class ListModel : BaseListPageModel
 
     public override string ListPageUrl => "List";
 
-    public ListModel(
+    public RoomsListModel(
         ISchoolRepository schoolRepository,
         IFloorRepository floorRepository,
         IRoomRepository roomRepository)

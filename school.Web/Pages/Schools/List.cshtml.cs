@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class SchoolListModel : BaseListPageModel
+public class SchoolsListModel : BaseListPageModel
 {
     public IEnumerable<Address> Addresses { get; private set; } = default!;
     public override string ListPageUrl => "/Schools/List";
@@ -18,7 +18,7 @@ public class SchoolListModel : BaseListPageModel
     public Dictionary<string, string> StreetParams { get; private set; } = default!;
     public bool HasSchools => Items.Any();
 
-    public SchoolListModel(ISchoolRepository schoolRepository)
+    public SchoolsListModel(ISchoolRepository schoolRepository)
         : base(schoolRepository)
     {
     }

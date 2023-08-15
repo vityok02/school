@@ -5,14 +5,14 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Students;
 
-public class EditModel : BasePageModel
+public class EditStudentModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
     private readonly IValidator<IStudentDto> _validator;
 
     public StudentDto StudentDto { get; private set; } = default!;
 
-    public EditModel(
+    public EditStudentModel(
         ISchoolRepository schoolRepository,
         IRepository<Student> studentRepository,
         IValidator<IStudentDto> validator)

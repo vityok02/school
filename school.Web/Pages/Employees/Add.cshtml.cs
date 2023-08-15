@@ -6,7 +6,7 @@ using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class AddModel : BasePageModel
+public class AddEmployeeModel : BasePageModel
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
@@ -18,7 +18,7 @@ public class AddModel : BasePageModel
     public AddEmployeeDto EmployeeDto { get; private set; } = default!;
     public IEnumerable<int> CheckedPositionsId { get; private set; } = default!;
 
-    public AddModel(
+    public AddEmployeeModel(
         ISchoolRepository schoolRepository,
         IEmployeeRepository employeeRepository,
         IPositionRepository positionRepository,

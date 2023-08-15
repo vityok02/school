@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Students;
 
-public class ListModel : BasePageModel
+public class StudentsListModel : BasePageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
@@ -17,7 +17,7 @@ public class ListModel : BasePageModel
     public IDictionary<string, string> GroupParams { get; private set; } = default!;
     public bool HasStudents => Items.Any();
 
-    public ListModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
+    public StudentsListModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         : base(schoolRepository)
     {
         _studentRepository = studentRepository;

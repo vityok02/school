@@ -5,7 +5,7 @@ using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class EditModel : BasePageModel
+public class EditEmployeeModel : BasePageModel
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IPositionRepository _positionRepository;
@@ -15,7 +15,7 @@ public class EditModel : BasePageModel
 
     public EditEmployeeDto EmployeeDto { get; private set; } = default!;
 
-    public EditModel(
+    public EditEmployeeModel(
         ISchoolRepository schoolRepository,
         IEmployeeRepository employeeRepository,
         IPositionRepository positionRepository,

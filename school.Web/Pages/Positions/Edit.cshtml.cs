@@ -4,14 +4,14 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class EditModel : BasePageModel
+public class EditPositionModel : BasePageModel
 {
     private readonly IPositionRepository _positionRepository;
     private readonly IValidator<PositionDto> _validator;
 
     public PositionDto PositionDto { get; private set; } = default!;
 
-    public EditModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
+    public EditPositionModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
     {
         _positionRepository = positionRepository;

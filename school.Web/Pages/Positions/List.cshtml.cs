@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class PositionsList : BaseListPageModel
+public class PositionsListModel : BaseListPageModel
 {
     private readonly IPositionRepository _positionRepository;
 
@@ -15,7 +15,7 @@ public class PositionsList : BaseListPageModel
     public bool HasPositions => Items.Any();
     public override string ListPageUrl => "/Positions/List";
 
-    public PositionsList(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
+    public PositionsListModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
     {
         _positionRepository = positionRepository;
