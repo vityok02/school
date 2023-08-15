@@ -6,8 +6,15 @@ using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class AddModel : BaseEmployeePageModel
+public class AddModel : BasePageModel
 {
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IPositionRepository _positionRepository;
+    private readonly IValidator<IEmployeeDto> _validator;
+
+    public IEnumerable<PositionDto> PositionDtos { get; protected set; } = default!;
+    public string InValidPositionMessage { get; protected set; } = "";
+
     public AddEmployeeDto EmployeeDto { get; private set; } = default!;
     public IEnumerable<int> CheckedPositionsId { get; private set; } = default!;
 
@@ -16,7 +23,7 @@ public class AddModel : BaseEmployeePageModel
         IEmployeeRepository employeeRepository,
         IPositionRepository positionRepository,
         IValidator<IEmployeeDto> validator)
-        : base(schoolRepository, employeeRepository, positionRepository, validator)
+        : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
         _positionRepository = positionRepository;
@@ -30,12 +37,12 @@ public class AddModel : BaseEmployeePageModel
             return RedirectToSchoolList();
         }
 
-        if (!await HasSchoolPositions())
+        if (!await _positionRepository.HasSchoolPositions(SelectedSchoolId))
         {
-            return RedirectToPositionList();
+            return RedirectToPage("/Positions/SchoolPositions", "error");
         }
 
-        var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
+        var positions = await _positionRepository.GetSchoolPositions(SelectedSchoolId);
         PositionDtos = positions.Select(s => s.ToPositionDto()).ToArray();
 
         return Page();
@@ -65,7 +72,7 @@ public class AddModel : BaseEmployeePageModel
             return RedirectToSchoolList();
         }
 
-        var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
+        var positions = await _positionRepository.GetSchoolPositions(SelectedSchoolId);
 
         foreach (var positionId in checkedPositionsId) 
         {
@@ -113,7 +120,7 @@ public class AddModel : BaseEmployeePageModel
 
         async Task FillDataForPage()
         {
-            var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
+            var positions = await _positionRepository.GetSchoolPositions(SelectedSchoolId);
             PositionDtos = positions.Select(p => p.ToPositionDto()).ToArray();
             CheckedPositionsId = checkedPositionsId;
         }

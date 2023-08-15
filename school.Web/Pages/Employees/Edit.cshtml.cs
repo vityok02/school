@@ -5,8 +5,14 @@ using SchoolManagement.Web.Pages.Positions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class EditModel : BaseEmployeePageModel
+public class EditModel : BasePageModel
 {
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IPositionRepository _positionRepository;
+    private readonly IValidator<IEmployeeDto> _validator;
+
+    public IEnumerable<PositionDto> PositionDtos { get; protected set; } = default!;
+
     public EditEmployeeDto EmployeeDto { get; private set; } = default!;
 
     public EditModel(
@@ -14,8 +20,12 @@ public class EditModel : BaseEmployeePageModel
         IEmployeeRepository employeeRepository,
         IPositionRepository positionRepository,
         IValidator<IEmployeeDto> validator)
-        : base(schoolRepository, employeeRepository, positionRepository, validator)
-    { }
+        : base(schoolRepository)
+    {
+        _employeeRepository = employeeRepository;
+        _positionRepository = positionRepository;
+        _validator = validator;
+    }
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
@@ -32,7 +42,7 @@ public class EditModel : BaseEmployeePageModel
 
         EmployeeDto = employee.ToEditEmployeeDto();
 
-        var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
+        var positions = await _positionRepository.GetSchoolPositions(SelectedSchoolId);
         PositionDtos = positions.Select(p => p.ToPositionDto()).ToArray();
 
         return Page();
@@ -79,7 +89,7 @@ public class EditModel : BaseEmployeePageModel
             return Page();
         }
 
-        var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
+        var positions = await _positionRepository.GetSchoolPositions(SelectedSchoolId);
 
         foreach (var positionId in checkedPositionsId)
         {
@@ -87,7 +97,7 @@ public class EditModel : BaseEmployeePageModel
             {
                 await FillDataForPage();
 
-                InValidPositionMessage = "Such position doesn't exist";
+                ViewData["InValidPositionMessage"] = "Such position doesn't exist";
 
                 return Page();
             }
@@ -107,7 +117,7 @@ public class EditModel : BaseEmployeePageModel
         {
             await FillDataForPage();
 
-            InValidPositionMessage = "Please select a position";
+            ViewData["InValidPositionMessage"] = "Please select a position";
 
             return Page();
         }
@@ -119,7 +129,7 @@ public class EditModel : BaseEmployeePageModel
         {
             EmployeeDto = employee!.ToEditEmployeeDto();
 
-            var positions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId);
+            var positions = await _positionRepository.GetSchoolPositions(SelectedSchoolId);
             PositionDtos = positions.Select(p => p.ToPositionDto()).ToArray();
         }
     }
