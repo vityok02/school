@@ -21,7 +21,7 @@ public class EditModel : BasePositionPageModel
         var position = await _positionRepository.GetAsync(id);
         if (position == null)
         {
-            return RedirectToPage("AllPositions");
+            return RedirectToPage("/Positions/List");
         }
 
         PositionDto = position.ToPositionDto();
@@ -44,7 +44,7 @@ public class EditModel : BasePositionPageModel
         var position = await _positionRepository.GetAsync(positionDto.Id);
         if (position == null)
         {
-            return RedirectToPage("AllPositions");
+            return RedirectToPage("/Positions/List");
         }
 
         var positions = await _positionRepository.GetAllAsync();
@@ -63,6 +63,6 @@ public class EditModel : BasePositionPageModel
 
         await _positionRepository.UpdateAsync(position);
 
-        return RedirectToPage("AllPositions");
+        return RedirectToPage("/Positions/List");
     }
 }
