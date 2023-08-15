@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
@@ -116,7 +115,6 @@ public class ListModel : BasePageModel
             };
         }
     }
-
 
     public async Task<IActionResult> OnPostDelete(int id)
     {
