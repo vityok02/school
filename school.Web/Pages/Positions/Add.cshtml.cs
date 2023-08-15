@@ -5,16 +5,22 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class AddModel : BasePositionPageModel
+public class AddModel : BasePageModel
 {
+    private readonly IPositionRepository _positionRepository;
+    private readonly IValidator<PositionDto> _validator;
+
     public string? Name { get; private set; } = null!;
 
     public AddModel(
         ISchoolRepository schoolRepository,
         IPositionRepository positionRepository,
         IValidator<PositionDto> validator)
-        : base(schoolRepository, positionRepository, validator)
-    { }
+        : base(schoolRepository)
+    {
+        _positionRepository = positionRepository;
+        _validator = validator;
+    }
 
     public async Task<IActionResult> OnPostAsync(string name)
     {

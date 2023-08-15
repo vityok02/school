@@ -1,20 +1,21 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing.Matching;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class EditModel : BasePositionPageModel
+public class EditModel : BasePageModel
 {
+    private readonly IPositionRepository _positionRepository;
+    private readonly IValidator<PositionDto> _validator;
+
     public PositionDto PositionDto { get; private set; } = default!;
 
-    public EditModel(
-        ISchoolRepository schoolRepository, 
-        IPositionRepository positionRepository,
-        IValidator<PositionDto> validator)
-        : base(schoolRepository, positionRepository, validator)
-    { }
+    public EditModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
+        : base(schoolRepository)
+    {
+        _positionRepository = positionRepository;
+    }
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
