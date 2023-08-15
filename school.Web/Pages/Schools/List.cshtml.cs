@@ -5,10 +5,10 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Schools;
 
-public class SchoolListModel : BasePageModel
+public class SchoolListModel : BaseListPageModel
 {
-    public PaginatedList<SchoolItemDto> Items { get; private set; } = default!;
     public IEnumerable<Address> Addresses { get; private set; } = default!;
+    public override string ListPageUrl => "/Schools/List";
     public string NameSort { get; private set; } = default!;
     public string CitySort { get; private set; } = default!;
     public string StreetSort { get; private set; } = default!;
@@ -39,7 +39,7 @@ public class SchoolListModel : BasePageModel
             .Select(s => s.ToSchoolItemDto())
             .ToArray();
 
-        Items = PaginatedList<SchoolItemDto>.Create(schools, PageIndex = pageIndex ?? 1);
+        Items = new PaginatedList<object>(schools.Cast<object>(), PageIndex = pageIndex ?? 1);
 
         var filterParams = GetFilters();
 
