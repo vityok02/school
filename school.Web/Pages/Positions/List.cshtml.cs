@@ -5,29 +5,32 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class AllPositionsModel : BasePageModel
+public class PositionsListModel : BaseListPageModel
 {
     private readonly IPositionRepository _positionRepository;
 
-    public string Filter { get; set; } = null!;
+    public IEnumerable<PositionDto> PositionDtos { get; private set; } = null!;
+    public string Filter { get; private set; } = null!;
     public string NameSort { get; private set; } = null!;
-    public bool HasPositions => PositionDtos?.Any() ?? false;
-    public IEnumerable<PositionDto> PositionDtos { get; set; } = null!;
+    public bool HasPositions => Items.Any();
+    public override string ListPageUrl => "/Positions/List";
 
-    public AllPositionsModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
-        :base(schoolRepository)
+    public PositionsListModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
+        : base(schoolRepository)
     {
         _positionRepository = positionRepository;
     }
 
-    public async Task OnGetAsync(string orderBy, string filter)
+    public async Task OnGetAsync(string orderBy, string filter, int? pageIndex)
     {
-        NameSort = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
+        NameSort = string.IsNullOrEmpty(orderBy) ? "name_desc" : "";
 
         Filter = filter;
 
         var positions = await _positionRepository.GetAllAsync(FilterBy(filter), Sort(orderBy));
         PositionDtos = positions.Select(p => p.ToPositionDto()).ToArray();
+
+        Items = new PaginatedList<object>(PositionDtos.Cast<object>(), PageIndex = pageIndex ?? 1);
     }
 
     public Expression<Func<Position, bool>> FilterBy(string filter)
@@ -49,11 +52,11 @@ public class AllPositionsModel : BasePageModel
         var position = await _positionRepository.GetAsync(id);
         if (position is null)
         {
-            return RedirectToPage("AllPositions");
+            return RedirectToPage("/Positions/List");
         }
 
         await _positionRepository.DeleteAsync(position);
 
-        return RedirectToPage("AllPositions");
+        return RedirectToPage("/Positions/List");
     }
 }

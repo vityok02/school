@@ -1,0 +1,22 @@
+﻿@model BaseListPageModel
+
+@{
+    var url = Model.ListPageUrl;
+    var prevDisabled = !Model.Items.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Items.HasNextPage ? "disabled" : "";
+}
+
+<div class="pagination-group">
+    <a asp-page="@url"
+       asp-all-route-data="Model.FilterParams"
+       asp-route-pageIndex="@(Model.Items.PageIndex - 1)"
+       class="pagination btn @prevDisabled">
+        Previous
+    </a>
+    <a asp-page="@url"
+       asp-all-route-data="Model.FilterParams"
+       asp-route-pageIndex="@(Model.Items.PageIndex + 1)"
+       class="pagination btn @nextDisabled">
+        Next
+    </a>
+</div>

@@ -4,7 +4,7 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Floors;
 
-public class AddModel : BasePageModel
+public class AddFloor : BasePageModel
 {
     private readonly IRepository<Floor> _floorRepository;
 
@@ -12,7 +12,7 @@ public class AddModel : BasePageModel
     public string InValidMessage { get; private set; } = "";
     public bool IsError { get; private set; } = false;
 
-    public AddModel(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository)
+    public AddFloor(ISchoolRepository schoolRepository, IRepository<Floor> floorRepository)
         :base(schoolRepository)
     {
         _floorRepository = floorRepository;
@@ -20,7 +20,7 @@ public class AddModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync(bool? isError = false)
     {
-        if (!await HasSelectedSchool())
+        if (!await HasSelectedSchoolAsync())
         {
             return RedirectToSchoolList();
         }

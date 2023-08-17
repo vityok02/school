@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class SchoolPositionsModel : BasePageModel
+public class SchoolPositionsListModel : BaseListPageModel
 {
     private readonly IPositionRepository _positionRepository;
 
@@ -16,7 +16,7 @@ public class SchoolPositionsModel : BasePageModel
     public string AllPositionsSort { get; private set; } = null!;
     public string SchoolPositionsSort { get; private set; } = null!;
 
-    public SchoolPositionsModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
+    public SchoolPositionsListModel(ISchoolRepository schoolRepository, IPositionRepository positionRepository)
         : base(schoolRepository)
     {
         _positionRepository = positionRepository;
@@ -30,16 +30,19 @@ public class SchoolPositionsModel : BasePageModel
         AllPositionsFilter = allPositionsFilter;
         SchoolPositionsFilter = schoolPositionsFilter;
 
-        if (!await HasSelectedSchool())
+        if (!await HasSelectedSchoolAsync())
         {
             return RedirectToSchoolList();
         }
 
-        var allPositions = await _positionRepository.GetAllPositions(SelectedSchoolId, FilterBy(this.AllPositionsFilter),
+        var allPositions = await _positionRepository
+            .GetAllPositions(
+                SelectedSchoolId,
+            FilterBy(this.AllPositionsFilter),
             Sort(allPositionsOrderBy));
         AllPositions = allPositions.Select(s => s.ToPositionDto()).ToArray();
 
-        var schoolPositions = await _positionRepository.GetSchoolPositionsAsync(SelectedSchoolId, FilterBy(SchoolPositionsFilter),
+        var schoolPositions = await _positionRepository.GetSchoolPositions(SelectedSchoolId, FilterBy(SchoolPositionsFilter),
             Sort(schoolPositionsOrderBy));
         SchoolPositions = schoolPositions.Select(s => s.ToPositionDto()).ToArray();
 
@@ -59,7 +62,7 @@ public class SchoolPositionsModel : BasePageModel
             RedirectToSchoolList();
         }
 
-        var position = await _positionRepository.GetPositionAsync(id);
+        var position = await _positionRepository.GetPosition(id);
 
         if (position is null)
         {
@@ -88,7 +91,7 @@ public class SchoolPositionsModel : BasePageModel
             RedirectToSchoolList();
         }
 
-        var position = await _positionRepository.GetPositionAsync(id);
+        var position = await _positionRepository.GetPosition(id);
 
         if (position.Schools.Any(p => p.Id == SelectedSchoolId))
         {

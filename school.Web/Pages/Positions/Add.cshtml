@@ -1,5 +1,5 @@
 ﻿@page "/positions/all/add"
-@model AddModel
+@model AddPositionModel
 @{
     ViewData["Title"] = "Add position";
 }
@@ -27,7 +27,7 @@
         <div class="error">@Model.ErrorMessage</div>
         <div class="btns">
             <button type="submit" class="btn btn-save btn-lg">Add position</button>
-            <a asp-page="AllPositions" class="btn btn-cancel btn-lg">Cancel</a>
+            <a asp-page="/Positions/List" class="btn btn-cancel btn-lg">Cancel</a>
         </div>
     </form>
 </div>

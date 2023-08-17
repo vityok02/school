@@ -5,36 +5,42 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class AddModel : BasePositionPageModel
+public class AddPositionModel : BasePageModel
 {
+    private readonly IPositionRepository _positionRepository;
+    private readonly IValidator<PositionDto> _validator;
+
     public string? Name { get; private set; } = null!;
 
-    public AddModel(
+    public AddPositionModel(
         ISchoolRepository schoolRepository,
         IPositionRepository positionRepository,
         IValidator<PositionDto> validator)
-        : base(schoolRepository, positionRepository, validator)
-    { }
+        : base(schoolRepository)
+    {
+        _positionRepository = positionRepository;
+        _validator = validator;
+    }
 
-    public async Task<IActionResult> OnPostAsync(string name) 
+    public async Task<IActionResult> OnPostAsync(string name)
     {
         PositionDto positionDto = new(0, name);
 
         var validationResult = await _validator.ValidateAsync(positionDto);
-        if (!validationResult.IsValid) 
+        if (!validationResult.IsValid)
         {
             validationResult.AddToModelState(ModelState);
 
             return Page();
         }
 
-        if(SelectedSchoolId == -1)
+        if (SelectedSchoolId == -1)
         {
             return RedirectToSchoolList();
         }
 
         var positions = await _positionRepository.GetAllAsync();
-        if(positions.Any(p => p.Name == name))
+        if (positions.Any(p => p.Name == name))
         {
             ErrorMessage = "Such position already exists";
             return Page();
@@ -43,6 +49,6 @@ public class AddModel : BasePositionPageModel
         Position position = new(name);
 
         await _positionRepository.AddAsync(position);
-        return RedirectToPage("AllPositions");
+        return RedirectToPage("/Positions/List");
     }
 }

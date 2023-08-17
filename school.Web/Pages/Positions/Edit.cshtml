@@ -1,10 +1,10 @@
 ﻿@page "/positions/all/{id}/edit"
-@model SchoolManagement.Web.Pages.Positions.EditModel;
+@model SchoolManagement.Web.Pages.Positions.EditPositionModel;
 @{
     ViewData["Title"] = $"Edit position {Model.PositionDto!.Name}";
 }
 @section styles
-{
+    {
     <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
 }
 
@@ -12,15 +12,15 @@
     <div asp-validation-summary="ModelOnly"></div>
     <form method="post" class="edit">
         <label asp-for="PositionDto!.Name">
-            Job title: 
+            Job title:
             <input asp-for="PositionDto!.Name" />
         </label>
         <input type="hidden" asp-for="PositionDto!.Id" />
         <span asp-validation-for="PositionDto.Name" class="error"></span>
         <div class="error">@Model.ErrorMessage</div>
         <div class="btns">
-            <input type="submit" name="Save" class="btn btn-save btn-lg"/>
-            <a asp-page="/Positions/AllPositions" class="btn btn-cancel btn-lg">Cancel</a>
+            <input type="submit" name="Save" class="btn btn-save btn-lg" />
+            <a asp-page="/Positions/List" class="btn btn-cancel btn-lg">Cancel</a>
         </div>
     </form>
 </div>

@@ -1,5 +1,5 @@
 ﻿@page "/students"
-@model ListModel
+@model StudentsListModel
 @{
     ViewData["Title"] = "Students";
 }
@@ -22,7 +22,7 @@
         <partial name="FilterButtons" />
         <input type="hidden" asp-for="OrderBy" />
     </form>
-    @if (!Model.StudentsDto!.Any())
+    @if (!Model.HasStudents)
     {
         <div class="empty">@Model.Message</div>
     }
@@ -75,5 +75,6 @@
                 }
             </tbody>
         </table>
+        <partial name="_Pagination" />
     }
 </div>

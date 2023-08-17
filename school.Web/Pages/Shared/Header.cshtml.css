@@ -105,3 +105,16 @@ details-item {
     width: 100px;
     background-color: gray;
 }
+
+.alert {
+    top: 10px;
+    position: absolute;
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+    display: flex;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: fit-content;
+}

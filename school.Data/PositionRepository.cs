@@ -16,7 +16,7 @@ public class PositionRepository : Repository<Position>, IPositionRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Position>> GetSchoolPositionsAsync(int schoolId, Expression<Func<Position, bool>>? predicate = null,
+    public async Task<IEnumerable<Position>> GetSchoolPositions(int schoolId, Expression<Func<Position, bool>>? predicate = null,
         Func<IQueryable<Position>, IOrderedQueryable<Position>>? orderBy = null)
     {
         IQueryable<Position> positions = _dbContext
@@ -53,7 +53,7 @@ public class PositionRepository : Repository<Position>, IPositionRepository
         return await positions.ToArrayAsync();
     }
 
-    public async Task<Position> GetPositionAsync(int positionId)
+    public async Task<Position> GetPosition(int positionId)
     {
         var position = await _dbContext
             .Set<Position>()
@@ -72,5 +72,12 @@ public class PositionRepository : Repository<Position>, IPositionRepository
             .Where(s => checkedPositionsId
                 .Contains(s.Id))
             .ToArrayAsync();
+    }
+
+    public async Task<bool> HasSchoolPositions(int schoolId)
+    {
+        return await _dbContext
+            .Set<Position>()
+            .AnyAsync(p => p.Schools.Any(s => s.Id == schoolId));
     }
 }

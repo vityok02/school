@@ -1,4 +1,3 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
@@ -6,37 +5,41 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Employees;
 
-public class ListModel : BaseEmployeePageModel
+public class EmployeesListModel : BaseListPageModel
 {
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IPositionRepository _positionRepository;
 
-    public IEnumerable<EmployeeDto> EmployeeItems { get; set; } = default!;
-    public string PositionSort { get; set; } = default!;
-    public string FilterByPosition { get; set; } = default!;
-    public IDictionary<string, string> PositionParams { get; set; } = default!;
+    public IEnumerable<EmployeeDto> EmployeeItems { get; private set; } = default!;
+    public override string ListPageUrl => "/Employees/List";
+    public string PositionSort { get; private set; } = default!;
+    public string FilterByPosition { get; private set; } = default!;
+    public IDictionary<string, string> PositionParams { get; private set; } = default!;
+    public bool HasPositions { get; private set; } = true;
 
-    public ListModel(
+    public EmployeesListModel(
         ISchoolRepository schoolRepository,
         IEmployeeRepository employeeRepository,
-        IPositionRepository positionRepository,
-        IValidator<IEmployeeDto> validator)
-        : base(schoolRepository, employeeRepository, positionRepository, validator)
+        IPositionRepository positionRepository)
+        : base(schoolRepository)
     {
         _employeeRepository = employeeRepository;
         _positionRepository = positionRepository;
-        _validator = validator;
     }
 
-    public async Task<IActionResult> OnGetAsync(string orderBy, string filterByName, int filterByAge, string filterByPosition)
+    public async Task<IActionResult> OnGetAsync(
+        string orderBy,
+        string filterByName,
+        int filterByAge,
+        string filterByPosition,
+        int? pageIndex)
     {
-        if (!await HasSelectedSchool())
+        if (!await HasSelectedSchoolAsync())
         {
             return RedirectToSchoolList();
         }
 
-        if (!await HasSchoolPositions())
-        {
-            return RedirectToPositionList();
-        }
+        HasPositions = await _positionRepository.HasSchoolPositions(SelectedSchoolId);
 
         FirstNameSort = String.IsNullOrEmpty(orderBy) ? "firstName_desc" : "";
         LastNameSort = orderBy == "lastName" ? "lastName_desc" : "lastName";
@@ -47,8 +50,11 @@ public class ListModel : BaseEmployeePageModel
         FilterByAge= filterByAge;
         FilterByPosition = filterByPosition;
 
-        var employees = await _employeeRepository.GetSchoolEmployeesAsync(FilterBy(FilterByName, FilterByAge, FilterByPosition),
-            Sort(orderBy), SelectedSchoolId);
+        var employees = await _employeeRepository
+            .GetSchoolEmployeesAsync(
+                FilterBy(FilterByName, FilterByAge, FilterByPosition),
+                Sort(orderBy),
+                SelectedSchoolId);
 
         EmployeeItems = employees.Select(s => s.ToEmployeeDto()).ToArray();
 
@@ -78,29 +84,31 @@ public class ListModel : BaseEmployeePageModel
             { nameof(orderBy), PositionSort }
         };
 
-        static Expression<Func<Employee, bool>> FilterBy(string filterByName, int filterByAge, string filterByPosition)
-        {
-            return emp => (string.IsNullOrEmpty(filterByName) || emp.FirstName.Contains(filterByName))
-                && (string.IsNullOrEmpty(filterByPosition) || emp.Positions.Any(p => p.Name.Contains(filterByPosition)))
-                && (filterByAge == 0 || emp.Age == filterByAge);
-        }
-
-        static Func<IQueryable<Employee>, IOrderedQueryable<Employee>> Sort(string orderBy)
-        {
-            return orderBy switch
-            {
-                "firstName_desc" => e => e.OrderByDescending(e => e.FirstName),
-                "lastName" => e => e.OrderBy(e => e.LastName),
-                "lastName_desc" => e => e.OrderByDescending(e => e.LastName),
-                "age" => e => e.OrderBy(e => e.Age),
-                "age_desc" => e => e.OrderByDescending(e => e.Age),
-                "position" => e => e.OrderBy(e => e.Positions.FirstOrDefault()!.Name),
-                "position_desc" => e => e.OrderByDescending(e => e.Positions.FirstOrDefault()!.Name),
-                _ => e => e.OrderBy(e => e.FirstName),
-            };
-        }
+        Items = new PaginatedList<object>(EmployeeItems.Cast<object>(), PageIndex = pageIndex ?? 1);
 
         return Page();
+    }
+
+    private Expression<Func<Employee, bool>> FilterBy(string filterByName, int filterByAge, string filterByPosition)
+    {
+        return emp => (string.IsNullOrEmpty(filterByName) || emp.FirstName.Contains(filterByName))
+            && (string.IsNullOrEmpty(filterByPosition) || emp.Positions.Any(p => p.Name.Contains(filterByPosition)))
+            && (filterByAge == 0 || emp.Age == filterByAge);
+    }
+
+    private static Func<IQueryable<Employee>, IOrderedQueryable<Employee>> Sort(string orderBy)
+    {
+        return orderBy switch
+        {
+            "firstName_desc" => e => e.OrderByDescending(e => e.FirstName),
+            "lastName" => e => e.OrderBy(e => e.LastName),
+            "lastName_desc" => e => e.OrderByDescending(e => e.LastName),
+            "age" => e => e.OrderBy(e => e.Age),
+            "age_desc" => e => e.OrderByDescending(e => e.Age),
+            "position" => e => e.OrderBy(e => e.Positions.FirstOrDefault()!.Name),
+            "position_desc" => e => e.OrderByDescending(e => e.Positions.FirstOrDefault()!.Name),
+            _ => e => e.OrderBy(e => e.FirstName),
+        };
     }
 
     private IDictionary<string, string> GetFilters()

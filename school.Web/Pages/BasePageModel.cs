@@ -10,21 +10,11 @@ public abstract class BasePageModel : PageModel
 {
     protected ISchoolRepository SchoolRepository { get; }
 
-    public int SelectedSchoolId { get; set; }
-    public string SelectedSchoolName { get; set; } = null!;
-    public IEnumerable<School> Schools { get; set; } = null!;
-    public string ErrorMessage { get; set; } = null!;
-    public string Message { get; set; } = null!;
-    public string OrderBy { get; set; } = null!;
-    public string FirstNameSort { get; set; } = null!;
-    public string LastNameSort { get; set; } = null!;
-    public string AgeSort { get; set; } = null!;
-    public string FilterByName { get; set; } = null!;
-    public int FilterByAge { get; set; }
-    public IDictionary<string, string> FilterParams { get; set; } = null!;
-    public IDictionary<string, string> FirstNameParams { get; set; } = null!;
-    public IDictionary<string, string> LastNameParams { get; set; } = null!;
-    public IDictionary<string, string> AgeParams { get; set; } = null!;
+    public int SelectedSchoolId { get; protected set; }
+    public string SelectedSchoolName { get; protected set; } = null!;
+    public IEnumerable<School> Schools { get; private set; } = null!;
+    public string ErrorMessage { get; protected set; } = null!;
+    public string Message { get; protected set; } = null!;
 
     protected BasePageModel(ISchoolRepository schoolRepository)
     {
@@ -77,7 +67,7 @@ public abstract class BasePageModel : PageModel
 
     protected IActionResult RedirectToSchoolList()
     {
-        return RedirectToPage("/Schools/List", "error");
+        return RedirectToPage("/Schools/List");
     }
 
     public void SelectSchool(int selectedSchoolId)
@@ -85,7 +75,7 @@ public abstract class BasePageModel : PageModel
         SetSchoolId(selectedSchoolId);
     }
 
-    public async Task<bool> HasSelectedSchool()
+    public async Task<bool> HasSelectedSchoolAsync()
     {
         bool result = true;
 

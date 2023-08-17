@@ -1,6 +1,7 @@
 ﻿@page "/positions/all"
 @using SchoolManagement.Web.Pages.Positions
-@model AllPositionsModel
+@model PositionsListModel
+
 @{
     ViewData["Title"] = "Positions";
 }
@@ -36,7 +37,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var position in Model.PositionDtos)
+                @foreach (PositionDto position in Model.Items)
                 {
                     <tr>
                         <td>@position.Name</td>
@@ -53,5 +54,6 @@
                 }
             </tbody>
         </table>
+        <partial name="_Pagination"/>
     }
 </div>

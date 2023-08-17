@@ -5,16 +5,22 @@ using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Students;
 
-public class AddModel : BaseStudentPageModel
+public class AddStudentModel : BasePageModel
 {
+    private readonly IRepository<Student> _studentRepository;
+    private readonly IValidator<IStudentDto> _validator;
+
     public AddStudentDto StudentDto { get; private set; } = default!;
 
-    public AddModel(
+    public AddStudentModel(
         ISchoolRepository schoolRepository, 
         IRepository<Student> studentRepository,
         IValidator<IStudentDto> validator)
-        : base(schoolRepository, studentRepository, validator)
-    { }
+        : base(schoolRepository)
+    {
+        _studentRepository = studentRepository;
+        _validator = validator;
+    }
 
     public async Task<IActionResult> OnPostAsync(AddStudentDto studentDto)
     {

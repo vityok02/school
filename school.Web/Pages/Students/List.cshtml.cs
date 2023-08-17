@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace SchoolManagement.Web.Pages.Students;
 
-public class ListModel : BasePageModel
+public class StudentsListModel : BaseListPageModel
 {
     private readonly IRepository<Student> _studentRepository;
 
@@ -13,14 +13,20 @@ public class ListModel : BasePageModel
     public string GroupSort { get; private set; } = default!;
     public string FilterByGroup { get; private set; } = default!;
     public IDictionary<string, string> GroupParams { get; private set; } = default!;
+    public bool HasStudents => Items.Any();
 
-    public ListModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
+    public StudentsListModel(ISchoolRepository schoolRepository, IRepository<Student> studentRepository)
         : base(schoolRepository)
     {
         _studentRepository = studentRepository;
     }
 
-    public async Task<IActionResult> OnGet(string orderBy, string filterByName, int filterByAge, string filterByGroup)
+    public async Task<IActionResult> OnGet(
+        string orderBy,
+        string filterByName,
+        int filterByAge,
+        string filterByGroup,
+        int? pageIndex)
     {
         if (SelectedSchoolId == -1)
         {
@@ -46,6 +52,8 @@ public class ListModel : BasePageModel
         var students = await _studentRepository.GetAllAsync(FilterBy(FilterByName, FilterByAge, FilterByGroup, SelectedSchoolId),
             Sort(orderBy));
         StudentsDto = students.Select(s => s.ToStudentDto()).ToArray();
+
+        Items = new PaginatedList<object>(StudentsDto.Cast<object>(), PageIndex = pageIndex ?? 1);
 
         if(!StudentsDto.Any())
         {
@@ -105,7 +113,6 @@ public class ListModel : BasePageModel
             };
         }
     }
-
 
     public async Task<IActionResult> OnPostDelete(int id)
     {

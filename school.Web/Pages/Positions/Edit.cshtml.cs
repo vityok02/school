@@ -1,27 +1,32 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing.Matching;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Web.Pages.Positions;
 
-public class EditModel : BasePositionPageModel
+public class EditPositionModel : BasePageModel
 {
+    private readonly IPositionRepository _positionRepository;
+    private readonly IValidator<PositionDto> _validator;
+
     public PositionDto PositionDto { get; private set; } = default!;
 
-    public EditModel(
+    public EditPositionModel(
         ISchoolRepository schoolRepository, 
-        IPositionRepository positionRepository,
+        IPositionRepository positionRepository, 
         IValidator<PositionDto> validator)
-        : base(schoolRepository, positionRepository, validator)
-    { }
+         : base(schoolRepository)
+    {
+        _positionRepository = positionRepository;
+        _validator = validator;
+    }
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
         var position = await _positionRepository.GetAsync(id);
         if (position == null)
         {
-            return RedirectToPage("AllPositions");
+            return RedirectToPage("/Positions/List");
         }
 
         PositionDto = position.ToPositionDto();
@@ -44,7 +49,7 @@ public class EditModel : BasePositionPageModel
         var position = await _positionRepository.GetAsync(positionDto.Id);
         if (position == null)
         {
-            return RedirectToPage("AllPositions");
+            return RedirectToPage("/Positions/List");
         }
 
         var positions = await _positionRepository.GetAllAsync();
@@ -63,6 +68,6 @@ public class EditModel : BasePositionPageModel
 
         await _positionRepository.UpdateAsync(position);
 
-        return RedirectToPage("AllPositions");
+        return RedirectToPage("/Positions/List");
     }
 }

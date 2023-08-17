@@ -1,5 +1,13 @@
 ﻿@model BasePageModel
 
+@if(!await Model.HasSelectedSchoolAsync())
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        School not selected. Please select a school
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <div class="header">
     <details class="dropdown">
         <summary class="name btn btn-secondary dropdown-toggle">@Model.SelectedSchoolName</summary>
