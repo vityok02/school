@@ -7,7 +7,6 @@ namespace SchoolManagement.Web.Pages.Rooms;
 
 public class RoomsListModel : BaseListPageModel
 {
-    private readonly ISchoolRepository _schoolRepository;
     private readonly IFloorRepository _floorRepository;
     private readonly IRoomRepository _roomRepository;
 
@@ -23,7 +22,6 @@ public class RoomsListModel : BaseListPageModel
     public Dictionary<string, string> FloorNumberParams { get; private set; } = default!;
     public bool HasRooms => Items.Any();
     public bool HasFloors { get; private set; } = true;
-
     public override string ListPageUrl => "List";
 
     public RoomsListModel(
@@ -32,7 +30,6 @@ public class RoomsListModel : BaseListPageModel
         IRoomRepository roomRepository)
         : base(schoolRepository)
     {
-        _schoolRepository = schoolRepository;
         _floorRepository = floorRepository;
         _roomRepository = roomRepository;
     }
