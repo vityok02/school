@@ -9,41 +9,26 @@
 }
 
 <div asp-validation-summary="ModelOnly"></div>
-<form method="post" class="form">
-    <table>
-        <tr>
-            <td>
+<form method="post">
+
                 <label asp-for="EmployeeDto.FirstName">
                     First name
+                    <input asp-for="EmployeeDto.FirstName" required />
                 </label>
-            </td>
-            <td>
-                <input asp-for="EmployeeDto.FirstName" required />
                 <span asp-validation-for="EmployeeDto.FirstName" class="error"></span>
-            </td>
-        </tr>
-        <tr>
-            <td>
+
                 <label asp-for="EmployeeDto.LastName">
                     Last Name
+                    <input asp-for="EmployeeDto.LastName" required />
                 </label>
-            </td>
-            <td>
-                <input asp-for="EmployeeDto.LastName" required />
                 <span asp-validation-for="EmployeeDto.LastName" class="error"></span>
-            </td>
-        </tr>
-        <tr>
-            <td>
+
                 <label asp-for="EmployeeDto.Age">
                     Age
+                    <input asp-for="EmployeeDto.Age" required />
                 </label>
-            </td>
-            <td>
-                <input asp-for="EmployeeDto.Age" required />
                 <span asp-validation-for="EmployeeDto.Age" class="error"></span>
-            </td>
-        </tr>
+
         <tr>
             <td>Type</td>
             <td>

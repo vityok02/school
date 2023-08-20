@@ -11,41 +11,53 @@
 <div asp-validation-summary="ModelOnly"></div>
 <form method="post" class="form">
 
-    <label asp-for="SchoolDto.Name">
-        Name
-        <input asp-for="SchoolDto.Name" required />
+    <div class="form-group row">
+        <label asp-for="SchoolDto.Name">
+            Name
+            <input asp-for="SchoolDto.Name" class="form-control form-control-lg" />
+        </label>
         <span asp-validation-for="SchoolDto.Name" class="error"></span>
-    </label>
+    </div>
 
-    <label asp-for="SchoolDto.Country">
-        Country
-        <input asp-for="SchoolDto.Country" required />
+    <div class="form-group">
+        <label asp-for="SchoolDto.Country">
+            Country
+            <input asp-for="SchoolDto.Country" class="form-control" required />
+        </label>
         <span asp-validation-for="SchoolDto.Country" class="error"></span>
-    </label>
+    </div>
 
-    <label asp-for="SchoolDto.City">
-        City/town
-        <input asp-for="SchoolDto.City" required />
+    <div class="form-group">
+        <label asp-for="SchoolDto.City">
+            City/town
+            <input asp-for="SchoolDto.City" class="form-control" required />
+        </label>
         <span asp-validation-for="SchoolDto.City" class="error"></span>
-    </label>
+    </div>
 
-    <label asp-for="SchoolDto.Street">
-        Street
-        <input asp-for="SchoolDto.Street" required />
+    <div class="form-group">
+        <label asp-for="SchoolDto.Street">
+            Street
+            <input asp-for="SchoolDto.Street" class="form-control" required />
+        </label>
         <span asp-validation-for="SchoolDto.Street" class="error"></span>
-    </label>
+    </div>
 
-    <label asp-for="SchoolDto.PostalCode">
-        Postal code
-        <input asp-for="SchoolDto.PostalCode" required />
+    <div class="form-group">
+        <label asp-for="SchoolDto.PostalCode">
+            Postal code
+            <input asp-for="SchoolDto.PostalCode" class="form-control" required />
+        </label>
         <span asp-validation-for="SchoolDto.PostalCode" class="error"></span>
-    </label>
+    </div>
 
-    <label asp-for="SchoolDto.OpeningDate">
-        Opening date
-        <input type="date" asp-for="SchoolDto.OpeningDate" required />
+    <div class="form-group">
+        <label asp-for="SchoolDto.OpeningDate">
+            Opening date
+            <input type="date" asp-for="SchoolDto.OpeningDate" class="form-control" required />
+        </label>
         <span asp-validation-for="SchoolDto.OpeningDate" class="error"></span>
-    </label>
+    </div>
 
     <input type="hidden" asp-for="SchoolDto.Id" />
 
