@@ -1,25 +1,13 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
-using SchoolManagement.Models.Interfaces;
 using SchoolManagement.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("localdb");
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddDependencies(builder.Configuration);
 
 builder.Services.AddMvc();
-
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<IPositionRepository, PositionRepository>();
-builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
-builder.Services.AddScoped<IFloorRepository, FloorRepository>();
-builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<ValidatorMarker>();
 
