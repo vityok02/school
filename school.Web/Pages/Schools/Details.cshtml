@@ -4,42 +4,41 @@
     ViewData["Title"] = $"School {Model.SchoolDto.Name}";
 }
 @section styles
-{
+    {
     <link rel="stylesheet" href="~/css/details.css" asp-append-version="true" />
     <link rel="styleshee t" href="~/css/edit.css" asp-append-version="true" />
 }
 
-<div class="wrapper">
-    <div class="details">
-        <table class="tab"> 
-            <tr>
-                <td>Name: </td>
-                <td>@Model.SchoolDto.Name</td>
-            </tr>
-            <tr>
-                <td>Country: </td>
-                <td>@Model.SchoolDto.Country</td>
-            </tr>
-            <tr>
-                <td>City/town: </td>
-                <td>@Model.SchoolDto.City</td>
-            </tr>
-            <tr>
-                <td>Street: </td>
-                <td>@Model.SchoolDto.Street</td>
-            </tr>
-            <tr>
-                <td>Postal code: </td>
-                <td>@Model.SchoolDto.PostalCode</td>
-            </tr>
-            <tr>
-                <td>Opening date: </td>
-                <td>@Model.SchoolDto.OpeningDate.ToShortDateString()</td>
-            </tr>
-        </table>
-        <div class="btns">
-            <a asp-page="Edit" asp-route-id="@Model.SchoolDto.Id" class="btn btn-edit">Edit</a>
-            <a asp-page="List" class="btn btn-cancel">Cancel</a>
-        </div>
+<div class="details">
+    <table>
+        <tr>
+            <td class="label">Name</td>
+            <td class="value">@Model.SchoolDto.Name</td>
+        </tr>
+        <tr>
+            <td class="label">Country</td>
+            <td class="value">@Model.SchoolDto.Country</td>
+        </tr>
+        <tr>
+            <td class="label">City/town</td>
+            <td class="value">@Model.SchoolDto.City</td>
+        </tr>
+        <tr>
+            <td class="label">Street</td>
+            <td class="value">@Model.SchoolDto.Street</td>
+        </tr>
+        <tr>
+            <td class="label">Postal code</td>
+            <td class="value">@Model.SchoolDto.PostalCode</td>
+        </tr>
+        <tr>
+            <td class="label">Opening date</td>
+            <td class="value">@Model.SchoolDto.OpeningDate.ToShortDateString()</td>
+        </tr>
+    </table>
+
+    <div class="btns">
+        <a asp-page="Edit" asp-route-id="@Model.SchoolDto.Id" class="btn btn-edit">Edit</a>
+        <a asp-page="List" class="btn btn-cancel">Cancel</a>
     </div>
 </div>

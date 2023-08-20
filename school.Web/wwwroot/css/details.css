@@ -1,84 +1,32 @@
-﻿body {
-}
-
-.wrapper {
-    width: 100%;
+﻿table {
+    display: flex;
+    padding-bottom: 10px;
+    border-bottom: var(--border);
 }
 
 .details {
-    margin-top: 2%;
     margin-inline: auto;
-    padding-top: 20px;
-    padding-bottom: 10px;
-    padding-inline: 20px;
-    height: auto;
-    width: max-content;
-    background-color: #F1F6FF;
-    border-top: 10px solid #009879;
-    border-bottom: 5px solid #009879;
-    border-radius: 10px 10px 0 0;
-    vertical-align: middle;
-    font-size: 28px;
-    -webkit-box-shadow: 1px 1px 10px 0px rgba(135,135,135,1);
-    -moz-box-shadow: 1px 1px 10px 0px rgba(135,135,135,1);
-    box-shadow: 1px 1px 10px 0px rgba(135,135,135,1);
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
 }
 
-table tr {
-    height: 58px;
+.label {
+    font-size: 20px;
 }
 
-table td {
-    padding-left: 20px;
+.value {
+    font-size: 22px;
+    padding-left: 30px;
 }
 
-    table td:first-of-type {
-        font-weight: bold;
-    }
-
-    table td:last-of-type {
-        margin-left: 20px;
-        padding-left: 40px;
-    }
-
-.btns .btn {
-    margin-inline: 5px;
+.btns {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
 }
 
-.btn-save {
-    background: #198754;
-}
-
-.btn-cancel {
-    background: #6c757d;
-}
-
-@media (max-height: 600px) {
-    .button {
-        height: 40px;
-        width: 140px;
-    }
-
-    .details {
-        font-size: 24px;
-    }
-
-    .tab tr {
-        height: 50px;
-    }
-}
-
-@media (max-height: 500px) {
-    .button {
-        height: 35px;
-        width: 120px;
-    }
-
-    .details {
-        font-size: 20px;
-    }
-
-    .tab tr {
-        height: auto;
-    }
+.btns > .btn:first-child{
+    margin-right: 10px;
 }
