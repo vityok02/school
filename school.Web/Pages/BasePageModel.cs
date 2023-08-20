@@ -10,8 +10,8 @@ public abstract class BasePageModel : PageModel
 {
     protected ISchoolRepository SchoolRepository { get; }
 
-    public int SelectedSchoolId { get; protected set; }
-    public string SelectedSchoolName { get; protected set; } = null!;
+    public int SelectedSchoolId { get; private set; }
+    public string SelectedSchoolName { get; private set; } = null!;
     public IEnumerable<School> Schools { get; private set; } = null!;
     public string ErrorMessage { get; protected set; } = null!;
     public string Message { get; protected set; } = null!;
@@ -43,7 +43,6 @@ public abstract class BasePageModel : PageModel
         var schools = await SchoolRepository.GetAllAsync();
         return schools.OrderBy(s => s.Name);
     }
-
     private async Task<string> GetSelectedSchoolNameAsync()
     {
         var sId = GetSchoolId();
@@ -64,15 +63,9 @@ public abstract class BasePageModel : PageModel
         Response.Cookies.Append("SchoolId", schoolId.ToString());
     }
 
-
     protected IActionResult RedirectToSchoolList()
     {
         return RedirectToPage("/Schools/List");
-    }
-
-    public void SelectSchool(int selectedSchoolId)
-    {
-        SetSchoolId(selectedSchoolId);
     }
 
     public async Task<bool> HasSelectedSchoolAsync()
