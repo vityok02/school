@@ -4,41 +4,39 @@
     ViewData["Title"] = "Add student";
 }
 @section styles
-{
-    <link rel="stylesheet" href="~/css/add.css" />
+    {
+    <link rel="stylesheet" href="~/css/form.css" />
 }
 
-<div class="wrapper">
-    <div asp-validation-summary="ModelOnly"></div>
-    <form method="post" class="form">
-        <div class="form-group">
-            <label asp-for="StudentDto!.FirstName">
-                First name
-                <input asp-for="StudentDto!.FirstName" required class="form-control" />
-                <span asp-validation-for="StudentDto.FirstName" class="error"></span>
-            </label>
-        </div>
-        <div class="form-group">
-            <label asp-for="StudentDto.LastName">
-                Last name
-                <input asp-for="StudentDto.LastName" required class="form-control" />
-                <span asp-validation-for="StudentDto.LastName" class="error"></span>
-            </label>
-        </div>
-        <div class="form-group">
-            <label asp-for="StudentDto!.Age">
-                Age
-                <input asp-for="StudentDto.Age" required class="form-control" />
-                <span asp-validation-for="StudentDto.Age" class="error"></span>
-            </label>
-        </div>
-        <div class="form-group">
-            <label asp-for="StudentDto.Group">
-                Group
-                <input asp-for="StudentDto.Group" required class="form-control"/>
-                <span asp-validation-for="StudentDto.Group" class="error"></span>
-            </label>
-        </div>
-        <partial name="FormButtons" />
-    </form>
-</div>
+<div asp-validation-summary="ModelOnly"></div>
+<form method="post" class="form">
+    <div class="form-group">
+        <label asp-for="StudentDto!.FirstName">
+            First name
+            <input asp-for="StudentDto!.FirstName" required class="form-control" />
+            <span asp-validation-for="StudentDto.FirstName" class="error"></span>
+        </label>
+    </div>
+    <div class="form-group">
+        <label asp-for="StudentDto.LastName">
+            Last name
+            <input asp-for="StudentDto.LastName" required class="form-control" />
+            <span asp-validation-for="StudentDto.LastName" class="error"></span>
+        </label>
+    </div>
+    <div class="form-group">
+        <label asp-for="StudentDto!.Age">
+            Age
+            <input asp-for="StudentDto.Age" required class="form-control" />
+            <span asp-validation-for="StudentDto.Age" class="error"></span>
+        </label>
+    </div>
+    <div class="form-group">
+        <label asp-for="StudentDto.Group">
+            Group
+            <input asp-for="StudentDto.Group" required class="form-control" />
+            <span asp-validation-for="StudentDto.Group" class="error"></span>
+        </label>
+    </div>
+    <partial name="FormButtons" />
+</form>
