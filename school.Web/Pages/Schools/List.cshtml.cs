@@ -17,7 +17,7 @@ public class SchoolsListModel : BaseListPageModel
     public Dictionary<string, string> StreetParams { get; private set; } = default!;
     public bool HasSchools => Items.Any();
 
-    public SchoolsListModel(ISchoolRepository schoolRepository, AppDbContext context)
+    public SchoolsListModel(ISchoolRepository schoolRepository)
         : base(schoolRepository) { }
 
     public IActionResult OnGet(string orderBy, string filterByParam, int? pageIndex)
