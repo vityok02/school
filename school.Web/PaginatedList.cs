@@ -4,6 +4,8 @@ public class PaginatedList<T> : List<T>
 {
     public int PageIndex { get; private set; }
     public int TotalPages { get; private set; }
+    public int FirstPage => 1;
+    public int LastPage => TotalPages;
     public bool HasPreviousPage => PageIndex > 1;
     public bool HasNextPage => PageIndex < TotalPages;
     public static int PageSize => 10;

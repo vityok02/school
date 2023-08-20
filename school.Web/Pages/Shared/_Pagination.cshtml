@@ -8,6 +8,12 @@
 
 <div class="pagination-group">
     <a asp-page="@url"
+        asp-all-route-data="Model.FilterParams"
+        asp-route-pageIndex="@Model.Items.FirstPage"
+        class="pagination btn @prevDisabled">
+        <<
+    </a>
+    <a asp-page="@url"
        asp-all-route-data="Model.FilterParams"
        asp-route-pageIndex="@(Model.Items.PageIndex - 1)"
        class="pagination btn @prevDisabled">
@@ -18,5 +24,11 @@
        asp-route-pageIndex="@(Model.Items.PageIndex + 1)"
        class="pagination btn @nextDisabled">
         Next
+    </a>
+    <a asp-page="@url"
+       asp-all-route-data="Model.FilterParams"
+       asp-route-pageIndex="@Model.Items.LastPage"
+       class="pagination btn @nextDisabled">
+        >>
     </a>
 </div>
