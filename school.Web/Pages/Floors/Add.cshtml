@@ -3,40 +3,38 @@
 @{
     ViewData["Title"] = "Add floor";
 
-    if(Model.IsError == true)
+    if (Model.IsError == true)
     {
 
     }
 }
 @section styles
-{
-    <link rel="stylesheet" href="~/css/add.css" asp-append-version="true" />
+    {
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
 }
 
-<div class="wrapper">
-    <form method="post" class="form">
-        <table>
-            <tr>
-                <td>Type: </td>
-                <td>
-                    <select name="isBasement">
-                        <option value="false">Floor</option>
-                        <option value="true">Basement</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label asp-for="FloorNumber">
-                        Number: 
-                    </label>
-                </td>
-                <td>
-                    <input asp-for="FloorNumber"/>
-                    <div class="error">@Model.InValidMessage</div>
-                </td>
-            </tr>
-        </table>
-        <partial name="FormButtons" />
-    </form>
-</div>
+<form method="post" class="form">
+    <table>
+        <tr>
+            <td>Type: </td>
+            <td>
+                <select name="isBasement">
+                    <option value="false">Floor</option>
+                    <option value="true">Basement</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="FloorNumber">
+                    Number:
+                </label>
+            </td>
+            <td>
+                <input asp-for="FloorNumber" />
+                <div class="error">@Model.InValidMessage</div>
+            </td>
+        </tr>
+    </table>
+    <partial name="FormButtons" />
+</form>

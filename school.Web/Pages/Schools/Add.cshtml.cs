@@ -33,7 +33,7 @@ public class AddSchoolModel : BasePageModel
 
         if (schools.Any(s => s.Name == schoolDto.Name))
         {
-            ErrorMessage = "School with this name already exists";
+            ViewData["ErrorMessage"] = "School with this name already exists";
 
             return Page();
         }

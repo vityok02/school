@@ -4,86 +4,68 @@
     ViewData["Title"] = $"Edit school {Model.SchoolDto.Name}";
 }
 @section styles
-{
-    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    {
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
 }
 
-<div class="wrapper">
-    <div asp-validation-summary="ModelOnly"></div>
-    <form method="post" class="form">
-        <table>
-            <tr>
-                <td>
-                    <label asp-for="SchoolDto.Name">
-                        Name: 
-                    </label>
-                </td>
-                <td>
-                    <input asp-for="SchoolDto.Name" required />
-                    <span asp-validation-for="SchoolDto.Name" class="error"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label asp-for="SchoolDto.Country">
-                        Country:
-                    </label>
-                </td>
-                <td>
-                    <input asp-for="SchoolDto.Country" required />
-                    <span asp-validation-for="SchoolDto.Country" class="error"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label asp-for="SchoolDto.City">
-                        City/town:
-                    </label>
-                </td>
-                <td>
-                    <input asp-for="SchoolDto.City" required />
-                    <span asp-validation-for="SchoolDto.City" class="error"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label asp-for="SchoolDto.Street">
-                        Street:
-                    </label>
-                </td>
-                <td>
-                    <input asp-for="SchoolDto.Street" required />
-                    <span asp-validation-for="SchoolDto.Street" class="error"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label asp-for="SchoolDto.PostalCode">
-                        Postal code:
-                    </label>
-                </td>
-                <td>
-                    <input asp-for="SchoolDto.PostalCode" required />
-                    <span asp-validation-for="SchoolDto.PostalCode" class="error"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label asp-for="SchoolDto.OpeningDate">
-                        Opening date:
-                    </label>
-                </td>
-                <td>
-                    <input type="date" asp-for="SchoolDto.OpeningDate" required />
-                    <span asp-validation-for="SchoolDto.OpeningDate" class="error"></span>
-                </td>
-            </tr>
-        </table>
-        <input type="hidden" asp-for="SchoolDto.Id" />
-        <div class="error">@Model.ErrorMessage</div>
-        <div class="btns">
-            <button type="submit" class="btn btn-save btn-lg">Save</button>
-            <a asp-route-id="@Model.SchoolDto!.Id" asp-page="Details" class="btn btn-cancel btn-lg">Cancel</a>
-        </div>
-    </form>
-</div>
+<div asp-validation-summary="ModelOnly"></div>
+<form method="post" class="form">
+
+    <div class="form-group row">
+        <label asp-for="SchoolDto.Name">
+            Name
+            <input asp-for="SchoolDto.Name" class="form-control form-control-lg" />
+        </label>
+        <span asp-validation-for="SchoolDto.Name" class="error"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SchoolDto.Country">
+            Country
+            <input asp-for="SchoolDto.Country" class="form-control" required />
+        </label>
+        <span asp-validation-for="SchoolDto.Country" class="error"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SchoolDto.City">
+            City/town
+            <input asp-for="SchoolDto.City" class="form-control" required />
+        </label>
+        <span asp-validation-for="SchoolDto.City" class="error"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SchoolDto.Street">
+            Street
+            <input asp-for="SchoolDto.Street" class="form-control" required />
+        </label>
+        <span asp-validation-for="SchoolDto.Street" class="error"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SchoolDto.PostalCode">
+            Postal code
+            <input asp-for="SchoolDto.PostalCode" class="form-control" required />
+        </label>
+        <span asp-validation-for="SchoolDto.PostalCode" class="error"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SchoolDto.OpeningDate">
+            Opening date
+            <input type="date" asp-for="SchoolDto.OpeningDate" class="form-control" required />
+        </label>
+        <span asp-validation-for="SchoolDto.OpeningDate" class="error"></span>
+    </div>
+
+    <input type="hidden" asp-for="SchoolDto.Id" />
+
+    <div class="error">@Model.ErrorMessage</div>
+
+    <div class="btns">
+        <button type="submit" class="btn btn-save btn-lg">Save</button>
+        <a asp-route-id="@Model.SchoolDto!.Id" asp-page="List" class="btn btn-cancel btn-lg">Cancel</a>
+    </div>
+
+</form>

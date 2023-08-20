@@ -1,127 +1,99 @@
-﻿.wrapper {
-    margin-inline: auto;
-    width: 80%;
-    padding-inline: 20px;
-    float: right;
+﻿.filter-group {
+    display: flex;
+    margin-top: 20px;
 }
+
+    .filter-group input {
+        padding-left: 20px;
+        height: 40px;
+        width: 900px;
+        border: var(--border);
+        border-radius: var(--border-radius);
+        margin-right: 40px;
+    }
+
+    .filter-group .btn {
+        margin-right: 20px;
+    }
 
 table {
-    height: 100%;
-    display: block;
-    border-radius: 5px;
+    width: 100%;
+    margin-top: 50px;
+    border-bottom: var(--border);
 }
 
-    table tr {
-        height: 60px;
-        font-size: 24px;
-        box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-    }
-
-    table td:first-child, th:first-child{
-        padding-left: 10px;
-    }
-
     table thead tr {
-        background-color: #2D1A38;
-        color: #fff;
+        border-bottom: var(--border);
+        padding-bottom: 20px;
+        font-size: 18px;
     }
 
     table thead th {
-        border-bottom: none;
+        font-weight: normal;
+        padding-bottom: 10px;
     }
 
-    table td {
-        vertical-align: middle;
-        width: 100%;
+        table thead th a {
+            text-decoration: none;
+            color: var(--text-color)
+        }
+
+    table tbody {
+        font-size: 20px;
     }
 
-    table th a{
-        text-decoration: none;
-        color: white;
-    }
-    table tbody tr:nth-of-type(even) {
-        background-color: #C2B7C5;
-    }
-
-    table tbody tr:nth-child(2n+1) {
-        background-color: #CBC2CD;
-    }
-
-    table tbody tr:hover {
-        background-color: #cfcfcf;
-    }
+        table tbody tr td {
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
 
     table .btn {
-        font-size: 18px;
-        margin-inline: 5px;
-        color: white;
+        height: 30px;
+        padding-inline: 10px;
     }
 
-.btns {
+.actions {
+    display: flex;
+    float: right;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0px;
+}
+
+.actions li{
+    list-style: none;
+    margin-inline: 10px;
+}
+
+.btn.add {
+    margin-top: 20px;
+    width: fit-content;
     display: flex;
 }
 
-.btn-add {
-    font-size: 18px;
-    margin-inline: 5px;
-    color: white;
-}
-
-.btn-details {
-    background: #0c5778;
-}
-
-.btn-choose {
-    background: #122f3b;
-}
-
-.btn-edit {
-    background: #0c5778;
+img.icon {
+    height: 30px;
 }
 
 .btn-delete {
-    background: #780018;
+    background: none;
+    border: none;
 }
 
-.btn-add {
-    background: #0c5778;
-}
-
-.empty {
-    font-size: 48px;
-    font-weight: bold;
-    text-align: center
-}
-
-.filter {
-    margin-block: 5px;
+.pagination-group {
+    margin-top: 20px;
+    justify-content: center;
     display: flex;
 }
 
-.cell {
-    margin-right: 5px
+    .pagination-group .btn {
+        display: flex;
+        padding-inline: 10px;
+        margin-inline: 3px;
+        text-align: center;
+        width: min-content;
+    }
+
+.btn.disabled {
+    opacity: 0.5;
 }
-
-    .filter-btn:hover {
-        background: #7c739d;
-    }
-
-    .filter input[type=number]
-    {
-        max-width: 50px;
-    }
-
-    .filter .group {
-        max-width: 100px;
-    }
-
-    .filter ul {
-        padding: 0px;
-    }
-
-    .filter li {
-        vertical-align: middle;
-        padding: 0;
-        list-style: none;
-        display: inline-block;
-    }

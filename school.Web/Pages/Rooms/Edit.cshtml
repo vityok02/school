@@ -5,55 +5,53 @@
     ViewData["Title"] = "Edit room";
 
     var floors = Model.FloorDtos!.Select(f => new SelectListItem
-    {
-        Value = f.Id.ToString(),
-        Text = f.Number.ToString()
-    });
+            {
+                Value = f.Id.ToString(),
+                Text = f.Number.ToString()
+            });
 }
 
 @section styles
-{
-    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    {
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
 }
 
-<div class="wrapper">
-    <div asp-validation-summary="ModelOnly"></div>
-    <form method="post" class="edit">
-        <table>
-            <tr>
-                <td>
-                    <label asp-for="RoomDto.Number">Number</label>
-                    <span asp-validation-for="RoomDto.Number"></span>
-                </td>
-                <td>
-                    <input asp-for="RoomDto.Number" required/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label asp-for="RoomDto.FloorId">Floor</label>
-                </td>
-                <td>
-                    <select asp-for="RoomDto!.FloorId" asp-items="floors" required>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Type
-                </td>
-                <td>
-                    @foreach (var type in RoomTypeExt.RoomTypes)
-                    {
-                        <input name="roomTypes[]" type="checkbox" value="@type.Key" class="btn-check" checked="@Model.CheckedTypes.HasFlag((RoomType)type.Key)" id="@type.Key"/>
-                        <label for="@type.Key" class="btn btn-outline-secondary">
-                            @type.Value
-                        </label>
-                    }
-                </td>
-            </tr>
-        </table>
-        <input type="hidden" asp-for="RoomDto.Id" />
-        <partial name="FormButtons" />
-    </form>
-</div>
+<div asp-validation-summary="ModelOnly"></div>
+<form method="post" class="edit">
+    <table>
+        <tr>
+            <td>
+                <label asp-for="RoomDto.Number">Number</label>
+                <span asp-validation-for="RoomDto.Number"></span>
+            </td>
+            <td>
+                <input asp-for="RoomDto.Number" required />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="RoomDto.FloorId">Floor</label>
+            </td>
+            <td>
+                <select asp-for="RoomDto!.FloorId" asp-items="floors" required>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Type
+            </td>
+            <td>
+                @foreach (var type in RoomTypeExt.RoomTypes)
+                {
+                    <input name="roomTypes[]" type="checkbox" value="@type.Key" class="btn-check" checked="@Model.CheckedTypes.HasFlag((RoomType)type.Key)" id="@type.Key" />
+                    <label for="@type.Key" class="btn btn-outline-secondary">
+                        @type.Value
+                    </label>
+                }
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" asp-for="RoomDto.Id" />
+    <partial name="FormButtons" />
+</form>

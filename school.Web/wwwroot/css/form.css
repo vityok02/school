@@ -1,0 +1,33 @@
+﻿form {
+    margin-top: 20px;
+    max-width: 400px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/*label {
+    font-size: 22px;
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    font-size: 20px;
+}*/
+
+.btns {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+.error {
+    color: red;
+    font-size: 18px;
+    display: block;
+}
+
+.btns > .btn:first-child {
+    margin-right: 10px;
+}

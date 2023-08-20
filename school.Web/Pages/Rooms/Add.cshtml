@@ -5,52 +5,50 @@
     ViewData["Title"] = "Add room";
 }
 @section styles
-{
-    <link rel="stylesheet" href="~/css/add.css" asp-append-version="true" />
+    {
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
 }
 
-<div class="wrapper">
-    <div asp-validation-summary="ModelOnly"></div>
-    <form method="post" class="form">
-        <table>
-            <tr>
-                <td>
-                    <label asp-for="RoomDto.Number">Number</label>
-                </td>
-                <td>
-                    <input asp-for="RoomDto.Number" required/>
-                    <span asp-validation-for="RoomDto.Number" class="error"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label asp-for="FloorDtos">Floor</label>
-                    <div class="error">@ViewData["NotFoundMessage"]</div>
-                </td>
-                <td>
-                    <select asp-for="RoomDto.FloorId" required>
-                        @foreach (var floor in Model.FloorDtos!)
-                        {
-                            <option value="@floor.Id">@floor.Number</option>
-                        }
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Type
-                </td>
-                <td>
-                    @foreach (var type in RoomTypeExt.RoomTypes)
+<div asp-validation-summary="ModelOnly"></div>
+<form method="post" class="form">
+    <table>
+        <tr>
+            <td>
+                <label asp-for="RoomDto.Number">Number</label>
+            </td>
+            <td>
+                <input asp-for="RoomDto.Number" required />
+                <span asp-validation-for="RoomDto.Number" class="error"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="FloorDtos">Floor</label>
+                <div class="error">@ViewData["NotFoundMessage"]</div>
+            </td>
+            <td>
+                <select asp-for="RoomDto.FloorId" required>
+                    @foreach (var floor in Model.FloorDtos!)
                     {
-                        <input name="roomTypes" type="checkbox" value="@type.Key" class="btn-check" id="@type.Key" />
-                        <label for="@type.Key" class="btn btn-outline-secondary">
-                            @type.Value
-                        </label>
+                        <option value="@floor.Id">@floor.Number</option>
                     }
-                </td>
-            </tr>
-        </table>
-        <partial name="FormButtons" />
-    </form>
-</div>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Type
+            </td>
+            <td>
+                @foreach (var type in RoomTypeExt.RoomTypes)
+                {
+                    <input name="roomTypes" type="checkbox" value="@type.Key" class="btn-check" id="@type.Key" />
+                    <label for="@type.Key" class="btn btn-outline-secondary">
+                        @type.Value
+                    </label>
+                }
+            </td>
+        </tr>
+    </table>
+    <partial name="FormButtons" />
+</form>

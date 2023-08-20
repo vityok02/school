@@ -24,7 +24,7 @@
     </form>
     @if (!Model.HasStudents)
     {
-        <div class="empty">@Model.Message</div>
+        <div class="empty">@ViewData["Message"]</div>
     }
     else
     {

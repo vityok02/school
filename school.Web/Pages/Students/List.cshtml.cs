@@ -51,13 +51,14 @@ public class StudentsListModel : BaseListPageModel
 
         var students = await _studentRepository.GetAllAsync(FilterBy(FilterByName, FilterByAge, FilterByGroup, SelectedSchoolId),
             Sort(orderBy));
+
         StudentsDto = students.Select(s => s.ToStudentDto()).ToArray();
 
         Items = new PaginatedList<object>(StudentsDto.Cast<object>(), PageIndex = pageIndex ?? 1);
 
         if(!StudentsDto.Any())
         {
-            Message = "Not found";
+            ViewData["Message"] = "Not found";
         }
 
         var filterParams = GetFilters();

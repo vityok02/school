@@ -12,22 +12,18 @@
 </head>
 <body class="cont">
 
-    <header>
-        @if (Model is BasePageModel)
-        {
-            <partial name="Header" />
-        }
-    </header>
+    <div class="wrapper">
 
-    <partial name="Sidebar" />
+        <partial name="Sidebar" />
 
-    <div class="main">
-        <main role="main" class="pb-3">
-            <div class="innercontainer">
-                <div class="item"></div>
+        <div class="main">
+
+            <partial name="Title" />
+
+            <main role="main" class="pb-3">
                 @RenderBody()
-            </div>
-        </main>
+            </main>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">
@@ -39,8 +35,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-@*    <partial name="_ValidationScriptsPartial" />
-*@
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

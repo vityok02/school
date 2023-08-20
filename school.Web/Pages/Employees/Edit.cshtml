@@ -4,73 +4,71 @@
     ViewData["Title"] = $"Edit employee {Model.EmployeeDto.FirstName} {Model.EmployeeDto.LastName}";
 }
 @section styles
-{
-    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    {
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
 }
 
-<div class="wrapper">
-    <div asp-validation-summary="ModelOnly" />
-    <form method="post" class="edit">
-        <table>
-            <tr>
-                <td>
-                    <label asp-for="EmployeeDto.FirstName">
-                        First name
-                    </label>
-                </td>
-                <td>
-                    <input asp-for="EmployeeDto.FirstName" />
-                    <span asp-validation-for="EmployeeDto.FirstName" class="error"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label asp-for="EmployeeDto.LastName">
-                        Last name
-                    </label>
-                </td>
-                <td>
-                    <input asp-for="EmployeeDto.LastName" />
-                    <span asp-validation-for="EmployeeDto.LastName" class="error"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label asp-for="EmployeeDto.Age">
-                        Age
-                    </label>
-                </td>
-                <td>
-                    <input asp-for="EmployeeDto.Age" type="number" />
-                    <span asp-validation-for="EmployeeDto.Age" class="error"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>Position: </td>
-                <td>
-                    @foreach (var position in Model.PositionDtos!)
+<div asp-validation-summary="ModelOnly" />
+<form method="post" class="edit">
+    <table>
+        <tr>
+            <td>
+                <label asp-for="EmployeeDto.FirstName">
+                    First name
+                </label>
+            </td>
+            <td>
+                <input asp-for="EmployeeDto.FirstName" />
+                <span asp-validation-for="EmployeeDto.FirstName" class="error"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="EmployeeDto.LastName">
+                    Last name
+                </label>
+            </td>
+            <td>
+                <input asp-for="EmployeeDto.LastName" />
+                <span asp-validation-for="EmployeeDto.LastName" class="error"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="EmployeeDto.Age">
+                    Age
+                </label>
+            </td>
+            <td>
+                <input asp-for="EmployeeDto.Age" type="number" />
+                <span asp-validation-for="EmployeeDto.Age" class="error"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Position: </td>
+            <td>
+                @foreach (var position in Model.PositionDtos!)
+                {
+                    if (Model.EmployeeDto.Positions.Any(p => p.Id == position.Id))
                     {
-                        if (Model.EmployeeDto.Positions.Any(p => p.Id == position.Id))
-                        {
-                            <input type="checkbox" name="checkedPositionsId" id="@position.Id" value="@position.Id" class="btn-check" checked />
-                        }
-                        else
-                        {
-                            <input type="checkbox" name="checkedPositionsId" id="@position.Id" value="@position.Id" class="btn-check" />
-                        }
-                        <label for="@position.Id" class="btn btn-outline-secondary">
-                            @position.Name
-                        </label>
+                        <input type="checkbox" name="checkedPositionsId" id="@position.Id" value="@position.Id" class="btn-check" checked />
                     }
-                    <div class="error">@ViewData["InValidPositionMessage"]</div>
-                </td>
-            </tr>
-        </table>
-        <div class="error">@Model.ErrorMessage</div>
-        <input type="hidden" asp-for="EmployeeDto!.Id" />
-        <div class="btns">
-            <input class="btn btn-save btn-lg" type="submit" value="Save" />
-            <a class="btn btn-cancel btn-lg" asp-page="List">Cancel</a>
-        </div>
-    </form>
-</div>
+                    else
+                    {
+                        <input type="checkbox" name="checkedPositionsId" id="@position.Id" value="@position.Id" class="btn-check" />
+                    }
+                    <label for="@position.Id" class="btn btn-outline-secondary">
+                        @position.Name
+                    </label>
+                }
+                <div class="error">@ViewData["InValidPositionMessage"]</div>
+            </td>
+        </tr>
+    </table>
+    <div class="error">@Model.ErrorMessage</div>
+    <input type="hidden" asp-for="EmployeeDto!.Id" />
+    <div class="btns">
+        <input class="btn btn-save btn-lg" type="submit" value="Save" />
+        <a class="btn btn-cancel btn-lg" asp-page="List">Cancel</a>
+    </div>
+</form>

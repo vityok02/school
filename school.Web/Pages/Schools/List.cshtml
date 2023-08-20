@@ -4,82 +4,70 @@
     ViewData["Titile"] = "Schools";
 }
 
-@section styles
-{
+@section styles {
     <link rel="stylesheet" href="~/css/list.css" asp-append-version="true" />
 }
 
-<div class="wrapper">
-    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
-        <label asp-for="FilterByParam" class="cell">
-            Filter: 
-            <input asp-for="FilterByParam" placeholder="Name/City/Street" />
-        </label>
-        <partial name="FilterButtons" />
-        <input type="hidden" asp-for="OrderBy" />
-    </form>
-    @if (!Model.HasSchools)
-    {
-        <div class="empty">List of schools if empty</div>
-    }
-    else
-    {
-        <table>
-            <thead>
-                <tr>
-                    <th>
-                        <a asp-all-route-data="@Model.NameParams">Name</a>
-                    </th>
-                    <th>
-                        <a asp-all-route-data="@Model.CityParams">City</a>
-                    </th>
-                    <th colspan="3">
-                        <a asp-all-route-data="@Model.StreetParams">Street</a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (SchoolItemDto school in Model.Items)
-                {
-                    <tr>
-                        <td>@school.Name</td>
-                        <td>
-                            <div class="city">
-                                @school.City
-                            </div>
-                        </td>
-                        <td>
-                            <div class="street">
-                                @school.Street
-                            </div>
-                        </td>
-                        <td>
-                            @if(school.Id == Model.SelectedSchoolId)
-                            {
-                                @:Selected
-                            }
-                        </td>
-                        <td>
-                            <div class="btns">
-                                <form method="post">
-                                    <div>
-                                        <button class="btn btn-choose" asp-route-id="@school.Id" asp-page-handler="SetSchool">Select</button>
-                                    </div>
-                                </form>
-                                <div>
-                                    <a class="btn btn-details" asp-page="Details" asp-route-id="@school.Id">Details</a>
-                                </div>
-                                <form method="post" asp-page-handler="Delete" asp-route-id="@school.Id"
-                                onclick="return confirm('Are you sure you want to delete school @school.Name?')">
-                                    <button class="btn btn-delete" type="submit">Delete</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <partial name="_Pagination" />
-    }
+<form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter-group">
+    <input asp-for="FilterByParam" placeholder="Search for name, city, street" />
+    <partial name="FilterButtons" />
+    <input type="hidden" asp-for="OrderBy" />
+</form>
 
-</div>
+<a asp-page="Add" class="btn add">Add school</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                <a asp-all-route-data="@Model.NameParams">Name</a>
+            </th>
+            <th>
+                <a asp-all-route-data="@Model.CityParams">City</a>
+            </th>
+            <th colspan="3">
+                <a asp-all-route-data="@Model.StreetParams">Street</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (SchoolItemDto school in Model.Items)
+        {
+            <tr>
+                <td>@school.Name</td>
+                <td>@school.City</td>
+                <td>@school.Street</td>
+                <td>
+                    @(school.Id == Model.SelectedSchoolId ? "Selected" : "")
+                </td>
+                <td>
+                    <ul class="actions">
+                        <li>
+                            <form method="post">
+                                <button asp-route-id="@school.Id" asp-page-handler="SetSchool" class="btn btn-sm">Select</button>
+                            </form>
+                        </li>
+                        <li>
+                            <a asp-page="Details" asp-route-id="@school.Id" class="btn btn-sm">Details</a>
+                        </li>
+                        <li>
+                            <a asp-page="Edit" asp-route-id="@school.Id">
+                                <img src="~/images/icon-edit.png" class="icon">
+                            </a>
+                        </li>
+                        <li>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@school.Id"
+                                  onclick="return confirm('Are you sure you want to delete school @school.Name?')">
+                                <button type="submit" class="btn-delete">
+                                    <img src="~/images/icon-delete.png" class="icon">
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<partial name="_Pagination" />

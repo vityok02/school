@@ -5,22 +5,20 @@
 }
 @section styles
     {
-    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
 }
 
-<div class="wrapper">
-    <div asp-validation-summary="ModelOnly"></div>
-    <form method="post" class="edit">
-        <label asp-for="PositionDto!.Name">
-            Job title:
-            <input asp-for="PositionDto!.Name" />
-        </label>
-        <input type="hidden" asp-for="PositionDto!.Id" />
-        <span asp-validation-for="PositionDto.Name" class="error"></span>
-        <div class="error">@Model.ErrorMessage</div>
-        <div class="btns">
-            <input type="submit" name="Save" class="btn btn-save btn-lg" />
-            <a asp-page="/Positions/List" class="btn btn-cancel btn-lg">Cancel</a>
-        </div>
-    </form>
-</div>
+<div asp-validation-summary="ModelOnly"></div>
+<form method="post" class="edit">
+    <label asp-for="PositionDto!.Name">
+        Job title:
+        <input asp-for="PositionDto!.Name" />
+    </label>
+    <input type="hidden" asp-for="PositionDto!.Id" />
+    <span asp-validation-for="PositionDto.Name" class="error"></span>
+    <div class="error">@Model.ErrorMessage</div>
+    <div class="btns">
+        <input type="submit" name="Save" class="btn btn-save btn-lg" />
+        <a asp-page="/Positions/List" class="btn btn-cancel btn-lg">Cancel</a>
+    </div>
+</form>

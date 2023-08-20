@@ -1,76 +1,74 @@
 ﻿@model EmployeesListModel
 
-<div class="wrapper">
-    <form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
-        <label asp-for="FilterByName" class="cell">
-            Name:
-            <input asp-for="FilterByName" />
-        </label>
-        <label asp-for="FilterByAge" class="cell">
-            Age:
-            <input asp-for="FilterByAge" value="hidden" />
-        </label>
-        <label asp-for="FilterByPosition" class="cell">
-            Position:
-            <input asp-for="FilterByPosition" />
-        </label>
-        <input type="hidden" asp-for="OrderBy" />
-        <partial name="filterButtons" />
-    </form>
-    @if (!Model.Items.Any())
-    {
-        <div class="empty">List of employees is empty</div>
-    }
-    else
-    {
-        <table>
-            <thead>
+<form method="get" asp-page="List" asp-all-route-data="Model.FilterParams" class="filter">
+    <label asp-for="FilterByName" class="cell">
+        Name:
+        <input asp-for="FilterByName" />
+    </label>
+    <label asp-for="FilterByAge" class="cell">
+        Age:
+        <input asp-for="FilterByAge" value="hidden" />
+    </label>
+    <label asp-for="FilterByPosition" class="cell">
+        Position:
+        <input asp-for="FilterByPosition" />
+    </label>
+    <input type="hidden" asp-for="OrderBy" />
+    <partial name="filterButtons" />
+</form>
+@if (!Model.Items.Any())
+{
+    <div class="empty">List of employees is empty</div>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    <a asp-all-route-data="Model.FirstNameParams">
+                        First name
+                    </a>
+                </th>
+                <th>
+                    <a asp-all-route-data="Model.LastNameParams">
+                        Last name
+                    </a>
+                </th>
+                <th>
+                    <a asp-all-route-data="Model.AgeParams">
+                        Age
+                    </a>
+                </th>
+                <th class="job-column">
+                    <a asp-all-route-data="Model.PositionParams">
+                        Position
+                    </a>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (EmployeeDto emp in Model.Items)
+            {
                 <tr>
-                    <th>
-                        <a asp-all-route-data="Model.FirstNameParams">
-                            First name
-                        </a>
-                    </th>
-                    <th>
-                        <a asp-all-route-data="Model.LastNameParams">
-                            Last name
-                        </a>
-                    </th>
-                    <th>
-                        <a asp-all-route-data="Model.AgeParams">
-                            Age
-                        </a>
-                    </th>
-                    <th class="job-column">
-                        <a asp-all-route-data="Model.PositionParams">
-                            Position
-                        </a>
-                    </th>
-                    <th></th>
+                    <td class="first-columns">@emp.FirstName</td>
+                    <td class="first-columns">@emp.LastName</td>
+                    <td class="age-column">@emp.Age</td>
+                    <td class="job-column">@emp.Position</td>
+                    <td>
+                        <div class="btns">
+                            <a class="btn btn-edit" asp-page="Edit" asp-route-id="@emp.Id">Edit</a>
+                            <form asp-page-handler="Delete" method="post" asp-route-id="@emp.Id"
+                                  onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
+                                <button class="btn btn-delete" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (EmployeeDto emp in Model.Items)
-                {
-                    <tr>
-                        <td class="first-columns">@emp.FirstName</td>
-                        <td class="first-columns">@emp.LastName</td>
-                        <td class="age-column">@emp.Age</td>
-                        <td class="job-column">@emp.Position</td>
-                        <td>
-                            <div class="btns">
-                                <a class="btn btn-edit" asp-page="Edit" asp-route-id="@emp.Id">Edit</a>
-                                <form asp-page-handler="Delete" method="post" asp-route-id="@emp.Id"
-                                      onclick="return confirm('Are you sure you want to delete employee @emp.FirstName @emp.LastName?')">
-                                    <button class="btn btn-delete" type="submit">Delete</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
+            }
+        </tbody>
+    </table>
+}
 
-    <partial name="_Pagination" />
-</div>
+<partial name="_Pagination" />

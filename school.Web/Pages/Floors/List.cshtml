@@ -4,53 +4,51 @@
     ViewData["Title"] = "Floors";
 }
 @section styles
-{
+    {
     <link rel="stylesheet" href="~/css/list.css" asp-append-version="true" />
 }
 
-<div class="wrapper">
-    <a class="btn btn-sm btn-primary" asp-page="Add">Add</a>
-    @if (!Model.FloorsDto.Any())
-    {
-        <div class="empty">List of floors is empty</div>
-    }
-    else
-    {
-        <div class="list">
-            @foreach(var floor in Model.FloorsDto)
-            {
-                <details>
-                    <summary>
-                        <div class="name">
-                            @if (floor.Number < 1)
-                            {
-                                @:Basement level @Math.Abs(floor.Number)
-                            }
-                            else
-                            {
-                                @:Floor @floor.Number
-                            }
-                        </div>
-                        <div class="btns">
-                            <form asp-page-handler="Delete" method="post" asp-route-id="@floor.Id"
-                            onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
-                                <button class="btn btn-delete" type="submit">Delete</button>
-                            </form>
-                            <a class="btn btn-add" asp-page="/Rooms/Add">Add room</a>
-                        </div>
-                        <div class="count">Rooms count @floor.Rooms.Count()</div>
-                        </summary>
-                    <div class="content">
-                        @foreach(var room in floor.Rooms)
+<a class="btn btn-sm btn-primary" asp-page="Add">Add</a>
+@if (!Model.FloorsDto.Any())
+{
+    <div class="empty">List of floors is empty</div>
+}
+else
+{
+    <div class="list">
+        @foreach (var floor in Model.FloorsDto)
+        {
+            <details>
+                <summary>
+                    <div class="name">
+                        @if (floor.Number < 1)
                         {
-                            <div class="border-bottom">
-                                <div>Room @room.Number</div>
-                                <div class="type">@room.Type</div>
-                            </div>
+                            @:Basement level @Math.Abs(floor.Number)
+                        }
+                        else
+                        {
+                            @:Floor @floor.Number
                         }
                     </div>
-                </details>
-            }
-        </div>
-    }
-</div>
+                    <div class="btns">
+                        <form asp-page-handler="Delete" method="post" asp-route-id="@floor.Id"
+                              onclick="return confirm('Are you sure you want to delete floor @floor.Number?')">
+                            <button class="btn btn-delete" type="submit">Delete</button>
+                        </form>
+                        <a class="btn btn-add" asp-page="/Rooms/Add">Add room</a>
+                    </div>
+                    <div class="count">Rooms count @floor.Rooms.Count()</div>
+                </summary>
+                <div class="content">
+                    @foreach (var room in floor.Rooms)
+                    {
+                        <div class="border-bottom">
+                            <div>Room @room.Number</div>
+                            <div class="type">@room.Type</div>
+                        </div>
+                    }
+                </div>
+            </details>
+        }
+    </div>
+}
