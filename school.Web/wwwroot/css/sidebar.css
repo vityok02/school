@@ -1,36 +1,20 @@
-﻿.sidenav {
+﻿html, body {
     height: 100%;
-    float: left;
-    border-right: solid #ccc 1px;
-    display: block;
-    width: 20%;
-    background-color: rgba(134, 157, 174, 1);
-    overflow-x: hidden;
-    background: linear-gradient(rgba(160, 132, 220, 1), rgba(134, 157, 174, 0));
 }
 
-a {
-    color: #272727;
+.sidenav {
+    border-right: 1px solid #525252;
+    padding-top: 50px;
+    color: #525252;
+    font-size: 24px;
+    width: 250px;
+    height: 100%;
 }
 
     .sidenav a {
-        padding: 6px 8px 6px 16px;
-        text-decoration: none;
-        font-size: 32px;
+        padding-left: 20px;
         display: block;
-        border-bottom: 1px solid black;
+        padding-bottom: 11px;
+        color: #525252;
+        text-decoration: none;
     }
-
-        .sidenav a:hover {
-            color: white
-        }
-
-.active {
-    color: white;
-    background: linear-gradient(90deg, rgba(79,100,108,1) 0%, rgba(79,100,108,0) 100%);
-}
-
-.disable {
-    opacity: 0.5;
-    pointer-events: none;
-}
