@@ -6,54 +6,46 @@
     ViewData["Title"] = "Positions";
 }
 @section styles
-{
+    {
     <link rel="stylesheet" href="~/css/list.css" asp-append-version="true" />
 }
 
-<div class="wrapper">
-    <form method="get" asp-page="List" class="filter">
-        <label asp-for="Filter" class="cell">
-            Name:
-            <input asp-for="Filter" />
-        </label>
-        <partial name="filterButtons" />
-        <input type="hidden" asp-for="OrderBy" />
-    </form>
-    @if (!Model.HasPositions)
-    {
-        <div class="empty">List of positions is empty</div>
-    }
-    else
-    {
-        <table class="tab">
-            <thead>
-                <tr>
-                    <th>
-                        <a asp-route-orderBy="@Model.NameSort" asp-route-filter="@Model.Filter">
-                            Name
-                        </a>
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (PositionDto position in Model.Items)
-                {
-                    <tr>
-                        <td>@position.Name</td>
-                        <td>
-                            <div class="btns">
-                                <a class="btn btn-details" asp-page="Edit" asp-route-id="@position.Id">Edit</a>
-                                <form asp-page-handler="Delete" method="post" asp-route-id="@position.Id"
-                              onclick="return confirm('Are you sure you want to delete position @position.Name?')">
-                                    <button class="btn btn-delete" type="submit">Delete</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <partial name="_Pagination"/>
-    }
-</div>
+<form method="get" asp-page="List" class="filter">
+    <label asp-for="Filter" class="cell">
+        Name:
+        <input asp-for="Filter" />
+    </label>
+    <partial name="filterButtons" />
+    <input type="hidden" asp-for="OrderBy" />
+</form>
+
+<table class="tab">
+    <thead>
+        <tr>
+            <th>
+                <a asp-route-orderBy="@Model.NameSort" asp-route-filter="@Model.Filter">
+                    Name
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (PositionDto position in Model.Items)
+        {
+            <tr>
+                <td>@position.Name</td>
+                <td>
+                    <div class="btns">
+                        <a class="btn btn-details" asp-page="Edit" asp-route-id="@position.Id">Edit</a>
+                        <form asp-page-handler="Delete" method="post" asp-route-id="@position.Id"
+                                onclick="return confirm('Are you sure you want to delete position @position.Name?')">
+                            <button class="btn btn-delete" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<partial name="_Pagination" />
