@@ -6,7 +6,7 @@
 }
 
 <div class="sidenav">
-    <a class="@(currentPage!.StartsWith("/schools") ? "active" : "")" asp-page="/Schools/List" style="border-top: 1px solid black">Schools</a>
+    <a class="@(currentPage!.StartsWith("/schools") ? "active" : "")" asp-page="/Schools/List">Schools</a>
     <div class="@(!await Model.HasSelectedSchoolAsync() ? "disable" : "")">
         <a class="@(currentPage.StartsWith("/floors") ? "active" : "")" asp-page="/Floors/List">Floors</a>
         <a class="@(currentPage.StartsWith("/rooms") ? "active" : "")" asp-page="/Rooms/List">Rooms</a>
