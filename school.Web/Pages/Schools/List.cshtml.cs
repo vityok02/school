@@ -7,7 +7,6 @@ namespace SchoolManagement.Web.Pages.Schools;
 
 public class SchoolsListModel : BaseListPageModel
 {
-    public IEnumerable<Address> Addresses { get; private set; } = default!;
     public override string ListPageUrl => "/Schools/List";
     public string NameSort { get; private set; } = default!;
     public string CitySort { get; private set; } = default!;
@@ -18,23 +17,21 @@ public class SchoolsListModel : BaseListPageModel
     public Dictionary<string, string> StreetParams { get; private set; } = default!;
     public bool HasSchools => Items.Any();
 
-    public SchoolsListModel(ISchoolRepository schoolRepository)
-        : base(schoolRepository)
-    {
-    }
+    public SchoolsListModel(ISchoolRepository schoolRepository, AppDbContext context)
+        : base(schoolRepository) { }
 
     public IActionResult OnGet(string orderBy, string filterByParam, int? pageIndex)
     {
-        OrderBy = orderBy;  
+
+        OrderBy = orderBy;
         NameSort = string.IsNullOrEmpty(orderBy) ? "name_desc" : "";
         CitySort = orderBy == "city" ? "city_desc" : "city";
         StreetSort = orderBy == "street" ? "street_desc" : "street";
-
         FilterByParam = filterByParam;
 
         var schools = SchoolRepository
             .GetSchools(
-                FilterBy(FilterByParam), 
+                FilterBy(FilterByParam),
                 Sort(orderBy))
             .Select(s => s.ToSchoolItemDto())
             .ToArray();
@@ -64,27 +61,6 @@ public class SchoolsListModel : BaseListPageModel
         };
 
         return Page();
-
-        static Expression<Func<School, bool>> FilterBy(string filterBy)
-        {
-            return s => (string.IsNullOrEmpty(filterBy) 
-                || (s.Name.Contains(filterBy) 
-                || s.Address.City.Contains(filterBy) 
-                || s.Address.Street.Contains(filterBy)));
-        }
-
-        static Func<IQueryable<School>, IOrderedQueryable<School>> Sort(string orderBy)
-        {
-            return orderBy switch
-            {
-                "name_desc" => s => s.OrderByDescending(s => s.Name),
-                "city" => s => s.OrderBy(s => s.Address.City),
-                "city_desc" => s => s.OrderByDescending(s => s.Address.City),
-                "street" => s => s.OrderBy(s => s.Address.Street),
-                "street_desc" => s => s.OrderByDescending(s => s.Address.Street),
-                _ => s => s.OrderBy(s => s.Name),
-            };
-        }
     }
 
     public IActionResult OnPostSetSchool(int id, string filterByParam, string orderBy, int pageIndex)
@@ -94,7 +70,7 @@ public class SchoolsListModel : BaseListPageModel
             return RedirectToPage("List");
         }
 
-        SelectSchool(id);
+        SetSchoolId(id);
         return RedirectToPage("List");
     }
 
@@ -109,6 +85,7 @@ public class SchoolsListModel : BaseListPageModel
         await SchoolRepository.DeleteAsync(school);
         return RedirectToPage("List");
     }
+
     private IDictionary<string, string> GetFilters()
     {
         var filterParams = new Dictionary<string, string>();
@@ -118,5 +95,26 @@ public class SchoolsListModel : BaseListPageModel
         }
 
         return filterParams;
+    }
+
+    private static Func<IQueryable<School>, IOrderedQueryable<School>> Sort(string orderBy)
+    {
+        return orderBy switch
+        {
+            "name_desc" => s => s.OrderByDescending(s => s.Name),
+            "city" => s => s.OrderBy(s => s.Address.City),
+            "city_desc" => s => s.OrderByDescending(s => s.Address.City),
+            "street" => s => s.OrderBy(s => s.Address.Street),
+            "street_desc" => s => s.OrderByDescending(s => s.Address.Street),
+            _ => s => s.OrderBy(s => s.Name),
+        };
+    }
+
+    private static Expression<Func<School, bool>> FilterBy(string filterBy)
+    {
+        return s => (string.IsNullOrEmpty(filterBy)
+            || (s.Name.Contains(filterBy)
+            || s.Address.City.Contains(filterBy)
+            || s.Address.Street.Contains(filterBy)));
     }
 }
