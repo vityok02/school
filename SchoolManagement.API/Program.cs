@@ -1,4 +1,9 @@
+using SchoolManagement.API.Employees;
 using SchoolManagement.API.Endpoints;
+using SchoolManagement.API.Floors;
+using SchoolManagement.API.Positions;
+using SchoolManagement.API.Rooms;
+using SchoolManagement.API.Schools;
 using SchoolManagement.Data;
 
 var builder = WebApplication.CreateBuilder(args);
