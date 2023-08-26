@@ -46,7 +46,7 @@ public class RoomsListModel : BaseListPageModel
             return RedirectToSchoolList();
         }
 
-        var floors = await _floorRepository.GetSchoolFloorsAsync(SelectedSchoolId);
+        var floors = await _floorRepository.GetFloorsAsync(SelectedSchoolId);
         bool hasFloors = floors.Any();
 
         if (!hasFloors)

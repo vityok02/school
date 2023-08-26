@@ -51,7 +51,7 @@ public class EmployeesListModel : BaseListPageModel
         FilterByPosition = filterByPosition;
 
         var employees = await _employeeRepository
-            .GetSchoolEmployeesAsync(
+            .GetSchoolEmployeesWithPositionsAsync(
                 FilterBy(FilterByName, FilterByAge, FilterByPosition),
                 Sort(orderBy),
                 SelectedSchoolId);

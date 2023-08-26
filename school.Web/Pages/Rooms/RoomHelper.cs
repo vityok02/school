@@ -18,7 +18,7 @@ public static class RoomHelper
 
     public static async Task<IEnumerable<FloorDto>> GetFloorsAsync(IFloorRepository floorRepository, int schoolId)
     {
-        var floors = await floorRepository.GetSchoolFloorsAsync(schoolId);
+        var floors = await floorRepository.GetFloorsAsync(schoolId);
         return floors.Select(f => f.ToFloorDto()).ToArray();
     }
 }
