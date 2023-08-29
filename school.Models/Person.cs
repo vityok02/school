@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SchoolManagement.Models;
+﻿namespace SchoolManagement.Models;
 
 public abstract class Person : BaseEntity
 {
