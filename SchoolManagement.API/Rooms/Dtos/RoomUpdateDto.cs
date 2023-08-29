@@ -2,4 +2,4 @@
 
 namespace SchoolManagement.API.Rooms.Dtos;
 
-public record RoomAddDto(int Number, RoomType Types, int FloorId);
+public record RoomUpdateDto(int Id, int Number, RoomType Types, int FloorId);

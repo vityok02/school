@@ -1,6 +1,6 @@
 ﻿namespace SchoolManagement.API.Employees.Dtos;
 
-public record EmployeeEditDto(
+public record EmployeeUpdateDto(
     int Id,
     string FirstName,
     string LastName,
