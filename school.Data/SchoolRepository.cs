@@ -10,7 +10,7 @@ public class SchoolRepository : Repository<School>, ISchoolRepository
     private readonly AppDbContext _dbContext;
 
     public SchoolRepository(AppDbContext dbContext)
-        :base(dbContext)
+        : base(dbContext)
     {
         _dbContext = dbContext;
     }
@@ -25,19 +25,23 @@ public class SchoolRepository : Repository<School>, ISchoolRepository
         return school!;
     }
 
-    public IEnumerable<School> GetSchools(Expression<Func<School, bool>> predicate,
+    public async Task<IEnumerable<School>> GetSchools(Expression<Func<School, bool>> predicate = null!,
         Func<IQueryable<School>, IOrderedQueryable<School>> orderBy = null!)
     {
-        var schools = _dbContext
+        IQueryable<School> schools = _dbContext
             .Schools
-            .Include(s => s.Address)
-            .Where(predicate);
+            .Include(s => s.Address);
+
+        if (predicate is not null)
+        {
+            schools = schools.Where(predicate);
+        }
 
         if (orderBy is not null)
         {
             schools = orderBy(schools);
         }
 
-        return schools;
+        return await schools.ToArrayAsync();
     }
 }
