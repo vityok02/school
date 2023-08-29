@@ -10,7 +10,7 @@ public static class UpdateEmployeeHandler
         IEmployeeRepository employeeRepository,
         [FromRoute] int schoolId,
         [FromRoute] int employeeId,
-        [FromBody] EmployeeEditDto employeeDto)
+        [FromBody] EmployeeUpdateDto employeeDto)
     {
         var employee = await employeeRepository.GetAsync(employeeId);
 
