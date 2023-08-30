@@ -22,8 +22,6 @@ public class RoomRepository : Repository<Room>, IRoomRepository
             .Include(r => r.Floor)
             .Where(predicate!);
 
-        var a = rooms.ToArray();
-
         if (orderBy is not null)
         {
             rooms = orderBy(rooms);
@@ -34,11 +32,23 @@ public class RoomRepository : Repository<Room>, IRoomRepository
 
     public async Task<IEnumerable<Room>> GetRoomsAsync(int schoolId)
     {
-        var rooms = _dbContext
+        var rooms = await _dbContext
             .Rooms
             .Where(r => r.Floor.SchoolId == schoolId)
+            .Include(r => r.Floor)
             .ToArrayAsync();
 
-        return await rooms;
+        return rooms;
+    }
+
+    public async Task<Room> GetRoomAsync(int id)
+    {
+        var room = await _dbContext
+            .Rooms
+            .Where(r => r.Id == id)
+            .Include(r => r.Floor)
+            .SingleOrDefaultAsync();
+
+        return room!;
     }
 }

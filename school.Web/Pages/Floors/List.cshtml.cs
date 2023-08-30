@@ -22,7 +22,7 @@ public class FloorsList : BaseListPageModel
             return RedirectToSchoolList();
         }
 
-        var floors = await _floorRepository.GetSchoolFloorsAsync(SelectedSchoolId);
+        var floors = await _floorRepository.GetFloorsAsync(SelectedSchoolId);
         FloorsDto = floors.Select(f => f.ToFloorItemDto()).ToArray();
 
         return Page();

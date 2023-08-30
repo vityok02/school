@@ -15,7 +15,7 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Employee>> GetSchoolEmployeesAsync(Expression<Func<Employee, bool>> predicate,
+    public async Task<IEnumerable<Employee>> GetSchoolEmployeesWithPositionsAsync(Expression<Func<Employee, bool>> predicate,
         Func<IQueryable<Employee>, IOrderedQueryable<Employee>> orderBy = null!, int schoolId = 0)
     {
         var employees = _dbContext
@@ -32,7 +32,7 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
         return await employees.ToArrayAsync();
     }
 
-    public async Task<Employee> GetEmployeeAsync(int id)
+    public async Task<Employee> GetEmployeeWithPositionsAsync(int id)
     {
         var employee = await _dbContext
             .Employees

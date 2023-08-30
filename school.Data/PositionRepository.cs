@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace SchoolManagement.Data;
@@ -20,7 +19,7 @@ public class PositionRepository : Repository<Position>, IPositionRepository
         Func<IQueryable<Position>, IOrderedQueryable<Position>>? orderBy = null)
     {
         IQueryable<Position> positions = _dbContext
-            .Set<Position>()
+            .Positions
             .Where(p => p.Schools.Any(s => s.Id == schoolId));
 
         if (predicate is not null)
@@ -39,7 +38,7 @@ public class PositionRepository : Repository<Position>, IPositionRepository
         Func<IQueryable<Position>, IOrderedQueryable<Position>>? orderBy = null)
     {
         IQueryable<Position> positions = _dbContext
-            .Set<Position>();
+            .Positions;
 
         if (predicate is not null)
         {
@@ -56,7 +55,7 @@ public class PositionRepository : Repository<Position>, IPositionRepository
     public async Task<Position> GetPosition(int positionId)
     {
         var position = await _dbContext
-            .Set<Position>()
+            .Positions
             .Where(p => p.Id == positionId)
             .Include(p => p.Schools)
             .Include(p => p.Employees)
@@ -69,8 +68,7 @@ public class PositionRepository : Repository<Position>, IPositionRepository
     {
         return await _dbContext
             .Positions
-            .Where(s => checkedPositionsId
-                .Contains(s.Id))
+            .Where(s => checkedPositionsId.Contains(s.Id))
             .ToArrayAsync();
     }
 
@@ -79,5 +77,16 @@ public class PositionRepository : Repository<Position>, IPositionRepository
         return await _dbContext
             .Set<Position>()
             .AnyAsync(p => p.Schools.Any(s => s.Id == schoolId));
+    }
+
+    public async Task<Position> GetPositionForSchool(int positionId, int schoolId)
+    {
+        var position = await _dbContext
+            .Positions
+            .Where(p => p.Id == positionId 
+                && p.Schools.Any(s => s.Id == schoolId))
+            .SingleOrDefaultAsync();
+
+        return position!;
     }
 }

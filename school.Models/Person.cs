@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SchoolManagement.Models;
+﻿namespace SchoolManagement.Models;
 
 public abstract class Person : BaseEntity
 {
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
+    public string FirstName { get; private set; } = string.Empty;
+    public string LastName { get; private set; } = string.Empty;
     public int Age { get; private set; }
 
     protected Person()
