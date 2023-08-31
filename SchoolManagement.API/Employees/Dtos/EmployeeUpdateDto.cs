@@ -5,4 +5,5 @@ public record EmployeeUpdateDto(
     string FirstName,
     string LastName,
     int Age,
-    int[] PositionIds);
+    int[] PositionIds)
+    : IEmployeeDto;
