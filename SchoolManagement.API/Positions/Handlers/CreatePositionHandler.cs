@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.API.Positions.Dtos;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
@@ -8,11 +9,26 @@ namespace SchoolManagement.API.Positions.Handlers
     public class CreatePositionHandler
     {
         public static async Task<IResult> Handle(
+            IValidator<IPositionDto> validator,
             IPositionRepository positionRepository,
             ISchoolRepository schoolRepository,
             [FromRoute] int schoolId,
             [FromBody] PositionCreateDto positionDto)
         {
+            var validationResult = await validator.ValidateAsync(positionDto);
+
+            if (!validationResult.IsValid) 
+            {
+                return Results.ValidationProblem(validationResult.ToDictionary());
+            }
+
+            var positions = await positionRepository.GetSchoolPositions(schoolId);
+
+            if (positions.Any(p => p.Name == positionDto.Name))
+            {
+                return Results.BadRequest("Position with this name already exists");
+            }
+
             var position = new Position()
             {
                 Name = positionDto.Name,
