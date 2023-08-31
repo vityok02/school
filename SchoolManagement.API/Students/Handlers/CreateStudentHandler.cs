@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.API.Students.Dtos;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
@@ -8,10 +9,28 @@ namespace SchoolManagement.API.Students.Handlers;
 public static class CreateStudentHandler
 {
     public static async Task<IResult> Handle(
+        IValidator<IStudentDto> validator,
         IRepository<Student> repository,
         [FromRoute] int schoolId,
         [FromBody] StudentCreateDto studentDto)
     {
+        var validationResult = await validator.ValidateAsync(studentDto);
+
+        if (!validationResult.IsValid)
+        {
+            return Results.ValidationProblem(validationResult.ToDictionary());
+        }
+
+        var employees = await repository.GetAllAsync(e => e.SchoolId == schoolId);
+
+        if (employees.Any(
+            e => e.FirstName == studentDto.FirstName
+            && e.LastName == studentDto.LastName
+            && e.Age == studentDto.Age))
+        {
+            return Results.BadRequest("Such employee already exists");
+        }
+
         var student = new Student(
             studentDto.FirstName,
             studentDto.LastName,
