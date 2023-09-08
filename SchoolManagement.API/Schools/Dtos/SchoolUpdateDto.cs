@@ -6,4 +6,5 @@ public record SchoolUpdateDto(
     string City,
     string Street,
     int PostalCode,
-    DateTime OpeningDate);
+    DateTime OpeningDate)
+    : ISchoolDto;

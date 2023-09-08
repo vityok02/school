@@ -20,7 +20,7 @@ public class SchoolsListModel : BaseListPageModel
     public SchoolsListModel(ISchoolRepository schoolRepository)
         : base(schoolRepository) { }
 
-    public IActionResult OnGet(string orderBy, string filterByParam, int? pageIndex)
+    public async Task<IActionResult> OnGet(string orderBy, string filterByParam, int? pageIndex)
     {
 
         OrderBy = orderBy;
@@ -29,14 +29,16 @@ public class SchoolsListModel : BaseListPageModel
         StreetSort = orderBy == "street" ? "street_desc" : "street";
         FilterByParam = filterByParam;
 
-        var schools = SchoolRepository
+        var schoolsFromDb = await SchoolRepository
             .GetSchools(
                 FilterBy(FilterByParam),
-                Sort(orderBy))
+                Sort(orderBy));
+
+        var schoolItemDtos = schoolsFromDb
             .Select(s => s.ToSchoolItemDto())
             .ToArray();
 
-        Items = new PaginatedList<object>(schools.Cast<object>(), PageIndex = pageIndex ?? 1);
+        Items = new PaginatedList<object>(schoolItemDtos.Cast<object>(), PageIndex = pageIndex ?? 1);
 
         var filterParams = GetFilters();
 

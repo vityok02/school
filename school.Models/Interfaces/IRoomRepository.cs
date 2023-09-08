@@ -8,4 +8,5 @@ public interface IRoomRepository : IRepository<Room>
     Func<IQueryable<Room>, IOrderedQueryable<Room>> orderBy = null!, int schoolId = 0);
     Task<IEnumerable<Room>> GetRoomsAsync(int schoolId);
     Task<Room> GetRoomAsync(int schoolId);
+    Task<IEnumerable<Room>> GetRoomsForSchoolAsync(int schoolId);
 }

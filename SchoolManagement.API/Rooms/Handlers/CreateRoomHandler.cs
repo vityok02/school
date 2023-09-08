@@ -13,6 +13,13 @@ public static class CreateRoomHandler
         [FromRoute] int schoolId,
         [FromBody] RoomCreateDto roomDto)
     {
+        var rooms = await roomRepository.GetRoomsForSchoolAsync(schoolId);
+
+        if (rooms.Any(r => r.Number == roomDto.Number))
+        {
+            return Results.BadRequest("Room with this number already exists");
+        }
+
         var room = new Room()
         {
             Number = roomDto.Number,

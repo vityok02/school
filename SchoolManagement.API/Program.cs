@@ -1,3 +1,5 @@
+using FluentValidation;
+using SchoolManagement.API;
 using SchoolManagement.API.Employees;
 using SchoolManagement.API.Floors;
 using SchoolManagement.API.Positions;
@@ -9,6 +11,7 @@ using SchoolManagement.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDependencies(builder.Configuration);
+builder.Services.AddValidatorsFromAssemblyContaining<ValidatorMarker>();
 
 var app = builder.Build();
 

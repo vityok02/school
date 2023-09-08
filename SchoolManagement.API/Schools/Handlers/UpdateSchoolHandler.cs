@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.API.Schools.Dtos;
 using SchoolManagement.Models.Interfaces;
 
@@ -7,10 +8,18 @@ namespace SchoolManagement.API.Schools.Handlers;
 public static class UpdateSchoolHandler
 {
     public static async Task<IResult> Handle(
+        IValidator<ISchoolDto> validator,
         ISchoolRepository repository,
         [FromRoute] int schoolId,
         [FromBody] SchoolUpdateDto schoolDto)
     {
+        var validationResult = await validator.ValidateAsync(schoolDto);
+
+        if (!validationResult.IsValid)
+        {
+            return Results.ValidationProblem(validationResult.ToDictionary());
+        }
+
         var school = await repository.GetSchoolAsync(schoolId);
 
         if (school is null) 
