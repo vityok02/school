@@ -30,6 +30,16 @@ public class RoomRepository : Repository<Room>, IRoomRepository
         return await rooms.ToArrayAsync();
     }
 
+    public async Task<IEnumerable<Room>> GetRoomsForSchoolAsync(int schoolId)
+    {
+        var rooms = await _dbContext
+            .Rooms
+            .Where(r => r.Floor.SchoolId == schoolId)
+            .ToArrayAsync();
+
+        return rooms;
+    }
+
     public async Task<IEnumerable<Room>> GetRoomsAsync(int schoolId)
     {
         var rooms = await _dbContext
