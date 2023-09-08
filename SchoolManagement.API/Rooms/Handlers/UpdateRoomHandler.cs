@@ -12,6 +12,13 @@ public static class UpdateRoomHandler
         [FromRoute] int roomId,
         [FromBody] RoomUpdateDto roomDto)
     {
+        var rooms = await repository.GetRoomsForSchoolAsync(schoolId);
+
+        if (rooms.Any(r => r.Number == roomDto.Number))
+        {
+            return Results.BadRequest("Room with this number already exists");
+        }
+
         var room = await repository.GetRoomAsync(roomId);
 
         if (room is null || room.Floor.SchoolId != schoolId)
@@ -24,6 +31,8 @@ public static class UpdateRoomHandler
         room.FloorId = roomDto.FloorId;
 
         await repository.UpdateAsync(room);
-        return Results.Ok(room);
+
+        var updatedRoomDto = room.ToRoomDto();
+        return Results.Ok(updatedRoomDto);
     }
 }
