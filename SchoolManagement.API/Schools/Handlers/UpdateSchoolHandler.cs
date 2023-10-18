@@ -35,6 +35,8 @@ public static class UpdateSchoolHandler
         school.OpeningDate = schoolDto.OpeningDate;
 
         await repository.UpdateAsync(school);
-        return Results.Ok(school);
+
+        var updatedSchoolDto = school.ToSchoolInfoDto();
+        return Results.Ok(updatedSchoolDto);
     }
 }

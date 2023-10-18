@@ -41,6 +41,8 @@ public static class UpdateEmployeeHandler
         employee!.UpdateInfo(employeeDto.FirstName, employeeDto.LastName, employeeDto.Age);
 
         await employeeRepository.UpdateAsync(employee);
-        return Results.Ok(employee);
+
+        var updatedEmployeeDto = employee.ToEmployeeDto();
+        return Results.Ok(updatedEmployeeDto);
     }
 }
