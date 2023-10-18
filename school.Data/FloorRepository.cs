@@ -9,7 +9,7 @@ public class FloorRepository : Repository<Floor>, IFloorRepository
     private readonly AppDbContext _dbContext;
 
     public FloorRepository(AppDbContext dbContext)
-        : base (dbContext)
+        : base(dbContext)
     {
         _dbContext = dbContext;
     }
@@ -19,6 +19,18 @@ public class FloorRepository : Repository<Floor>, IFloorRepository
         var floor = await _dbContext
             .Floors
             .Where(f => f.Id == id)
+            .Include(f => f.Rooms)
+            .SingleOrDefaultAsync();
+
+        return floor!;
+    }
+
+    public async Task<Floor> GetSchoolFloorAsync(int schoolId, int floorId)
+    {
+        var floor = await _dbContext
+            .Floors
+            .Where(f => f.SchoolId == schoolId
+                && f.Id == floorId)
             .Include(f => f.Rooms)
             .SingleOrDefaultAsync();
 
