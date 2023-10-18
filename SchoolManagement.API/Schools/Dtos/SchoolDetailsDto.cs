@@ -1,6 +1,6 @@
 ﻿namespace SchoolManagement.API.Schools.Dtos;
 
-public record SchoolInfoDto(
+public record SchoolDetailsDto(
     int Id,
     string Name,
     string Country,

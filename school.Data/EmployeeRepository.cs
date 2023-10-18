@@ -32,7 +32,7 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
         return await employees.ToArrayAsync();
     }
 
-    public async Task<Employee> GetEmployeeWithPositionsAsync(int id)
+    public async Task<Employee?> GetEmployeeWithPositionsAsync(int id)
     {
         var employee = await _dbContext
             .Employees
@@ -41,5 +41,15 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
             .SingleOrDefaultAsync()!;
 
         return employee!;
+    }
+
+    public async Task<Employee?> GetSchoolEmployeesWithPositionsAsync(int schoolId, int employeeId)
+    {
+        var employee = await _dbContext
+            .Employees
+            .Where(e => e.Id == employeeId && e.SchoolId == schoolId)
+            .SingleOrDefaultAsync();
+
+        return employee;
     }
 }

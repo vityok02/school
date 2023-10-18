@@ -12,9 +12,9 @@ public static class FloorExtensions
             floor.Rooms.Select(r => r.ToRoomDto()).ToArray());
     }
 
-    public static RoomDto ToRoomDto(this Room room)
+    public static FloorRoomDto ToRoomDto(this Room room)
     {
-        return new RoomDto(
+        return new FloorRoomDto(
             room.Number,
             room.Type.ToString());
     }

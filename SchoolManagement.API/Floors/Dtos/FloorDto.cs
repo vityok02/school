@@ -3,4 +3,4 @@
 public record FloorDto(
     int Id,
     int Number,
-    RoomDto[] Rooms);
+    FloorRoomDto[] Rooms);

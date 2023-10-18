@@ -33,6 +33,8 @@ public static class UpdateFloorHandler
         }
 
         await repository.UpdateAsync(floor);
-        return Results.Ok(floor);
+
+        var updatedFloorDto = floor.ToFloorDto();
+        return Results.Ok(updatedFloorDto);
     }
 }

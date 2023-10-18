@@ -11,14 +11,14 @@ public static class GetEmployeeByIdHandler
         [FromRoute] int schoolId,
         [FromRoute] int employeeId)
     {
-        var employee = await repository.GetEmployeeWithPositionsAsync(employeeId);
+        var employee = await repository.GetSchoolEmployeesWithPositionsAsync(schoolId, employeeId);
 
-        if (employee is null || employee.SchoolId != schoolId)
+        if (employee is null)
         {
             return Results.NotFound("No such employee found");
         }
 
         var employeeDto = employee.ToEmployeeDto();
-        return Results.Json(employeeDto);
+        return Results.Ok(employeeDto);
     }
 }

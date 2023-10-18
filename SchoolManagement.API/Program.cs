@@ -11,17 +11,30 @@ using SchoolManagement.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDependencies(builder.Configuration);
+
 builder.Services.AddValidatorsFromAssemblyContaining<ValidatorMarker>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.RoutePrefix = "/swagger";
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    });
+}
 
+EmployeesEndpoints.Map(app);
 SchoolsEndpoints.Map(app);
 FloorsEndpoints.Map(app);
 RoomsEndpoints.Map(app);
-EmployeesEndpoints.Map(app);
 PositionsEndpoints.Map(app);
+SchoolPositionsEndpoints.Map(app);
 StudentsEndpoints.Map(app);
 
 app.Run();

@@ -21,6 +21,6 @@ public static class DeleteStudentHandler
         }
 
         await repository.DeleteAsync(student);
-        return Results.Ok();
+        return Results.NoContent();
     }
 }

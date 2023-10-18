@@ -18,6 +18,6 @@ public static class DeleteEmployeeHandler
         }
 
         await repository.DeleteAsync(employee!);
-        return Results.Ok();
+        return Results.NoContent();
     }
 }

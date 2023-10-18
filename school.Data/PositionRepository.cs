@@ -79,7 +79,7 @@ public class PositionRepository : Repository<Position>, IPositionRepository
             .AnyAsync(p => p.Schools.Any(s => s.Id == schoolId));
     }
 
-    public async Task<Position> GetPositionForSchool(int positionId, int schoolId)
+    public async Task<Position> GetSchoolPosition(int schoolId, int positionId)
     {
         var position = await _dbContext
             .Positions

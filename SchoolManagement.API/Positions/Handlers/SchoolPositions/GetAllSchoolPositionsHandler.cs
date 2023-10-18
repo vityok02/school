@@ -2,11 +2,12 @@
 using SchoolManagement.API.Positions.Dtos;
 using SchoolManagement.Models.Interfaces;
 
-namespace SchoolManagement.API.Positions.Handlers;
+namespace SchoolManagement.API.Positions.Handlers.SchoolPositions;
 
-public static class GetAllPositionsHandler
+public static class GetAllSchoolPositionsHandler
 {
-    public static async Task<IResult> Handle(IPositionRepository repository, [FromRoute] int schoolId)
+    public static async Task<IResult> Handle(IPositionRepository repository,
+        [FromRoute] int schoolId)
     {
         var positions = await repository.GetAllPositions(schoolId);
 

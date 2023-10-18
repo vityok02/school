@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.API.Positions.Dtos;
 using SchoolManagement.Models.Interfaces;
 
-namespace SchoolManagement.API.Positions.Handlers;
+namespace SchoolManagement.API.Positions.Handlers.Positions;
 
 public class UpdatePositionHandler
 {
     public static async Task<IResult> Handle(
         IValidator<IPositionDto> validator,
         IPositionRepository repository,
-        [FromRoute] int schoolId,
         [FromRoute] int positionId,
         [FromBody] PositionDto positionDto)
     {
@@ -21,14 +20,14 @@ public class UpdatePositionHandler
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
-        var positions = await repository.GetSchoolPositions(schoolId);
+        var positions = await repository.GetAllAsync();
 
         if (positions.Any(p => p.Name == positionDto.Name && p.Id != positionDto.Id))
         {
-            return Results.BadRequest("there is already a position with that name");
+            return Results.BadRequest("There is already a position with that name");
         }
 
-        var position = await repository.GetPositionForSchool(positionId, schoolId);
+        var position = await repository.GetAsync(positionId);
 
         if (position is null)
         {
@@ -38,6 +37,8 @@ public class UpdatePositionHandler
         position.Name = positionDto.Name;
 
         await repository.UpdateAsync(position);
-        return Results.Ok(position);
+
+        var updatedPositionDto = position.ToPositionDto();
+        return Results.Ok(updatedPositionDto);
     }
 }

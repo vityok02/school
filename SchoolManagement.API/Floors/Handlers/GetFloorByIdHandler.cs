@@ -11,9 +11,9 @@ public static class GetFloorByIdHandler
         [FromRoute] int schoolId,
         [FromRoute] int floorId)
     {
-        var floor = await repository.GetFloorAsync(floorId);
+        var floor = await repository.GetSchoolFloorAsync(schoolId, floorId);
 
-        if (floor is null || floor.SchoolId != schoolId)
+        if (floor is null)
         {
             return Results.NotFound("No such floor found");
         }

@@ -46,6 +46,8 @@ public static class UpdateStudentHandler
         student.UpdateInfo(studentDto.FirstName, studentDto.LastName, studentDto.Age, studentDto.Group);
 
         await repository.UpdateAsync(student);
-        return Results.Ok(student);
+
+        var updatedStudentDto = student.ToStudentDto();
+        return Results.Ok(updatedStudentDto);
     }
 }
