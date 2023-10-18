@@ -61,4 +61,15 @@ public class RoomRepository : Repository<Room>, IRoomRepository
 
         return room!;
     }
+
+    public async Task<Room> GetSchoolRoomAsync(int schoolId, int roomId)
+    {
+        var room = await _dbContext
+            .Rooms
+            .Where(r => r.Floor.SchoolId == schoolId
+                && r.Id == roomId)
+            .SingleOrDefaultAsync();
+
+        return room!;
+    }
 }

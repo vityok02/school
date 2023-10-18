@@ -9,4 +9,5 @@ public interface IRoomRepository : IRepository<Room>
     Task<IEnumerable<Room>> GetRoomsAsync(int schoolId);
     Task<Room> GetRoomAsync(int schoolId);
     Task<IEnumerable<Room>> GetRoomsForSchoolAsync(int schoolId);
+    Task<Room> GetSchoolRoomAsync(int schoolId, int roomId);
 }
