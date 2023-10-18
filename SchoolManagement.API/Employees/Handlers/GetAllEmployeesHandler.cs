@@ -11,6 +11,6 @@ public static class GetAllEmployeesHandler
         var employees = await repository.GetAllAsync(e => e.SchoolId == schoolId);
 
         var employeeItemDtos = employees.Select(e => e.ToEmployeeDto());
-        return Results.Json(employeeItemDtos);
+        return Results.Ok(employeeItemDtos);
     }
 }
