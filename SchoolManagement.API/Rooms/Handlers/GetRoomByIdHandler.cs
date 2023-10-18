@@ -13,7 +13,7 @@ public static class GetRoomByIdHandler
     {
         var room = await repository.GetSchoolRoomAsync(schoolId, roomId);
 
-        if (room is null || room.Floor.SchoolId != schoolId)
+        if (room is null)
         {
             return Results.NotFound("No such room found");
         }
