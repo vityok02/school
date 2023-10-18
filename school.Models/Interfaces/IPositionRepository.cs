@@ -11,5 +11,5 @@ public interface IPositionRepository : IRepository<Position>
         Func<IQueryable<Position>, IOrderedQueryable<Position>>? orderBy = null);
     Task<Position> GetPosition(int positionId);
     Task<IEnumerable<Position>> GetEmployeePositions(int[] checkedPositionsId);
-    Task<Position> GetPositionForSchool(int positionId, int schoolId);
+    Task<Position> GetSchoolPosition(int schoolId, int positionId);
 }
