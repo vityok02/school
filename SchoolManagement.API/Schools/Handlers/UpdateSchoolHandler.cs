@@ -36,7 +36,7 @@ public static class UpdateSchoolHandler
 
         await repository.UpdateAsync(school);
 
-        var updatedSchoolDto = school.ToSchoolInfoDto();
+        var updatedSchoolDto = school.ToSchoolDetailsDto();
         return Results.Ok(updatedSchoolDto);
     }
 }

@@ -15,7 +15,7 @@ public static class GetSchoolByIdHandler
             return Results.NotFound("No such school found");
         }
 
-        var schoolDto = school.ToSchoolInfoDto();
+        var schoolDto = school.ToSchoolDetailsDto();
         return Results.Ok(schoolDto);
     }
 }

@@ -37,7 +37,7 @@ public static class CreateSchoolHandler
 
         await repository.AddAsync(school);
 
-        var createdSchoolDto = school.ToSchoolInfoDto();
+        var createdSchoolDto = school.ToSchoolDetailsDto();
         return Results.Created($"/schools/{school.Id}", createdSchoolDto);
     }
 }

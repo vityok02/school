@@ -14,9 +14,9 @@ public static class SchoolExtensions
             school.OpeningDate);
     }
 
-    public static SchoolInfoDto ToSchoolInfoDto(this School school)
+    public static SchoolDetailsDto ToSchoolDetailsDto(this School school)
     {
-        return new SchoolInfoDto(
+        return new SchoolDetailsDto(
             school.Id,
             school.Name,
             school.Address.Country,
