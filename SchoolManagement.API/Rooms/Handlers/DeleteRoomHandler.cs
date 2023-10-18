@@ -18,6 +18,6 @@ public static class DeleteRoomHandler
         }
 
         await repository.DeleteAsync(room);
-        return Results.Ok();
+        return Results.NoContent();
     }
 }

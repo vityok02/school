@@ -18,6 +18,6 @@ public static class DeleteFloorHandler
         }
 
         await repository.DeleteAsync(floor);
-        return Results.Ok();
+        return Results.NoContent();
     }
 }

@@ -17,6 +17,6 @@ public static class DeleteSchoolHandler
         }
 
         await repository.DeleteAsync(school);
-        return Results.Ok();
+        return Results.NoContent();
     }
 }
