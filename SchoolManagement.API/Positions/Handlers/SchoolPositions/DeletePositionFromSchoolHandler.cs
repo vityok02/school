@@ -1,24 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.API.Positions.Dtos;
 using SchoolManagement.Models.Interfaces;
 
-namespace SchoolManagement.API.Positions.Handlers;
+namespace SchoolManagement.API.Positions.Handlers.SchoolPositions;
 
-public class GetSchoolPositionByIdHandler
+public class DeletePositionFromSchoolHandler
 {
     public static async Task<IResult> Handle(
+        ISchoolRepository schoolRepository,
         IPositionRepository positionRepository,
         [FromRoute] int schoolId,
         [FromRoute] int positionId)
     {
-        var position = await positionRepository.GetSchoolPosition(schoolId, positionId);
+        var school = await schoolRepository.GetAsync(schoolId);
 
+        var position = await positionRepository.GetAsync(positionId);
         if (position is null)
         {
             return Results.NotFound("No such position found");
         }
 
-        var positionDto = position.ToPositionDto();
-        return Results.Ok(positionDto);
+        school!.Positions.Remove(position);
+
+        return Results.NoContent();
     }
 }
