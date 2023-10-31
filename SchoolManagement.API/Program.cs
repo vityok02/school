@@ -1,4 +1,6 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.API;
 using SchoolManagement.API.Employees;
 using SchoolManagement.API.Floors;
@@ -16,6 +18,10 @@ builder.Services.AddValidatorsFromAssemblyContaining<ValidatorMarker>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDefaultIdentity<IdentityUser<int>>(options =>
+    options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 
