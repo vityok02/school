@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data.Configurations;
 using SchoolManagement.Models;
 
 namespace SchoolManagement.Data;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
 {
     public School CurrentSchool { get; set; } = null!;
     public DbSet<Address> Addresses { get; set; } = null!;
@@ -15,7 +17,6 @@ public class AppDbContext : DbContext
     public DbSet<Position> Positions { get; set; } = null!;
     public DbSet<Student> Students { get; set; } = null!;
 
-
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
@@ -23,6 +24,8 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.ApplyConfiguration(new SchoolConfig());
         modelBuilder.ApplyConfiguration(new FloorConfig());
         modelBuilder.ApplyConfiguration(new RoomConfig());
