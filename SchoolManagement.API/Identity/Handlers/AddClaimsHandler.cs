@@ -8,6 +8,7 @@ namespace SchoolManagement.API.Identity.Handlers;
 class AddClaimsHandler
 {
     public static async Task<IResult> Handle(
+        HttpContext context,
         UserManager<IdentityUser<int>> userManager,
         [FromBody] UserClaimRequest claimRequest)
     {
@@ -24,6 +25,17 @@ class AddClaimsHandler
         }
 
         return Results.Empty;
+
+        //SysAdmin can give SchoolAdmin only
+        if (context.User.HasClaim(ClaimNames.Permissions, Permissions.CanManageSchoolAdmin))
+        {
+            foreach(var claim in claimRequest.Claims)
+            {
+                await userManager.AddClaimAsync(user, new Claim(ClaimNames.Permissions, ClaimValues.SchoolAdmin));
+            }
+        }
+
+        //SchoolAdmin can give Employee only
 
         //var admin = context.User.FindAll(c => c.Type == ClaimNames.Admin);
 
