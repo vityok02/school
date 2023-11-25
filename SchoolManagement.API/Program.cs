@@ -34,7 +34,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
-AuthenticationEndpoints.Map(app);
+IdentityEndpoints.Map(app);
 EmployeesEndpoints.Map(app);
 SchoolsEndpoints.Map(app);
 FloorsEndpoints.Map(app);
