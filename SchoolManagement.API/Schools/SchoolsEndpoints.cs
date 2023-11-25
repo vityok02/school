@@ -1,4 +1,5 @@
-﻿using SchoolManagement.API.Filters;
+﻿using SchoolManagement.API.Constants;
+using SchoolManagement.API.Filters;
 using SchoolManagement.API.Schools.Dtos;
 using SchoolManagement.API.Schools.Handlers;
 
@@ -10,18 +11,24 @@ public static class SchoolsEndpoints
     {
         var schoolsGroup = app.MapGroup("/schools")
             .WithTags("Schools group")
-            .WithOpenApi();
+            .WithOpenApi()
+            .RequireAuthorization();
 
         schoolsGroup.MapGet("/", GetAllSchoolsHandler.Handle)
             .WithSummary("Get all schools")
             .Produces<SchoolItemDto[]>()
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization(builder =>
+            {
+                builder.RequireClaim(ClaimNames.Permissions, Permissions.CanManageSchool);
+            });
 
         schoolsGroup.MapGet("/{schoolId:int}", GetSchoolByIdHandler.Handle)
             .AddEndpointFilter<SchoolIdExistsFilter>()
             .WithSummary("Get school by id")
             .Produces<SchoolDetailsDto>()
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization(Policies.SystemAdmin);
 
         schoolsGroup.MapPost("/", CreateSchoolHandler.Handle)
             .WithSummary("Create school")
