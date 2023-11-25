@@ -2,7 +2,7 @@
 
 namespace SchoolManagement.API.Identity;
 
-public static class AuthenticationEndpoints
+public static class IdentityEndpoints
 {
     public static void Map(WebApplication app)
     {
