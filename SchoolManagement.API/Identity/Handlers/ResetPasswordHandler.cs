@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using SchoolManagement.API.Identity.Requests;
 
 namespace SchoolManagement.API.Identity.Handlers;
@@ -21,7 +20,7 @@ public static class ResetPasswordHandler
 
         var responseObject = new
         {
-            UserName = request.UserName,
+            request.UserName,
             Token = resetToken
         };
 
