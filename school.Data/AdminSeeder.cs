@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SchoolManagement.Models.Constants;
+using SchoolManagement.Models.ClaimGroups;
 
 namespace SchoolManagement.Data;
 
@@ -25,6 +25,6 @@ public class AdminSeeder
             return;
         }
 
-        await userManager.AddClaimsAsync(admin, ClaimGroups.SystemAdminPermissions);
+        await userManager.AddClaimsAsync(admin, SystemAdminClaims.Claims);
     }
 }
