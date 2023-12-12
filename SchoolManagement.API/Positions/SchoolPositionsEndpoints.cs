@@ -1,4 +1,5 @@
-﻿using SchoolManagement.API.Filters;
+﻿using SchoolManagement.Models.Constants;
+using SchoolManagement.API.Filters;
 using SchoolManagement.API.Positions.Dtos;
 using SchoolManagement.API.Positions.Handlers.SchoolPositions;
 
@@ -8,30 +9,38 @@ public static class SchoolPositionsEndpoints
 {
     public static void Map(WebApplication app)
     {
-        var positionsGroup = app.MapGroup("/schools/{schoolId:int}/positions")
+        var managePositionsGroup = app.MapGroup("/schools/{schoolId:int}/positions")
             .AddEndpointFilter<SchoolIdExistsFilter>()
-            .WithTags("Schools positions group")
-            .WithOpenApi();
+            .WithTags("Manage schools positions group")
+            .WithOpenApi()
+            .RequireAuthorization(builder =>
+                builder.RequireClaim(ClaimNames.Permissions, Permissions.CanManageSchoolPositions));
 
-        positionsGroup.MapGet("/", GetAllSchoolPositionsHandler.Handle)
-            .WithSummary("Get positions by school")
+        var positionsInfoGroup = app.MapGroup("/schools/{schoolId:int}/positions")
+            .AddEndpointFilter<SchoolIdExistsFilter>()
+            .WithTags("Schools positions info group")
+            .WithOpenApi()
+            .RequireAuthorization(Policies.CanViewInfo);
+
+        positionsInfoGroup.MapGet("/", GetAllSchoolPositionsHandler.Handle)
+            .WithSummary("Get positions by school id")
             .WithName("SchoolPositions")
             .Produces<PositionDto[]>()
             .Produces(StatusCodes.Status404NotFound);
 
-        positionsGroup.MapGet("/{positionId:int}", GetSchoolPositionByIdHandler.Handle)
+        positionsInfoGroup.MapGet("/{positionId:int}", GetSchoolPositionByIdHandler.Handle)
             .WithSummary("Get school position by id")
             .WithName("SchoolPosition")
             .Produces<PositionDto>()
             .Produces(StatusCodes.Status404NotFound);
 
-        positionsGroup.MapPost("/", AddPositionToSchoolHandler.Handle)
+        managePositionsGroup.MapPost("/", AddPositionToSchoolHandler.Handle)
             .WithSummary("Add position to school")
             .Produces<PositionDto>()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound);
 
-        positionsGroup.MapDelete("/{positionId:int}", DeletePositionFromSchoolHandler.Handle)
+        managePositionsGroup.MapDelete("/{positionId:int}", DeletePositionFromSchoolHandler.Handle)
             .WithSummary("Delete position from school")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);

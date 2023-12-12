@@ -1,4 +1,5 @@
-﻿using SchoolManagement.API.Filters;
+﻿using SchoolManagement.Models.Constants;
+using SchoolManagement.API.Filters;
 using SchoolManagement.API.Rooms.Dtos;
 using SchoolManagement.API.Rooms.Handlers;
 
@@ -8,34 +9,42 @@ public static class RoomsEndpoints
 {
     public static void Map(WebApplication app)
     {
-        var roomsGroup = app.MapGroup("/schools/{schoolId:int}/rooms")
+        var manageRoomsGroup = app.MapGroup("/schools/{schoolId:int}/rooms")
             .AddEndpointFilter<SchoolIdExistsFilter>()
-            .WithTags("Rooms group")
-            .WithOpenApi();
+            .WithTags("Manage rooms group")
+            .WithOpenApi()
+            .RequireAuthorization(builder => 
+                builder.RequireClaim(ClaimNames.Permissions, Permissions.CanManageRooms));
+        
+        var roomsInfoGroup = app.MapGroup("/schools/{schoolId:int}/rooms")
+            .AddEndpointFilter<SchoolIdExistsFilter>()
+            .WithTags("Rooms info group")
+            .WithOpenApi()
+            .RequireAuthorization(Policies.CanViewInfo);
 
-        roomsGroup.MapGet("/", GetAllRoomsHandler.Handle)
+        roomsInfoGroup.MapGet("/", GetAllRoomsHandler.Handle)
             .WithSummary("Get all rooms")
             .Produces<RoomDto[]>()
             .Produces(StatusCodes.Status404NotFound);
 
-        roomsGroup.MapGet("/{roomId:int}", GetRoomByIdHandler.Handle)
+        roomsInfoGroup.MapGet("/{roomId:int}", GetRoomByIdHandler.Handle)
             .WithSummary("Get room by id")
             .Produces<RoomDto>()
             .Produces(StatusCodes.Status404NotFound);
 
-        roomsGroup.MapPost("/", CreateRoomHandler.Handle)
+        manageRoomsGroup.MapPost("/", CreateRoomHandler.Handle)
             .WithSummary("Create room")
             .Produces<RoomDto>()
             .ProducesValidationProblem()
             .Produces(StatusCodes.Status404NotFound);
 
-        roomsGroup.MapPut("/{roomId:int}", UpdateRoomHandler.Handle)
+        manageRoomsGroup.MapPut("/{roomId:int}", UpdateRoomHandler.Handle)
             .WithSummary("Update room")
             .Produces<RoomDto>()
             .ProducesValidationProblem()
             .Produces(StatusCodes.Status404NotFound);
 
-        roomsGroup.MapDelete("/{roomId:int}", DeleteRoomHandler.Handle)
+        manageRoomsGroup.MapDelete("/{roomId:int}", DeleteRoomHandler.Handle)
             .WithSummary("Delete room")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);

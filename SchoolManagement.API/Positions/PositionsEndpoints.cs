@@ -1,4 +1,5 @@
-﻿using SchoolManagement.API.Positions.Dtos;
+﻿using SchoolManagement.Models.Constants;
+using SchoolManagement.API.Positions.Dtos;
 using SchoolManagement.API.Positions.Handlers.Positions;
 
 namespace SchoolManagement.API.Positions;
@@ -7,34 +8,41 @@ public static class PositionsEndpoints
 {
     public static void Map(WebApplication app)
     {
-        var positionsGroup = app.MapGroup("/positions")
-            .WithTags("Positions group")
-            .WithOpenApi();
+        var managePositionsGroup = app.MapGroup("/positions")
+            .WithTags("Manage positions group")
+            .WithOpenApi()
+            .RequireAuthorization(builder =>
+                builder.RequireClaim(ClaimNames.Permissions, Permissions.CanManagePositions));
 
-        positionsGroup.MapGet("/", GetAllPositionsHandler.Handle)
+        var positionsInfoGroup = app.MapGroup("/positions")
+            .WithTags("Positions info group")
+            .WithOpenApi()
+            .RequireAuthorization(Policies.CanViewInfo);
+
+        positionsInfoGroup.MapGet("/", GetAllPositionsHandler.Handle)
             .WithSummary("Get positions")
             .Produces<PositionDto[]>()
             .Produces(StatusCodes.Status404NotFound);
 
-        positionsGroup.MapGet("/{positionId:int}", GetPositionByIdHandler.Handle)
+        positionsInfoGroup.MapGet("/{positionId:int}", GetPositionByIdHandler.Handle)
             .WithSummary("Get position by id")
             .WithName("PositionDetails")
             .Produces<PositionDto>()
             .Produces(StatusCodes.Status404NotFound);
 
-        positionsGroup.MapPost("/", CreatePositionHandler.Handle)
+        managePositionsGroup.MapPost("/", CreatePositionHandler.Handle)
             .WithSummary("Create position")
             .Produces<PositionDto>()
             .ProducesValidationProblem()
             .Produces(StatusCodes.Status404NotFound);
 
-        positionsGroup.MapPut("/{positionId:int}", UpdatePositionHandler.Handle)
+        managePositionsGroup.MapPut("/{positionId:int}", UpdatePositionHandler.Handle)
             .WithSummary("Update position")
             .Produces<PositionDto>()
             .ProducesValidationProblem()
-            .Produces(StatusCodes.Status404NotFound); ;
+            .Produces(StatusCodes.Status404NotFound);
 
-        positionsGroup.MapDelete("/{positionId:int}", DeletePositionHander.Handle)
+        managePositionsGroup.MapDelete("/{positionId:int}", DeletePositionHander.Handle)
             .WithSummary("Delete position")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);
