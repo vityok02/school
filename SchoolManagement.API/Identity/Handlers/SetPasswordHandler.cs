@@ -17,7 +17,7 @@ public static class SetPasswordHandler
             return Results.NotFound("User is not found");
         }
 
-        if (request.NewPassword != request.ConfirmedPassword)
+        if (!request.IsPasswordConfirmed())
         {
             return Results.Problem("Passwords are not equal");
         }

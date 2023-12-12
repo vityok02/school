@@ -1,3 +1,6 @@
-﻿namespace SchoolManagement.API.Identity.Requests;
+﻿using Azure.Core;
 
-public sealed record SetPasswordRequest(string UserName, string Token, string NewPassword, string ConfirmedPassword);
+namespace SchoolManagement.API.Identity.Requests;
+
+public sealed record SetPasswordRequest(string UserName, string Token, string NewPassword, string ConfirmedPassword)
+    : PasswordRequest(NewPassword, ConfirmedPassword);
