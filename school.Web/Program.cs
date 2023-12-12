@@ -5,7 +5,7 @@ using SchoolManagement.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDependencies(builder.Configuration);
+builder.Services.AddServices(builder.Configuration);
 
 builder.Services.AddMvc();
 

@@ -7,7 +7,7 @@ namespace SchoolManagement.Data;
 
 public static class Services
 {
-    public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("localdb");
 
