@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SchoolManagement.API.Identity.Requests;
+using SchoolManagement.Models.Constants;
+using System.Security.Claims;
 
 namespace SchoolManagement.API.Identity.Handlers;
 
@@ -11,7 +14,7 @@ public static class RegistrationHandler
         [FromBody] AuthRequest request)
     {
         var user = new IdentityUser<int> { UserName = request.UserName};
-        
+
         var result = await userManager.CreateAsync(user, request.Password);
 
         if(!result.Succeeded)
@@ -20,6 +23,9 @@ public static class RegistrationHandler
         }
 
         await signInManager.SignInAsync(user, false);
+
+        var claim = new Claim(ClaimNames.Permissions, Permissions.CanViewInfo);
+        await userManager.AddClaimAsync(user, claim);
 
         return Results.Ok();
     }
