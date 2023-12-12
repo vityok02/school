@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using SchoolManagement.API.Constants;
+using SchoolManagement.API;
 using SchoolManagement.Data;
+using SchoolManagement.Models.Constants;
 
 static class ServiceCollectionExtensions
 {
@@ -33,11 +34,9 @@ static class ServiceCollectionExtensions
 
         services.AddAuthorization(options =>
         {
-            options.AddPolicy(Policies.SystemAdmin, policy =>
+            options.AddPolicy(Policies.CanViewInfo, policy =>
             {
-                policy.RequireClaim(ClaimNames.Permissions, Permissions.CanManageSchool);
-                policy.RequireClaim(ClaimNames.Permissions, Permissions.CanManagePositions);
-                policy.RequireClaim(ClaimNames.Permissions, Permissions.CanManageSchoolAdmin);
+                policy.RequireClaim(ClaimNames.Permissions, Permissions.CanViewInfo);
             });
         });
 
