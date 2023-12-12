@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.API;
 using SchoolManagement.API.Employees;
 using SchoolManagement.API.Floors;
@@ -29,6 +31,27 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = "/swagger";
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     });
+}
+
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+
+try
+{
+    using var context = services.GetRequiredService<AppDbContext>();
+
+    context.Database.EnsureCreated();
+    context.Database.Migrate();
+    await DataSeeder.SeedData(context);
+
+    var userManager = services.GetService<UserManager<IdentityUser<int>>>();
+
+    await AdminSeeder.SeedAdmin(userManager!);
+}
+catch (Exception ex)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Database was not created");
 }
 
 app.UseAuthentication();
