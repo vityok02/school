@@ -1,0 +1,22 @@
+﻿@page "/schools/create"
+
+@using SchoolManagement.Client.Features.Schools.Dtos
+@inject ISchoolService schoolService
+@inject NavigationManager navManager
+@rendermode RenderMode.InteractiveServer
+
+<PageTitle>Create school</PageTitle>
+
+<h3>Add school</h3>
+
+<Form school="@school" OnValidSubmit="CreateSchool" ButtonName="Create school" RedirectPath="/schools"/>
+
+@code {
+    School school = new();
+
+    async Task CreateSchool()
+    {
+        var id = await schoolService.CreateSchool(school);
+        navManager.NavigateTo($"/schools/{id}");
+    }
+}

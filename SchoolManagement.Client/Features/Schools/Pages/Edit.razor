@@ -1,0 +1,29 @@
+﻿@page "/schools/{id:int}/edit"
+
+@using SchoolManagement.Client.Features.Schools.Dtos
+@rendermode RenderMode.InteractiveServer
+@inject ISchoolService schoolService
+
+<PageTitle>Edit school</PageTitle>
+
+<h3>Edit school</h3>
+
+<Form school="@school" OnValidSubmit="EditSchool" ButtonName="Save changes" RedirectPath="@redirectPath" />
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    School school = new();
+    string redirectPath = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        school = await schoolService.GetSchool(Id);
+        redirectPath = $"/schools/{Id}";
+    }
+
+    public async Task EditSchool()
+    {
+        await schoolService.UpdateSchool(school);
+    }
+}

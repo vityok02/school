@@ -1,0 +1,53 @@
+﻿@page "/schools"
+
+@using SchoolManagement.Client.Features.Schools.Dtos
+@inject ISchoolService schoolService
+@rendermode RenderMode.InteractiveServer
+
+<PageTitle>Schools</PageTitle>
+
+<h3>Schools</h3>
+
+<NavLink href="schools/create">Add school</NavLink>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>City</th>
+            <th>Street</th>
+            <th>Opening date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in schools)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.City</td>
+                <td>@item.Street</td>
+                <td>@item.OpeningDate.ToShortDateString()</td>
+                <td>
+                    <a href="/schools/@item.Id">View</a>
+                    <button type="submit" @onclick="@(() => DeleteSchool(@item.Id))">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    IEnumerable<SchoolItem>? schools = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        schools = await schoolService.GetSchools();
+    }
+
+    public async Task DeleteSchool(int id)
+    {
+        await schoolService.DeleteSchool(id);
+        schools = await schoolService.GetSchools();
+    }
+}
