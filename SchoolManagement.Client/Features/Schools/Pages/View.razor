@@ -1,0 +1,36 @@
+﻿@page "/schools/{id:int}"
+@using SchoolManagement.Client.Features.Schools.Dtos
+
+@inject ISchoolService schoolService
+
+<PageTitle>School info</PageTitle>
+
+<h3>School info</h3>
+
+<div>Name: </div>
+<div>@school.Name</div>
+<div>Country: </div>
+<div>@school.Country</div>
+<div>City: </div>
+<div>@school.City</div>
+<div>Street: </div>
+<div>@school.Street</div>
+<div>Postal code: </div>
+<div>@school.PostalCode</div>
+<div>Opening date: </div>
+<div>@school.OpeningDate.ToShortDateString()</div>
+
+<a href="/schools">Back</a>
+<a href="/schools/@Id/edit">Edit</a>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    School school = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        school = await schoolService.GetSchool(Id);
+    }
+}

@@ -1,0 +1,60 @@
+﻿@using SchoolManagement.Client.Features.Schools.Dtos
+@using Blazored.FluentValidation
+
+<EditForm Model="@school" OnValidSubmit="@OnValidSubmit" FormName="Form">
+    <FluentValidationValidator />
+    <label>
+        Name:<br />
+        <InputText @bind-Value="school.Name" />
+        <ValidationMessage For="@(() => school.Name)" />
+    </label>
+    <br />
+    <label>
+        Country:<br />
+        <InputText @bind-Value="school.Country" />
+        <ValidationMessage For="@(() => school.Country)" />
+    </label>
+    <br />
+    <label>
+        City:<br />
+        <InputText @bind-Value="school.City" />
+        <ValidationMessage For="@(() => school.City)" />
+    </label>
+    <br />
+    <label>
+        Street:<br />
+        <InputText @bind-Value="school.Street" />
+        <ValidationMessage For="@(() => school.Street)" />
+    </label>
+    <br />
+    <label>
+        Postal code:<br />
+        <InputNumber @bind-Value="school.PostalCode" />
+        <ValidationMessage For="@(() => school.PostalCode)" />
+    </label>
+    <br />
+    <label>
+        Opening date: <br />
+        <InputDate @bind-Value="school.OpeningDate"/>
+        <ValidationMessage For="@(() => school.OpeningDate)" />
+    </label>
+    <a href="@RedirectPath">Back</a>
+    <button type="submit">@ButtonName</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public School school { get; set; }
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+    [Parameter]
+    public string RedirectPath { get; set; } = "";
+    [Parameter]
+    public string ButtonName { get; set; } = "Save";
+
+    protected override async Task OnInitializedAsync()
+    {
+        school.OpeningDate = new DateTime(2000, 01, 01);
+        await Task.CompletedTask;
+    }
+}
