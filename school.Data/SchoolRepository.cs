@@ -44,4 +44,60 @@ public class SchoolRepository : Repository<School>, ISchoolRepository
 
         return await schools.ToArrayAsync();
     }
+
+    public async Task<IEnumerable<School>> GetSchools(
+        string? searchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int page,
+        int pageSize)
+    {
+        IQueryable<School> schoolsQuery = _dbContext
+            .Schools
+            .Include(s => s.Address);
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            schoolsQuery = schoolsQuery.Where(s =>
+                s.Name.Contains(searchTerm) ||
+                s.Address.Country.Contains(searchTerm) ||
+                s.Address.City.Contains(searchTerm) ||
+                s.Address.Street.Contains(searchTerm));
+        }
+
+        Expression<Func<School, object>> keySelector = GetSortProperty(sortColumn);
+
+        if (sortOrder?.ToLower() == "desc")
+        {
+            schoolsQuery = schoolsQuery.OrderByDescending(keySelector);
+        }
+        else
+        {
+            schoolsQuery = schoolsQuery.OrderBy(keySelector);
+        }
+
+        var schools = await schoolsQuery
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToArrayAsync();
+
+        return schools;
+    }
+
+    public async Task<bool> DoesSchoolExist(int schoolId)
+    {
+        return await _dbContext.Schools.AnyAsync(s => s.Id == schoolId);
+    }
+
+    private static Expression<Func<School, object>> GetSortProperty(string? sortColumn)
+    {
+        return sortColumn?.ToLower() switch
+        {
+            "name" => school => school.Name,
+            "country" => school => school.Address.Country,
+            "city" => school => school.Address.City,
+            "street" => school => school.Address.Street,
+            _ => school => school.Id
+        };
+    }
 }
