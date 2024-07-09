@@ -29,7 +29,7 @@ public static class CreateEmployeeHandler
             && e.LastName == employeeDto.LastName
             && e.Age == employeeDto.Age)) 
         {
-            return Results.BadRequest("Such employee already exists");
+            return Results.Conflict(EmployeeErrorMessages.Dublicate);
         }
 
         var employee = new Employee(employeeDto.FirstName!, employeeDto.LastName!, employeeDto.Age)

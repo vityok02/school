@@ -14,7 +14,7 @@ public static class DeleteFloorHandler
 
         if (floor is null || floor.SchoolId != schoolId)
         {
-            return Results.NotFound("No such floor found");
+            return Results.NotFound(FloorErrorMessages.NotFound);
         }
 
         await repository.DeleteAsync(floor);

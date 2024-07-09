@@ -13,7 +13,7 @@ public static class DeleteSchoolHandler
 
         if (school is null)
         {
-            return Results.NotFound("No such school found");
+            return Results.NotFound(SchoolErrorMessages.NotFound);
         }
 
         await repository.DeleteAsync(school);

@@ -15,7 +15,7 @@ public static class GetEmployeeByIdHandler
 
         if (employee is null)
         {
-            return Results.NotFound("No such employee found");
+            return Results.NotFound(EmployeeErrorMessages.NotFound);
         }
 
         var employeeDto = employee.ToEmployeeDto();

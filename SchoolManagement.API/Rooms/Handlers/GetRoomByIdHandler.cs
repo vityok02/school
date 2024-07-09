@@ -15,7 +15,7 @@ public static class GetRoomByIdHandler
 
         if (room is null)
         {
-            return Results.NotFound("No such room found");
+            return Results.NotFound(RoomErrorMessages.RoomNotFound);
         }
 
         var roomDto = room.ToRoomDto();

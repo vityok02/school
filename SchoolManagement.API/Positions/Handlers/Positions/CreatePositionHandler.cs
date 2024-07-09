@@ -26,7 +26,7 @@ namespace SchoolManagement.API.Positions.Handlers.Positions
 
             if (existingPositions.Any())
             {
-                return Results.BadRequest($"Position '{positionDto.Name}' already exists");
+                return Results.Conflict(PositionErrorMessages.Dublicate);
             }
 
             var position = new Position()

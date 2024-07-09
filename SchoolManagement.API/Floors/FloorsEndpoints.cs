@@ -25,14 +25,14 @@ public static class FloorsEndpoints
 
         floorsGroup.MapPost("/", CreateFloorHandler.Handle)
             .WithSummary("Create floor")
-            .Produces<FloorDto>()
-            .ProducesValidationProblem()
+            .Produces<FloorDto>(StatusCodes.Status201Created)
+            .Produces(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status404NotFound);
 
         floorsGroup.MapPut("/{floorId:int}", UpdateFloorHandler.Handle)
             .WithSummary("Update floor")
             .Produces<FloorDto>()
-            .ProducesValidationProblem()
+            .Produces(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status404NotFound);
 
         floorsGroup.MapDelete("/{floorId:int}", DeleteFloorHandler.Handle)

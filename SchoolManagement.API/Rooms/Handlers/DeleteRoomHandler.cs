@@ -14,7 +14,7 @@ public static class DeleteRoomHandler
 
         if (room is null || room.Floor.SchoolId != schoolId)
         {
-            return Results.NotFound("No such room found");
+            return Results.NotFound(RoomErrorMessages.RoomNotFound);
         }
 
         await repository.DeleteAsync(room);

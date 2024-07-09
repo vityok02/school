@@ -20,19 +20,21 @@ public static class EmployeesEndpoints
 
         employeesGroup.MapGet("/{employeeId:int}", GetEmployeeByIdHandler.Handle)
             .WithSummary("Get employee by id")
-            .Produces<EmployeeDto>()
+            .Produces<EmployeeDto>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
         employeesGroup.MapPost("/", CreateEmployeeHandler.Handle)
             .WithSummary("Create employee")
-            .Produces<EmployeeDto>()
+            .Produces<EmployeeDto>(StatusCodes.Status201Created)
             .ProducesValidationProblem()
+            .Produces(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status404NotFound);
 
         employeesGroup.MapPut("/{employeeId:int}", UpdateEmployeeHandler.Handle)
             .WithSummary("Update employee")
             .Produces<EmployeeDto>()
             .ProducesValidationProblem()
+            .Produces(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status404NotFound);
 
         employeesGroup.MapDelete("/{employeeId:int}", DeleteEmployeeHandler.Handle)

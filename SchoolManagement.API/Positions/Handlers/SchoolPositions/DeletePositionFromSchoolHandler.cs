@@ -16,7 +16,7 @@ public class DeletePositionFromSchoolHandler
         var position = await positionRepository.GetAsync(positionId);
         if (position is null)
         {
-            return Results.NotFound("No such position found");
+            return Results.NotFound(PositionErrorMessages.NotFound);
         }
 
         school!.Positions.Remove(position);

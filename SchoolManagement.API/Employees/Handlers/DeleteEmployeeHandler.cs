@@ -14,7 +14,7 @@ public static class DeleteEmployeeHandler
 
         if (employee is null || employee.SchoolId != schoolId)
         {
-            return Results.NotFound("No such employee found");
+            return Results.NotFound(EmployeeErrorMessages.NotFound);
         }
 
         await repository.DeleteAsync(employee!);

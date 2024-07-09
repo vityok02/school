@@ -25,14 +25,14 @@ public static class RoomsEndpoints
 
         roomsGroup.MapPost("/", CreateRoomHandler.Handle)
             .WithSummary("Create room")
-            .Produces<RoomDto>()
-            .ProducesValidationProblem()
+            .Produces<RoomDto>(StatusCodes.Status201Created)
+            .Produces(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status404NotFound);
 
         roomsGroup.MapPut("/{roomId:int}", UpdateRoomHandler.Handle)
             .WithSummary("Update room")
             .Produces<RoomDto>()
-            .ProducesValidationProblem()
+            .Produces(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status404NotFound);
 
         roomsGroup.MapDelete("/{roomId:int}", DeleteRoomHandler.Handle)

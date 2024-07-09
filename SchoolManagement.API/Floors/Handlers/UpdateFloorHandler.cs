@@ -16,7 +16,7 @@ public static class UpdateFloorHandler
 
         if (floor is null)
         {
-            return Results.NotFound("No such floor found");
+            return Results.NotFound(FloorErrorMessages.NotFound);
         }
 
         var floors = await repository
@@ -24,7 +24,7 @@ public static class UpdateFloorHandler
 
         if (floors.Any(f => f.Number == floorDto.Number))
         {
-            return Results.BadRequest("A floor with this number already exists");
+            return Results.Conflict(FloorErrorMessages.Dublicate);
         }
 
         if (floorDto.Number != 0)

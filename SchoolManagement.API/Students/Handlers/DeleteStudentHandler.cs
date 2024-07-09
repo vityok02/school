@@ -17,7 +17,7 @@ public static class DeleteStudentHandler
 
         if (student is null)
         {
-            return Results.NotFound("No such student found");
+            return Results.NotFound(StudentErrorMessages.NotFound);
         }
 
         await repository.DeleteAsync(student);

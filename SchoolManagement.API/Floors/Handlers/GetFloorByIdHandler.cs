@@ -15,10 +15,10 @@ public static class GetFloorByIdHandler
 
         if (floor is null)
         {
-            return Results.NotFound("No such floor found");
+            return Results.NotFound(FloorErrorMessages.NotFound);
         }
 
         var floorDto = floor.ToFloorDto();
-        return Results.Json(floorDto);
+        return Results.Ok(floorDto);
     }
 }

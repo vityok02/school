@@ -19,7 +19,7 @@ public static class GetStudentByIdHandler
 
         if (student is null)
         {
-            return Results.NotFound("No such student found");
+            return Results.NotFound(StudentErrorMessages.NotFound);
         }
 
         var studentDto = student.ToStudentDto();

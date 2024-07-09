@@ -24,15 +24,17 @@ public static class PositionsEndpoints
 
         positionsGroup.MapPost("/", CreatePositionHandler.Handle)
             .WithSummary("Create position")
-            .Produces<PositionDto>()
+            .Produces<PositionDto>(StatusCodes.Status201Created)
             .ProducesValidationProblem()
+            .Produces(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status404NotFound);
 
         positionsGroup.MapPut("/{positionId:int}", UpdatePositionHandler.Handle)
             .WithSummary("Update position")
             .Produces<PositionDto>()
             .ProducesValidationProblem()
-            .Produces(StatusCodes.Status404NotFound); ;
+            .Produces(StatusCodes.Status409Conflict)
+            .Produces(StatusCodes.Status404NotFound);
 
         positionsGroup.MapDelete("/{positionId:int}", DeletePositionHander.Handle)
             .WithSummary("Delete position")

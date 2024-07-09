@@ -14,8 +14,7 @@ public static class SchoolsEndpoints
 
         schoolsGroup.MapGet("/", GetAllSchoolsHandler.Handle)
             .WithSummary("Get all schools")
-            .Produces<SchoolItemDto[]>()
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces<SchoolItemDto[]>();
 
         schoolsGroup.MapGet("/{schoolId:int}", GetSchoolByIdHandler.Handle)
             .AddEndpointFilter<SchoolIdExistsFilter>()
@@ -25,9 +24,8 @@ public static class SchoolsEndpoints
 
         schoolsGroup.MapPost("/", CreateSchoolHandler.Handle)
             .WithSummary("Create school")
-            .Produces<SchoolDetailsDto>()
-            .ProducesValidationProblem()
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces<SchoolDetailsDto>(StatusCodes.Status201Created)
+            .ProducesValidationProblem();
 
         schoolsGroup.MapPut("/{schoolId:int}", UpdateSchoolHandler.Handle)
             .AddEndpointFilter<SchoolIdExistsFilter>()

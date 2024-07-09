@@ -16,14 +16,14 @@ public static class UpdateRoomHandler
 
         if (rooms.Any(r => r.Number == roomDto.Number))
         {
-            return Results.BadRequest("Room with this number already exists");
+            return Results.Conflict(RoomErrorMessages.Dublicate);
         }
 
         var room = await repository.GetRoomAsync(roomId);
 
         if (room is null || room.Floor.SchoolId != schoolId)
         {
-            return Results.NotFound("No such room found");
+            return Results.NotFound(RoomErrorMessages.RoomNotFound);
         }
 
         room.Number = roomDto.Number;

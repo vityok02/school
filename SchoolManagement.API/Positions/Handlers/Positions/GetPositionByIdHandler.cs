@@ -14,7 +14,7 @@ public static class GetPositionByIdHandler
 
         if (position is null)
         {
-            return Results.NotFound("No such position found");
+            return Results.NotFound(PositionErrorMessages.NotFound);
         }
 
         var positionDto = position.ToPositionDto();

@@ -16,7 +16,7 @@ public static class CreateFloorHandler
 
         if (floors.Any(f => f.Number == floorDto.Number))
         {
-            return Results.BadRequest("A floor with this number already exists");
+            return Results.Conflict(FloorErrorMessages.Dublicate);
         }
 
         Floor floor = new()

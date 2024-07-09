@@ -15,21 +15,16 @@ public static class AddPositionToSchoolHandler
     {
         var position = await positionRepository.GetPosition(positionIdDto.Id);
 
-        if (positionIdDto.Id == 0)
-        {
-            return Results.BadRequest("Invalid position id");
-        }
-
         if (position is null)
         {
-            return Results.NotFound($"Position with id {positionIdDto.Id} not found");
+            return Results.NotFound(PositionErrorMessages.NotFound);
         }
 
         var school = await schoolRepository.GetSchoolAsync(schoolId);
 
         if (school.Positions.Any(p => p.Id == position.Id))
         {
-            return Results.BadRequest("Such position already exists in this school");
+            return Results.Conflict(PositionErrorMessages.DublicateInSchool);
         }
 
         school.Positions.Add(position);

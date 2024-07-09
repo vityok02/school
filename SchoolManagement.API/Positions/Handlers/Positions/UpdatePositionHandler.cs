@@ -24,14 +24,14 @@ public class UpdatePositionHandler
 
         if (positions.Any(p => p.Name == positionDto.Name && p.Id != positionDto.Id))
         {
-            return Results.BadRequest("There is already a position with that name");
+            return Results.Conflict(PositionErrorMessages.Dublicate);
         }
 
         var position = await repository.GetAsync(positionId);
 
         if (position is null)
         {
-            return Results.NotFound("No such position found");
+            return Results.NotFound(PositionErrorMessages.NotFound);
         }
 
         position.Name = positionDto.Name;

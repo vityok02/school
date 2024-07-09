@@ -15,7 +15,7 @@ public static class CreateStudentHandler
         [FromBody] StudentCreateDto studentDto)
     {
         var validationResult = await validator.ValidateAsync(studentDto);
-
+        
         if (!validationResult.IsValid)
         {
             return Results.ValidationProblem(validationResult.ToDictionary());
@@ -28,7 +28,7 @@ public static class CreateStudentHandler
             && e.LastName == studentDto.LastName
             && e.Age == studentDto.Age))
         {
-            return Results.BadRequest("Such employee already exists");
+            return Results.Conflict(StudentErrorMessages.Dublicate);
         }
 
         var student = new Student(

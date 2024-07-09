@@ -28,14 +28,14 @@ public static class UpdateEmployeeHandler
             && e.LastName == employeeDto.LastName
             && e.Age == employeeDto.Age))
         {
-            return Results.BadRequest("Such employee already exists");
+            return Results.Conflict(EmployeeErrorMessages.Dublicate);
         }
 
         var employee = await employeeRepository.GetAsync(employeeId);
 
         if (employee is null || employee.SchoolId != schoolId)
         {
-            return Results.NotFound("No such employee found");
+            return Results.NotFound(EmployeeErrorMessages.NotFound);
         }
 
         employee!.UpdateInfo(employeeDto.FirstName, employeeDto.LastName, employeeDto.Age);

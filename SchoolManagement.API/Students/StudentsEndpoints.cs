@@ -25,14 +25,16 @@ public static class StudentsEndpoints
 
         studentsGroup.MapPost("/", CreateStudentHandler.Handle)
             .WithSummary("Create student")
-            .Produces<StudentDto>()
+            .Produces<StudentDto>(StatusCodes.Status201Created)
             .ProducesValidationProblem()
+            .Produces(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status404NotFound);
 
         studentsGroup.MapPut("/{studentId:int}", UpdateStudentHandler.Handle)
             .WithSummary("Create student")
             .Produces<StudentDto>()
             .ProducesValidationProblem()
+            .Produces(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status404NotFound);
 
         studentsGroup.MapDelete("/{studentId:int}", DeleteStudentHandler.Handle)

@@ -12,7 +12,7 @@ public static class DeletePositionHander
 
         if (position is null)
         {
-            return Results.NotFound("No such positionFound");
+            return Results.NotFound(PositionErrorMessages.NotFound);
         }
 
         await repository.DeleteAsync(position);

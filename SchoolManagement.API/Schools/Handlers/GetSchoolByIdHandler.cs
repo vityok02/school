@@ -12,7 +12,7 @@ public static class GetSchoolByIdHandler
 
         if (school is null)
         {
-            return Results.NotFound("No such school found");
+            return Results.NotFound(SchoolErrorMessages.NotFound);
         }
 
         var schoolDto = school.ToSchoolDetailsDto();

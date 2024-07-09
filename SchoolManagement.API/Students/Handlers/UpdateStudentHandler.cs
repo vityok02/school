@@ -30,7 +30,7 @@ public static class UpdateStudentHandler
             && e.LastName == studentDto.LastName
             && e.Age == studentDto.Age))
         {
-            return Results.BadRequest("Such student already exists");
+            return Results.Conflict(StudentErrorMessages.Dublicate);
         }
 
         var student = (
@@ -40,7 +40,7 @@ public static class UpdateStudentHandler
 
         if (student is null) 
         {
-            return Results.NotFound("No such student found");
+            return Results.NotFound(StudentErrorMessages.NotFound);
         }
 
         student.UpdateInfo(studentDto.FirstName, studentDto.LastName, studentDto.Age, studentDto.Group);

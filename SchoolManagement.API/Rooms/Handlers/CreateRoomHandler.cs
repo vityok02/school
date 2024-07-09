@@ -17,7 +17,7 @@ public static class CreateRoomHandler
 
         if (rooms.Any(r => r.Number == roomDto.Number))
         {
-            return Results.BadRequest("Room with this number already exists");
+            return Results.Conflict(RoomErrorMessages.Dublicate);
         }
 
         var room = new Room()
@@ -31,7 +31,7 @@ public static class CreateRoomHandler
 
         if (floor is null)
         {
-            return Results.NotFound("The floor you want to add this room to was not found");
+            return Results.NotFound(RoomErrorMessages.FloorNotFound);
         }
 
         room.Floor = floor;

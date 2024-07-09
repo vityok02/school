@@ -27,8 +27,8 @@ public static class SchoolPositionsEndpoints
 
         positionsGroup.MapPost("/", AddPositionToSchoolHandler.Handle)
             .WithSummary("Add position to school")
-            .Produces<PositionDto>()
-            .Produces(StatusCodes.Status400BadRequest)
+            .Produces<PositionDto>(StatusCodes.Status201Created)
+            .Produces(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status404NotFound);
 
         positionsGroup.MapDelete("/{positionId:int}", DeletePositionFromSchoolHandler.Handle)

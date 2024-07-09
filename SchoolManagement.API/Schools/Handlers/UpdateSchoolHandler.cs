@@ -24,7 +24,7 @@ public static class UpdateSchoolHandler
 
         if (school is null) 
         {
-            return Results.NotFound("No such school found");
+            return Results.NotFound(SchoolErrorMessages.NotFound);
         }
 
         school.Name = schoolDto.Name;

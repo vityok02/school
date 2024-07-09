@@ -20,6 +20,8 @@ public static class CreateSchoolHandler
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
+
+
         var address = new Address()
         {
             Country = schoolDto.Country,
