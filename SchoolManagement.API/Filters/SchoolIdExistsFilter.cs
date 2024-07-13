@@ -1,4 +1,4 @@
-﻿using SchoolManagement.API.Schools;
+﻿using SchoolManagement.API.Features.Schools;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.API.Filters;
@@ -26,7 +26,7 @@ public class SchoolIdExistsFilter : IEndpointFilter
 
         if (!exist)
         {
-            return Results.NotFound(SchoolErrorMessages.NotFound);
+            return Results.NotFound(SchoolErrors.NotFound);
         }
 
         return await next(efiContext);
