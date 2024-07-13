@@ -45,12 +45,10 @@ public class SchoolRepository : Repository<School>, ISchoolRepository
         return await schools.ToArrayAsync();
     }
 
-    public async Task<IEnumerable<School>> GetSchools(
+    public IQueryable<School> GetSchoolsQuery(
         string? searchTerm,
         string? sortColumn,
-        string? sortOrder,
-        int page,
-        int pageSize)
+        string? sortOrder)
     {
         IQueryable<School> schoolsQuery = _dbContext
             .Schools
@@ -76,12 +74,7 @@ public class SchoolRepository : Repository<School>, ISchoolRepository
             schoolsQuery = schoolsQuery.OrderBy(keySelector);
         }
 
-        var schools = await schoolsQuery
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToArrayAsync();
-
-        return schools;
+        return schoolsQuery;
     }
 
     public async Task<bool> DoesSchoolExist(int schoolId)
