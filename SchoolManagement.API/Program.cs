@@ -1,12 +1,12 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.API;
-using SchoolManagement.API.Features.Employees;
-using SchoolManagement.API.Features.Floors;
-using SchoolManagement.API.Features.Positions;
-using SchoolManagement.API.Features.Rooms;
-using SchoolManagement.API.Features.Schools;
-using SchoolManagement.API.Features.Students;
+using SchoolManagement.API.Employees;
+using SchoolManagement.API.Floors;
+using SchoolManagement.API.Positions;
+using SchoolManagement.API.Rooms;
+using SchoolManagement.API.Schools;
+using SchoolManagement.API.Students;
 using SchoolManagement.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +14,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDependencies(builder.Configuration);
 
 builder.Services.AddValidatorsFromAssemblyContaining<ValidatorMarker>();
-builder.Services.AddScoped<ISchoolService, SchoolService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

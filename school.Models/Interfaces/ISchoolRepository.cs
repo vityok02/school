@@ -8,5 +8,5 @@ public interface ISchoolRepository : IRepository<School>
     Task<School> GetSchoolAsync(int id);
     Task<IEnumerable<School>> GetSchools(Expression<Func<School, bool>> predicate = null!,
         Func<IQueryable<School>, IOrderedQueryable<School>> orderBy = null!);
-    IQueryable<School> GetSchoolsQuery(string? searchTerm, string? sortColumn, string? sortOrder);
+    Task<IEnumerable<School>> GetSchools(string? searchTerm, string? sortColumn, string? sortOrder, int page, int pageSize);
 }
