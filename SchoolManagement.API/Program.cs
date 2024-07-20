@@ -14,7 +14,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDependencies(builder.Configuration);
 
 builder.Services.AddValidatorsFromAssemblyContaining<ValidatorMarker>();
-builder.Services.AddScoped<ISchoolService, SchoolService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

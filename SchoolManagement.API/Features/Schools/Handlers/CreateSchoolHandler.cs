@@ -1,8 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.API.Features.Schools;
 using SchoolManagement.API.Features.Schools.Dtos;
-using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -13,7 +11,8 @@ public static class CreateSchoolHandler
     public static async Task<IResult> Handle(
         HttpContext context,
         IValidator<ISchoolDto> validator,
-        ISchoolService schoolService,
+        ISchoolRepository repository,
+        LinkGenerator linkGenerator,
         [FromBody] SchoolCreateDto schoolDto)
     {
         var validationResult = await validator.ValidateAsync(schoolDto);
@@ -23,8 +22,28 @@ public static class CreateSchoolHandler
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
-        CreatedLink<SchoolDto> link = await schoolService.CreateSchool(context, schoolDto);
+        var address = new Address()
+        {
+            Country = schoolDto.Country,
+            City = schoolDto.City,
+            Street = schoolDto.Street,
+            PostalCode = schoolDto.PostalCode,
+        };
 
-        return Results.Created(link.Uri, link.Value);
+        var school = new School()
+        {
+            Name = schoolDto.Name,
+            Address = address,
+            OpeningDate = schoolDto.OpeningDate,
+        };
+
+        await repository.AddAsync(school);
+
+        var uri = linkGenerator.GetUriByName(context, "SchoolInfo", new
+        {
+            schoolId = school.Id
+        });
+
+        return Results.Created(uri, school.ToSchoolDto());
     }
 }

@@ -1,18 +1,11 @@
-﻿using SchoolManagement.API.Abstractions;
-
-namespace SchoolManagement.API.Features.Schools;
+﻿namespace SchoolManagement.API.Features.Schools;
 
 public static class SchoolErrors
 {
-    public static readonly Error Dublicate = new(
-        "Schools.Dublicate",
-        "A school with this data set already exists");
+    public const string Dublicate =
+        "A school with this data set already exists";
 
-    public static readonly Error NotFound = new(
-        "Schools.NotFound",
-        "No such school found");
+    public const string NotFound =
+        "No such school found";
 
-    public static Error NotValid(string error) => new(
-        "Schools.NotValid",
-        error);
 }
