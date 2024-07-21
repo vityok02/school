@@ -1,0 +1,47 @@
+﻿@using SchoolManagement.Client.Pagination
+<h3>Pagination</h3>
+
+<a href="@Uri?page=1&pageSize=@Result.PageSize" class="@(Result.HasPreviousPage ? "" : "disabled")">&laquo;</a>
+<a href="@prevPage" class="@(Result.HasPreviousPage? "" : "disabled")">&lt;</a>
+<a href="@nextPage" class="@(Result.HasNextPage ? "" : "disabled")">&gt;</a>
+<a href="@Uri/?page=@Result.LastPage&pageSize=@Result.PageSize" class="@(Result.HasNextPage? "" : "disabled")">&raquo;</a>
+
+@code {
+    [Parameter]
+    public string Uri { get; set; } = "";
+    [Parameter]
+    public BasePagedList Result { get; set; } = default!;
+
+    string firstPage => $"{Uri}?page=1&pageSize={Result.PageSize}";
+    string prevPage = "";
+    string nextPage = "";
+    string lastPage => $"{Uri}?page={Result}&pageSize={Result.PageSize}";
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (Result.Page - 1 < 1)
+        {
+            prevPage = BuildUri(Result.Page);
+        }
+        else
+        {
+            prevPage = BuildUri(Result.Page - 1);
+        }
+
+        if (Result.Page + 1 > Result.LastPage)
+        {
+            nextPage = BuildUri(Result.Page);
+        }
+        else
+        {
+            nextPage = BuildUri(Result.PageSize + 1);
+        }
+    }
+
+    private string BuildUri(int page)
+    {
+        return $"{Uri}?page={page}&pageSize={Result.PageSize}";
+    }
+}

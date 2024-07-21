@@ -1,5 +1,6 @@
 ﻿using SchoolManagement.Client.Constants;
 using SchoolManagement.Client.Features.Schools.Dtos;
+using SchoolManagement.Client.Pagination;
 
 namespace SchoolManagement.Client.Features.Schools;
 
@@ -14,14 +15,20 @@ public class SchoolService : ISchoolService
         _baseAddress = ($"{_httpClient.BaseAddress!.OriginalString}/schools");
     }
 
-    public async Task<IEnumerable<SchoolItem>?> GetSchools()
+    public async Task<PagedList<School>> GetSchools(
+        string? searchTerm, string? sortColumn, string? sortOrder, int? page, int? pageSize)
     {
-        return await _httpClient
-            .GetFromJsonAsync<IEnumerable<SchoolItem>>(_baseAddress);
+        var uri = UriBuilder.BuildListUri(_baseAddress, searchTerm, sortColumn, sortOrder, page, pageSize);
+
+        var schools = await _httpClient
+            .GetFromJsonAsync<PagedList<School>>(uri);
+
+        return schools!;
     }
 
     public async Task<School> GetSchool(int schoolId)
     {
+
         var result = await _httpClient
             .GetFromJsonAsync<School>($"{_baseAddress}/{schoolId}");
 
