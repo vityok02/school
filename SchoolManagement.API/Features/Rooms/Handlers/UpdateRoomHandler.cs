@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.API.Features.Rooms;
 using SchoolManagement.API.Features.Rooms.Dtos;
 using SchoolManagement.Models.Interfaces;
 
@@ -13,9 +12,7 @@ public static class UpdateRoomHandler
         [FromRoute] int roomId,
         [FromBody] RoomUpdateDto roomDto)
     {
-        var rooms = await repository.GetRoomsForSchoolAsync(schoolId);
-
-        if (rooms.Any(r => r.Number == roomDto.Number))
+        if (await repository.AnyAsync(r => r.Number == roomDto.Number))
         {
             return Results.Conflict(RoomErrorMessages.Dublicate);
         }

@@ -6,11 +6,19 @@ namespace SchoolManagement.API.Features.Floors.Handlers;
 
 public static class GetAllFloorsHandler
 {
-    public static async Task<IResult> Handle(IFloorRepository repository, [FromRoute] int schoolId)
+    public static async Task<IResult> Handle(
+        IFloorRepository repository, 
+        [FromRoute] int schoolId,
+        string? sortOrder,
+        int page,
+        int pageSize)
     {
-        var floors = await repository.GetFloorsAsync(schoolId);
+        var floorsQuery = repository
+            .GetFloorsQuery(schoolId, sortOrder)
+            .Select(f => f.ToFloorDto());
 
-        var floorItemDtos = floors.Select(f => f.ToFloorDto());
-        return Results.Ok(floorItemDtos);
+        var floors = await PagedList<FloorDto>.CreateAsync(floorsQuery, page, pageSize);
+
+        return Results.Ok(floors);
     }
 }

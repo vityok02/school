@@ -54,6 +54,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return await entities.ToArrayAsync();
     }
 
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _dbContext.Set<TEntity>().AnyAsync(predicate);
+    }
+
     public async Task SaveChangesAsync()
     {
         await _dbContext.SaveChangesAsync();

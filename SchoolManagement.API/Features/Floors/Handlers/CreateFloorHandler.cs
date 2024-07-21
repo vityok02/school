@@ -3,6 +3,7 @@ using SchoolManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.API.Features.Floors;
 using SchoolManagement.API.Features.Floors.Dtos;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SchoolManagement.API.Features.Floors.Handlers;
 
@@ -13,9 +14,12 @@ public static class CreateFloorHandler
         [FromRoute] int schoolId,
         [FromBody] FloorCreateDto floorDto)
     {
-        var floors = await repository.GetAllAsync(f => f.SchoolId == schoolId);
+        bool isDublicate = await repository
+            .AnyAsync(f =>
+                f.SchoolId == schoolId &&
+                f.Number == floorDto.Number);
 
-        if (floors.Any(f => f.Number == floorDto.Number))
+        if (isDublicate)
         {
             return Results.Conflict(FloorErrorMessages.Dublicate);
         }

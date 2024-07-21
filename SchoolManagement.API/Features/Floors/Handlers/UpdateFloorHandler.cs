@@ -20,10 +20,12 @@ public static class UpdateFloorHandler
             return Results.NotFound(FloorErrorMessages.NotFound);
         }
 
-        var floors = await repository
-            .GetAllAsync(f => f.SchoolId == schoolId && f.Number != floor.Number);
+        bool isDublicate = await repository
+            .AnyAsync(f => f.SchoolId == schoolId
+                && f.Number != floor.Number
+                && f.Number == floorDto.Number);
 
-        if (floors.Any(f => f.Number == floorDto.Number))
+        if (isDublicate)
         {
             return Results.Conflict(FloorErrorMessages.Dublicate);
         }

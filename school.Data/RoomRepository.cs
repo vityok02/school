@@ -72,4 +72,39 @@ public class RoomRepository : Repository<Room>, IRoomRepository
 
         return room!;
     }
+
+    public IQueryable<Room> GetRoomsQuery(
+        int schoolId,
+        string? searchTerm,
+        string? sortColumn,
+        string? sortOrder)
+    {
+        var roomsQuery = _dbContext.Rooms
+            .Where(r => r.Floor.SchoolId == schoolId)
+            .Include(r => r.Floor)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            roomsQuery = roomsQuery
+                .Where(r => r.Number.ToString() == searchTerm);
+        }
+
+        var keySelector = GetSortProperty(searchTerm);
+
+        roomsQuery = sortOrder?.ToLower() == "desc"
+            ? roomsQuery.OrderByDescending(keySelector)
+            : roomsQuery.OrderBy(keySelector);
+
+        return roomsQuery;
+    }
+
+    private static Expression<Func<Room, object>> GetSortProperty(string? sortColumn)
+    {
+        return sortColumn?.ToLower() switch
+        {
+            "type" => room => room.Type,
+            _ => room => room.Number
+        };
+    }
 }

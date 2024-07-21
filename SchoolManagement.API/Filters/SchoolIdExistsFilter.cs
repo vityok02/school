@@ -22,7 +22,7 @@ public class SchoolIdExistsFilter : IEndpointFilter
 
         _ = int.TryParse(schoolIdFromRoute, out int schoolId);
 
-        bool exist = await _schoolRepository.DoesSchoolExist(schoolId);
+        bool exist = await _schoolRepository.IsSchoolExists(schoolId);
 
         if (!exist)
         {

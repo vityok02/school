@@ -65,19 +65,14 @@ public class SchoolRepository : Repository<School>, ISchoolRepository
 
         Expression<Func<School, object>> keySelector = GetSortProperty(sortColumn);
 
-        if (sortOrder?.ToLower() == "desc")
-        {
-            schoolsQuery = schoolsQuery.OrderByDescending(keySelector);
-        }
-        else
-        {
-            schoolsQuery = schoolsQuery.OrderBy(keySelector);
-        }
+        schoolsQuery = sortOrder?.ToLower() == "desc" 
+            ? schoolsQuery.OrderByDescending(keySelector) 
+            : schoolsQuery.OrderBy(keySelector);
 
         return schoolsQuery;
     }
 
-    public async Task<bool> DoesSchoolExist(int schoolId)
+    public async Task<bool> IsSchoolExists(int schoolId)
     {
         return await _dbContext.Schools.AnyAsync(s => s.Id == schoolId);
     }

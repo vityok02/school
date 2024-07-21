@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.API.Features.Rooms;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.API.Features.Rooms.Handlers;

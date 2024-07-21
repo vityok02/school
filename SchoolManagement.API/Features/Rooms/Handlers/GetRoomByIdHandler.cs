@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.API.Features.Rooms;
 using SchoolManagement.API.Features.Rooms.Dtos;
 using SchoolManagement.Models.Interfaces;
 

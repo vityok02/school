@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
+using System.Linq.Expressions;
 
 namespace SchoolManagement.Data;
 
@@ -43,5 +44,21 @@ public class FloorRepository : Repository<Floor>, IFloorRepository
             .Floors
             .Where(f => f.SchoolId == schoolId)
             .Include(f => f.Rooms).ToArrayAsync();
+    }
+
+    public IQueryable<Floor> GetFloorsQuery(
+        int schoolId,
+        string? sortOrder)
+    {
+        IQueryable<Floor> floorsQuery = _dbContext
+            .Floors
+            .Where(f => f.SchoolId == schoolId)
+            .Include(f => f.Rooms);
+        
+        floorsQuery = sortOrder?.ToLower() == "desc"
+            ? floorsQuery.OrderByDescending(f => f.Number)
+            : floorsQuery.OrderBy(f => f.Number);
+
+        return floorsQuery;
     }
 }

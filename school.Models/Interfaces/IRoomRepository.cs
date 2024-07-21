@@ -10,4 +10,5 @@ public interface IRoomRepository : IRepository<Room>
     Task<Room> GetRoomAsync(int schoolId);
     Task<IEnumerable<Room>> GetRoomsForSchoolAsync(int schoolId);
     Task<Room> GetSchoolRoomAsync(int schoolId, int roomId);
+    IQueryable<Room> GetRoomsQuery(int schoolId, string? searchTerm, string? sortColumn, string? sortOrder);
 }
