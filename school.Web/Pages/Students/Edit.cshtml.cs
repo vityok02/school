@@ -24,7 +24,7 @@ public class EditStudentModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        var student = await _studentRepository.GetAsync(id);
+        var student = await _studentRepository.GetByIdAsync(id);
         if (student is null)
         {
             return RedirectToPage("List");
@@ -67,7 +67,7 @@ public class EditStudentModel : BasePageModel
             return Page();
         }
 
-        var student = await _studentRepository.GetAsync(studentDto.Id);
+        var student = await _studentRepository.GetByIdAsync(studentDto.Id);
 
         student!.UpdateInfo(studentDto.FirstName, studentDto.LastName, studentDto.Age, studentDto.Group);
 

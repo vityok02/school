@@ -1,4 +1,5 @@
-﻿using SchoolManagement.Models.Interfaces;
+﻿using SchoolManagement.API.Features.Schools;
+using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.API.Filters;
 
@@ -21,11 +22,11 @@ public class SchoolIdExistsFilter : IEndpointFilter
 
         _ = int.TryParse(schoolIdFromRoute, out int schoolId);
 
-        var school = await _schoolRepository.GetAsync(schoolId);
+        bool exist = await _schoolRepository.IsSchoolExists(schoolId);
 
-        if (school is null)
+        if (!exist)
         {
-            return Results.Problem("School not found", statusCode: StatusCodes.Status404NotFound);
+            return Results.NotFound(SchoolErrors.NotFound);
         }
 
         return await next(efiContext);

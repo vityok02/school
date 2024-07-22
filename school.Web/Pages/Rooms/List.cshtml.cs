@@ -131,7 +131,7 @@ public class RoomsListModel : BaseListPageModel
 
     public async Task<IActionResult> OnPostDelete(int id)
     {
-        var room = await _roomRepository.GetAsync(id);
+        var room = await _roomRepository.GetByIdAsync(id);
         if (room is null)
         {
             return RedirectToPage("List");

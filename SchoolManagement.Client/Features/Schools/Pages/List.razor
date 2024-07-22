@@ -1,6 +1,7 @@
 ﻿@page "/schools"
 
 @using SchoolManagement.Client.Features.Schools.Dtos
+@using SchoolManagement.Client.Pagination
 @inject ISchoolService schoolService
 @rendermode RenderMode.InteractiveServer
 
@@ -14,19 +15,23 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Country</th>
             <th>City</th>
             <th>Street</th>
+            <th>Postal code</th>
             <th>Opening date</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in schools)
+        @foreach(var item in list.Items)
         {
             <tr>
                 <td>@item.Name</td>
+                <td>@item.Country</td>
                 <td>@item.City</td>
                 <td>@item.Street</td>
+                <td>@item.PostalCode</td>
                 <td>@item.OpeningDate.ToShortDateString()</td>
                 <td>
                     <a href="/schools/@item.Id">View</a>
@@ -36,18 +41,67 @@
         }
     </tbody>
 </table>
+<Pagination Uri="/schools" Result=@list></Pagination>
+@* <div>
+    <a href="/schools/?page=1&pageSize=@PageSize" class="@(list.HasPreviousPage ? "" : "disabled")">&laquo;</a>
+    <a href="@previousUri" class="@(list.HasPreviousPage ? "" : "disabled")">&lt;</a>
+    <a href="@nextUri" class="@(list.HasNextPage ? "" : "disabled")">&gt;</a>
+    <a href="/schools/?page=@lastPage&pageSize=@PageSize" class="@(list.HasNextPage ? "" : "disabled")">&raquo;</a>
+</div> *@
 
 @code {
-    IEnumerable<SchoolItem>? schools = [];
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? SearchTerm { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? SortColumn { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? SortOrder { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int? Page { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int? PageSize { get; set; }
+
+    PagedList<School> list = null!;
+
+    string previousUri = "";
+    string nextUri = "";
+    int lastPage = 0;
+    int inputPage;
+
+    protected override async Task OnParametersSetAsync()
     {
-        schools = await schoolService.GetSchools();
+        await base.OnParametersSetAsync();
+
+        Page ??= 1;
+        PageSize ??= 10;
+
+        if (list is null)
+        {
+            list = new();
+            list.Page = Page.Value;
+            list.PageSize = PageSize.Value;
+        }
+
+        await LoadData();
     }
 
     public async Task DeleteSchool(int id)
     {
         await schoolService.DeleteSchool(id);
-        schools = await schoolService.GetSchools();
+        await LoadData();
+    }
+
+    public async Task LoadData()
+    {
+        list = await schoolService.GetSchools(SearchTerm, SortColumn, SortOrder, Page, PageSize);
     }
 }

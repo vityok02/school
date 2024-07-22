@@ -23,7 +23,7 @@ public class EditPositionModel : BasePageModel
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        var position = await _positionRepository.GetAsync(id);
+        var position = await _positionRepository.GetByIdAsync(id);
         if (position == null)
         {
             return RedirectToPage("/Positions/List");
@@ -46,7 +46,7 @@ public class EditPositionModel : BasePageModel
             return Page();
         }
 
-        var position = await _positionRepository.GetAsync(positionDto.Id);
+        var position = await _positionRepository.GetByIdAsync(positionDto.Id);
         if (position == null)
         {
             return RedirectToPage("/Positions/List");
