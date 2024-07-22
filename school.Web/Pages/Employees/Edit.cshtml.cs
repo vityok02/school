@@ -34,7 +34,7 @@ public class EditEmployeeModel : BasePageModel
             RedirectToSchoolList();
         }
 
-        var employee = await _employeeRepository.GetEmployeeWithPositionsAsync(id);
+        var employee = await _employeeRepository.GetByIdAsync(id);
         if (employee is null)
         {
             return RedirectToPage("List");
@@ -51,7 +51,7 @@ public class EditEmployeeModel : BasePageModel
     public async Task<IActionResult> OnPostAsync(EditEmployeeDto employeeDto, int[] checkedPositionsId)
     {
         var validationResult = await _validator.ValidateAsync(employeeDto);
-        var employee = await _employeeRepository.GetEmployeeWithPositionsAsync(employeeDto.Id);
+        var employee = await _employeeRepository.GetByIdAsync(employeeDto.Id);
 
         if (!validationResult.IsValid)
         {
@@ -109,7 +109,7 @@ public class EditEmployeeModel : BasePageModel
 
         foreach (var p in checkedPositionsId)
         {
-            var position = await _positionRepository.GetAsync(p);
+            var position = await _positionRepository.GetByIdAsync(p);
             employee!.Positions.Add(position!);
         }
 

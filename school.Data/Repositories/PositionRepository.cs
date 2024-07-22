@@ -3,7 +3,7 @@ using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
-namespace SchoolManagement.Data;
+namespace SchoolManagement.Data.Repositories;
 
 public class PositionRepository : Repository<Position>, IPositionRepository
 {
@@ -83,7 +83,7 @@ public class PositionRepository : Repository<Position>, IPositionRepository
     {
         var position = await _dbContext
             .Positions
-            .Where(p => 
+            .Where(p =>
                 p.Id == positionId &&
                 p.Schools.Any(s => s.Id == schoolId))
             .SingleOrDefaultAsync();
@@ -108,7 +108,7 @@ public class PositionRepository : Repository<Position>, IPositionRepository
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             positionsQueryable = positionsQueryable
-                .Where(p => p.Name == searchTerm);
+                .Where(p => p.Name.Contains(searchTerm));
         }
 
         positionsQueryable = sortOrder?.ToLower() == "desc"

@@ -30,7 +30,7 @@ public class FloorsList : BaseListPageModel
 
     public async Task<IActionResult> OnPostDelete(int id)
     {
-        var floor = await _floorRepository!.GetAsync(id);
+        var floor = await _floorRepository!.GetByIdAsync(id);
 
         if (floor is null)
         {

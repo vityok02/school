@@ -12,7 +12,7 @@ public static class GetEmployeeByIdHandler
         [FromRoute] int schoolId,
         [FromRoute] int employeeId)
     {
-        var employee = await repository.GetSchoolEmployeesWithPositionsAsync(schoolId, employeeId);
+        var employee = await repository.GetSchoolEmployee(schoolId, employeeId);
 
         if (employee is null)
         {

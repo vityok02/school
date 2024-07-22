@@ -86,7 +86,7 @@ public class AddRoomModel : BasePageModel
             return Page();
         }
 
-        var floor = await _floorRepository.GetAsync(roomDto.FloorId);
+        var floor = await _floorRepository.GetByIdAsync(roomDto.FloorId);
 
         RoomType roomType = GetRoomType(roomTypes);
 

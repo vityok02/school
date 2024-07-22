@@ -6,11 +6,21 @@ namespace SchoolManagement.API.Features.Employees.Handlers;
 
 public static class GetAllEmployeesHandler
 {
-    public static async Task<IResult> Handle(IEmployeeRepository repository, [FromRoute] int schoolId)
+    public static async Task<IResult> Handle(
+        IEmployeeRepository repository,
+        [FromRoute] int schoolId,
+        [FromQuery] string? searchTerm,
+        [FromQuery] string? sortColumn,
+        [FromQuery] string? sortOrder,
+        [FromQuery] int page,
+        int pageSize)
     {
-        var employees = await repository.GetAllAsync(e => e.SchoolId == schoolId);
+        var employeesQuery = repository
+            .GetEmployeesQuery(schoolId, searchTerm, sortColumn, sortOrder)
+            .Select(e => e.ToEmployeeDto());
 
-        var employeeItemDtos = employees.Select(e => e.ToEmployeeDto());
-        return Results.Ok(employeeItemDtos);
+        var employees = await PagedList<EmployeeDto>.CreateAsync(employeesQuery, page, pageSize);
+
+        return Results.Ok(employees);
     }
 }

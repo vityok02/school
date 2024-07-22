@@ -135,7 +135,7 @@ public class EmployeesListModel : BaseListPageModel
 
     public async Task<IActionResult> OnPostDelete(int id)
     {
-        var employee = await _employeeRepository.GetAsync(id);
+        var employee = await _employeeRepository.GetByIdAsync(id);
         if (employee is null)
         {
             return RedirectToPage("List");

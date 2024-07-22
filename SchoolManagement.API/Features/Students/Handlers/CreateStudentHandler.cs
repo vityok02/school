@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.API.Features.Students;
 using SchoolManagement.API.Features.Students.Dtos;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
@@ -10,6 +9,8 @@ namespace SchoolManagement.API.Features.Students.Handlers;
 public static class CreateStudentHandler
 {
     public static async Task<IResult> Handle(
+        HttpContext context,
+        LinkGenerator linkGenerator,
         IValidator<IStudentDto> validator,
         IRepository<Student> repository,
         [FromRoute] int schoolId,
@@ -22,10 +23,9 @@ public static class CreateStudentHandler
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
-        var employees = await repository.GetAllAsync(e => e.SchoolId == schoolId);
-
-        if (employees.Any(
-            e => e.FirstName == studentDto.FirstName
+        if (await repository.AnyAsync(
+            e => e.SchoolId == schoolId
+            && e.FirstName == studentDto.FirstName
             && e.LastName == studentDto.LastName
             && e.Age == studentDto.Age))
         {
@@ -44,6 +44,12 @@ public static class CreateStudentHandler
         await repository.AddAsync(student);
 
         var createdStudent = student.ToStudentDto();
-        return Results.Created($"/schools/{schoolId}/students/{student.Id}", createdStudent);
+
+        var uri = linkGenerator.GetUriByName(context, "Get student by id", new
+        {
+            studentId = student.Id,
+        });
+
+        return Results.Created(uri, createdStudent);
     }
 }

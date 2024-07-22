@@ -15,7 +15,7 @@ public static class StudentsEndpoints
 
         studentsGroup.MapGet("/", GetAllStudentsHandler.Handle)
             .WithSummary("Get students")
-            .Produces<StudentDto[]>()
+            .Produces<PagedList<StudentDto>>()
             .Produces(StatusCodes.Status404NotFound);
 
         studentsGroup.MapGet("/{studentId:int}", GetStudentByIdHandler.Handle)

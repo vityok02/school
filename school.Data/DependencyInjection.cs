@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SchoolManagement.Data.Repositories;
 using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.Data;
@@ -19,6 +20,7 @@ public static class DependencyInjection
         services.AddScoped<ISchoolRepository, SchoolRepository>();
         services.AddScoped<IFloorRepository, FloorRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
+        services.AddScoped<IStudentRepository, StudentRepository>();
 
         return services;
     }

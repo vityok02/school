@@ -17,7 +17,7 @@ public class FloorDetails : BasePageModel
 
     public async Task<IActionResult> OnGet(int id)
     {
-        var floor = await _floorRepository.GetFloorAsync(id);
+        var floor = await _floorRepository.GetFloor(id);
         FloorDto = floor!.ToFloorItemDto();
         if (FloorDto is null)
         {

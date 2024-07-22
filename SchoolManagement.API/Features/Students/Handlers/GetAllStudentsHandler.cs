@@ -7,11 +7,21 @@ namespace SchoolManagement.API.Features.Students.Handlers;
 
 public static class GetAllStudentsHandler
 {
-    public static async Task<IResult> Handle(IRepository<Student> repository, [FromRoute] int schoolId)
+    public static async Task<IResult> Handle(
+        IStudentRepository repository, 
+        [FromRoute] int schoolId,
+        [FromQuery] string? searchTerm,
+        [FromQuery] string? sortColumn,
+        [FromQuery] string? sortOrder,
+        [FromQuery] int page,
+        int pageSize)
     {
-        var students = await repository.GetAllAsync(s => s.SchoolId == schoolId);
+        var studentsQuery = repository
+            .GetStudentsQuery(schoolId, searchTerm, sortColumn, sortOrder)
+            .Select(p => p.ToStudentDto());
 
-        var studentItemDtos = students.Select(s => s.ToStudentDto());
-        return Results.Ok(studentItemDtos);
+        var students = await PagedList<StudentDto>.CreateAsync(studentsQuery, page, pageSize);
+
+        return Results.Ok(students);
     }
 }

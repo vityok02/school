@@ -78,7 +78,7 @@ public class SchoolsListModel : BaseListPageModel
 
     public async Task<IActionResult> OnPostDelete(int id)
     {
-        var school = await SchoolRepository.GetAsync(id);
+        var school = await SchoolRepository.GetByIdAsync(id);
         if (school is null)
         {
             return RedirectToPage("List");

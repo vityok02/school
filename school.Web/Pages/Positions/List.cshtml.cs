@@ -49,7 +49,7 @@ public class PositionsListModel : BaseListPageModel
 
     public async Task<IActionResult> OnPostDelete(int id)
     {
-        var position = await _positionRepository.GetAsync(id);
+        var position = await _positionRepository.GetByIdAsync(id);
         if (position is null)
         {
             return RedirectToPage("/Positions/List");

@@ -49,7 +49,7 @@ public class AddStudentModel : BasePageModel
             return Page();
         }
 
-        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
+        var school = await SchoolRepository.GetByIdAsync(SelectedSchoolId);
         if (school is null)
         {
             return RedirectToSchoolList();

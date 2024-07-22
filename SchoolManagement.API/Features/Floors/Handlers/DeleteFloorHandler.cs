@@ -11,7 +11,7 @@ public static class DeleteFloorHandler
         [FromRoute] int schoolId,
         [FromRoute] int floorId)
     {
-        var floor = await repository.GetFloorAsync(floorId);
+        var floor = await repository.GetSchoolFloorAsync(schoolId, floorId);
 
         if (floor is null || floor.SchoolId != schoolId)
         {

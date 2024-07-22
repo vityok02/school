@@ -25,7 +25,7 @@ public class UpdatePositionHandler
             return Results.Conflict(PositionErrorMessages.Dublicate);
         }
 
-        var position = await repository.GetAsync(positionId);
+        var position = await repository.GetByIdAsync(positionId);
 
         if (position is null)
         {

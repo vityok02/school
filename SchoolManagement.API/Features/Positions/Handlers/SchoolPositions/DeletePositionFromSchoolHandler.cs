@@ -12,9 +12,9 @@ public class DeletePositionFromSchoolHandler
         [FromRoute] int schoolId,
         [FromRoute] int positionId)
     {
-        var school = await schoolRepository.GetAsync(schoolId);
+        var school = await schoolRepository.GetByIdAsync(schoolId);
 
-        var position = await positionRepository.GetAsync(positionId);
+        var position = await positionRepository.GetByIdAsync(positionId);
         if (position is null)
         {
             return Results.NotFound(PositionErrorMessages.NotFound);

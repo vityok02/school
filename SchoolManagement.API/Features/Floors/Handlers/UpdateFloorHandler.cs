@@ -13,7 +13,7 @@ public static class UpdateFloorHandler
         [FromRoute] int floorId,
         [FromBody] FloorUpdateDto floorDto)
     {
-        var floor = await repository.GetAsync(floorId);
+        var floor = await repository.GetByIdAsync(floorId);
 
         if (floor is null)
         {

@@ -1,8 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.API.Features.Students;
 using SchoolManagement.API.Features.Students.Dtos;
-using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 
@@ -26,8 +24,10 @@ public static class UpdateStudentHandler
 
         var employees = await repository.GetAllAsync(e => e.SchoolId == schoolId && e.Id != studentDto.Id);
 
-        if (employees.Any(
-            e => e.FirstName == studentDto.FirstName
+        if (await repository.AnyAsync(
+            e => e.SchoolId == schoolId
+            && e.Id != studentDto.Id
+            && e.FirstName == studentDto.FirstName
             && e.LastName == studentDto.LastName
             && e.Age == studentDto.Age))
         {

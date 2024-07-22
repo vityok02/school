@@ -15,7 +15,7 @@ public static class EmployeesEndpoints
 
         employeesGroup.MapGet("/", GetAllEmployeesHandler.Handle)
             .WithSummary("Get All Employees")
-            .Produces<EmployeeDto[]>()
+            .Produces<PagedList<EmployeeDto>>()
             .Produces(StatusCodes.Status404NotFound);
 
         employeesGroup.MapGet("/{employeeId:int}", GetEmployeeByIdHandler.Handle)

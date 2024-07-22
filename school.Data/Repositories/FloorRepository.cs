@@ -3,7 +3,7 @@ using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
-namespace SchoolManagement.Data;
+namespace SchoolManagement.Data.Repositories;
 
 public class FloorRepository : Repository<Floor>, IFloorRepository
 {
@@ -15,7 +15,7 @@ public class FloorRepository : Repository<Floor>, IFloorRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Floor> GetFloorAsync(int id)
+    public async Task<Floor> GetFloor(int id)
     {
         var floor = await _dbContext
             .Floors
@@ -54,7 +54,7 @@ public class FloorRepository : Repository<Floor>, IFloorRepository
             .Floors
             .Where(f => f.SchoolId == schoolId)
             .Include(f => f.Rooms);
-        
+
         floorsQuery = sortOrder?.ToLower() == "desc"
             ? floorsQuery.OrderByDescending(f => f.Number)
             : floorsQuery.OrderBy(f => f.Number);

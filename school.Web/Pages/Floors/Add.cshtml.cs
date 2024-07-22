@@ -56,7 +56,7 @@ public class AddFloor : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
+        var school = await SchoolRepository.GetByIdAsync(SelectedSchoolId);
         if (school is null)
         {
             return RedirectToSchoolList();

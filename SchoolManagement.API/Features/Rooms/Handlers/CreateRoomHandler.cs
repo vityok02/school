@@ -25,7 +25,7 @@ public static class CreateRoomHandler
             FloorId = roomDto.FloorId,
         };
 
-        var floor = await floorRepository.GetAsync(room.FloorId);
+        var floor = await floorRepository.GetByIdAsync(room.FloorId);
 
         if (floor is null)
         {

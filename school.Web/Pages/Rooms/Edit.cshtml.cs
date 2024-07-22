@@ -35,7 +35,7 @@ public class EditRoomModel : BasePageModel
             return RedirectToSchoolList();
         }
 
-        var room = await _roomRepository.GetAsync(id);
+        var room = await _roomRepository.GetByIdAsync(id);
         if (room is null)
         {
             return RedirectToPage("List");
@@ -78,8 +78,8 @@ public class EditRoomModel : BasePageModel
             return Page();
         }
 
-        var room = await _roomRepository.GetAsync(roomDto.Id);
-        var floor = await _floorRepository.GetAsync(roomDto.FloorId);
+        var room = await _roomRepository.GetByIdAsync(roomDto.Id);
+        var floor = await _floorRepository.GetByIdAsync(roomDto.FloorId);
 
         if(room is null || floor is null)
         {

@@ -49,7 +49,7 @@ public abstract class BasePageModel : PageModel
 
         SetSchoolId(sId);
 
-        var school = await SchoolRepository.GetAsync(sId);
+        var school = await SchoolRepository.GetByIdAsync(sId);
         if(school is null)
         {
             return "Not selected";
@@ -77,7 +77,7 @@ public abstract class BasePageModel : PageModel
             result = false;
         }
 
-        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
+        var school = await SchoolRepository.GetByIdAsync(SelectedSchoolId);
         if (school is null)
         {
             result = false;

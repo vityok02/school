@@ -10,7 +10,7 @@ public static class DeleteSchoolHandler
         ISchoolRepository repository,
         [FromRoute] int schoolId)
     {
-        var school = await repository.GetAsync(schoolId);
+        var school = await repository.GetByIdAsync(schoolId);
 
         if (school is null)
         {

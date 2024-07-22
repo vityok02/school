@@ -33,7 +33,7 @@ public class StudentsListModel : BaseListPageModel
             return RedirectToSchoolList();
         }
 
-        var school = await SchoolRepository.GetAsync(SelectedSchoolId);
+        var school = await SchoolRepository.GetByIdAsync(SelectedSchoolId);
         if (school is null)
         {
             return RedirectToSchoolList();
@@ -117,7 +117,7 @@ public class StudentsListModel : BaseListPageModel
 
     public async Task<IActionResult> OnPostDelete(int id)
     {
-        var student = await _studentRepository.GetAsync(id);
+        var student = await _studentRepository.GetByIdAsync(id);
         if (student is null)
         {
             return RedirectToPage("List");

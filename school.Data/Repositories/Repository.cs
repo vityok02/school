@@ -3,7 +3,7 @@ using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
-namespace SchoolManagement.Data;
+namespace SchoolManagement.Data.Repositories;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
@@ -32,7 +32,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<TEntity?> GetAsync(int id)
+    public async Task<TEntity?> GetByIdAsync(int id)
     {
         return await _dbContext.Set<TEntity>().FindAsync(id);
     }

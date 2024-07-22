@@ -3,7 +3,7 @@ using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
-namespace SchoolManagement.Data;
+namespace SchoolManagement.Data.Repositories;
 
 public class SchoolRepository : Repository<School>, ISchoolRepository
 {
@@ -65,8 +65,8 @@ public class SchoolRepository : Repository<School>, ISchoolRepository
 
         Expression<Func<School, object>> keySelector = GetSortProperty(sortColumn);
 
-        schoolsQuery = sortOrder?.ToLower() == "desc" 
-            ? schoolsQuery.OrderByDescending(keySelector) 
+        schoolsQuery = sortOrder?.ToLower() == "desc"
+            ? schoolsQuery.OrderByDescending(keySelector)
             : schoolsQuery.OrderBy(keySelector);
 
         return schoolsQuery;

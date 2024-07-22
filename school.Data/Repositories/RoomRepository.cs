@@ -3,7 +3,7 @@ using SchoolManagement.Models;
 using SchoolManagement.Models.Interfaces;
 using System.Linq.Expressions;
 
-namespace SchoolManagement.Data;
+namespace SchoolManagement.Data.Repositories;
 
 public class RoomRepository : Repository<Room>, IRoomRepository
 {
@@ -87,7 +87,7 @@ public class RoomRepository : Repository<Room>, IRoomRepository
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             roomsQuery = roomsQuery
-                .Where(r => r.Number.ToString() == searchTerm);
+                .Where(r => r.Number.ToString().Contains(searchTerm));
         }
 
         var keySelector = GetSortProperty(searchTerm);

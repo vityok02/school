@@ -1,15 +1,16 @@
-﻿using SchoolManagement.Models.Interfaces;
-using SchoolManagement.Models;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using FluentValidation;
-using SchoolManagement.API.Features.Employees;
 using SchoolManagement.API.Features.Employees.Dtos;
+using SchoolManagement.Models;
+using SchoolManagement.Models.Interfaces;
 
 namespace SchoolManagement.API.Features.Employees.Handlers;
 
 public static class CreateEmployeeHandler
 {
     public static async Task<IResult> Handle(
+        HttpContext context,
+        LinkGenerator linkGenerator,
         IValidator<IEmployeeDto> validator,
         IEmployeeRepository employeeRepository,
         IPositionRepository positionRepository,
@@ -23,10 +24,9 @@ public static class CreateEmployeeHandler
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
-        var employees = await employeeRepository.GetAllAsync(e => e.SchoolId == schoolId);
-
-        if (employees.Any(
-            e => e.FirstName == employeeDto.FirstName
+        if (await employeeRepository.AnyAsync(
+            e => e.SchoolId == schoolId
+            && e.FirstName == employeeDto.FirstName
             && e.LastName == employeeDto.LastName
             && e.Age == employeeDto.Age))
         {
@@ -42,7 +42,12 @@ public static class CreateEmployeeHandler
 
         await employeeRepository.AddAsync(employee);
 
+        var uri = linkGenerator.GetUriByName(context, "Get employee by id", new
+        {
+            employeeId = employee.Id,
+        });
+
         var createdEmployeeDto = employee.ToEmployeeDto();
-        return Results.Created($"/schools/{schoolId}/employees/{employee.Id}", createdEmployeeDto);
+        return Results.Created(uri, createdEmployeeDto);
     }
 }

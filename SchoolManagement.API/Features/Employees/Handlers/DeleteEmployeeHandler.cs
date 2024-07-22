@@ -11,7 +11,7 @@ public static class DeleteEmployeeHandler
         [FromRoute] int schoolId,
         [FromRoute] int employeeId)
     {
-        var employee = await repository.GetAsync(employeeId);
+        var employee = await repository.GetByIdAsync(employeeId);
 
         if (employee is null || employee.SchoolId != schoolId)
         {

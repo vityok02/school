@@ -11,7 +11,7 @@ public static class GetPositionByIdHandler
         IPositionRepository repository,
         [FromRoute] int positionId)
     {
-        var position = await repository.GetAsync(positionId);
+        var position = await repository.GetByIdAsync(positionId);
 
         if (position is null)
         {
