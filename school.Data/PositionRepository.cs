@@ -83,10 +83,38 @@ public class PositionRepository : Repository<Position>, IPositionRepository
     {
         var position = await _dbContext
             .Positions
-            .Where(p => p.Id == positionId 
-                && p.Schools.Any(s => s.Id == schoolId))
+            .Where(p => 
+                p.Id == positionId &&
+                p.Schools.Any(s => s.Id == schoolId))
             .SingleOrDefaultAsync();
 
         return position!;
+    }
+
+    public IQueryable<Position> GetAllPositionsQueryable(
+        string? searchTerm,
+        string? sortOrder,
+        int? schoolId = null)
+    {
+        var positionsQueryable = _dbContext.Positions
+            .AsQueryable();
+
+        if (schoolId is not null)
+        {
+            positionsQueryable = positionsQueryable
+                .Where(p => p.Schools.Any(s => s.Id == schoolId));
+        }
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            positionsQueryable = positionsQueryable
+                .Where(p => p.Name == searchTerm);
+        }
+
+        positionsQueryable = sortOrder?.ToLower() == "desc"
+            ? positionsQueryable.OrderByDescending(p => p.Name)
+            : positionsQueryable.OrderBy(p => p.Name);
+
+        return positionsQueryable;
     }
 }

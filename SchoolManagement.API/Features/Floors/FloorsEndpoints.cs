@@ -15,7 +15,7 @@ public static class FloorsEndpoints
 
         floorsGroup.MapGet("/", GetAllFloorsHandler.Handle)
             .WithSummary("Get floors")
-            .Produces<FloorDto[]>()
+            .Produces<PagedList<FloorDto>>()
             .Produces(StatusCodes.Status404NotFound);
 
         floorsGroup.MapGet("/{floorId:int}", GetFloorByIdHandler.Handle)

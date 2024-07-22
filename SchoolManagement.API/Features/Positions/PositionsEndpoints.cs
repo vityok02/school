@@ -13,7 +13,7 @@ public static class PositionsEndpoints
 
         positionsGroup.MapGet("/", GetAllPositionsHandler.Handle)
             .WithSummary("Get positions")
-            .Produces<PositionDto[]>()
+            .Produces<PagedList<PositionDto>>()
             .Produces(StatusCodes.Status404NotFound);
 
         positionsGroup.MapGet("/{positionId:int}", GetPositionByIdHandler.Handle)

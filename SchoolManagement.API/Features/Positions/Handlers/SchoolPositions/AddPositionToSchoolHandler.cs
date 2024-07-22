@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.API.Features.Positions;
 using SchoolManagement.API.Features.Positions.Dtos;
 using SchoolManagement.Models.Interfaces;
 

@@ -15,7 +15,7 @@ public static class RoomsEndpoints
 
         roomsGroup.MapGet("/", GetAllRoomsHandler.Handle)
             .WithSummary("Get all rooms")
-            .Produces<RoomDto[]>()
+            .Produces<PagedList<RoomDto>>()
             .Produces(StatusCodes.Status404NotFound);
 
         roomsGroup.MapGet("/{roomId:int}", GetRoomByIdHandler.Handle)

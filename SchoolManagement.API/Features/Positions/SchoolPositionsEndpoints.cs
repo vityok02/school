@@ -13,10 +13,10 @@ public static class SchoolPositionsEndpoints
             .WithTags("Schools positions group")
             .WithOpenApi();
 
-        positionsGroup.MapGet("/", GetAllSchoolPositionsHandler.Handle)
+        positionsGroup.MapGet("/", GetSchoolPositionsHandler.Handle)
             .WithSummary("Get positions by school")
             .WithName("SchoolPositions")
-            .Produces<PositionDto[]>()
+            .Produces<PagedList<PositionDto>>()
             .Produces(StatusCodes.Status404NotFound);
 
         positionsGroup.MapGet("/{positionId:int}", GetSchoolPositionByIdHandler.Handle)

@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.API.Features.Positions;
 using SchoolManagement.API.Features.Positions.Dtos;
 using SchoolManagement.Models.Interfaces;
 
@@ -21,9 +20,7 @@ public class UpdatePositionHandler
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
-        var positions = await repository.GetAllAsync();
-
-        if (positions.Any(p => p.Name == positionDto.Name && p.Id != positionDto.Id))
+        if (await repository.AnyAsync(p => p.Name == positionDto.Name && p.Id != positionDto.Id))
         {
             return Results.Conflict(PositionErrorMessages.Dublicate);
         }

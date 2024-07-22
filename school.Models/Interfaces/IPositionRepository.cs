@@ -12,4 +12,5 @@ public interface IPositionRepository : IRepository<Position>
     Task<Position> GetPosition(int positionId);
     Task<IEnumerable<Position>> GetEmployeePositions(int[] checkedPositionsId);
     Task<Position> GetSchoolPosition(int schoolId, int positionId);
+    IQueryable<Position> GetAllPositionsQueryable(string? searchTerm, string? sortOrder, int? schoolId = null!);
 }
