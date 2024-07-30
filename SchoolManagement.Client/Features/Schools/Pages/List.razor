@@ -2,8 +2,9 @@
 
 @using SchoolManagement.Client.Features.Schools.Dtos
 @using SchoolManagement.Client.Pagination
-@inject ISchoolService schoolService
-@rendermode RenderMode.InteractiveServer
+@inject NavigationManager NavManager
+@inject ISchoolService SchoolService
+@* @rendermode RenderMode.InteractiveServer *@
 
 <PageTitle>Schools</PageTitle>
 
@@ -41,13 +42,7 @@
         }
     </tbody>
 </table>
-<Pagination Uri="/schools" Result=@list></Pagination>
-@* <div>
-    <a href="/schools/?page=1&pageSize=@PageSize" class="@(list.HasPreviousPage ? "" : "disabled")">&laquo;</a>
-    <a href="@previousUri" class="@(list.HasPreviousPage ? "" : "disabled")">&lt;</a>
-    <a href="@nextUri" class="@(list.HasNextPage ? "" : "disabled")">&gt;</a>
-    <a href="/schools/?page=@lastPage&pageSize=@PageSize" class="@(list.HasNextPage ? "" : "disabled")">&raquo;</a>
-</div> *@
+<Pagination Uri="/schools" Result=@list PageSizeChanged="UpdatePageSize" />
 
 @code {
     [Parameter]
@@ -66,42 +61,35 @@
     [SupplyParameterFromQuery]
     public int? Page { get; set; }
 
-    [Parameter]
-    [SupplyParameterFromQuery]
-    public int? PageSize { get; set; }
-
     PagedList<School> list = null!;
-
-    string previousUri = "";
-    string nextUri = "";
-    int lastPage = 0;
-    int inputPage;
 
     protected override async Task OnParametersSetAsync()
     {
-        await base.OnParametersSetAsync();
-
-        Page ??= 1;
-        PageSize ??= 10;
-
         if (list is null)
         {
             list = new();
-            list.Page = Page.Value;
-            list.PageSize = PageSize.Value;
+            list.Page = Page ?? 1;
+            list.PageSize = 10;
         }
 
         await LoadData();
     }
 
-    public async Task DeleteSchool(int id)
+    private async Task DeleteSchool(int id)
     {
-        await schoolService.DeleteSchool(id);
+        await SchoolService.DeleteSchool(id);
         await LoadData();
     }
 
-    public async Task LoadData()
+    private async Task LoadData()
     {
-        list = await schoolService.GetSchools(SearchTerm, SortColumn, SortOrder, Page, PageSize);
+        list = await SchoolService.GetSchools(SearchTerm, SortColumn, SortOrder, list.Page, list.PageSize);
+    }
+
+    private void UpdatePageSize(int pageSize)
+    {
+        list.PageSize = pageSize;
+        list.Page = 1;
+        NavManager.Refresh();
     }
 }

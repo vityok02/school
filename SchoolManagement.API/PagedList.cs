@@ -7,6 +7,7 @@ public class PagedList<T>
     public IEnumerable<T> Items { get; }
     public int Page { get; }
     public int PageSize { get; }
+    public int PageCount { get; }
     public int TotalCount { get; }
     public bool HasNextPage => Page * PageSize < TotalCount;
     public bool HasPreviousPage => Page > 1;
@@ -16,6 +17,7 @@ public class PagedList<T>
         Items = items;
         Page = page;
         PageSize = pageSize;
+        PageCount = (int)Math.Ceiling(totalCount /(double) pageSize);
         TotalCount = totalCount;
     }
 

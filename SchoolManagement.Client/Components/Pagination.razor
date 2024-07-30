@@ -1,47 +1,53 @@
 ﻿@using SchoolManagement.Client.Pagination
-<h3>Pagination</h3>
 
-<a href="@Uri?page=1&pageSize=@Result.PageSize" class="@(Result.HasPreviousPage ? "" : "disabled")">&laquo;</a>
-<a href="@prevPage" class="@(Result.HasPreviousPage? "" : "disabled")">&lt;</a>
-<a href="@nextPage" class="@(Result.HasNextPage ? "" : "disabled")">&gt;</a>
-<a href="@Uri/?page=@Result.LastPage&pageSize=@Result.PageSize" class="@(Result.HasNextPage? "" : "disabled")">&raquo;</a>
+<div class="pagination">
+    <a href="@firstPage" class="@(Result.HasPreviousPage ? "" : "disabled")">&laquo;</a>
+    <a href="@prevPage" class="@(Result.HasPreviousPage ? "" : "disabled")">&lt;</a>
+    <a href="@nextPage" class="@(Result.HasNextPage ? "" : "disabled")">&gt;</a>
+    <a href="@lastPage" class="@(Result.HasNextPage ? "" : "disabled")">&raquo;</a>
+    <InputSelect @bind-Value="Result.PageSize" @onchange="(() => UpdatePageSize(Result.PageSize))">
+        @foreach (var pageSize in pageSizes)
+        {
+            <option value="@pageSize">@pageSize</option>
+        }
+    </InputSelect>
+    <h2>@Result.PageSize</h2>
+</div>
 
 @code {
     [Parameter]
     public string Uri { get; set; } = "";
     [Parameter]
     public BasePagedList Result { get; set; } = default!;
+    [Parameter]
+    public Action<int> PageSizeChanged { get; set; }
 
-    string firstPage => $"{Uri}?page=1&pageSize={Result.PageSize}";
+    string firstPage => $"{Uri}?page=1";
     string prevPage = "";
     string nextPage = "";
-    string lastPage => $"{Uri}?page={Result}&pageSize={Result.PageSize}";
+    string lastPage => $"{Uri}?page={Result.PageCount}";
 
-    protected override void OnParametersSet()
+    int[] pageSizes = { 10, 20, 30, 40, 50 };
+
+    protected override async Task OnParametersSetAsync()
     {
-        base.OnParametersSet();
+        await base.OnParametersSetAsync();
+        UpdatePaginationLinks();
+    }
 
-        if (Result.Page - 1 < 1)
-        {
-            prevPage = BuildUri(Result.Page);
-        }
-        else
-        {
-            prevPage = BuildUri(Result.Page - 1);
-        }
-
-        if (Result.Page + 1 > Result.LastPage)
-        {
-            nextPage = BuildUri(Result.Page);
-        }
-        else
-        {
-            nextPage = BuildUri(Result.PageSize + 1);
-        }
+    private void UpdatePaginationLinks()
+    {
+        prevPage = Result.Page - 1 < 1 ? BuildUri(Result.Page) : BuildUri(Result.Page - 1);
+        nextPage = Result.Page + 1 > Result.PageCount ? BuildUri(Result.Page) : BuildUri(Result.Page + 1);
     }
 
     private string BuildUri(int page)
     {
-        return $"{Uri}?page={page}&pageSize={Result.PageSize}";
+        return $"{Uri}?page={page}";
+    }
+
+    private void UpdatePageSize(int pageSize)
+    {
+        PageSizeChanged?.Invoke(pageSize);
     }
 }
