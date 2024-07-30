@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  schoolmanagement.api:
+    image: ${DOCKER_REGISTRY-}schoolmanagementapi
+    container_name: schoolmanagement-api
+    build:
+      context: .
+      dockerfile: SchoolManagement.API/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  schoolmanagement.client:
+    image: ${DOCKER_REGISTRY-}schoolmanagementclient
+    container_name: schoolmanagement-client
+    build:
+      context: .
+      dockerfile: SchoolManagement.Client/Dockerfile
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+    depends_on:
+      - schoolmanagement.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ApiUrl=http://schoolmanagement-api:5000
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: schoolmanagement-db
+    restart: always
+    environment:
+      - SA_PASSWORD=yourStrong(!)Password
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./.containers/school-db:/var/lib/sql/data
+
+networks:
+  default:
+    driver: bridge

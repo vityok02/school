@@ -27,6 +27,7 @@ if (app.Environment.IsDevelopment())
     {
         options.RoutePrefix = "/swagger";
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
     });
 }
 

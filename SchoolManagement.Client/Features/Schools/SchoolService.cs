@@ -16,7 +16,7 @@ public class SchoolService : ISchoolService
     }
 
     public async Task<PagedList<School>> GetSchools(
-        string? searchTerm, string? sortColumn, string? sortOrder, int? page, int? pageSize)
+        string? searchTerm, string? sortColumn, string? sortOrder, int? page, int? pageSize = 10)
     {
         var uri = UriBuilder.BuildListUri(_baseAddress, searchTerm, sortColumn, sortOrder, page, pageSize);
 
@@ -28,7 +28,6 @@ public class SchoolService : ISchoolService
 
     public async Task<School> GetSchool(int schoolId)
     {
-
         var result = await _httpClient
             .GetFromJsonAsync<School>($"{_baseAddress}/{schoolId}");
 

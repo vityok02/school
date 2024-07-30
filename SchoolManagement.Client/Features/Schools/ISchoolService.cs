@@ -6,7 +6,7 @@ namespace SchoolManagement.Client.Features.Schools;
 public interface ISchoolService
 {
     Task<PagedList<School>> GetSchools(
-        string? searchTerm, string? sortColumn, string? sortOrder, int? page, int? pageSize);
+        string? searchTerm, string? sortColumn, string? sortOrder, int? page, int? pageSize = 10);
     Task<School> GetSchool(int schoolId);
     Task<int> CreateSchool(School school);
     Task UpdateSchool(School school);
