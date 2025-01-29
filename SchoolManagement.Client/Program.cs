@@ -8,7 +8,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var apiUrl = Environment.GetEnvironmentVariable("ApiUrl");
-builder.Services.AddHttpClient(ApiName.Value, c => c.BaseAddress = new Uri(apiUrl ?? "https://localhost:5001"));
+builder.Services.AddHttpClient(ApiName.Value, c => c.BaseAddress = new Uri(apiUrl ?? "https://localhost:7128"));
 
 builder.Services.AddScoped<ISchoolService, SchoolService>();
 
