@@ -7,14 +7,14 @@ A comprehensive school management system built with .NET, featuring a REST API, 
 This solution follows a clean architecture pattern with the following projects:
 
 ### Core Projects
-- **SchoolManagement.Models** - Domain entities and interfaces
-- **SchoolManagement.Data** - Data access layer with Entity Framework Core
+- **SchoolManagement.Models** (`school.Models/`) - Domain entities and interfaces
+- **SchoolManagement.Data** (`school.Data/`) - Data access layer with Entity Framework Core
 
 ### Application Projects
-- **SchoolManagement.API** - REST API built with ASP.NET Core Minimal APIs
-- **SchoolManagement.Web** - Web application using Razor Pages
-- **SchoolManagement.Client** - Blazor WebAssembly client application
-- **SchoolManagement.Console** - Console application for testing and utilities
+- **SchoolManagement.API** (`SchoolManagement.API/`) - REST API built with ASP.NET Core Minimal APIs
+- **SchoolManagement.Web** (`school.Web/`) - Web application using Razor Pages
+- **SchoolManagement.Client** (`SchoolManagement.Client/`) - Blazor WebAssembly client application
+- **SchoolManagement.Console** (`school.Console/`) - Console application for testing and utilities
 
 ## 🚀 Features
 
@@ -96,6 +96,8 @@ The docker-compose setup includes:
    ```bash
    dotnet ef database update --project school.Data --startup-project SchoolManagement.API
    ```
+   
+   Note: The directory is `school.Data` but the project is `SchoolManagement.Data`
 
 4. **Run the API**
    ```bash
