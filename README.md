@@ -78,6 +78,8 @@ The docker-compose setup includes:
 - SchoolManagement.Client on ports 7000/7001
 - SQL Server 2019 on port 1433
 
+**⚠️ Important**: The default SQL Server password in `docker-compose.yml` is for development only. Change it for production deployments.
+
 ### Option 2: Running Locally
 
 1. **Clone the repository**
@@ -187,6 +189,8 @@ For Docker, the connection string is configured to use the SQL Server container:
 ```
 Server=db;Database=SchoolDB;User Id=sa;Password=yourStrong(!)Password;TrustServerCertificate=True
 ```
+
+**⚠️ Security Note**: The default password `yourStrong(!)Password` is for development purposes only. Always change this password in production environments and use secure password management practices.
 
 ### API Base URL
 
